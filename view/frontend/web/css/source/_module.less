@@ -1,0 +1,104 @@
+// /**
+//  * DISCLAIMER
+//  *
+//  * Do not edit or add to this file if you wish to upgrade Smile Elastic Suite to newer
+//  * versions in the future.
+//  *
+//  *
+//  * @category  Smile
+//  * @package   Smile\LocalizedRetailer
+//  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
+//  * @copyright 2016 Smile
+//  * @license   Open Software License ("OSL") v. 3.0
+//  */
+
+
+//
+//  Shops search
+//  _____________________________________________
+
+#store-locator-search-wrapper {
+
+    height: 600px;
+
+    .map {
+        width : 100%;
+        height: 100%;
+        background: #666;
+    }
+
+    .contextual-bar {
+        position: absolute;
+        width: 300px;
+        margin: 20px;
+        padding: 0px 0px;
+        background: #FFFFFF;
+        z-index: 500;
+        box-shadow: 0 1px 10px;
+        display: flex;
+        flex-direction: column;
+        max-height: 540px;
+
+        .fulltext-search-wrapper {
+            border-bottom: 1px solid #c2c2c2;
+            padding: 10px;
+
+            .form {
+                display: flex;
+                padding: 10px 0 5px;
+
+                .field {
+                    flex: 1;
+                }
+                .actions-toolbar {
+
+                    .primary .action {
+                        margin: 0;
+                        border-top-left-radius: 0px;
+                        border-bottom-left-radius: 0px;
+                        span {
+                            line-height: 1.3em;
+                        }
+                    }
+                }
+            }
+        }
+
+        .search-result-list {
+            flex: 1;
+            overflow: scroll;
+
+            .search-result-header {
+                background-color: #8f8f8f;
+                padding: 10px;
+                display: flex;
+                p {
+                    margin: 0;
+                    color: #FFF;
+                    flex: 1;
+                }
+                a {
+                    color: #FFF;
+                    text-decoration: underline;
+                    font-size: 80%;
+                    cursor: pointer;
+                }
+            }
+
+            ul {
+                list-style-type: none;
+                margin: 10px 0 0;
+                padding: 0;
+
+                li {
+                    margin: 0;
+                    padding: 5px;
+                }
+
+                li:nth-child(even) {
+                    background: #F0F0F0;
+                }
+            }
+        }
+    }
+}

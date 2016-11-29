@@ -1,0 +1,63 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Store Locator Dependency Injection
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\StoreLocator
+ * @author    Romain RUAUD <romain.ruaud@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Apache License Version 2.0
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <virtualType name="Smile\StoreLocator\Retailer\ImageUpload" type="Magento\Catalog\Model\ImageUploader">
+        <arguments>
+            <argument name="baseTmpPath" xsi:type="string">retailer/tmp/image</argument>
+            <argument name="basePath" xsi:type="string">seller</argument>
+            <argument name="allowedExtensions" xsi:type="array">
+                <item name="jpg" xsi:type="string">jpg</item>
+                <item name="jpeg" xsi:type="string">jpeg</item>
+                <item name="gif" xsi:type="string">gif</item>
+                <item name="png" xsi:type="string">png</item>
+            </argument>
+        </arguments>
+    </virtualType>
+
+    <type name="Smile\StoreLocator\Model\Retailer\Attribute\Backend\Image">
+        <arguments>
+            <argument name="imageUploader" xsi:type="object">Smile\StoreLocator\Retailer\ImageUpload</argument>
+        </arguments>
+    </type>
+
+    <!-- Models -->
+    <preference for="Smile\StoreLocator\Api\Data\Retailer\ImageInterface" type="Smile\StoreLocator\Model\Retailer\Image"/>
+
+    <type name="Smile\StoreLocator\Model\Retailer\Images\ReadHandler">
+        <arguments>
+            <argument name="imagesAttributes" xsi:type="array">
+                <item name="image1" xsi:type="string">image1</item>
+                <item name="image2" xsi:type="string">image2</item>
+                <item name="image3" xsi:type="string">image3</item>
+            </argument>
+        </arguments>
+    </type>
+
+    <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
+        <arguments>
+            <argument name="extensionActions" xsi:type="array">
+                <item name="Smile\Seller\Api\Data\SellerInterface" xsi:type="array">
+                    <item name="read" xsi:type="array">
+                        <item name="read_images" xsi:type="string">Smile\StoreLocator\Model\Retailer\Images\ReadHandler</item>
+                    </item>
+                </item>
+            </argument>
+        </arguments>
+    </type>
+
+</config>

@@ -1,0 +1,8 @@
+<h1 data-bind="text: selectedMarker().name"></h1>
+
+<div class="actions-toolbar">
+    <div data-bind="html: selectedMarker().address"></div>
+    <div class="primary">
+        <a data-bind="attr: {href: selectedMarker().url}" class="action primary"><span>Show store details</span></a>
+    </div>
+</div> 
