@@ -9,7 +9,7 @@
  * versions in the future.
  *
  * @category  Smile
- * @package   Smile\Retailer
+ * @package   Smile\StoreLocator
  * @author    Romain RUAUD <romain.ruaud@smile.fr>
  * @copyright 2016 Smile
  * @license   Apache License Version 2.0
@@ -18,177 +18,12 @@
 <form xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
 
-    <fieldset name="images">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="sortOrder" xsi:type="number">100</item>
-                <item name="label" xsi:type="string" translate="true">Images</item>
-                <item name="collapsible" xsi:type="boolean">true</item>
-            </item>
-        </argument>
-        <field name="image1">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">10</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="label" xsi:type="string" translate="true">Image 1</item>
-                    <item name="formElement" xsi:type="string">fileUploader</item>
-                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
-                    <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
-                    <item name="required" xsi:type="boolean">false</item>
-                    <item name="uploaderConfig" xsi:type="array">
-                        <item name="url" xsi:type="url" path="smile_retailer/retailer_image/upload/fieldName/image1"/>
-                    </item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image1_alt">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">20</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Image 1 alt</item>
-                    <item name="dataScope" xsi:type="string">image1_alt</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image2">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">30</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="label" xsi:type="string" translate="true">Image 2</item>
-                    <item name="formElement" xsi:type="string">fileUploader</item>
-                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
-                    <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
-                    <item name="required" xsi:type="boolean">false</item>
-                    <item name="uploaderConfig" xsi:type="array">
-                        <item name="url" xsi:type="url" path="smile_retailer/retailer_image/upload/fieldName/image2"/>
-                    </item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image2_alt">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">40</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Image 2 alt</item>
-                    <item name="dataScope" xsi:type="string">image2_alt</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image3">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">50</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="label" xsi:type="string" translate="true">Image 3</item>
-                    <item name="formElement" xsi:type="string">fileUploader</item>
-                    <item name="elementTmpl" xsi:type="string">ui/form/element/uploader/uploader</item>
-                    <item name="previewTmpl" xsi:type="string">Magento_Catalog/image-preview</item>
-                    <item name="required" xsi:type="boolean">false</item>
-                    <item name="uploaderConfig" xsi:type="array">
-                        <item name="url" xsi:type="url" path="smile_retailer/retailer_image/upload/fieldName/image3"/>
-                    </item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="image3_alt">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">60</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Image 3 alt</item>
-                    <item name="dataScope" xsi:type="string">image3_alt</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-    </fieldset>
-
-    <fieldset name="contact">
-        <argument name="data" xsi:type="array">
-            <item name="config" xsi:type="array">
-                <item name="sortOrder" xsi:type="number">110</item>
-                <item name="label" xsi:type="string" translate="true">Contact</item>
-                <item name="collapsible" xsi:type="boolean">true</item>
-            </item>
-        </argument>
-        <field name="contact_firstname">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">10</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Contact First Name</item>
-                    <item name="dataScope" xsi:type="string">contact_firstname</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="contact_lastname">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">20</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Contact Last Name</item>
-                    <item name="dataScope" xsi:type="string">contact_lastname</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="contact_email">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">30</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Contact Email</item>
-                    <item name="dataScope" xsi:type="string">contact_email</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-        <field name="contact_phone">
-            <argument name="data" xsi:type="array">
-                <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">40</item>
-                    <item name="dataType" xsi:type="string">string</item>
-                    <item name="formElement" xsi:type="string">input</item>
-                    <item name="label" xsi:type="string" translate="true">Contact Phone</item>
-                    <item name="dataScope" xsi:type="string">contact_phone</item>
-                    <item name="visible" xsi:type="boolean">true</item>
-                    <item name="source" xsi:type="string">retailer</item>
-                </item>
-            </argument>
-        </field>
-    </fieldset>
-
     <fieldset name="address">
         <argument name="data" xsi:type="array">
             <item name="config" xsi:type="array">
                 <item name="sortOrder" xsi:type="number">120</item>
                 <item name="label" xsi:type="string" translate="true">Address</item>
-                <item name="collapsible" xsi:type="boolean">true</item>
+                <item name="collapsible" xsi:type="boolean">false</item>
             </item>
         </argument>
         <field name="street">
@@ -198,9 +33,12 @@
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="label" xsi:type="string" translate="true">Street</item>
-                    <item name="dataScope" xsi:type="string">street</item>
+                    <item name="dataScope" xsi:type="string">address.street</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="source" xsi:type="string">retailer</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
         </field>
@@ -211,9 +49,12 @@
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="label" xsi:type="string" translate="true">Postcode</item>
-                    <item name="dataScope" xsi:type="string">postcode</item>
+                    <item name="dataScope" xsi:type="string">address.postcode</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="source" xsi:type="string">retailer</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
         </field>
@@ -224,22 +65,25 @@
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="label" xsi:type="string" translate="true">City</item>
-                    <item name="dataScope" xsi:type="string">city</item>
+                    <item name="dataScope" xsi:type="string">address.city</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="source" xsi:type="string">retailer</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
         </field>
         <field name="country_id">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Smile\StoreLocator\Model\Retailer\Attribute\Source\Country</item>
+                <item name="options" xsi:type="object">Smile\StoreLocator\Model\RetailerAddress\Source\Country</item>
                 <item name="config" xsi:type="array">
                     <item name="sortOrder" xsi:type="number">40</item>
                     <item name="formElement" xsi:type="string">select</item>
                     <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
                     <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
                     <item name="label" xsi:type="string" translate="true">Country</item>
-                    <item name="dataScope" xsi:type="string">country_id</item>
+                    <item name="dataScope" xsi:type="string">address.country_id</item>
                     <item name="filterOptions" xsi:type="boolean">true</item>
                     <item name="showCheckbox" xsi:type="boolean">false</item>
                     <item name="disableLabel" xsi:type="boolean">true</item>
@@ -266,25 +110,30 @@
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="label" xsi:type="string" translate="true">Latitude</item>
-                    <item name="dataScope" xsi:type="string">latitude</item>
+                    <item name="dataScope" xsi:type="string">address.coordinates.latitude</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="source" xsi:type="string">retailer</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
         </field>
         <field name="longitude">
             <argument name="data" xsi:type="array">
                 <item name="config" xsi:type="array">
-                    <item name="sortOrder" xsi:type="number">510</item>
+                    <item name="sortOrder" xsi:type="number">51</item>
                     <item name="dataType" xsi:type="string">string</item>
                     <item name="formElement" xsi:type="string">input</item>
                     <item name="label" xsi:type="string" translate="true">Longitude</item>
-                    <item name="dataScope" xsi:type="string">longitude</item>
+                    <item name="dataScope" xsi:type="string">address.coordinates.longitude</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="source" xsi:type="string">retailer</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
                 </item>
             </argument>
         </field>
     </fieldset>
-
 </form>
