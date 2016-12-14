@@ -50,7 +50,7 @@ class Index extends Action
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        $redirectUrl    = $this->storeLocatorHelper->getBaseUrl();
+        $redirectUrl    = $this->storeLocatorHelper->getHomeUrl();
         $resultRedirect->setPath($redirectUrl);
 
         return $resultRedirect;

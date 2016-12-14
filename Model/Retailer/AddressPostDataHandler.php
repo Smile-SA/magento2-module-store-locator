@@ -1,5 +1,4 @@
 <?php
-
 /**
  * DISCLAIMER
  * Do not edit or add to this file if you wish to upgrade this module to newer

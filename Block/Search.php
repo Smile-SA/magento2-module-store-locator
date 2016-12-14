@@ -103,7 +103,7 @@ class Search extends \Magento\Framework\View\Element\Template
                 'longitude' => $coords->getLongitude(),
                 'name'      => $retailer->getName(),
                 'address'   => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
-                'url'       => $this->_urlBuilder->getUrl('storelocator/store/view', ['id' => $retailer->getId()]),
+                'url'       => $this->storeLocatorHelper->getRetailerUrl($retailer),
             ];
             $markers[] = $markerData;
         }
@@ -120,8 +120,8 @@ class Search extends \Magento\Framework\View\Element\Template
         parent::_prepareLayout();
 
         if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
-            $homeUrl  = $this->getBaseUrl();
-            $breadcrumbsBlock->addCrumb('home', ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $homeUrl]);
+            $siteHomeUrl = $this->getBaseUrl();
+            $breadcrumbsBlock->addCrumb('home', ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $siteHomeUrl]);
             $breadcrumbsBlock->addCrumb('search', ['label' => __('Our stores'), 'title' => __('Our stores')]);
         }
     }

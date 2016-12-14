@@ -24,7 +24,7 @@ namespace Smile\StoreLocator\Block;
 class View extends AbstractView
 {
     /**
-     * @var StoreLocatorHelper
+     * @var \Smile\StoreLocator\Helper\Data
      */
     private $storeLocatorHelper;
 
@@ -118,7 +118,7 @@ class View extends AbstractView
         if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
             $retailer            = $this->getRetailer();
             $homeUrl             = $this->_storeManager->getStore()->getBaseUrl();
-            $storeLocatorHomeUrl = $this->storeLocatorHelper->getBaseUrl();
+            $storeLocatorHomeUrl = $this->storeLocatorHelper->getHomeUrl();
 
             $breadcrumbsBlock->addCrumb('home', ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $homeUrl]);
             $breadcrumbsBlock->addCrumb('search', ['label' => __('Our stores'), 'title' => __('Our stores'), 'link' => $storeLocatorHomeUrl]);
