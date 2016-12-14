@@ -23,6 +23,9 @@ use Magento\Store\Model\ScopeInterface;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
+    /**
+     * @var string
+     */
     const BASE_URL_XML_PATH = 'store_locator/seo/base_url';
 
     /**
@@ -39,8 +42,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
         \Magento\Store\Model\StoreManagerInterface $storeManager
-    )
-    {
+    ) {
         parent::__construct($context);
 
         $this->storeManager = $storeManager;

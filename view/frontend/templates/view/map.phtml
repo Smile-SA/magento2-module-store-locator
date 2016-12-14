@@ -1,0 +1,41 @@
+<?php
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\LocalizedRetailer
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ *
+ * Retailer frontend view block
+ */
+?>
+
+<?php
+/** @var \Smile\LocalizedRetailer\Block\Retailer\View $block */
+$retailer = $block->getRetailer();
+?>
+<div id="store-view-map" class="store-view-map" data-bind="scope: 'store-locator-store-view'"
+     style="width:100%; box-shadow: 0px 1px 1px rgba(0,0,0,0.2); border: 1px solid #CCC; margin: 10px 0 26px;">
+    <div class="map" data-bind="afterRender: initMap" style="width:100%; height: 150px;"> </div>
+
+    <div class="address-info" style="border-top: 1px solid #CCC; display: flex; padding: 10px;">
+        <div class="box-title" style="margin-right: 10px; font-weight: bold;">
+            <p><?php echo __('Store Addrress'); ?> :</p>
+        </div>
+        <div class="address" style="flex: 1">
+            <em><?php echo $this->getAddressHtml(); ?></em>
+        </div>
+        <div class="actions">
+            <p class="directions"><a target="_blank" href="<?php echo $this->getDirectionUrl(); ?>"><?php echo __('Directions'); ?></a></p>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    {"*" : {"Magento_Ui/js/core/app": <?php echo $block->getJsLayout(); ?> }}
+</script>

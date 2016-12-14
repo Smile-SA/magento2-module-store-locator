@@ -20,9 +20,8 @@
     
     <body>
         <referenceContainer name="content">
-            <block class="Smile\StoreLocator\Block\Retailer\View" name="smile_store_locator_retailer_view" template="retailer/view.phtml">
-                <block class="Magento\Theme\Block\Html\Title" name="smile_store_locator_retailer_view_title" as="page.main.title" template="Mage_Page::html/title.phtml"/>
-                <block class="Smile\StoreLocator\Block\Retailer\View\Map" name="smile_store_locator_retailer_view.map" template="retailer/view/map.phtml">
+            <block class="Smile\StoreLocator\Block\View" name="smile_store_locator_retailer_view" template="view.phtml">
+                <block class="Smile\StoreLocator\Block\View\Map" name="smile_store_locator_retailer_view.map" template="view/map.phtml">
                     <arguments>
                         <argument name="jsLayout" xsi:type="array">
                             <item name="components" xsi:type="array">

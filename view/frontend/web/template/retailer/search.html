@@ -1,36 +1,29 @@
 <div class="contextual-bar" style="display: none" data-bind="visible: true">
-    <div data-bind="ifnot: selectedMarker">
-        <div class="fulltext-search-wrapper">
-            <div class="block-title">
-                <strong role="heading" aria-level="1" data-bind="text: searchTitleText"></strong>
-            </div>
-
-            <form class="form" data-bind="submit: onSearch">
-                <div class="field" data-bind="scope: 'store-locator-search'">
-                    <input type="text" name="text" data-bind="value: fulltextSearch, attr: {placeholder: searchPlaceholderText}" />
-                </div>
-                <div class="actions-toolbar">
-                    <div class="primary">
-                        <button type="submit" class="action primary"><span data-bind="text: searchButtonText"></span></button>
-                    </div>
-                </div>
-            </form>
+    <div class="fulltext-search-wrapper">
+        <div class="block-title">
+            <strong role="heading" aria-level="1" data-bind="text: searchTitleText"></strong>
         </div>
 
-        <div class="search-result-list" data-bind="ifnot: selectedMarker">
-            <div class="search-result-header">
-                <p data-bind="text: getSearchResultLabel()"></p>
-                <span data-bind="if: displayReset()"><a data-bind="click: onSearchReset">View all</a></span>
+        <form class="form" data-bind="submit: onSearch">
+            <div class="field" data-bind="scope: 'store-locator-search'">
+                <input type="text" name="text" data-bind="value: fulltextSearch, attr: {placeholder: searchPlaceholderText}" />
             </div>
-            <ul data-bind="foreach: displayedMarkers">
-                <li data-bind="template: $parent.storeListTemplate"></li>
-            </ul>
-        </div>
+            <div class="actions-toolbar">
+                <div class="primary">
+                    <button type="submit" class="action primary"><span data-bind="text: searchButtonText"></span></button>
+                </div>
+            </div>
+        </form>
     </div>
 
-    <div class="current-store" data-bind="if: selectedMarker">
-        <a data-bind="click: resetSelectedMarker, text: storeDetailCloseText"></a>
-        <div data-bind="template: storeDetailTemplate"></div>
+    <div class="search-result-list">
+        <div class="search-result-header">
+            <p data-bind="text: getSearchResultLabel()"></p>
+            <span data-bind="if: displayReset()"><a data-bind="click: onSearchReset">View all</a></span>
+        </div>
+        <ul data-bind="foreach: displayedMarkers">
+            <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
+        </ul>
     </div>
 </div>
 

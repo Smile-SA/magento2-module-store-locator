@@ -32,6 +32,12 @@ class Index extends Action
      */
     private $storeLocatorHelper;
 
+    /**
+     * Constructor.
+     *
+     * @param Context            $context            Controller context.
+     * @param StoreLocatorHelper $storeLocatorHelper Store locator helper.
+     */
     public function __construct(Context $context, StoreLocatorHelper $storeLocatorHelper)
     {
         parent::__construct($context);
