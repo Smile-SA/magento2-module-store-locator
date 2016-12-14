@@ -10,23 +10,13 @@
  *
  * @category  Smile
  * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
  * @copyright 2016 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
-    <extension_attributes for="Smile\Seller\Api\Data\SellerInterface">
-        <attribute code="contact_firstname" type="string" />
-        <attribute code="contact_lastname" type="string" />
-        <attribute code="contact_email" type="string" />
-        <attribute code="contact_phone" type="string" />
-        <attribute code="images" type="\Smile\StoreLocator\Api\Data\Retailer\ImageInterface[]" />
-        <attribute code="street" type="string" />
-        <attribute code="postcode" type="string" />
-        <attribute code="city" type="string" />
-        <attribute code="country_id" type="string" />
-        <attribute code="latitude" type="string" />
-        <attribute code="longitude" type="string" />
+    <extension_attributes for="Smile\Retailer\Api\Data\RetailerInterface">
+        <attribute code="address" type="Smile\Map\Api\Data\GeolocalizedAddressInterface" />
     </extension_attributes>
 </config>
