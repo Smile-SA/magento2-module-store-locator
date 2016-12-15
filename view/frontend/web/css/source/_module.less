@@ -17,6 +17,10 @@
 //  Shops search
 //  _____________________________________________
 
+.smile-store-locator-store-view .page-title .set-store-button {
+    float: right;
+}
+
 #store-locator-search-wrapper {
 
     height: 600px;
@@ -50,6 +54,7 @@
                 .field {
                     flex: 1;
                 }
+                
                 .actions-toolbar {
 
                     .primary .action {
@@ -105,6 +110,97 @@
     }
 }
 
-.shop-details {
+@icon-marker: '\e60A';
+
+//
+//  Store chooser
+//  _____________________________________________
+
+#top-storelocator-chooser {
+    float: right;
+    margin-right: @indent__s;
+
+    .lib-dropdown(
+        @_toggle-selector: ~'.action.showpicker',
+        @_options-selector: ~'.top-storelocator-chooser-content',
+        @_dropdown-toggle-icon-content: @icon-marker,
+        @_dropdown-toggle-active-icon-content: @icon-marker,
+        @_dropdown-list-item-padding: false,
+        @_dropdown-list-item-hover: false,
+        @_icon-font-position: before,
+        @_icon-font-size: 22px,
+        @_icon-font-line-height: 28px,
+        @_icon-font-color: @minicart-icons-color,
+        @_icon-font-color-hover: @minicart-icons-color,
+        @_icon-font-color-active: @minicart-icons-color
+    );
+
+    .top-storelocator-chooser-content {
+        
+        width: 320px;
+        right: -22px;
+        z-index: 10000;
+
+        &:after {
+            left: auto;
+            right: 25px;
+        }
+
+        &:before {
+            left: auto;
+            right: 26px;
+        }
+        
+        .store-search, .current-store {
+            padding: 10px;
+        }
+        
+        .current-store {
+            .title {
+                font-size: 110%;
+                font-weight: bold;
+            }
+        }
+        
+        .current-store {
+            border-bottom: 1px solid @color-gray80;
+        }
+    }
     
+    .action.showpicker .text {
+        padding: 0 5px 0 0;
+        font-size: 14px;
+        line-height: 31px;
+    }
+}
+
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    #top-storelocator-chooser {
+        margin-top: @indent__s;
+    }
+}
+
+//
+//  Tablet + Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .action.showpicker .text {
+        display: none;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    #top-storelocator-chooser {
+        margin-left: @indent__s;
+        margin-right: 0;
+    }
 }

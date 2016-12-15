@@ -27,4 +27,12 @@
             </argument>
         </arguments>
     </type>
+    
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="current-store" xsi:type="string">Smile\StoreLocator\CustomerData\CurrentStore</item>
+            </argument>
+        </arguments>
+    </type>
 </config>
