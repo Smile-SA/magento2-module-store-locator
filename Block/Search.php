@@ -99,6 +99,7 @@ class Search extends \Magento\Framework\View\Element\Template
             $address = $retailer->getAddress();
             $coords  = $address->getCoordinates();
             $markerData = [
+                'id'        => $retailer->getId(),
                 'latitude'  => $coords->getLatitude(),
                 'longitude' => $coords->getLongitude(),
                 'name'      => $retailer->getName(),

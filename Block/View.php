@@ -6,8 +6,7 @@
  *
  * @category  Smile
  * @package   Smile\LocalizedRetailer
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
  * @copyright 2016 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
@@ -18,8 +17,7 @@ namespace Smile\StoreLocator\Block;
  *
  * @category Smile
  * @package  Smile\LocalizedRetailer
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
- * @author   Guillaume Vrac <guillaume.vrac@smile.fr>
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class View extends AbstractView
 {
@@ -80,6 +78,7 @@ class View extends AbstractView
         if (empty($pageTitle)) {
             $pageTitle = $retailer->getName();
         }
+
         $this->pageConfig->getTitle()->set(__($pageTitle));
 
         return $this;
