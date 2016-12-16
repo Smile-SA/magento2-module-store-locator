@@ -97,7 +97,6 @@ class CurrentStore implements SectionSourceInterface
             try {
                 $retailer = $this->retailerRepository->get($retailerId);
             } catch (NoSuchEntityException $e) {
-                var_dump($e->getMessage());
                 $this->customerSession->unsRetailerId();
             }
         }
