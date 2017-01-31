@@ -18,6 +18,7 @@
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
     
     <preference for="Smile\StoreLocator\Api\Data\RetailerAddressInterface" type="Smile\StoreLocator\Model\Data\RetailerAddress" />
+    <preference for="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface" type="Smile\StoreLocator\Model\Data\RetailerTimeSlot" />
 
     <type name="Magento\Framework\EntityManager\MetadataPool">
         <arguments>
@@ -36,12 +37,15 @@
                 <item name="Smile\Retailer\Api\Data\RetailerInterface" xsi:type="array">
                     <item name="create" xsi:type="array">
                         <item name="create_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressSaveHandler</item>
+                        <item name="create_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursSaveHandler</item>
                     </item>
                     <item name="update" xsi:type="array">
                         <item name="update_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressSaveHandler</item>
+                        <item name="update_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursSaveHandler</item>
                     </item>
                     <item name="read" xsi:type="array">
                         <item name="read_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressReadHandler</item>
+                        <item name="read_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursReadHandler</item>
                     </item>
                 </item>
             </argument>
@@ -52,6 +56,7 @@
         <arguments>
             <argument name="postDataHandlers" xsi:type="array">
                 <item name="addressDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\AddressPostDataHandler</item>
+                <item name="openingHoursDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\OpeningHoursPostDataHandler</item>
             </argument>
         </arguments>
     </type>
