@@ -19,13 +19,13 @@ use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot as TimeSlotResource;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 
 /**
- * Read Handler for Retailer Opening Hours
+ * Read Handler for Retailer Special Opening Hours
  *
  * @category Smile
  * @package  Smile\StoreLocator
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
  */
-class OpeningHoursReadHandler implements ExtensionInterface
+class SpecialOpeningHoursReadHandler implements ExtensionInterface
 {
     /**
      * @var \Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot
@@ -54,12 +54,12 @@ class OpeningHoursReadHandler implements ExtensionInterface
      */
     public function execute($entity, $arguments = [])
     {
-        $timeSlots = $this->resource->getTimeSlots($entity->getId(), 'opening_hours');
+        $timeSlots = $this->resource->getTimeSlots($entity->getId(), 'special_opening_hours');
 
-        $openingHours = $this->converter->toEntity($timeSlots, RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD);
+        $openingHours = $this->converter->toEntity($timeSlots, RetailerTimeSlotInterface::DATE_FIELD);
 
-        $entity->getExtensionAttributes()->setOpeningHours($openingHours);
-        $entity->setOpeningHours($openingHours);
+        $entity->getExtensionAttributes()->setSpecialOpeningHours($openingHours);
+        $entity->setSpecialOpeningHours($openingHours);
 
         return $entity;
     }
