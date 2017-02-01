@@ -1,0 +1,72 @@
+<?php
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\StoreLocator
+ * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ *
+ * Opening Hours form element renderer.
+ */
+?>
+
+<?php
+/** @var \Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element\Renderer $block */
+
+$element = $block->getElement();
+$fieldId = ($element->getHtmlContainerId()) ? ' id="' . $element->getHtmlContainerId() . '"' : '';
+$fieldClass = "field admin__field field-{$element->getId()} {$element->getClass()}";
+$fieldClass .= ($element->getRequired()) ? ' required' : '';
+$fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId('form-field', $element->getId());
+?>
+
+<div<?php /* @escapeNotVerified */ echo $fieldAttributes ?>>
+    <?php echo $element->getLabelHtml() ?><span class="opening-hours-day" id="<?php echo $this->getHtmlId();?>-label"></span>
+    <?php $inputId = "opening_hours_field_" . $this->getHtmlId() ; ?>
+    <div id ="<?php echo $inputId ?>" class="opening-hours-container">
+        <div class="opening-hours-indicator"></div>
+        <div class="opening-hours-rangebar"></div>
+        <?php echo $block->getInputHtml() ?>
+    </div>
+</div>
+
+<script>
+
+    require(["jquery", "openingHours", "moment"],
+        function($, openingHours, moment) {
+            /**
+             * This component is the main timepicker for opening hours
+             */
+            $("#<?php echo $inputId ?> .opening-hours-rangebar").openingHours({
+                values: $("#<?php echo $this->getHtmlId();?>").val(),
+                summary: $("#<?php echo $this->getHtmlId();?>-label"),
+                updateSummary: true,
+                input : $("#<?php echo $this->getHtmlId();?>")
+            });
+
+            /**
+             * This component is a read-only one, made to display the time indicator
+             */
+            $("#<?php echo $inputId ?> .opening-hours-indicator").openingHours({
+                values: [
+                    [moment().startOf("day").format("LLLL")],
+                    [moment().startOf("day").add(3, "hours").format("LLLL")],
+                    [moment().startOf("day").add(6, "hours").format("LLLL")],
+                    [moment().startOf("day").add(9, "hours").format("LLLL")],
+                    [moment().startOf("day").add(12, "hours").format("LLLL")],
+                    [moment().startOf("day").add(15, "hours").format("LLLL")],
+                    [moment().startOf("day").add(18, "hours").format("LLLL")],
+                    [moment().startOf("day").add(21, "hours").format("LLLL")],
+                    [moment().startOf("day").add(24, "hours").format("LLLL")],
+                ],
+                label: function(a){return JSON.stringify(a[0])},
+                readonly: true
+            });
+        }
+    );
+</script>

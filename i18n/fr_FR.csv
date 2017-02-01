@@ -1,0 +1,23 @@
+"Opening Hours","Horaires d'ouverture"
+Home,Home
+"Go to Home Page","Aller à la page d'accueil"
+"Our stores","Nos magasins"
+"We are sorry, an error occured when switching retailer.","Nous sommes désolés, une erreur s'est produite durant le choix du magasin."
+"Retailer url_key ""%1"" already exists.","La clef d'url ""%1"" existe déjà."
+"Find a store","Trouver un magasin"
+"Store Addrress","Adresse du magasin"
+Directions,Itinéraire
+"Choose this store","Choisir ce magasin"
+"Find a store ...","Trouver un magasin ..."
+"My store : %s","Mon magasin : %s"
+Address,Adresse
+Street,Rue
+Postcode,"Code postal"
+City,Ville
+Country,Pays
+Latitude,Latitude
+Longitude,Longitude
+"Find a store :","Trouver un magasin :"
+"City, Zipcode, Department, ...","Ville, Code postal, Département, ..."
+Search,Rechercher
+Close,Fermer
