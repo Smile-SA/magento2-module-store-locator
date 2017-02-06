@@ -38,25 +38,29 @@
                     <item name="create" xsi:type="array">
                         <item name="create_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressSaveHandler</item>
                         <item name="create_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursSaveHandler</item>
+                        <item name="create_retailer_special_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursSaveHandler</item>
                     </item>
                     <item name="update" xsi:type="array">
                         <item name="update_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressSaveHandler</item>
                         <item name="update_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursSaveHandler</item>
+                        <item name="update_retailer_special_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursSaveHandler</item>
                     </item>
                     <item name="read" xsi:type="array">
                         <item name="read_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressReadHandler</item>
                         <item name="read_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursReadHandler</item>
+                        <item name="read_retailer_special_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursReadHandler</item>
                     </item>
                 </item>
             </argument>
         </arguments>
     </type>
-    
+
     <type name="Smile\Retailer\Controller\Adminhtml\Retailer\Save">
         <arguments>
             <argument name="postDataHandlers" xsi:type="array">
                 <item name="addressDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\AddressPostDataHandler</item>
                 <item name="openingHoursDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\OpeningHoursPostDataHandler</item>
+                <item name="specialOpeningHoursDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursPostDataHandler</item>
             </argument>
         </arguments>
     </type>

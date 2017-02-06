@@ -19,5 +19,6 @@
     <extension_attributes for="Smile\Retailer\Api\Data\RetailerInterface">
         <attribute code="address" type="Smile\Map\Api\Data\GeolocalizedAddressInterface" />
         <attribute code="opening_hours" type="Smile\StoreLocator\Api\Data\TimeSlotInterface[]" />
+        <attribute code="special_opening_hours" type="Smile\StoreLocator\Api\Data\TimeSlotInterface[]" />
     </extension_attributes>
 </config>

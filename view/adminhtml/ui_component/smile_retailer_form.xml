@@ -160,4 +160,29 @@
             </htmlContent>
         </container>
     </fieldset>
+
+    <fieldset name="special_opening_hours">
+        <argument name="data" xsi:type="array">
+            <item name="config" xsi:type="array">
+                <item name="sortOrder" xsi:type="number">300</item>
+                <item name="label" xsi:type="string" translate="true">Special Opening Hours</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
+            </item>
+        </argument>
+        <container name="special_opening_hours_config_container">
+            <htmlContent name="special_opening_hours">
+                <argument name="block" xsi:type="object">Smile\StoreLocator\Block\Adminhtml\Retailer\SpecialOpeningHours</argument>
+                <argument name="data" xsi:type="array">
+                    <item name="config" xsi:type="array">
+                        <item name="sortOrder" xsi:type="number">20</item>
+                        <item name="component" xsi:type="string">Smile_StoreLocator/js/component/retailer/opening-hours</item>
+                        <item name="dataScope" xsi:type="string">special_opening_hours</item>
+                        <item name="imports" xsi:type="array">
+                            <item name="visible" xsi:type="string">true</item>
+                        </item>
+                    </item>
+                </argument>
+            </htmlContent>
+        </container>
+    </fieldset>
 </form>

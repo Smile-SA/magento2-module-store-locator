@@ -6,12 +6,97 @@
 //  *
 //  *
 //  * @category  Smile
-//  * @package   Smile\LocalizedRetailer
+//  * @package   Smile\StoreLocator
 //  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
 //  * @copyright 2016 Smile
 //  * @license   Open Software License ("OSL") v. 3.0
 //  */
 
+
+//
+//  Shop View
+//  _____________________________________________
+
+.smile-store-locator-store-view {
+
+    .set-store-button {
+        float: right;
+    }
+
+    .shop-details {
+        width: 100%;
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        border: 1px solid #CCC;
+        margin: 10px 0 26px;
+
+        .map {
+            width: 100%;
+            height: 150px;
+        }
+
+        .address-info {
+            border-top: 1px solid #CCC;
+            display: flex;
+            padding: 10px;
+
+            .box-title {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+
+            .address {
+                flex: 1;
+            }
+        }
+
+        .opening-hours-info {
+            padding: 10px;
+            clear: both;
+
+            .box-title {
+                margin-right: 10px;
+                p {
+                    font-weight: bold;
+                    float:left;
+                }
+
+                .showopeninghours {
+                    float:left;
+                    margin-left:10px;
+                    cursor: pointer;
+
+                    :after {
+                        content: @icon-down;
+                        display:inline-block;
+                        font-family: @icons__font-name;
+                        vertical-align: top;
+                        margin: 0;
+                        color: inherit;
+                        font-size: 10px;
+                        line-height: 22px;
+                        margin-left: 10px;
+                    }
+                }
+
+                .showopeninghours.active {
+                    :after {
+                        content: @icon-up;
+                    }
+                }
+            }
+
+            :last-child {
+
+            }
+        }
+    }
+}
+
+.opening-hours-table {
+    .currentDay {
+        font-weight: bold;
+    }
+}
 
 //
 //  Shops search
@@ -54,7 +139,7 @@
                 .field {
                     flex: 1;
                 }
-                
+
                 .actions-toolbar {
 
                     .primary .action {
@@ -136,7 +221,7 @@
     );
 
     .top-storelocator-chooser-content {
-        
+
         width: 320px;
         right: -22px;
         z-index: 10000;
@@ -150,23 +235,23 @@
             left: auto;
             right: 26px;
         }
-        
+
         .store-search, .current-store {
             padding: 10px;
         }
-        
+
         .current-store {
             .title {
                 font-size: 110%;
                 font-weight: bold;
             }
         }
-        
+
         .current-store {
             border-bottom: 1px solid @color-gray80;
         }
     }
-    
+
     .action.showpicker .text {
         padding: 0 5px 0 0;
         font-size: 14px;
@@ -204,3 +289,4 @@
         margin-right: 0;
     }
 }
+
