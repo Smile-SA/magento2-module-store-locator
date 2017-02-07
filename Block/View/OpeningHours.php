@@ -109,6 +109,7 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
         $jsLayout['components']['smile-storelocator-opening-hours']['locale'] = $this->localeResolver->getLocale();
         $jsLayout['components']['smile-storelocator-opening-hours']['closingWarningThresold'] = $this->closingWarningThresold;
         $jsLayout['components']['smile-storelocator-opening-hours']['dateFormat'] = strtoupper(DateTime::DATE_INTERNAL_FORMAT);
+        $jsLayout['components']['smile-storelocator-opening-hours']['timeFormat'] = \Zend_Locale_Format::getTimeFormat($this->localeResolver->getLocale());
 
         return $this->jsonHelper->jsonEncode($jsLayout);
     }

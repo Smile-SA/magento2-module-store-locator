@@ -93,13 +93,8 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
             var now    = new Date();
 
             if (timeSlot.hasOwnProperty('start_time') && timeSlot.hasOwnProperty('end_time')) {
-                var from = moment().hours(parseInt(timeSlot.start_time.split(':')[0], 10))
-                    .minutes(parseInt(timeSlot.start_time.split(':')[1], 10))
-                    .toDate();
-
-                var to = moment().hours(parseInt(timeSlot.end_time.split(':')[0], 10))
-                    .minutes(parseInt(timeSlot.end_time.split(':')[1], 10))
-                    .toDate();
+                var from = moment(timeSlot.start_time, [this.timeFormat]).toDate();
+                var to = moment(timeSlot.end_time, [this.timeFormat]).toDate();
 
                 if ((now.getTime() <= to.getTime() && now.getTime() >= from.getTime())) {
                     result = true;
@@ -142,10 +137,7 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
             var closingTime = this.getTodayNextCloseTime();
             if (closingTime) {
                 var now = new Date();
-                var closing = new Date();
-                closing.setSeconds(0);
-                closing.setHours(closingTime.split(':')[0]);
-                closing.setMinutes(closingTime.split(':')[1]);
+                var closing = moment(closingTime, [this.timeFormat]).toDate();
 
                 if (Math.floor(((closing - now) / 1000) / 60) <= parseInt(this.closingWarningThresold, 10)) {
                     return true;

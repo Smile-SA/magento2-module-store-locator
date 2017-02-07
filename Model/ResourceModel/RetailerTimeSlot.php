@@ -12,7 +12,9 @@
  */
 namespace Smile\StoreLocator\Model\ResourceModel;
 
+use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Stdlib\DateTime;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Zend_Date;
@@ -26,6 +28,24 @@ use Zend_Date;
  */
 class RetailerTimeSlot extends AbstractDb
 {
+    /**
+     * @var \Magento\Framework\Locale\Resolver
+     */
+    private $localeResolver;
+
+    /**
+     * RetailerTimeSlot constructor.
+     *
+     * @param Context     $context        Context
+     * @param Resolver    $localeResolver Locale Resolver
+     * @param null|string $connectionName Connection Name
+     */
+    public function __construct(Context $context, Resolver $localeResolver, $connectionName = null)
+    {
+        $this->localeResolver = $localeResolver;
+        parent::__construct($context, $connectionName);
+    }
+
     /**
      * Save time slots for a given retailer
      *
@@ -165,7 +185,7 @@ class RetailerTimeSlot extends AbstractDb
     private function dateToHour($date)
     {
         $date = new Zend_Date($date, DateTime::DATETIME_INTERNAL_FORMAT);
-
+        $date->setLocale($this->localeResolver->getLocale());
         return $date->toString(Zend_Date::TIME_SHORT);
     }
 }
