@@ -187,12 +187,14 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
             var list = [];
 
             for (var day in this.openingHours) if (this.openingHours.hasOwnProperty(day)) {
-                var object = {
-                    "day": this.getDayLabel(day),
-                    "hours": this.extractOpeningTimes(this.openingHours[day])
-                };
+                if (Array.isArray(this.openingHours[day])) {
+                    var object = {
+                        "day": this.getDayLabel(day),
+                        "hours": this.extractOpeningTimes(this.openingHours[day])
+                    };
 
-                list.push(object);
+                    list.push(object);
+                }
             }
 
             return list;
@@ -205,15 +207,17 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
             var list = [];
 
             for (var day in this.specialOpeningHours) if (this.specialOpeningHours.hasOwnProperty(day)) {
-                var object = {
-                    "day": moment(day, this.dateFormat).toDate().toLocaleString(
-                        this.getLocale(),
-                        this.dateOptions
-                    ),
-                    "hours": this.extractOpeningTimes(this.specialOpeningHours[day])
-                };
+                if (Array.isArray(this.specialOpeningHours[day])) {
+                    var object = {
+                        "day": moment(day, this.dateFormat).toDate().toLocaleString(
+                            this.getLocale(),
+                            this.dateOptions
+                        ),
+                        "hours": this.extractOpeningTimes(this.specialOpeningHours[day])
+                    };
 
-                list.push(object);
+                    list.push(object);
+                }
             }
 
             return list;
@@ -228,10 +232,12 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
         extractOpeningTimes: function(item) {
             var hours = [];
 
-            item.forEach(function(openingTimes) {
-                var stringHours = this.openingTimesToString(openingTimes);
-                hours.push(stringHours);
-            }, this);
+            if (Array.isArray(item)) {
+                item.forEach(function (openingTimes) {
+                    var stringHours = this.openingTimesToString(openingTimes);
+                    hours.push(stringHours);
+                }, this);
+            }
 
             if (hours.length === 0) {
                 hours.push($.mage.__('Closed'));
