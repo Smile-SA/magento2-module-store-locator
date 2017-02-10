@@ -83,6 +83,12 @@ class Search extends \Magento\Framework\View\Element\Template
             $this->map->getConfig()
         );
 
+        $jsLayout['components']['store-locator-search']['children']['geocoder']['provider'] = $this->map->getIdentifier();
+        $jsLayout['components']['store-locator-search']['children']['geocoder'] = array_merge(
+            $jsLayout['components']['store-locator-search']['children']['geocoder'],
+            $this->map->getConfig()
+        );
+
         return json_encode($jsLayout);
     }
 

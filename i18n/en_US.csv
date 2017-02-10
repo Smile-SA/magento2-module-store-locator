@@ -7,11 +7,16 @@ Home,Home
 "We are sorry, an error occured when switching retailer.","We are sorry, an error occured when switching retailer."
 "Retailer url_key ""%1"" already exists.","Retailer url_key ""%1"" already exists."
 "Find a store","Find a store"
-"Store Addrress","Store Addrress"
+"Store Address","Store Address"
 Directions,Directions
 "Choose this store","Choose this store"
 "Find a store ...","Find a store ..."
 "My store : %s","My store : %s"
+"Open Today","Open Today"
+"Open Today (%1)","Open Today (%1)"
+"Closing soon (%1)","Closing soon (%1)"
+"Closed (%1)","Closed (%1)"
+Closed,Closed
 Address,Address
 Street,Street
 Postcode,Postcode
@@ -22,4 +27,4 @@ Longitude,Longitude
 "Find a store :","Find a store :"
 "City, Zipcode, Department, ...","City, Zipcode, Department, ..."
 Search,Search
-Close,Close
+"%s result(s)","%s result(s)"

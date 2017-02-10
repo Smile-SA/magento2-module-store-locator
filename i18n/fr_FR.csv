@@ -12,6 +12,11 @@ Directions,Itinéraire
 "Choose this store","Choisir ce magasin"
 "Find a store ...","Trouver un magasin ..."
 "My store : %s","Mon magasin : %s"
+"Open Today","Ouvert aujourd'hui"
+"Open Today (%1)","Ouvert aujourd'hui (%1)"
+"Closing soon (%1)","Fermeture imminente (%1)"
+"Closed (%1)","Fermé (%1)"
+Closed,Fermé
 Address,Adresse
 Street,Rue
 Postcode,"Code postal"
@@ -23,3 +28,4 @@ Longitude,Longitude
 "City, Zipcode, Department, ...","Ville, Code postal, Département, ..."
 Search,Rechercher
 Close,Fermer
+"%s result(s)","%s résultat(s)"

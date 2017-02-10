@@ -1,27 +1,29 @@
 <div class="contextual-bar" style="display: none" data-bind="visible: true">
-    <div class="fulltext-search-wrapper">
-        <div class="block-title">
-            <strong role="heading" aria-level="1" data-bind="text: searchTitleText"></strong>
-        </div>
+    <div class="fulltext-search-wrapper" data-bind="scope: requestChild('geocoder')">
+        <div class="geocoder-wrapper" data-bind=" afterRender: initGeocoder">
+            <div class="block-title">
+                <strong role="heading" aria-level="1" data-bind="text: searchTitleText"></strong>
+            </div>
 
-        <form class="form" data-bind="submit: onSearch">
-            <div class="field" data-bind="scope: 'store-locator-search'">
-                <input type="text" name="text" data-bind="value: fulltextSearch, attr: {placeholder: searchPlaceholderText}" />
-            </div>
-            <div class="actions-toolbar">
-                <div class="primary">
-                    <button type="submit" class="action primary"><span data-bind="text: searchButtonText"></span></button>
+            <form class="form" data-bind="submit: onSearch">
+                <div class="field">
+                    <input type="text" name="text" data-bind="value: fulltextSearch, attr: {placeholder: searchPlaceholderText}" />
                 </div>
-            </div>
-        </form>
+                <div class="actions-toolbar">
+                    <div class="primary">
+                        <button type="submit" class="action primary"><span data-bind="text: searchButtonText"></span></button>
+                    </div>
+                </div>
+            </form>
+        </div>
     </div>
 
-    <div class="search-result-list">
+    <div class="search-result-list" data-bind="scope: requestChild('store-list')">
         <div class="search-result-header">
-            <p data-bind="text: getSearchResultLabel()"></p>
-            <span data-bind="if: displayReset()"><a data-bind="click: onSearchReset">View all</a></span>
+            <p data-bind="text: $t(searchResultsLabel).replace('%s', $parent.countDisplayedMarkers.bind($parent))"></p>
+            <span data-bind="if: $parent.displayReset()"><a data-bind="click: $parent.resetMap.bind($parent)">View all</a></span>
         </div>
-        <ul data-bind="foreach: displayedMarkers">
+        <ul data-bind="foreach: $parent.displayedMarkers">
             <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
         </ul>
     </div>
