@@ -16,7 +16,7 @@ namespace Smile\StoreLocator\Controller;
  * Store locator routing (handling rewritten URL).
  *
  * @category Smile
- * @package  Smile\LocalizedRetailer
+ * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class Router implements \Magento\Framework\App\RouterInterface
