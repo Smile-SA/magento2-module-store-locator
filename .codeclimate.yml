@@ -1,0 +1,25 @@
+---
+engines:
+  duplication:
+    enabled: true
+    config:
+      languages:
+      - javascript
+      - php
+  eslint:
+    enabled: true
+  fixme:
+    enabled: true
+  phan:
+    enabled: true
+    config:
+      file_extensions: php
+      ignore-undeclared: true
+ratings:
+  paths:
+  - "**.js"
+  - "**.php"
+exclude_paths:
+  - src/*/Test
+  - vendor/*
+  - Resources/*
