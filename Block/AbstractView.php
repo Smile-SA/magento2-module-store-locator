@@ -1,11 +1,11 @@
 <?php
 /**
  * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade Smile Elastic Suite to newer
+ * Do not edit or add to this file if you wish to upgrade this module to newer
  * versions in the future.
  *
  * @category  Smile
- * @package   Smile\LocalizedRetailer
+ * @package   Smile\StoreLocator
  * @author    Romain Ruaud <romain.ruaud@smile.fr>
  * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
  * @copyright 2016 Smile
@@ -19,7 +19,7 @@ use Magento\Framework\View\Element\Template;
  * Retailer View Block
  *
  * @category Smile
- * @package  Smile\LocalizedRetailer
+ * @package  Smile\StoreLocator
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
  * @author   Guillaume Vrac <guillaume.vrac@smile.fr>
  */
