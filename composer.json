@@ -7,8 +7,8 @@
         "php": "~5.5.0|~5.6.0|~7.0.0",
         "magento/framework": "*",
         "magento/module-store": "*",
-        "smile/module-map": "*",
-        "smile/module-retailer": "*",
+        "smile/module-map": "1.1.x-dev",
+        "smile/module-retailer": "1.2.x-dev",
         "willdurand/geocoder": "^3.3"
     },
     "license": "OSL-3.0",
