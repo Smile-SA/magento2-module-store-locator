@@ -186,6 +186,7 @@ class RetailerTimeSlot extends AbstractDb
     {
         $date = new Zend_Date($date, DateTime::DATETIME_INTERNAL_FORMAT);
         $date->setLocale($this->localeResolver->getLocale());
+
         return $date->toString(Zend_Date::TIME_SHORT);
     }
 }

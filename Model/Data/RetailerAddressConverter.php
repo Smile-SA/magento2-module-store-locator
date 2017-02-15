@@ -133,6 +133,7 @@ class RetailerAddressConverter
      * Extract values from a source object securely.
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
+     * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      *
      * @param mixed $source Source object.
      *

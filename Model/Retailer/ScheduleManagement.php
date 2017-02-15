@@ -27,6 +27,8 @@ class ScheduleManagement
     /**
      * Retrieve opening hours for a given date
      *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     *
      * @param RetailerInterface $retailer The retailer
      * @param null              $dateTime The date to retrieve opening hours for
      *

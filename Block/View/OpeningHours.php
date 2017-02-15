@@ -12,13 +12,12 @@
  */
 namespace Smile\StoreLocator\Block\View;
 
-use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Magento\Framework\Locale\ListsInterface;
 use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\View\Element\Template\Context;
 use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
-use Magento\Framework\Locale\ListsInterface;
 
 /**
  * Opening Hours display block
@@ -45,11 +44,6 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
     private $scheduleManager;
 
     /**
-     * @var \Magento\Framework\Json\Helper\Data
-     */
-    private $jsonHelper;
-
-    /**
      * @var \Magento\Framework\Locale\ListsInterface
      */
     private $localeList;
@@ -65,14 +59,19 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
     private $closingWarningThresold;
 
     /**
+     * @var \Zend_Locale_Format
+     */
+    private $localeFormat;
+
+    /**
      * OpeningHours constructor.
      *
      * @param \Magento\Framework\View\Element\Template\Context      $context                Application Context
      * @param \Magento\Framework\Registry                           $coreRegistry           Application Registry
      * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManager        Schedule Manager
-     * @param \Magento\Framework\Json\Helper\Data                   $jsonHelper             Json helper
      * @param \Magento\Framework\Locale\ListsInterface              $localeLists            Locale lists
      * @param \Magento\Framework\Locale\Resolver                    $localeResolver         Locale Resolver
+     * @param \Zend_Locale_Format                                   $localeFormat           Locale Format Resolver
      * @param int                                                   $closingWarningThresold Closing Warning thresold
      * @param array                                                 $data                   Data
      */
@@ -80,17 +79,17 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
         Context $context,
         Registry $coreRegistry,
         ScheduleManagement $scheduleManager,
-        JsonHelper $jsonHelper,
         ListsInterface $localeLists,
         Resolver $localeResolver,
+        \Zend_Locale_Format $localeFormat,
         $closingWarningThresold = self::DEFAULT_WARNING_THRESOLD,
         array $data = []
     ) {
         $this->scheduleManager = $scheduleManager;
-        $this->jsonHelper = $jsonHelper;
         $this->localeList = $localeLists;
         $this->localeResolver = $localeResolver;
         $this->closingWarningThresold = $closingWarningThresold;
+        $this->localeFormat = $localeFormat;
 
         parent::__construct($context, $coreRegistry, $data);
     }
@@ -109,13 +108,15 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
         $jsLayout['components']['smile-storelocator-opening-hours']['locale'] = $this->localeResolver->getLocale();
         $jsLayout['components']['smile-storelocator-opening-hours']['closingWarningThresold'] = $this->closingWarningThresold;
         $jsLayout['components']['smile-storelocator-opening-hours']['dateFormat'] = strtoupper(DateTime::DATE_INTERNAL_FORMAT);
-        $jsLayout['components']['smile-storelocator-opening-hours']['timeFormat'] = \Zend_Locale_Format::getTimeFormat($this->localeResolver->getLocale());
+        $jsLayout['components']['smile-storelocator-opening-hours']['timeFormat'] = $this->localeFormat->getTimeFormat($this->localeResolver->getLocale());
 
-        return $this->jsonHelper->jsonEncode($jsLayout);
+        return json_encode($jsLayout);
     }
 
     /**
      * Get shop calendar : opening hours for the next X days.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      *
      * @return array
      */
@@ -169,6 +170,8 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
 
     /**
      * Get max date to calculate calendar
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
      *
      * @return \DateTime
      */
