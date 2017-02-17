@@ -1,0 +1,13 @@
+<div class="box-title" data-bind="visible:hasSpecialOpeningHours()">
+    <p data-bind="i18n: 'Special Opening Hours'"></p>
+</div>
+<div class="opening-hours" data-bind="visible:hasSpecialOpeningHours()">
+    <table class="opening-hours-table">
+        <tbody data-bind="foreach: specialOpeningHoursList()">
+        <tr>
+            <td class="opening-row" data-bind="text:day"></td>
+            <td class="opening-row" data-bind="text:hours"></td>
+        </tr>
+        </tbody>
+    </table>
+</div>

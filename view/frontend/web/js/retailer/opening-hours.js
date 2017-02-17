@@ -305,6 +305,20 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
             }
 
             return result;
+        },
+
+        initDropdown : function (element, component) {
+            $('[data-role=openingHoursDropDown]').dropdownDialog({
+                'appendTo': '[data-block=opening-hours-info]',
+                'triggerTarget': '.showopeninghours',
+                'timeout': '2000',
+                'closeOnMouseLeave': false,
+                'closeOnClickOutside': false,
+                'closeOnEscape': false,
+                'triggerClass': 'active',
+                'parentClass': 'active',
+                'buttons': []
+            });
         }
     });
 });

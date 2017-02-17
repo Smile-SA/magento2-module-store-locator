@@ -42,7 +42,7 @@
                                 <item name="smile-storelocator-opening-hours" xsi:type="array">
                                     <item name="component" xsi:type="string">smile-storelocator-opening-hours</item>
                                     <item name="openingHoursTemplate" xsi:type="string">Smile_StoreLocator/retailer/opening-hours</item>
-                                    <item name="specialOpeningHoursTemplate" xsi:type="string">Smile_StoreLocator/retailer/opening-hours</item>
+                                    <item name="specialOpeningHoursTemplate" xsi:type="string">Smile_StoreLocator/retailer/special-opening-hours</item>
                                 </item>
                             </item>
                         </argument>
