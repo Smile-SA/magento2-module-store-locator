@@ -45,21 +45,28 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      */
     private $jsonHelper;
 
+    /**
+     * @var \Magento\Framework\Locale\Resolver
+     */
+    private $localeResolver;
 
     /**
      * @param \Magento\Backend\Block\Template\Context      $context        Application context
      * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory Element Factory
      * @param \Magento\Framework\Json\Helper\Data          $jsonHelper     JSON helper
+     * @param \Magento\Framework\Locale\Resolver           $localeResolver Locale Resolver
      * @param array                                        $data           Element Data
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Data\Form\Element\Factory $elementFactory,
         JsonHelper $jsonHelper,
+        \Magento\Framework\Locale\Resolver $localeResolver,
         array $data = []
     ) {
         $this->elementFactory = $elementFactory;
         $this->jsonHelper     = $jsonHelper;
+        $this->localeResolver = $localeResolver;
 
         parent::__construct($context, $data);
     }
@@ -266,6 +273,7 @@ JAVASCRIPT;
 
                 foreach ($timeSlots as $timeSlot) {
                     $timeDate   = new Zend_Date();
+                    $timeDate->setLocale($this->localeResolver->getLocale());
                     $startTime  = $timeDate->setTime($timeSlot->getStartTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
                     $endTime    = $timeDate->setTime($timeSlot->getEndTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
                     $timeRanges[] = [$startTime, $endTime];

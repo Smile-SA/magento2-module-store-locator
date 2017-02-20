@@ -57,21 +57,29 @@ class Renderer extends Template implements RendererInterface
     private $jsonHelper;
 
     /**
+     * @var \Magento\Framework\Locale\Resolver
+     */
+    private $localeResolver;
+
+    /**
      * Block constructor.
      *
      * @param \Magento\Backend\Block\Template\Context      $context        Templating context.
      * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory Form element factory.
      * @param \Magento\Framework\Json\Helper\Data          $jsonHelper     Helper for JSON
+     * @param \Magento\Framework\Locale\Resolver           $localeResolver Locale Resolver
      * @param array                                        $data           Additional data.
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Data\Form\Element\Factory $elementFactory,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
+        \Magento\Framework\Locale\Resolver $localeResolver,
         array $data = []
     ) {
         $this->elementFactory = $elementFactory;
         $this->jsonHelper     = $jsonHelper;
+        $this->localeResolver = $localeResolver;
 
         parent::__construct($context, $data);
     }
@@ -152,6 +160,7 @@ class Renderer extends Template implements RendererInterface
         if ($this->element->getValue()) {
             foreach ($this->element->getValue() as $timeSlot) {
                 $date      = new Zend_Date();
+                $date->setLocale($this->localeResolver->getLocale());
                 $startTime = $date->setTime($timeSlot->getStartTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
                 $endTime   = $date->setTime($timeSlot->getEndTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
                 $values[]  = [$startTime, $endTime];
