@@ -23,7 +23,7 @@
                     <argument name="jsLayout" xsi:type="array">
                         <item name="components" xsi:type="array">
                             <item name="store-locator-search" xsi:type="array">
-                                <item name="component" xsi:type="string">smile-map</item>
+                                <item name="component" xsi:type="string">smile-storelocator-map</item>
                                 <item name="template" xsi:type="string">Smile_StoreLocator/retailer/search</item>
                                 <item name="children" xsi:type="array">
                                     <item name="geocoder" xsi:type="array">

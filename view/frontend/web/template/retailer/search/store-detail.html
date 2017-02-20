@@ -1,8 +1,41 @@
-<h1 data-bind="text: selectedMarker().name"></h1>
+<div class="header">
+    <div class="store-name" style="max-width: 50%; float:left;"><h2 data-bind="text: name"></h2></div>
+    <div class="actions" style="display:flex; float:right;">
+
+    </div>
+</div>
+
+<div style="clear: both"></div>
 
 <div class="actions-toolbar">
-    <div data-bind="html: selectedMarker().address"></div>
-    <div class="primary">
-        <a data-bind="attr: {href: selectedMarker().url}" class="action primary"><span>Show store details</span></a>
+    <div class="address-info">
+        <div class="box-title">
+            <p data-bind="i18n: 'Store Address'"></p>
+        </div>
+        <div class="address">
+            <em data-bind="html: address"></em>
+        </div>
+    </div>
+    <div class="opening-hours-info">
+        <div data-bind="{template: { name: schedule().openingHoursTemplate, data: schedule() }}"></div>
+    </div>
+    <div class="opening-hours-info">
+        <div data-bind="{template: { name: schedule().specialOpeningHoursTemplate, data: schedule() }}"></div>
+    </div>
+    <div style="clear: both"></div>
+    <div class="actions">
+        <div class="primary">
+            <a href="#"
+               class="action primary action-set-store"
+               data-bind="attr:{ 'data-post': JSON.stringify(setStoreData), title: $t('Choose this store') }">
+                <span data-bind="i18n: 'Choose this store'"></span>
+            </a>
+        </div>
+        <div class="primary">
+            <a data-bind="attr: {href: url}" class="action primary secondary"><span data-bind="i18n: 'Details'"></span></a>
+        </div>
+        <div class="primary">
+            <a target="_blank" class="action primary secondary" data-bind="{i18n: 'Directions', attr: { href: directionUrl }}"></a>
+        </div>
     </div>
 </div> 

@@ -17,7 +17,7 @@
 //  Shop View
 //  _____________________________________________
 
-.smile-store-locator-store-view {
+.smile-store-locator-store-view, .smile-store-locator-store-search  {
 
     .set-store-button {
         float: right;
@@ -25,17 +25,14 @@
 
     .shop-details {
         width: 100%;
-        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-        border: 1px solid #CCC;
-        margin: 10px 0 26px;
 
         .map {
             width: 100%;
             height: 150px;
+            border-bottom: 1px solid #CCC;
         }
 
         .address-info {
-            border-top: 1px solid #CCC;
             display: flex;
             padding: 10px;
 
@@ -64,6 +61,8 @@
                     float:left;
                     margin-left:10px;
                     cursor: pointer;
+                    font-weight: bold;
+                    font-size: 13px;
 
                     :after {
                         content: @icon-down;
@@ -84,9 +83,72 @@
                     }
                 }
             }
+        }
+    }
 
-            :last-child {
+    .action.secondary {
+        background: #eeeeee;
+        border: 1px solid #cccccc;
+        color: #333333;
+        font-weight: 500;
+    }
+}
 
+.smile-store-locator-store-view {
+    .shop-details {
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        border: 1px solid #CCC;
+        margin: 10px 0 26px;
+    }
+}
+
+.smile-store-locator-store-search {
+    .shop-details {
+        padding: 10px;
+        width: auto;
+
+        h2 {
+            margin-top: 10px;
+            margin-left: 10px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .opening-hours-table {
+            td {
+                padding: 2px 2px;
+            }
+
+            td:first-child {
+                padding-right: 10px;
+            }
+        }
+
+        .actions-toolbar {
+            .actions {
+                margin: 5px;
+                border-top: 1px solid #cccccc;
+                padding-top: 10px;
+                display: flex;
+            }
+        }
+
+        .close {
+            .lib-button-icon(
+                @icon-remove,
+                @_icon-font-size: 32px,
+                @_icon-font-line-height: 32px,
+                @_icon-font-text-hide: true
+            );
+            .lib-button-reset();
+            height: 40px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 40px;
+            color: @color-gray56;
+            :hover {
+                color: #333333;
             }
         }
     }
@@ -118,7 +180,7 @@
 
     .contextual-bar {
         position: absolute;
-        width: 300px;
+        width: 420px;
         margin: 20px;
         padding: 0px 0px;
         background: #FFFFFF;
@@ -126,7 +188,7 @@
         box-shadow: 0 1px 10px;
         display: flex;
         flex-direction: column;
-        max-height: 540px;
+        /*max-height: 540px;*/
 
         .fulltext-search-wrapper {
             border-bottom: 1px solid #c2c2c2;

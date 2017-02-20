@@ -14,6 +14,7 @@ namespace Smile\StoreLocator\Block;
 
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
+use Smile\StoreLocator\Helper\Schedule;
 
 /**
  * Shop search block.
@@ -45,6 +46,16 @@ class Search extends \Magento\Framework\View\Element\Template
     private $addressFormatter;
 
     /**
+     * @var \Smile\StoreLocator\Helper\Schedule
+     */
+    private $scheduleHelper;
+
+    /**
+     * @var \Smile\StoreLocator\Model\Retailer\ScheduleManagement
+     */
+    private $scheduleManager;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Framework\View\Element\Template\Context               $context                   Block context.
@@ -52,6 +63,8 @@ class Search extends \Magento\Framework\View\Element\Template
      * @param \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory Retailer collection factory.
      * @param \Smile\StoreLocator\Helper\Data                                $storeLocatorHelper        Store locator helper.
      * @param \Smile\Map\Model\AddressFormatter                              $addressFormatter          Address formatter tool.
+     * @param \Smile\StoreLocator\Helper\Schedule                            $scheduleHelper            Schedule Helper
+     * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement          $scheduleManagement        Schedule Management
      * @param array                                                          $data                      Additional data.
      */
     public function __construct(
@@ -60,6 +73,8 @@ class Search extends \Magento\Framework\View\Element\Template
         \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory,
         \Smile\StoreLocator\Helper\Data $storeLocatorHelper,
         \Smile\Map\Model\AddressFormatter $addressFormatter,
+        \Smile\StoreLocator\Helper\Schedule $scheduleHelper,
+        \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement,
         $data = []
     ) {
         parent::__construct($context, $data);
@@ -67,6 +82,8 @@ class Search extends \Magento\Framework\View\Element\Template
         $this->retailerCollectionFactory = $retailerCollectionFactory;
         $this->storeLocatorHelper        = $storeLocatorHelper;
         $this->addressFormatter          = $addressFormatter;
+        $this->scheduleHelper            = $scheduleHelper;
+        $this->scheduleManager           = $scheduleManagement;
     }
 
     /**
@@ -105,13 +122,23 @@ class Search extends \Magento\Framework\View\Element\Template
             $address = $retailer->getAddress();
             $coords  = $address->getCoordinates();
             $markerData = [
-                'id'        => $retailer->getId(),
-                'latitude'  => $coords->getLatitude(),
-                'longitude' => $coords->getLongitude(),
-                'name'      => $retailer->getName(),
-                'address'   => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
-                'url'       => $this->storeLocatorHelper->getRetailerUrl($retailer),
+                'id'           => $retailer->getId(),
+                'latitude'     => $coords->getLatitude(),
+                'longitude'    => $coords->getLongitude(),
+                'name'         => $retailer->getName(),
+                'address'      => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
+                'url'          => $this->storeLocatorHelper->getRetailerUrl($retailer),
+                'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
+                'setStoreData' => $this->getSetStorePostData($retailer),
             ];
+            $markerData['schedule'] = array_merge(
+                $this->scheduleHelper->getConfig(),
+                [
+                    'calendar'               => $this->scheduleManager->getCalendar($retailer),
+                    'openingHours'           => $this->scheduleManager->getWeekOpeningHours($retailer),
+                    'specialOpeningHours'    => $retailer->getSpecialOpeningHours(),
+                ]
+            );
             $markers[] = $markerData;
         }
 
@@ -145,5 +172,20 @@ class Search extends \Magento\Framework\View\Element\Template
         $retailerCollection->addOrder('name', 'asc');
 
         return $retailerCollection;
+    }
+
+    /**
+     * Get the JSON post data used to build the set store link.
+     *
+     * @param \Smile\Retailer\Api\Data\RetailerInterface $retailer The store
+     *
+     * @return string
+     */
+    private function getSetStorePostData($retailer)
+    {
+        $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set');
+        $postData = ['id' => $retailer->getId()];
+
+        return ['action' => $setUrl, 'data' => $postData];
     }
 }

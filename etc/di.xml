@@ -66,7 +66,7 @@
     </type>
     
     <type name="Smile\Retailer\Model\ResourceModel\Retailer\Collection">
-        <plugin name="smile_store_locator_add_address" type="Smile\StoreLocator\Plugin\RetailerCollectionPlugin" />
+        <plugin name="smile_store_locator_add_extension_attributes" type="Smile\StoreLocator\Plugin\RetailerCollectionPlugin" />
     </type>
     
     <type name="Smile\Seller\Ui\Component\Seller\Form\DataProvider">

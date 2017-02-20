@@ -14,6 +14,8 @@ namespace Smile\StoreLocator\Plugin;
 
 use Smile\Retailer\Model\ResourceModel\Retailer\Collection as RetailerCollection;
 use Smile\StoreLocator\Model\Retailer\AddressReadHandler;
+use Smile\StoreLocator\Model\Retailer\OpeningHoursReadHandler;
+use Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursReadHandler;
 
 /**
  * Retailer collection plugin.
@@ -30,13 +32,30 @@ class RetailerCollectionPlugin
     private $addressReadHandler;
 
     /**
+     * @var \Smile\StoreLocator\Model\Retailer\OpeningHoursReadHandler
+     */
+    private $openingHoursReadHandler;
+
+    /**
+     * @var \Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursReadHandler
+     */
+    private $specialOpeningHoursReadHandler;
+
+    /**
      * Constructor.
      *
-     * @param AddressReadHandler $addressReadHandler Address read handler.
+     * @param AddressReadHandler             $addressReadHandler             Address read handler.
+     * @param OpeningHoursReadHandler        $openingHoursReadHandler        Opening Hours read handler.
+     * @param SpecialOpeningHoursReadHandler $specialOpeningHoursReadHandler Special Opening Hours read handler.
      */
-    public function __construct(AddressReadHandler $addressReadHandler)
-    {
+    public function __construct(
+        AddressReadHandler $addressReadHandler,
+        OpeningHoursReadHandler $openingHoursReadHandler,
+        SpecialOpeningHoursReadHandler $specialOpeningHoursReadHandler
+    ) {
         $this->addressReadHandler = $addressReadHandler;
+        $this->openingHoursReadHandler = $openingHoursReadHandler;
+        $this->specialOpeningHoursReadHandler = $specialOpeningHoursReadHandler;
     }
 
     /**
@@ -46,8 +65,8 @@ class RetailerCollectionPlugin
      *
      * @param RetailerCollection $collection Collection loaded.
      * @param \Closure           $proceed    Original method.
-     * @param string             $printQuery Print queries used to load the collection.
-     * @param string             $logQuery   Log queries used to load the collection.
+     * @param bool               $printQuery Print queries used to load the collection.
+     * @param bool               $logQuery   Log queries used to load the collection.
      *
      * @return \Smile\Retailer\Model\ResourceModel\Retailer\Collection
      */
@@ -59,6 +78,8 @@ class RetailerCollectionPlugin
 
             foreach ($collection->getItems() as $currentItem) {
                 $this->addressReadHandler->execute($currentItem);
+                $this->openingHoursReadHandler->execute($currentItem);
+                $this->specialOpeningHoursReadHandler->execute($currentItem);
             }
         }
 

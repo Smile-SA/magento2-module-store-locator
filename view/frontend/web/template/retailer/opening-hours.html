@@ -8,7 +8,7 @@
     <div class="block catalog-product-stores-availability-content" data-role="openingHoursDropDown">
         <div class="opening-hours">
             <table class="opening-hours-table">
-                <tbody data-bind="foreach: openingHoursList()">
+                <tbody data-bind="{foreach: openingHoursList}" data-role="opening-hours-table">
                 <tr data-bind="css: { currentDay: $parent.isCurrentDay(day) == true }">
                     <td class="opening-row" data-bind="text:day"></td>
                     <td class="opening-row" data-bind="text:hours"></td>

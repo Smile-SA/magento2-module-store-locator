@@ -14,12 +14,12 @@
  * Retailer opening hours frontend view block
  */
 ?>
-<div class="opening-hours-info" data-bind="scope: 'smile-storelocator-opening-hours'">
-    <!-- ko template: openingHoursTemplate --><!-- /ko -->
+<div class="opening-hours-info" data-bind="scope: 'smile-storelocator-store'">
+    <div data-bind="{template: { name: schedule().openingHoursTemplate, data: schedule() }}"></div>
 </div>
 
-<div class="opening-hours-info" data-bind="scope: 'smile-storelocator-opening-hours'">
-    <!-- ko template: specialOpeningHoursTemplate --> <!-- /ko -->
+<div class="opening-hours-info" data-bind="scope: 'smile-storelocator-store'">
+    <div data-bind="{template: { name: schedule().specialOpeningHoursTemplate, data: schedule() }}"></div>
 </div>
 
 <script type="text/x-magento-init">
