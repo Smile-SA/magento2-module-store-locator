@@ -180,7 +180,7 @@
 
     .contextual-bar {
         position: absolute;
-        width: 420px;
+
         margin: 20px;
         padding: 0px 0px;
         background: #FFFFFF;
@@ -188,69 +188,71 @@
         box-shadow: 0 1px 10px;
         display: flex;
         flex-direction: column;
-        /*max-height: 540px;*/
 
-        .fulltext-search-wrapper {
-            border-bottom: 1px solid #c2c2c2;
-            padding: 10px;
+        .shop-search {
+            width: 300px;
+            .fulltext-search-wrapper {
+                border-bottom: 1px solid #c2c2c2;
+                padding: 10px;
 
-            .form {
-                display: flex;
-                padding: 10px 0 5px;
+                .form {
+                    display: flex;
+                    padding: 10px 0 5px;
 
-                .field {
-                    flex: 1;
-                }
+                    .field {
+                        flex: 1;
+                    }
 
-                .actions-toolbar {
+                    .actions-toolbar {
 
-                    .primary .action {
-                        margin: 0;
-                        border-top-left-radius: 0px;
-                        border-bottom-left-radius: 0px;
-                        span {
-                            line-height: 1.3em;
+                        .primary .action {
+                            margin: 0;
+                            border-top-left-radius: 0px;
+                            border-bottom-left-radius: 0px;
+                            span {
+                                line-height: 1.3em;
+                            }
                         }
                     }
                 }
             }
-        }
 
-        .search-result-list {
-            flex: 1;
-            overflow: scroll;
+            .search-result-list {
+                flex: 1;
+                overflow: scroll;
+                max-height: 420px;
 
-            .search-result-header {
-                background-color: #8f8f8f;
-                padding: 10px;
-                display: flex;
-                p {
-                    margin: 0;
-                    color: #FFF;
-                    flex: 1;
-                }
-                a {
-                    color: #FFF;
-                    text-decoration: underline;
-                    font-size: 80%;
-                    cursor: pointer;
-                }
-            }
-
-            ul {
-                list-style-type: none;
-                margin: 10px 0 0;
-                padding: 0;
-
-                li.result-item {
-                    margin: 0;
-                    padding: 5px;
-
-
+                .search-result-header {
+                    background-color: #8f8f8f;
+                    padding: 10px;
+                    display: flex;
+                    p {
+                        margin: 0;
+                        color: #FFF;
+                        flex: 1;
+                    }
+                    a {
+                        color: #FFF;
+                        text-decoration: underline;
+                        font-size: 80%;
+                        cursor: pointer;
+                    }
                 }
 
-                li.result-item:nth-child(even) {
-                    background: #F0F0F0;
+                ul {
+                    list-style-type: none;
+                    margin: 10px 0 0;
+                    padding: 0;
+
+                    li.result-item {
+                        margin: 0;
+                        padding: 5px;
+
+                    }
+
+                    li.result-item:nth-child(even) {
+                        background: #F0F0F0;
+                    }
                 }
             }
         }
@@ -284,7 +286,7 @@
 
     .top-storelocator-chooser-content {
 
-        width: 320px;
+        width: 480px;
         right: -22px;
         z-index: 10000;
 
@@ -312,6 +314,25 @@
         .current-store {
             border-bottom: 1px solid @color-gray80;
         }
+
+        .store-search-form {
+            display: flex;
+            margin-left: auto;
+            align-items: center;
+        }
+
+        .store-search {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .filler {
+            margin-left: auto;
+            font-weight: bold;
+        }
     }
 
     .action.showpicker .text {
@@ -328,6 +349,17 @@
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
     #top-storelocator-chooser {
         margin-top: @indent__s;
+        .top-storelocator-chooser-content {
+            width: 280px;
+            .filler {
+                display:none;
+            }
+
+            .store-search-form {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
     }
 }
 

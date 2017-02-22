@@ -106,6 +106,15 @@ class Search extends \Magento\Framework\View\Element\Template
             $this->map->getConfig()
         );
 
+        if ($this->getRequest()->getParam('geoSearch', false)) {
+            $jsLayout['components']['store-locator-search']['geolocalize'] = true;
+        }
+
+        if ($this->getRequest()->getParam('query', false)) {
+            $query = $this->getRequest()->getParam('query', false);
+            $jsLayout['components']['store-locator-search']['children']['geocoder']['fulltextSearch'] = $this->escapeJsQuote($query);
+        }
+
         return json_encode($jsLayout);
     }
 
