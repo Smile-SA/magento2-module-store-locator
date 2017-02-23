@@ -104,8 +104,18 @@
 
 .smile-store-locator-store-search {
     .shop-details {
-        padding: 10px;
+
         width: auto;
+        max-width: 480px;
+
+        .shop-details-wrapper {
+            padding: 10px;
+            .actions {
+                .right {
+                    margin-left: auto;
+                }
+            }
+        }
 
         h2 {
             margin-top: 10px;
@@ -216,43 +226,51 @@
                     }
                 }
             }
+        }
 
-            .search-result-list {
-                flex: 1;
-                overflow: scroll;
+        .search-result-list {
+            flex: 1;
+
+            .search-result-header {
+                background-color: #8f8f8f;
+                padding: 10px;
+                display: flex;
+                p {
+                    margin: 0;
+                    color: #FFF;
+                    flex: 1;
+                }
+                a {
+                    color: #FFF;
+                    text-decoration: underline;
+                    font-size: 80%;
+                    cursor: pointer;
+                }
+            }
+
+            ul {
+                overflow-y: scroll;
                 max-height: 420px;
+                list-style-type: none;
+                padding: 0;
+                margin: 0;
 
-                .search-result-header {
-                    background-color: #8f8f8f;
-                    padding: 10px;
-                    display: flex;
-                    p {
-                        margin: 0;
-                        color: #FFF;
-                        flex: 1;
-                    }
-                    a {
-                        color: #FFF;
-                        text-decoration: underline;
-                        font-size: 80%;
-                        cursor: pointer;
-                    }
+                li.result-item {
+                    margin: 0;
+                    padding: 5px;
+
                 }
 
+                li.result-item:nth-child(even) {
+                    background: #F0F0F0;
+                }
+            }
+        }
+
+        .shop-details {
+            .search-result-list {
                 ul {
-                    list-style-type: none;
-                    margin: 10px 0 0;
-                    padding: 0;
-
-                    li.result-item {
-                        margin: 0;
-                        padding: 5px;
-
-                    }
-
-                    li.result-item:nth-child(even) {
-                        background: #F0F0F0;
-                    }
+                    max-height: 180px;
                 }
             }
         }

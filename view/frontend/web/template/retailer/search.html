@@ -39,7 +39,17 @@
             <span data-bind="i18n: 'Close'"></span>
         </button>
         <!-- ko if: $parent.selectedMarker.bind($parent) -->
-            <div data-bind="{template: { name: storeDetailTemplate, data: $parent.selectedMarker() }}"></div>
+            <div class="shop-details-wrapper" data-bind="{template: { name: storeDetailTemplate, data: $parent.selectedMarker() }}"></div>
+        <!-- /ko -->
+        <!-- ko if: $parent.nearbyMarkers -->
+        <div class="search-result-list" data-bind="{ visible: $parent.nearbyMarkers().length > 0}">
+            <div class="search-result-header">
+                <p data-bind="text: $t(nearbySearchLabel).replace('%s', $parent.countNearbyMarkers.bind($parent))"></p>
+            </div>
+            <ul data-bind="foreach: $parent.nearbyMarkers">
+                <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
+            </ul>
+        </div>
         <!-- /ko -->
     </div>
 </div>
