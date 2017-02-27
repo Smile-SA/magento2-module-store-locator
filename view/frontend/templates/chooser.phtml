@@ -51,27 +51,21 @@
                 </div>
             </div>
             <form action="<?php echo $block->getStoreLocatorHomeUrl() ?>" data-bind="submit: onSubmit">
-                <div class="store-search" style="display: flex">
-                    <div class="actions">
+                <div class="store-search">
+                    <div class="geolocalize-container">
                         <div class="primary">
                             <a href="<?php echo $block->getStoreLocatorHomeUrl() . '?geoSearch=1'; ?>" class="action primary" title="<?php echo $block->escapeHtml(__('Geolocalize me')); ?>">
                                 <?php echo __('Geolocalize me'); ?>
                             </a>
                         </div>
                     </div>
-                    <div class="filler">
-                        <span><?php echo __('or'); ?></span>
-                    </div>
-
-                    <div style="display:flex" class="store-search-form">
+                    <div class="store-search-form">
                         <div class="field">
                             <input data-bind="{ value: fulltextSearch }" type="text" name="query" placeholder="<?php echo $block->escapeHtml(__('City, Zipcode, Department, ...'));?>"/>
                         </div>
                         <div class="actions">
                             <div class="primary">
-                                <div class="primary">
-                                    <button type="submit" class="action primary"><span data-bind="text: '<?php echo __('Search'); ?>'"></span></button>
-                                </div>
+                                <button type="submit" class="action primary"><span data-bind="text: '<?php echo __('Search'); ?>'"></span></button>
                             </div>
                         </div>
                     </div>

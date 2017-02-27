@@ -273,6 +273,17 @@
                     max-height: 180px;
                 }
             }
+
+            .header {
+                .store-name {
+                    max-width: 85%;
+                    float: left;
+                }
+
+                .actions {
+                    float: right;
+                }
+            }
         }
     }
 }
@@ -304,7 +315,7 @@
 
     .top-storelocator-chooser-content {
 
-        width: 480px;
+        width: 320px;
         right: -22px;
         z-index: 10000;
 
@@ -333,23 +344,37 @@
             border-bottom: 1px solid @color-gray80;
         }
 
-        .store-search-form {
-            display: flex;
-            margin-left: auto;
-            align-items: center;
-        }
-
         .store-search {
             display: flex;
             align-items: center;
             flex-direction: row;
             flex-wrap: wrap;
             justify-content: center;
-        }
 
-        .filler {
-            margin-left: auto;
-            font-weight: bold;
+            div.geolocalize-container {
+                flex: 0 0 100%;
+                a {
+                    width: 100%;
+                    text-align: center;
+                }
+            }
+
+            .store-search-form {
+                display: flex;
+                margin-left: auto;
+                align-items: center;
+                flex: 0 0 100%;
+                margin-top: 5px;
+                .field {
+                    flex: 2;
+                }
+                .actions {
+                    flex:1;
+                    button {
+                        width: 100%;
+                    }
+                }
+            }
         }
     }
 
@@ -377,6 +402,74 @@
                 margin-left: 0;
                 margin-top: 15px;
             }
+        }
+    }
+
+    .smile-store-locator-store-view {
+        .set-store-button {
+            float: none;
+            a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+    }
+
+    #store-locator-search-wrapper {
+        height: auto;
+        .contextual-bar {
+            position: relative;
+            margin: 0;
+            box-shadow: none;
+            border: 1px solid #F0F0F0;
+            .search-result-list {
+                .search-result-header{
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                }
+                ul {
+                    max-height: 160px;
+                    li {
+                        p {
+                            margin-bottom: 0.5rem;
+                        }
+                    }
+                }
+            }
+
+            .shop-search {
+                width: auto;
+            }
+
+            .shop-details {
+                .actions-toolbar {
+                    .actions {
+                        margin:0px;
+                        flex-flow: row wrap;
+                        div.primary {
+                            width: 100%;
+                            text-align: center;
+                            margin: 2px;
+                            a {
+                                width: 100%;
+                            }
+                        }
+                        .action {
+                            padding: 5px 10px;
+                        }
+
+                        .right {
+                            flex: 0 0 100%;
+                            display: flex;
+                        }
+                    }
+                }
+            }
+        }
+
+        .map {
+            height: 300px;
+            margin-top: 5px;
         }
     }
 }
