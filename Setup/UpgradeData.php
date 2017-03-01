@@ -6,27 +6,25 @@
  *
  * @category  Smile
  * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
+ * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @copyright 2017 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
 namespace Smile\StoreLocator\Setup;
 
-use Magento\Eav\Setup\EavSetup;
-use Magento\Eav\Setup\EavSetupFactory;
-use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Smile\StoreLocator\Setup\StoreLocatorSetupFactory;
+use Magento\Framework\Setup\UpgradeDataInterface;
+use Magento\Eav\Setup\EavSetupFactory;
 
 /**
- * Store locator data setup.
+ * Data Upgrade for Store Locator
  *
  * @category Smile
  * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @author   Romain Ruaud <romain.ruaud@smile.fr>
  */
-class InstallData implements InstallDataInterface
+class UpgradeData implements UpgradeDataInterface
 {
     /**
      * @var EavSetupFactory
@@ -53,12 +51,13 @@ class InstallData implements InstallDataInterface
     /**
      * {@inheritdoc}
      */
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
 
-        $this->storeLocatorSetup->addUrlKeyAttribute($eavSetup);
-        $this->storeLocatorSetup->addContactInformation($eavSetup);
+        if (version_compare($context->getVersion(), '1.2.0', '<')) {
+            $this->storeLocatorSetup->addContactInformation($eavSetup);
+        }
     }
 }

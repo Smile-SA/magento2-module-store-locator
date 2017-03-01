@@ -1,15 +1,34 @@
 "Opening Hours","Opening Hours"
 "Special Opening Hours","Special Opening Hours"
 "Add Special Opening Hours","Add Special Opening Hours"
+"Contact %1","Contact %1"
 Home,Home
 "Go to Home Page","Go to Home Page"
 "Our stores","Our stores"
+Contact,Contact
+"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","Thanks for contacting us with your comments and questions. We'll respond to you very soon."
+"We can't process your request right now. Sorry, that's all we know.","We can't process your request right now. Sorry, that's all we know."
 "We are sorry, an error occured when switching retailer.","We are sorry, an error occured when switching retailer."
 "Retailer url_key ""%1"" already exists.","Retailer url_key ""%1"" already exists."
+"Name cannot be empty","Name cannot be empty"
+"Contact form cannot be empty","Contact form cannot be empty"
+"Contact mail cannot be empty","Contact mail cannot be empty"
+"Unable to validate form","Unable to validate form"
+"Unable to retrieve retailer informations","Unable to retrieve retailer informations"
 "Geolocalize me","Geolocalize me"
-or,or
 "City, Zipcode, Department, ...","City, Zipcode, Department, ..."
 Search,Search
+"* Required Fields","* Required Fields"
+"Write Us","Write Us"
+Name,Name
+Email,Email
+"Phone Number","Phone Number"
+"What’s on your mind?","What’s on your mind?"
+Submit,Submit
+Telephone,Telephone
+Fax,Fax
+Mail,Mail
+"Contact Us","Contact Us"
 "Store Address","Store Address"
 Directions,Directions
 "Choose this store","Choose this store"

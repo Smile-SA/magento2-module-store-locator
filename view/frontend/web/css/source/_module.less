@@ -100,6 +100,36 @@
         border: 1px solid #CCC;
         margin: 10px 0 26px;
     }
+
+    .shop-informations {
+        display: flex;
+        flex-direction: column;
+        flex-flow: row wrap;
+
+        .store-view-map {
+            flex: 0 0 100%;
+        }
+
+        .opening-hours-container {
+            flex: 1 1 auto;
+            float:none;
+        }
+
+        .contact-info {
+            flex: 1 1 auto;
+            .contact-info-wrapper {
+                padding: 10px;
+                h3 {
+                    margin-top: 0;
+                }
+                box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+                border: 1px solid #CCC;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                max-height: 200px;
+            }
+        }
+    }
 }
 
 .smile-store-locator-store-search {
@@ -411,6 +441,17 @@
             a {
                 width: 100%;
                 text-align: center;
+            }
+        }
+
+        .shop-informations {
+            .contact-info {
+                .contact-info-wrapper {
+                    box-shadow: none;
+                    border: none;
+                    margin-right: 0;
+                    margin-bottom: 10px;
+                }
             }
         }
     }

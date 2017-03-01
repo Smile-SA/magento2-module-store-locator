@@ -50,6 +50,7 @@
                         </argument>
                     </arguments>
                 </block>
+                <block class="Smile\StoreLocator\Block\View\ContactInformation" name="smile_store_locator_retailer_view.contact_information" template="view/contact-information.phtml"/>
             </block>
         </referenceContainer>
     </body>
