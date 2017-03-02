@@ -38,11 +38,6 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
     private $scheduleManager;
 
     /**
-     * @var integer
-     */
-    private $closingWarningThresold;
-
-    /**
      * OpeningHours constructor.
      *
      * @param \Magento\Framework\View\Element\Template\Context      $context         Application Context
