@@ -140,7 +140,6 @@ class ContactPost extends Action
             $this->_redirect($this->contactHelper->getContactFormUrl($retailer));
 
             return;
-
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage(
                 __('We can\'t process your request right now. Sorry, that\'s all we know.')
