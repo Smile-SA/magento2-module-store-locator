@@ -7,5 +7,5 @@
 </div>
 <div class="details" style="display: flex">
     <p class="address" style="flex:1"><em data-bind="html: address"></em></p>
-    <p><a data-bind="attr: {href: url}">Details</a></p>
+    <p><a href="#" onClick="return false;" data-bind="{click: $parents[1].selectMarker.bind($parents[1]), i18n: 'Details'}"></a></p>
 </div>

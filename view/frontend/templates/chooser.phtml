@@ -50,15 +50,27 @@
                     </div>
                 </div>
             </div>
-            <div class="store-search"">
-                <div class="actions">
-                    <div class="primary">
-                        <a href="<?php echo $block->getStoreLocatorHomeUrl(); ?>" class="action primary" title="<?php echo $block->escapeHtml(__('Find a store')); ?>">
-                            <?php echo __('Find a store'); ?>
-                        </a>
+            <form action="<?php echo $block->getStoreLocatorHomeUrl() ?>" data-bind="submit: onSubmit">
+                <div class="store-search">
+                    <div class="geolocalize-container">
+                        <div class="primary">
+                            <a href="<?php echo $block->getStoreLocatorHomeUrl() . '?geoSearch=1'; ?>" class="action primary" title="<?php echo $block->escapeHtml(__('Geolocalize me')); ?>">
+                                <?php echo __('Geolocalize me'); ?>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="store-search-form">
+                        <div class="field">
+                            <input data-bind="{ value: fulltextSearch }" type="text" name="query" placeholder="<?php echo $block->escapeHtml(__('City, Zipcode, Department, ...'));?>"/>
+                        </div>
+                        <div class="actions">
+                            <div class="primary">
+                                <button type="submit" class="action primary"><span data-bind="text: '<?php echo __('Search'); ?>'"></span></button>
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 </div>

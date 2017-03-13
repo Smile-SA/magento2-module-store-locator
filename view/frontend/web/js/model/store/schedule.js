@@ -15,14 +15,22 @@
 /*jshint browser:true jquery:true*/
 /*global alert*/
 
-define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Component, moment) {
+define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate'], function ($, Component, moment, ko) {
 
     "use strict";
 
     return Component.extend({
 
         defaults: {
-            dateOptions : {weekday: "long", year: "numeric", month: "long", day: "numeric"}
+            dateOptions : {weekday: "long", year: "numeric", month: "long", day: "numeric"},
+            openingHoursTemplate : 'Smile_StoreLocator/retailer/opening-hours',
+            specialOpeningHoursTemplate : 'Smile_StoreLocator/retailer/special-opening-hours'
+        },
+
+        initialize: function() {
+            this._super();
+            this.initOpeningHoursList();
+            this.initSpecialOpeningHoursList();
         },
 
         /**
@@ -181,11 +189,10 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
         },
 
         /**
-         * Retrieve Opening Hours list in an iterable form
+         * Init Opening Hours list in an iterable form
          */
-        openingHoursList : function() {
+        initOpeningHoursList : function() {
             var list = [];
-
             for (var day in this.openingHours) if (this.openingHours.hasOwnProperty(day)) {
                 if (Array.isArray(this.openingHours[day])) {
                     var object = {
@@ -197,15 +204,14 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
                 }
             }
 
-            return list;
+            this.openingHoursList = ko.observableArray(list);
         },
 
         /**
          * Retrieve Special Opening Hours list in an iterable form
          */
-        specialOpeningHoursList : function() {
+        initSpecialOpeningHoursList : function() {
             var list = [];
-
             for (var day in this.specialOpeningHours) if (this.specialOpeningHours.hasOwnProperty(day)) {
                 if (Array.isArray(this.specialOpeningHours[day])) {
                     var object = {
@@ -220,7 +226,7 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
                 }
             }
 
-            return list;
+            this.specialOpeningHoursList = ko.observableArray(list);
         },
 
         /**
@@ -305,6 +311,20 @@ define(['jquery', 'uiComponent', 'moment', 'mage/translate'], function ($, Compo
             }
 
             return result;
+        },
+
+        initDropdown : function (element, component) {
+            $('[data-role=openingHoursDropDown]').dropdownDialog({
+                'appendTo': '[data-block=opening-hours-info]',
+                'triggerTarget': '.showopeninghours',
+                'timeout': '2000',
+                'closeOnMouseLeave': false,
+                'closeOnClickOutside': false,
+                'closeOnEscape': false,
+                'triggerClass': 'active',
+                'parentClass': 'active',
+                'buttons': []
+            });
         }
     });
 });

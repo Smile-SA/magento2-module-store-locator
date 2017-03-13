@@ -6,17 +6,22 @@ Home,Home
 "Our stores","Nos magasins"
 "We are sorry, an error occured when switching retailer.","Nous sommes désolés, une erreur s'est produite durant le choix du magasin."
 "Retailer url_key ""%1"" already exists.","La clef d'url ""%1"" existe déjà."
-"Find a store","Trouver un magasin"
-"Store Addrress","Adresse du magasin"
+"Geolocalize me","Déterminer ma position"
+or,ou
+"City, Zipcode, Department, ...","City, Zipcode, Department, ..."
+Search,Search
+"Store Address","Adresse du magasin"
 Directions,Itinéraire
 "Choose this store","Choisir ce magasin"
-"Find a store ...","Trouver un magasin ..."
-"My store : %s","Mon magasin : %s"
+Close,Fermer
+Details,Détails
 "Open Today","Ouvert aujourd'hui"
 "Open Today (%1)","Ouvert aujourd'hui (%1)"
 "Closing soon (%1)","Fermeture imminente (%1)"
 "Closed (%1)","Fermé (%1)"
 Closed,Fermé
+"Find a store ...","Trouver un magasin ..."
+"My store : %s","Mon magasin : %s"
 Address,Adresse
 Street,Rue
 Postcode,"Code postal"
@@ -25,7 +30,5 @@ Country,Pays
 Latitude,Latitude
 Longitude,Longitude
 "Find a store :","Trouver un magasin :"
-"City, Zipcode, Department, ...","Ville, Code postal, Département, ..."
-Search,Rechercher
-Close,Fermer
 "%s result(s)","%s résultat(s)"
+"%s shop(s) nearby","%s magasin(s) à proximité"

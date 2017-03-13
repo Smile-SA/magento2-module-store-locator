@@ -1,31 +1,56 @@
 <div class="contextual-bar" style="display: none" data-bind="visible: true">
-    <div class="fulltext-search-wrapper" data-bind="scope: requestChild('geocoder')">
-        <div class="geocoder-wrapper" data-bind=" afterRender: initGeocoder">
-            <div class="block-title">
-                <strong role="heading" aria-level="1" data-bind="text: searchTitleText"></strong>
-            </div>
 
-            <form class="form" data-bind="submit: onSearch">
-                <div class="field">
-                    <input type="text" name="text" data-bind="value: fulltextSearch, attr: {placeholder: searchPlaceholderText}" />
+    <div class="shop-search">
+        <div class="fulltext-search-wrapper" data-bind="{ scope: requestChild('geocoder'), visible: selectedMarker() === null }">
+            <div class="geocoder-wrapper" data-bind=" afterRender: initGeocoder">
+                <div class="block-title">
+                    <strong role="heading" aria-level="1" data-bind="text: searchTitleText"></strong>
                 </div>
-                <div class="actions-toolbar">
-                    <div class="primary">
-                        <button type="submit" class="action primary"><span data-bind="text: searchButtonText"></span></button>
+
+                <form class="form" data-bind="submit: onSearch">
+                    <div class="field">
+                        <input type="text" name="text" data-bind="value: fulltextSearch, attr: {placeholder: searchPlaceholderText}" />
                     </div>
-                </div>
-            </form>
+                    <div class="actions-toolbar">
+                        <div class="primary">
+                            <button type="submit" class="action primary"><span data-bind="text: searchButtonText"></span></button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="search-result-list" data-bind="{scope: requestChild('store-list'), visible: selectedMarker() === null }">
+            <div class="search-result-header">
+                <p data-bind="text: $t(searchResultsLabel).replace('%s', $parent.countDisplayedMarkers.bind($parent))"></p>
+                <span data-bind="if: $parent.displayReset()"><a data-bind="click: $parent.resetMap.bind($parent)">View all</a></span>
+            </div>
+            <ul data-bind="foreach: $parent.displayedMarkers">
+                <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
+            </ul>
         </div>
     </div>
 
-    <div class="search-result-list" data-bind="scope: requestChild('store-list')">
-        <div class="search-result-header">
-            <p data-bind="text: $t(searchResultsLabel).replace('%s', $parent.countDisplayedMarkers.bind($parent))"></p>
-            <span data-bind="if: $parent.displayReset()"><a data-bind="click: $parent.resetMap.bind($parent)">View all</a></span>
+    <div class="shop-details" data-bind="{scope: requestChild('store-list'), visible: selectedMarker() !== null }">
+        <button type="button"
+                class="action close"
+                data-action="close"
+                data-bind="{ click : $parent.resetBounds.bind($parent), attr: { title: $t('Close') }}">
+            <span data-bind="i18n: 'Close'"></span>
+        </button>
+        <!-- ko if: $parent.selectedMarker.bind($parent) -->
+            <div class="shop-details-wrapper" data-bind="{template: { name: storeDetailTemplate, data: $parent.selectedMarker() }}"></div>
+        <!-- /ko -->
+        <!-- ko if: $parent.nearbyMarkers -->
+        <div class="search-result-list" data-bind="{ visible: $parent.nearbyMarkers().length > 0}">
+            <div class="search-result-header">
+                <p data-bind="text: $t(nearbySearchLabel).replace('%s', $parent.countNearbyMarkers.bind($parent))"></p>
+            </div>
+            <ul data-bind="foreach: $parent.nearbyMarkers">
+                <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
+            </ul>
         </div>
-        <ul data-bind="foreach: $parent.displayedMarkers">
-            <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
-        </ul>
+        <!-- /ko -->
     </div>
 </div>
 

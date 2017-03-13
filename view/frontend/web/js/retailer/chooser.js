@@ -23,6 +23,14 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'mage/tran
 
     return Component.extend({
 
+        /**
+         * Component Constructor
+         */
+        initialize: function () {
+            this._super();
+            this.observe(['fulltextSearch']);
+        },
+
         hasStore : function () {
            return retailer().entity_id != null;
         },
@@ -43,6 +51,22 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'mage/tran
 
         getStoreAddress: function () {
            return retailer().address;
+        },
+
+        geolocalize: function(element) {
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(this.setPosition);
+            } else {
+                element.innerHTML = "Geolocation is not supported by this browser.";
+            }
+        },
+
+        onSubmit: function() {
+            if (!this.fulltextSearch() || this.fulltextSearch().trim().length === 0) {
+                return false;
+            }
+
+            return true;
         }
     });
 });

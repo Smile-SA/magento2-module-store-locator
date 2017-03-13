@@ -14,6 +14,8 @@ namespace Smile\StoreLocator\Model\Retailer;
 
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
+use Magento\Framework\Locale\ListsInterface;
+use Magento\Framework\Locale\Resolver;
 
 /**
  * Schedule Management class for Retailers
@@ -24,6 +26,26 @@ use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
  */
 class ScheduleManagement
 {
+    /**
+     * Display calendar up to X days.
+     */
+    const CALENDAR_MAX_DATE = 6;
+
+    /**
+     * @var \Magento\Framework\Locale\ListsInterface
+     */
+    private $localeList;
+
+    /**
+     * ScheduleManagement constructor.
+     *
+     * @param \Magento\Framework\Locale\ListsInterface $localeList Locale Lists
+     */
+    public function __construct(ListsInterface $localeList)
+    {
+        $this->localeList = $localeList;
+    }
+
     /**
      * Retrieve opening hours for a given date
      *
@@ -60,5 +82,80 @@ class ScheduleManagement
         }
 
         return $dayOpening;
+    }
+
+
+    /**
+     * Get shop calendar : opening hours for the next X days.
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     *
+     * @param RetailerInterface $retailer The retailer
+     *
+     * @return array
+     */
+    public function getCalendar($retailer)
+    {
+        $calendar = [];
+        $date = $this->getMinDate();
+        $calendar[$date->format('Y-m-d')] = $this->getOpeningHours($retailer, $date);
+
+        while ($date < $this->getMaxDate()) {
+            $date->add(\DateInterval::createFromDateString('+1 day'));
+            $calendar[$date->format('Y-m-d')] = $this->getOpeningHours($retailer, $date);
+        }
+
+        return $calendar;
+    }
+
+    /**
+     * Retrieve opening hours
+     *
+     * @param RetailerInterface $retailer The retailer
+     *
+     * @return array
+     */
+    public function getWeekOpeningHours($retailer)
+    {
+        $openingHours = [];
+
+        $days = $this->localeList->getOptionWeekdays(true, true);
+
+        foreach (array_keys($days) as $day) {
+            $openingHours[$day] = [];
+        }
+
+        foreach ($retailer->getOpeningHours() as $day => $hours) {
+            $openingHours[$day] = $hours;
+        }
+
+        return $openingHours;
+    }
+
+    /**
+     * Get min date to calculate calendar
+     *
+     * @return \DateTime
+     */
+    private function getMinDate()
+    {
+        $date = new \DateTime();
+
+        return $date;
+    }
+
+    /**
+     * Get max date to calculate calendar
+     *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     *
+     * @return \DateTime
+     */
+    private function getMaxDate()
+    {
+        $date = $this->getMinDate();
+        $date->add(\DateInterval::createFromDateString(sprintf('+%s day', self::CALENDAR_MAX_DATE)));
+
+        return $date;
     }
 }
