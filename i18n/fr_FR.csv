@@ -1,15 +1,34 @@
 "Opening Hours","Horaires d'ouverture"
 "Special Opening Hours","Horaires exceptionnels"
 "Add Special Opening Hours","Ajouter une heure d'ouverture exceptionnelle"
-Home,Home
+"Contact %1","Contacter %1"
+Home,Accueil
 "Go to Home Page","Aller à la page d'accueil"
 "Our stores","Nos magasins"
+Contact,Contact
+"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","Merci de nous avoir soumis votre question. Nous vous répondrons très bientôt."
+"We can't process your request right now. Sorry, that's all we know.","Nous sommes désolés, une erreur s'est produite durant l'envoi du formulaire."
 "We are sorry, an error occured when switching retailer.","Nous sommes désolés, une erreur s'est produite durant le choix du magasin."
 "Retailer url_key ""%1"" already exists.","La clef d'url ""%1"" existe déjà."
+"Name cannot be empty","Le nom ne peut pas être vide"
+"Contact form cannot be empty","Le formulaire de contact ne peut pas être laissé vide"
+"Contact mail cannot be empty","L'adresse email ne peut pas être vide"
+"Unable to validate form","Impossible de valider le formulaire"
+"Unable to retrieve retailer informations","Impossible de récupérer les informations du magasin"
 "Geolocalize me","Déterminer ma position"
-or,ou
-"City, Zipcode, Department, ...","City, Zipcode, Department, ..."
+"City, Zipcode, Department, ...","Ville, Code postal, Département ..."
 Search,Search
+"* Required Fields","* Champs obligatoires"
+"Write Us","Nous écrire"
+Name,Name
+Email,Email
+"Phone Number","Numéro de téléphone"
+"What’s on your mind?","Que souhaitez-vous nous dire ?"
+Submit,Envoyer
+Telephone,Téléphone
+Fax,Fax
+Mail,Mail
+"Contact Us","Contactez Nous"
 "Store Address","Adresse du magasin"
 Directions,Itinéraire
 "Choose this store","Choisir ce magasin"

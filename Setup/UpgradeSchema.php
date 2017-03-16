@@ -12,7 +12,6 @@
  */
 namespace Smile\StoreLocator\Setup;
 
-use Magento\Framework\DB\Ddl\Table;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
@@ -27,6 +26,21 @@ use Magento\Framework\Setup\UpgradeSchemaInterface;
 class UpgradeSchema implements UpgradeSchemaInterface
 {
     /**
+     * @var \Smile\StoreLocator\Setup\StoreLocatorSetup
+     */
+    private $storeLocatorSetup;
+
+    /**
+     * InstallSchema constructor.
+     *
+     * @param \Smile\StoreLocator\Setup\StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
+     */
+    public function __construct(StoreLocatorSetupFactory $storeLocatorSetupFactory)
+    {
+        $this->storeLocatorSetup = $storeLocatorSetupFactory->create();
+    }
+
+    /**
      * Installs DB schema for a module
      *
      * @SuppressWarnings(PHPMD.UnusedFormalParameter)
@@ -39,64 +53,11 @@ class UpgradeSchema implements UpgradeSchemaInterface
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
     {
         $setup->startSetup();
+
         if (version_compare($context->getVersion(), '1.1.0', '<')) {
-            $this->createOpeningHoursTable($setup);
+            $this->storeLocatorSetup->createOpeningHoursTable($setup);
         }
+
         $setup->endSetup();
-    }
-    /**
-     * Create Opening Hours main table
-     *
-     * @param \Magento\Framework\Setup\SchemaSetupInterface $setup Setup instance
-     */
-    private function createOpeningHoursTable(SchemaSetupInterface $setup)
-    {
-        $table = $setup->getConnection()
-            ->newTable($setup->getTable("smile_retailer_time_slots"))
-            ->addColumn(
-                "retailer_id",
-                Table::TYPE_INTEGER,
-                null,
-                ['unsigned' => true, 'nullable' => false],
-                'Retailer Id'
-            )->addColumn(
-                "attribute_code",
-                Table::TYPE_TEXT,
-                25,
-                ['nullable' => false],
-                'Retailer Id'
-            )->addColumn(
-                "day_of_week",
-                Table::TYPE_SMALLINT,
-                null,
-                ['unsigned' => true, 'nullable' => true, 'default' => null],
-                'Day Of Week'
-            )->addColumn(
-                "date",
-                Table::TYPE_DATE,
-                null,
-                ['nullable' => true, 'default' => null],
-                'Opening Date, if any'
-            )->addColumn(
-                "start_time",
-                Table::TYPE_DATETIME, // Hack : Magento does not support TIME column on its DDL. This column will contain full datetime but work only with hours.
-                null,
-                ['nullable' => true, 'default' => null],
-                'Start Time'
-            )->addColumn(
-                "end_time",
-                Table::TYPE_DATETIME, // Hack : Magento does not support TIME column on its DDL. This column will contain full datetime but work only with hours.
-                null,
-                ['nullable' => true, 'default' => null],
-                'End Time'
-            )->addForeignKey(
-                $setup->getFkName('smile_retailer_time_slots', 'retailer_id', 'smile_seller_entity', 'entity_id'),
-                'retailer_id',
-                $setup->getTable('smile_seller_entity'),
-                'entity_id',
-                \Magento\Framework\DB\Ddl\Table::ACTION_CASCADE
-            )
-            ->setComment('Smile Retailer Opening Hours Table');
-        $setup->getConnection()->createTable($table);
     }
 }
