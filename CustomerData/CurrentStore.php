@@ -69,7 +69,7 @@ class CurrentStore implements SectionSourceInterface
      */
     public function getSectionData()
     {
-        $data     = null;
+        $data     = [];
         $retailer = $this->getRetailer();
 
         if ($retailer) {
