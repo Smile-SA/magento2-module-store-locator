@@ -28,6 +28,7 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'mage/tran
          */
         initialize: function () {
             this._super();
+            this.fulltextSearch = '';
             this.observe(['fulltextSearch']);
         },
 
