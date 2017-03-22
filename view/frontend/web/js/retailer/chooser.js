@@ -30,16 +30,6 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistr
             this._super();
             this.fulltextSearch = '';
             this.observe(['fulltextSearch']);
-            this.initGeocoderBinding();
-        },
-
-        /**
-         * Init the geocoding component binding
-         */
-        initGeocoderBinding: function() {
-            registry.get(this.name + '.geocoder', function (geocoder) {
-                this.geocoder = geocoder;
-            }.bind(this));
         },
 
         hasStore : function () {
@@ -65,7 +55,10 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistr
         },
 
         geolocalize: function(element) {
-            this.geocoder.geolocalize(this.geolocationSuccess.bind(this))
+            registry.get(this.name + '.geocoder', function (geocoder) {
+                this.geocoder = geocoder;
+                this.geocoder.geolocalize(this.geolocationSuccess.bind(this))
+            }.bind(this));
         },
 
         onSubmit: function() {
@@ -74,7 +67,7 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistr
 
         geolocationSuccess: function(position) {
             if (position.coords && position.coords.latitude && position.coords.longitude) {
-                window.location.href = this.storeLocatorHomeUrl + "?lat=" + position.coords.latitude + "&long=" + position.coords.longitude;
+                window.location.href = this.storeLocatorHomeUrl + "#" + position.coords.latitude + "," + position.coords.longitude;
             }
         }
     });
