@@ -15,7 +15,7 @@
 /*jshint browser:true jquery:true*/
 /*global alert*/
 
-define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'mage/translate'], function ($, Component, storage) {
+define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistry', 'mage/translate'], function ($, Component, storage, registry) {
 
     "use strict";
      
@@ -30,6 +30,16 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'mage/tran
             this._super();
             this.fulltextSearch = '';
             this.observe(['fulltextSearch']);
+            this.initGeocoderBinding();
+        },
+
+        /**
+         * Init the geocoding component binding
+         */
+        initGeocoderBinding: function() {
+            registry.get(this.name + '.geocoder', function (geocoder) {
+                this.geocoder = geocoder;
+            }.bind(this));
         },
 
         hasStore : function () {
@@ -55,19 +65,17 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'mage/tran
         },
 
         geolocalize: function(element) {
-            if (navigator.geolocation) {
-                navigator.geolocation.getCurrentPosition(this.setPosition);
-            } else {
-                element.innerHTML = "Geolocation is not supported by this browser.";
-            }
+            this.geocoder.geolocalize(this.geolocationSuccess.bind(this))
         },
 
         onSubmit: function() {
-            if (!this.fulltextSearch() || this.fulltextSearch().trim().length === 0) {
-                return false;
-            }
+            return !(!this.fulltextSearch() || this.fulltextSearch().trim().length === 0);
+        },
 
-            return true;
+        geolocationSuccess: function(position) {
+            if (position.coords && position.coords.latitude && position.coords.longitude) {
+                window.location.href = this.storeLocatorHomeUrl + "?lat=" + position.coords.latitude + "&long=" + position.coords.longitude;
+            }
         }
     });
 });

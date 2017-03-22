@@ -52,9 +52,9 @@
             </div>
             <form action="<?php echo $block->getStoreLocatorHomeUrl() ?>" data-bind="submit: onSubmit">
                 <div class="store-search">
-                    <div class="geolocalize-container">
-                        <div class="primary">
-                            <a href="<?php echo $block->getStoreLocatorHomeUrl() . '?geoSearch=1'; ?>" class="action primary" title="<?php echo $block->escapeHtml(__('Geolocalize me')); ?>">
+                    <div class="geolocalize-container" data-bind="scope: requestChild('geocoder')">
+                        <div class="primary" data-bind="afterRender: initGeocoder">
+                            <a data-bind="click:$parent.geolocalize.bind($parent)" class="action primary" title="<?php echo $block->escapeHtml(__('Geolocalize me')); ?>">
                                 <?php echo __('Geolocalize me'); ?>
                             </a>
                         </div>
