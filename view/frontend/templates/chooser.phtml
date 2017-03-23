@@ -54,8 +54,8 @@
                 <div class="store-search">
                     <div class="geolocalize-container" data-bind="scope: requestChild('geocoder')">
                         <div class="primary" data-bind="afterRender: initGeocoder">
-                            <a data-bind="click:$parent.geolocalize.bind($parent)" class="action primary" title="<?php echo $block->escapeHtml(__('Geolocalize me')); ?>">
-                                <?php echo __('Geolocalize me'); ?>
+                            <a data-bind="click:$parent.geolocalize.bind($parent)" class="action primary geolocalize" title="<?php echo $block->escapeHtml(__('Geolocalize me')); ?>">
+                                <span><?php echo __('Geolocalize me'); ?></span>
                             </a>
                         </div>
                     </div>
