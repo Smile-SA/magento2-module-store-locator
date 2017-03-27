@@ -145,7 +145,7 @@ class StoreLocatorSetup
             ]
         );
 
-        $eavSetup->addAttributeToGroup($entityId, $attrSetId, $groupId, 'url_key', 3);
+        $eavSetup->addAttributeToGroup($entityId, $attrSetId, $groupId, 'url_key', 35);
     }
 
     /**
