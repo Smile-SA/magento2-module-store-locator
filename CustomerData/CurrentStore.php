@@ -13,11 +13,12 @@
 namespace Smile\StoreLocator\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
-use Smile\Map\Model\AddressFormatter;
 use Magento\Framework\Exception\NoSuchEntityException;
+use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
 
 /**
+ * Current Store data.
  *
  * @category Smile
  * @package  Smile\StoreLocator
@@ -25,6 +26,11 @@ use Smile\Retailer\Api\Data\RetailerInterface;
  */
 class CurrentStore implements SectionSourceInterface
 {
+    /**
+     * Will be added as a Vary to HTTP Context
+     */
+    const CONTEXT_RETAILER = 'smile_retailer_id';
+
     /**
      * @var \Magento\Customer\Model\Session
      */
@@ -46,22 +52,31 @@ class CurrentStore implements SectionSourceInterface
     private $addressFormatter;
 
     /**
+     * @var \Magento\Framework\App\Http\Context
+     */
+    private $httpContext;
+
+    /**
+     * CurrentStore constructor
      *
      * @param \Magento\Customer\Model\Session                 $customerSession    Customer session.
      * @param \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository Retailer repository.
      * @param \Smile\Map\Model\AddressFormatter               $addressFormatter   Address formatter.
      * @param \Smile\StoreLocator\Model\Url                   $urlModel           URL model.
+     * @param \Magento\Framework\App\Http\Context             $context            The HTTP Context
      */
     public function __construct(
         \Magento\Customer\Model\Session $customerSession,
         \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository,
         \Smile\Map\Model\AddressFormatter $addressFormatter,
-        \Smile\StoreLocator\Model\Url $urlModel
+        \Smile\StoreLocator\Model\Url $urlModel,
+        \Magento\Framework\App\Http\Context $context
     ) {
         $this->customerSession    = $customerSession;
         $this->retailerRepository = $retailerRepository;
         $this->urlModel           = $urlModel;
         $this->addressFormatter   = $addressFormatter;
+        $this->httpContext        = $context;
     }
 
     /**
@@ -93,6 +108,10 @@ class CurrentStore implements SectionSourceInterface
 
         $retailerId = $this->customerSession->getRetailerId();
 
+        if (!$retailerId) {
+            $retailerId = $this->httpContext->getValue(self::CONTEXT_RETAILER);
+        }
+
         if ($retailerId) {
             try {
                 $retailer = $this->retailerRepository->get($retailerId);
@@ -114,6 +133,7 @@ class CurrentStore implements SectionSourceInterface
     public function setRetailer($retailer)
     {
         $this->customerSession->setRetailerId($retailer->getId());
+        $this->httpContext->setValue(self::CONTEXT_RETAILER, $retailer->getId(), false);
 
         return $this;
     }
