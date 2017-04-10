@@ -126,6 +126,7 @@ class Search extends \Magento\Framework\View\Element\Template
         foreach ($this->getRetailerCollection() as $retailer) {
             $address = $retailer->getAddress();
             $coords  = $address->getCoordinates();
+
             $markerData = [
                 'id'           => $retailer->getId(),
                 'latitude'     => $coords->getLatitude(),
@@ -136,6 +137,11 @@ class Search extends \Magento\Framework\View\Element\Template
                 'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
                 'setStoreData' => $this->getSetStorePostData($retailer),
             ];
+
+            $markerData['contact_mail']  = $retailer->getCustomAttribute('contact_mail') ? $retailer->getCustomAttribute('contact_mail')->getValue() : '';
+            $markerData['contact_phone'] = $retailer->getCustomAttribute('contact_phone') ? $retailer->getCustomAttribute('contact_phone')->getValue() : '';
+            $markerData['contact_fax']   = $retailer->getCustomAttribute('contact_fax') ? $retailer->getCustomAttribute('contact_fax')->getValue() : '';
+
             $markerData['schedule'] = array_merge(
                 $this->scheduleHelper->getConfig(),
                 [
@@ -144,6 +150,7 @@ class Search extends \Magento\Framework\View\Element\Template
                     'specialOpeningHours'    => $retailer->getSpecialOpeningHours(),
                 ]
             );
+
             $markers[] = $markerData;
         }
 
