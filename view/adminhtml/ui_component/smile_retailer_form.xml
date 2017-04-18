@@ -23,7 +23,7 @@
             <item name="config" xsi:type="array">
                 <item name="sortOrder" xsi:type="number">120</item>
                 <item name="label" xsi:type="string" translate="true">Address</item>
-                <item name="collapsible" xsi:type="boolean">false</item>
+                <item name="collapsible" xsi:type="boolean">true</item>
             </item>
         </argument>
         <field name="street">
