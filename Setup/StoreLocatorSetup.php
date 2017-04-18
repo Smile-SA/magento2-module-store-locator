@@ -211,7 +211,7 @@ class StoreLocatorSetup
                 'type'         => 'int',
                 'label'        => 'Show contact form',
                 'input'        => 'boolean',
-                'required'     => false,
+                'required'     => true,
                 'user_defined' => true,
                 'sort_order'   => 40,
                 'global'       => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
@@ -223,5 +223,15 @@ class StoreLocatorSetup
         $eavSetup->addAttributeToGroup($entityId, $attrSetId, $groupId, 'contact_fax', 20);
         $eavSetup->addAttributeToGroup($entityId, $attrSetId, $groupId, 'contact_mail', 30);
         $eavSetup->addAttributeToGroup($entityId, $attrSetId, $groupId, 'show_contact_form', 40);
+    }
+
+    /**
+     * Update show_contact_form to Required.
+     *
+     * @param \Magento\Eav\Setup\EavSetup $eavSetup EAV module Setup
+     */
+    public function setContactFormRequired($eavSetup)
+    {
+        $eavSetup->updateAttribute(SellerInterface::ENTITY, 'show_contact_form', 'is_required', 1);
     }
 }
