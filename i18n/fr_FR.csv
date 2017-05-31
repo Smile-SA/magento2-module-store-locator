@@ -15,7 +15,7 @@ Contact,Contact
 "Contact mail cannot be empty","L'adresse email ne peut pas être vide"
 "Unable to validate form","Impossible de valider le formulaire"
 "Unable to retrieve retailer informations","Impossible de récupérer les informations du magasin"
-"Geolocalize me","Déterminer ma position"
+"Geolocalize me","Me géolocaliser"
 "City, Zipcode, Department, ...","Ville, Code postal, Département ..."
 Search,Search
 "* Required Fields","* Champs obligatoires"
