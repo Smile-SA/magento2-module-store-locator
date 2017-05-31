@@ -47,6 +47,9 @@
                 <div class="store-info">
                     <p data-bind="html: getStoreAddress()" class="store-address"></p>
                     <div class="actions">
+                        <div class="primary">
+                            <a data-bind="attr: {href: getStoreUrl()}" class="action primary secondary"><span data-bind="i18n: '<?php echo __('View Shop Page'); ?>'"></span></a>
+                        </div>
                     </div>
                 </div>
             </div>

@@ -21,6 +21,7 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistr
      
     var retailer = storage.get('current-store');
 
+    console.log(retailer);
     return Component.extend({
 
         /**
@@ -44,6 +45,10 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistr
             }
 
             return label;
+        },
+
+        getStoreUrl : function() {
+            return retailer().url;
         },
 
         getStoreName : function () {
