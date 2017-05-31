@@ -170,6 +170,8 @@ class Search extends \Magento\Framework\View\Element\Template
             $breadcrumbsBlock->addCrumb('home', ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $siteHomeUrl]);
             $breadcrumbsBlock->addCrumb('search', ['label' => __('Our stores'), 'title' => __('Our stores')]);
         }
+
+        $this->pageConfig->getTitle()->set(__('Shop Search'));
     }
 
     /**
