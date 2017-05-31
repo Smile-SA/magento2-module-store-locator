@@ -21,7 +21,6 @@ define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistr
      
     var retailer = storage.get('current-store');
 
-    console.log(retailer);
     return Component.extend({
 
         /**
