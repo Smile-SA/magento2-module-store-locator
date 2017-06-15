@@ -143,6 +143,7 @@
                 <item name="label" xsi:type="string" translate="true">Opening Hours</item>
                 <item name="collapsible" xsi:type="boolean">true</item>
                 <item name="opened" xsi:type="boolean">true</item>
+                <item name="additionalClasses" xsi:type="string">opening-hours-fieldset-wrapper</item>
             </item>
         </argument>
         <container name="opening_hours_config_container">
