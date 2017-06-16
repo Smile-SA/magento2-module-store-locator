@@ -19,8 +19,18 @@
     <update handle="smile_map_styles"/>
     
     <body>
+        <attribute name="itemtype" value="http://schema.org/Store" />
+        <attribute name="itemscope" value="itemscope"/>
         <referenceBlock name="page.main.title">
             <block class="Smile\StoreLocator\Block\View\SetStoreLink" name="smile_store_locator_retailer_view.setstorelink" template="view/setStoreLink.phtml"/>
+            <arguments>
+                <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
+            </arguments>
+        </referenceBlock>
+        <referenceBlock name="root">
+            <arguments>
+                <argument name="add_attribute" xsi:type="string">itemscope itemtype="http://schema.org/Store"</argument>
+            </arguments>
         </referenceBlock>
         <referenceContainer name="content">
             <block class="Smile\StoreLocator\Block\View" name="smile_store_locator_retailer_view" template="view.phtml">

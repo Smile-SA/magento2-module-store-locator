@@ -32,6 +32,16 @@ $retailer = $block->getRetailer();
         <div class="actions">
             <p class="directions"><a target="_blank" href="<?php echo $this->getDirectionUrl(); ?>"><?php echo __('Directions'); ?></a></p>
         </div>
+        <div itemscope itemprop="address" itemtype="http://schema.org/PostalAddress">
+            <meta itemprop="streetAddress" content="<?php echo $block->escapeHtml(implode(' ', $block->getAddress()->getStreet()));?>"/>
+            <meta itemprop="postalCode" content="<?php echo $block->escapeHtml($block->getAddress()->getPostcode());?>"/>
+            <meta itemprop="addressLocality" content="<?php echo $block->escapeHtml($block->getAddress()->getCity());?>"/>
+            <meta itemprop="addressCountry" content="<?php echo $block->escapeHtml($block->getAddress()->getCountryId());?>"/>
+        </div>
+        <div itemscope itemprop="geo" itemtype="http://schema.org/GeoCoordinates">
+            <meta itemprop="latitude" content="<?php echo $block->escapeHtml($block->getAddress()->getCoordinates()->getLatitude());?>"/>
+            <meta itemprop="longitude" content="<?php echo $block->escapeHtml($block->getAddress()->getCoordinates()->getLongitude());?>"/>
+        </div>
     </div>
 </div>
 

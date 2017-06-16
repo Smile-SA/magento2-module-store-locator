@@ -23,17 +23,17 @@
                 <tbody>
                 <?php if ($block->getRetailer()->getContactPhone()) :?>
                     <tr>
-                        <td><span itemprop="telephone"><?php echo __('Telephone');?> : <?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactPhone());?></span></td>
+                        <td><span><?php echo __('Telephone');?> : </span><span itemprop="telephone"><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactPhone());?></span></td>
                     </tr>
                 <?php endif;?>
                 <?php if ($block->getRetailer()->getContactFax()) :?>
                     <tr>
-                        <td><span><?php echo __('Fax');?> : <?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactFax());?></span></td>
+                        <td><span><?php echo __('Fax');?> : </span><span itemprop="faxNumber"><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactFax());?></span></td>
                     </tr>
                 <?php endif;?>
                 <?php if ($block->getRetailer()->getContactMail()) :?>
                     <tr>
-                        <td><span><?php echo __('Mail');?> : <a href="mailto:<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?>"><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?></a></span></td>
+                        <td><meta itemprop="email" content="<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?>"/><span><?php echo __('Mail');?> : <a href="mailto:<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?>"><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?></a></span></td>
                     </tr>
                 <?php endif;?>
                 </tbody>

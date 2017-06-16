@@ -22,6 +22,10 @@
     <div class="opening-hours-info" data-bind="scope: 'smile-storelocator-store'">
         <div data-bind="{template: { name: schedule().specialOpeningHoursTemplate, data: schedule() }}"></div>
     </div>
+
+    <?php if ($block->getWeekOpeningHours()) : ?>
+        <meta itemprop="openingHours" content="<?php echo $block->escapeHtml($block->getOpeningHoursMicroFormat());?>"/>
+    <?php endif;?>
 </div>
 <script type="text/x-magento-init">
     {"*" : {"Magento_Ui/js/core/app": <?php echo $block->getJsLayout(); ?> }}
