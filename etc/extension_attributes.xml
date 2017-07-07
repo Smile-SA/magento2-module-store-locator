@@ -17,8 +17,22 @@
  -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
     <extension_attributes for="Smile\Retailer\Api\Data\RetailerInterface">
-        <attribute code="address" type="Smile\Map\Api\Data\GeolocalizedAddressInterface" />
-        <attribute code="opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]" />
+        <attribute code="address" type="Smile\StoreLocator\Api\Data\RetailerAddressInterface">
+            <join reference_table="smile_retailer_address"
+                  reference_field="retailer_id"
+                  join_on_field="entity_id"
+            >
+                <field>street</field>
+                <field>postcode</field>
+                <field>city</field>
+                <field>region</field>
+                <field>region_id</field>
+                <field>country_id</field>
+                <field>latitude</field>
+                <field>longitude</field>
+            </join>
+        </attribute>
+        <attribute code="opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]"/>
         <attribute code="special_opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]" />
     </extension_attributes>
 </config>

@@ -129,6 +129,39 @@ class RetailerTimeSlot extends AbstractDb
     }
 
     /**
+     * Retrieve all time slots of a given retailer list
+     *
+     * @param integer[] $retailerIds   The retailer ids
+     * @param null      $attributeCode The time slot type to retrieve
+     *
+     * @return array
+     * @throws \Magento\Framework\Exception\LocalizedException
+     */
+    public function getMultipleTimeSlots($retailerIds, $attributeCode)
+    {
+        $retailerIds = array_map('intval', $retailerIds);
+
+        $select = $this->getConnection()->select();
+        $select->from($this->getMainTable())
+               ->where("retailer_id IN (?)", $retailerIds)
+               ->where("attribute_code = ?", $attributeCode);
+
+        $rows = $this->getConnection()->fetchAll($select);
+
+        $timeSlotData = array_fill_keys($retailerIds, []);
+        foreach ($rows as &$row) {
+            foreach (['start_time', 'end_time'] as $timeField) {
+                if (isset($row[$timeField]) && ($row[$timeField] !== null)) {
+                    $row[$timeField] = $this->dateToHour($row[$timeField]);
+                }
+            }
+            $timeSlotData[$row['retailer_id']][] = $row;
+        }
+
+        return $timeSlotData;
+    }
+
+    /**
      * Delete Time Slots for a given retailer Id
      *
      * @param integer $retailerId    The retailer id

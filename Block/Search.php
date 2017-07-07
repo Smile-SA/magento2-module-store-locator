@@ -14,6 +14,7 @@ namespace Smile\StoreLocator\Block;
 
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
+use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\StoreLocator\Helper\Schedule;
 
 /**
@@ -117,42 +118,46 @@ class Search extends \Magento\Framework\View\Element\Template
     /**
      * List of markers displayed on the map.
      *
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     *
      * @return array
      */
     public function getMarkers()
     {
         $markers = [];
 
+        \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
+        /** @var RetailerInterface $retailer */
         foreach ($this->getRetailerCollection() as $retailer) {
-            $address = $retailer->getAddress();
-            $coords  = $address->getCoordinates();
-
+            $address    = $retailer->getExtensionAttributes()->getAddress();
+            \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_DATA');
             $markerData = [
                 'id'           => $retailer->getId(),
-                'latitude'     => $coords->getLatitude(),
-                'longitude'    => $coords->getLongitude(),
+                'latitude'     => $address->getCoordinates()->getLatitude(),
+                'longitude'    => $address->getCoordinates()->getLongitude(),
                 'name'         => $retailer->getName(),
                 'address'      => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
                 'url'          => $this->storeLocatorHelper->getRetailerUrl($retailer),
                 'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
                 'setStoreData' => $this->getSetStorePostData($retailer),
             ];
-
-            $markerData['contact_mail']  = $retailer->getCustomAttribute('contact_mail') ? $retailer->getCustomAttribute('contact_mail')->getValue() : '';
-            $markerData['contact_phone'] = $retailer->getCustomAttribute('contact_phone') ? $retailer->getCustomAttribute('contact_phone')->getValue() : '';
-            $markerData['contact_fax']   = $retailer->getCustomAttribute('contact_fax') ? $retailer->getCustomAttribute('contact_fax')->getValue() : '';
-
+            \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_DATA');
+            foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
+                $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ? $retailer->getData($contactAttribute) : '';
+            }
+            \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_SCHEDULE');
             $markerData['schedule'] = array_merge(
                 $this->scheduleHelper->getConfig(),
                 [
-                    'calendar'               => $this->scheduleManager->getCalendar($retailer),
-                    'openingHours'           => $this->scheduleManager->getWeekOpeningHours($retailer),
-                    'specialOpeningHours'    => $retailer->getSpecialOpeningHours(),
+                    'calendar'            => $this->scheduleManager->getCalendar($retailer),
+                    'openingHours'        => $this->scheduleManager->getWeekOpeningHours($retailer),
+                    'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
                 ]
             );
-
+            \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
             $markers[] = $markerData;
         }
+        \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES');
 
         return $markers;
     }

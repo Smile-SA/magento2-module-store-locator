@@ -70,8 +70,8 @@ class ScheduleManagement
         $dayOfWeek = $dateTime->format('w');
         $date      = $dateTime->format('Y-m-d');
 
-        $openingHours = $retailer->getOpeningHours();
-        $specialOpeningHours = $retailer->getSpecialOpeningHours();
+        $openingHours = $retailer->getExtensionAttributes()->getOpeningHours();
+        $specialOpeningHours = $retailer->getExtensionAttributes()->getSpecialOpeningHours();
 
         if (isset($openingHours[$dayOfWeek])) {
             $dayOpening = $openingHours[$dayOfWeek];
@@ -125,7 +125,7 @@ class ScheduleManagement
             $openingHours[$day] = [];
         }
 
-        foreach ($retailer->getOpeningHours() as $day => $hours) {
+        foreach ($retailer->getExtensionAttributes()->getOpeningHours() as $day => $hours) {
             $openingHours[$day] = $hours;
         }
 
