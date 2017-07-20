@@ -36,8 +36,8 @@ class RetailerEditFormPlugin
         $data     = $proceed();
         $retailer = $this->getRetailer($dataProvider);
 
-        if ($retailer !== null && $retailer->getAddress()) {
-            $address = $retailer->getAddress();
+        if ($retailer !== null && $retailer->getExtensionAttributes()->getAddress()) {
+            $address = $retailer->getExtensionAttributes()->getAddress();
             $data[$retailer->getId()]['address'] = $address->getData();
 
             if ($address->getCoordinates()) {
