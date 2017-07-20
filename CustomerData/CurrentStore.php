@@ -90,8 +90,12 @@ class CurrentStore implements SectionSourceInterface
         if ($retailer) {
             $data = $retailer->toArray(['entity_id', 'name']);
 
-            $data['url']     = $this->urlModel->getUrl($retailer);
-            $data['address'] = $this->addressFormatter->formatAddress($retailer->getAddress(), AddressFormatter::FORMAT_HTML);
+            $data['url']          = $this->urlModel->getUrl($retailer);
+            $data['address']      = $this->addressFormatter->formatAddress(
+                $retailer->getAddress(),
+                AddressFormatter::FORMAT_HTML
+            );
+            $data['address_data'] = $retailer->getAddress()->toArray();
         }
 
         return $data;
