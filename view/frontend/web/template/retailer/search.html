@@ -1,6 +1,6 @@
 <div class="contextual-bar" style="display: none" data-bind="visible: true">
 
-    <div class="shop-search">
+    <div class="shop-search" data-bind="{visible: selectedMarker() === null}">
         <div class="fulltext-search-wrapper" data-bind="{ scope: requestChild('geocoder'), visible: selectedMarker() === null }">
             <div class="geocoder-wrapper" data-bind=" afterRender: initGeocoder">
                 <div class="block-title">
