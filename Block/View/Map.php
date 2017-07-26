@@ -12,11 +12,10 @@
  */
 namespace Smile\StoreLocator\Block\View;
 
-use Magento\Framework\View\Element\Template\Context;
-use Smile\StoreLocator\Block\Retailer\AbstractView;
-use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
+use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
+use Smile\StoreLocator\Block\AbstractView;
 
 /**
  * Map rendering block.
@@ -25,7 +24,7 @@ use Smile\Map\Model\AddressFormatter;
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class Map extends \Smile\StoreLocator\Block\AbstractView
+class Map extends AbstractView
 {
     /**
      * @var MapInterface
@@ -36,6 +35,7 @@ class Map extends \Smile\StoreLocator\Block\AbstractView
      * @var \Smile\StoreLocator\Helper\Data
      */
     private $storeLocatorHelper;
+
     /**
      * @var \Smile\Map\Model\AddressFormatter
      */
