@@ -471,6 +471,7 @@ a.geolocalize:before {
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
     #top-storelocator-chooser {
         margin-top: @indent__s;
+        margin-right: 5px;
         .top-storelocator-chooser-content {
             width: 280px;
             .filler {
@@ -480,6 +481,14 @@ a.geolocalize:before {
             .store-search-form {
                 margin-left: 0;
                 margin-top: 15px;
+            }
+        }
+    }
+
+    .block-search {
+        .minisearch {
+            label:before {
+                margin-right: 5px;
             }
         }
     }
