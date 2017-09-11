@@ -57,6 +57,11 @@ class Search extends \Magento\Framework\View\Element\Template
     private $scheduleManager;
 
     /**
+     * @var \Magento\Framework\App\CacheInterface
+     */
+    private $cacheInterface;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Framework\View\Element\Template\Context               $context                   Block context.
@@ -85,6 +90,13 @@ class Search extends \Magento\Framework\View\Element\Template
         $this->addressFormatter          = $addressFormatter;
         $this->scheduleHelper            = $scheduleHelper;
         $this->scheduleManager           = $scheduleManagement;
+        $this->cacheInterface            = $context->getCache();
+        $this->addData(
+            [
+                'cache_lifetime' => false,
+                'cache_tags'     => $this->getRetailerCollection()->getNewEmptyItem()->getCacheTags(),
+            ]
+        );
     }
 
     /**
@@ -124,42 +136,53 @@ class Search extends \Magento\Framework\View\Element\Template
      */
     public function getMarkers()
     {
-        $markers = [];
+        $collection = $this->getRetailerCollection();
+        $cacheKey = sprintf("%s_%s", 'smile_storelocator_search', $collection->getStoreId());
+        $markers  = $this->cacheInterface->load($cacheKey);
 
-        \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
-        /** @var RetailerInterface $retailer */
-        foreach ($this->getRetailerCollection() as $retailer) {
-            $address    = $retailer->getExtensionAttributes()->getAddress();
-            \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_DATA');
-            $markerData = [
-                'id'           => $retailer->getId(),
-                'latitude'     => $address->getCoordinates()->getLatitude(),
-                'longitude'    => $address->getCoordinates()->getLongitude(),
-                'name'         => $retailer->getName(),
-                'address'      => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
-                'url'          => $this->storeLocatorHelper->getRetailerUrl($retailer),
-                'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
-                'setStoreData' => $this->getSetStorePostData($retailer),
-            ];
-            \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_DATA');
-            foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
-                $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ? $retailer->getData($contactAttribute) : '';
+        if (!$markers) {
+            \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
+            /** @var RetailerInterface $retailer */
+            foreach ($collection as $retailer) {
+                $address = $retailer->getExtensionAttributes()->getAddress();
+                \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_DATA');
+                $markerData = [
+                    'id'           => $retailer->getId(),
+                    'latitude'     => $address->getCoordinates()->getLatitude(),
+                    'longitude'    => $address->getCoordinates()->getLongitude(),
+                    'name'         => $retailer->getName(),
+                    'address'      => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
+                    'url'          => $this->storeLocatorHelper->getRetailerUrl($retailer),
+                    'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
+                    'setStoreData' => $this->getSetStorePostData($retailer),
+                ];
+                \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_DATA');
+                foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
+                    $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ? $retailer->getData($contactAttribute) : '';
+                }
+                \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_SCHEDULE');
+                $markerData['schedule'] = array_merge(
+                    $this->scheduleHelper->getConfig(),
+                    [
+                        'calendar'            => $this->scheduleManager->getCalendar($retailer),
+                        'openingHours'        => $this->scheduleManager->getWeekOpeningHours($retailer),
+                        'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
+                    ]
+                );
+                \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
+                $markers[] = $markerData;
             }
-            \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_SCHEDULE');
-            $markerData['schedule'] = array_merge(
-                $this->scheduleHelper->getConfig(),
-                [
-                    'calendar'            => $this->scheduleManager->getCalendar($retailer),
-                    'openingHours'        => $this->scheduleManager->getWeekOpeningHours($retailer),
-                    'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
-                ]
-            );
-            \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
-            $markers[] = $markerData;
-        }
-        \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES');
+            \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES');
 
-        return $markers;
+            $markers = json_encode($markers);
+            $this->cacheInterface->save(
+                $markers,
+                $cacheKey,
+                $collection->getNewEmptyItem()->getCacheTags()
+            );
+        }
+
+        return json_decode($markers);
     }
 
     /**
@@ -188,6 +211,7 @@ class Search extends \Magento\Framework\View\Element\Template
     {
         $retailerCollection = $this->retailerCollectionFactory->create();
         $retailerCollection->addAttributeToSelect('*');
+        $retailerCollection->addFieldToFilter('is_active', (int) true);
         $retailerCollection->addOrder('name', 'asc');
 
         return $retailerCollection;
