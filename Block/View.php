@@ -52,9 +52,11 @@ class View extends AbstractView
     {
         parent::_prepareLayout();
 
-        $this->setPageTitle()
-            ->setPageMeta()
-            ->setBreadcrumbs();
+        if ($this->getRetailer()) {
+            $this->setPageTitle()
+                ->setPageMeta()
+                ->setBreadcrumbs();
+        }
 
         return $this;
     }
