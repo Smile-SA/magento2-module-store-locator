@@ -4,7 +4,7 @@
     "description": "Smile Store Locator",
     "keywords": ["magento2", "map", "geocoding", "geolocalisation", "retail"],
     "require": {
-        "php": "~5.5.0|~5.6.0|~7.0.0",
+        "php": "~5.5.0|~5.6.0|~7.0.0|~7.1.0",
         "magento/framework": "*",
         "magento/module-store": "*",
         "smile/module-map": "*",
