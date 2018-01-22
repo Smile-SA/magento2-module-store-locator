@@ -32,6 +32,12 @@ class Index extends Action
      */
     private $storeLocatorHelper;
 
+    /**
+     * Constructor.
+     *
+     * @param Context            $context            Controller context.
+     * @param StoreLocatorHelper $storeLocatorHelper Store locator helper.
+     */
     public function __construct(Context $context, StoreLocatorHelper $storeLocatorHelper)
     {
         parent::__construct($context);
@@ -44,7 +50,7 @@ class Index extends Action
     public function execute()
     {
         $resultRedirect = $this->resultRedirectFactory->create();
-        $redirectUrl    = $this->storeLocatorHelper->getBaseUrl();
+        $redirectUrl    = $this->storeLocatorHelper->getHomeUrl();
         $resultRedirect->setPath($redirectUrl);
 
         return $resultRedirect;

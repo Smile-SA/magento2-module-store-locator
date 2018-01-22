@@ -1,1 +1,11 @@
-<p><a data-bind="text: name, click: $parent.selectMarker.bind($parent)"></a></p>
+<div class="heading" style="display: flex">
+    <p class="name-label" style="flex: 1"><strong data-bind="text: name"></strong></p>
+    <!-- <div class="opening-status">
+        <p class="open" data-bind="visible: is_open == true">Open</p>
+        <p class="closed" data-bind="visible: is_open == false">Closed</p>
+    </div> -->
+</div>
+<div class="details" style="display: flex">
+    <p class="address" style="flex:1"><em data-bind="html: address"></em></p>
+    <p><a href="#" onClick="return false;" data-bind="{click: $parents[1].selectMarker.bind($parents[1]), i18n: 'Details'}"></a></p>
+</div>

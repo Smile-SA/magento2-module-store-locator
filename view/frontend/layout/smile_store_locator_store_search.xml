@@ -1,0 +1,53 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\StoreLocator
+ * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <body>
+        <referenceContainer name="content">
+            <block class="Smile\StoreLocator\Block\Search" name="smile_localized_retailer_search" template="search.phtml">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="store-locator-search" xsi:type="array">
+                                <item name="component" xsi:type="string">smile-storelocator-map</item>
+                                <item name="template" xsi:type="string">Smile_StoreLocator/retailer/search</item>
+                                <item name="children" xsi:type="array">
+                                    <item name="geocoder" xsi:type="array">
+                                        <item name="component" xsi:type="string">smile-geocoder</item>
+                                        <item name="searchTitleText" xsi:type="string" translate="true">Find a store :</item>
+                                        <item name="searchPlaceholderText" xsi:type="string" translate="true">City, Zipcode, Department, ...</item>
+                                        <item name="searchButtonText" xsi:type="string" translate="true">Search</item>
+                                    </item>
+                                    <item name="store-list" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="storeListTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/store-list</item>
+                                        <item name="storeDetailTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/store-detail</item>
+                                        <item name="searchResultsLabel" xsi:type="string" translate="true">%s result(s)</item>
+                                        <item name="nearbySearchLabel" xsi:type="string" translate="true">%s shop(s) nearby</item>
+                                        <item name="viewAllLabel" xsi:type="string" translate="true">View all</item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+
+</page>
+

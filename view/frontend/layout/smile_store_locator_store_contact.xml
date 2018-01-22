@@ -1,0 +1,25 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\StoreLocator
+ * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+    <body>
+        <referenceContainer name="content">
+            <block class="Smile\StoreLocator\Block\ContactForm" name="smile_store_locator_contact_form" template="contact-form.phtml" cacheable="false">
+                <container name="form.additional.info" label="Form Additional Info"/>
+            </block>
+        </referenceContainer>
+    </body>
+</page>

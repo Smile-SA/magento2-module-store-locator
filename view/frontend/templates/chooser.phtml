@@ -1,0 +1,83 @@
+<?php
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\Retailer
+ * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ *
+ * Retailer picker for front office
+ */
+?>
+
+<?php
+/** @var \Smile\StoreLocator\Block\StoreChooser $block */
+?>
+
+<?php $dataScope = $block->getDataScope(); ?>
+
+<div id="top-storelocator-chooser" data-block="top-storelocator-chooser">
+    <div class="action showpicker" data-bind="scope: 'top-storelocator-chooser'">
+        <span class="text" data-bind="text: getLinkLabel()"></span>
+    </div>
+    <div class="block top-storelocator-chooser-content"
+         data-role="dropdownDialog"
+         data-mage-init='{
+           "dropdownDialog":{
+             "appendTo":"[data-block=top-storelocator-chooser]",
+             "triggerTarget":".showpicker",
+             "timeout": "2000",
+             "closeOnMouseLeave": false,
+             "closeOnEscape": true,
+             "triggerClass":"active",
+             "parentClass":"active",
+             "buttons":[]
+           }
+         }'>
+        <div class="content-wrapper" data-bind="scope: 'top-storelocator-chooser'">
+            <div data-bind="visible: hasStore()" class="current-store">
+                <p class="title">
+                    <span data-bind="text: getStoreName()" class="store-name-value"></span>
+                </p>
+                <div class="store-info">
+                    <p data-bind="html: getStoreAddress()" class="store-address"></p>
+                    <div class="actions">
+                        <div class="primary">
+                            <a data-bind="attr: {href: getStoreUrl()}" class="action primary secondary"><span data-bind="i18n: '<?php echo __('View Shop Page'); ?>'"></span></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <form action="<?php echo $block->getStoreLocatorHomeUrl() ?>" data-bind="submit: onSubmit">
+                <div class="store-search">
+                    <div class="geolocalize-container" data-bind="scope: requestChild('geocoder')">
+                        <div class="primary" data-bind="afterRender: initGeocoder">
+                            <a data-bind="click:$parent.geolocalize.bind($parent)" class="action primary geolocalize" title="<?php echo $block->escapeHtml(__('Geolocalize me')); ?>">
+                                <span><?php echo __('Geolocalize me'); ?></span>
+                            </a>
+                        </div>
+                    </div>
+                    <div class="store-search-form">
+                        <div class="field">
+                            <input data-bind="{ value: fulltextSearch }" type="text" name="query" placeholder="<?php echo $block->escapeHtml(__('City, Zipcode, Department, ...'));?>"/>
+                        </div>
+                        <div class="actions">
+                            <div class="primary">
+                                <button type="submit" class="action primary"><span data-bind="text: '<?php echo __('Search'); ?>'"></span></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script type="text/x-magento-init">
+    { "*" : { "Magento_Ui/js/core/app": <?php echo  /* @noEscape */ $block->getJsLayout(); ?> } }
+</script>

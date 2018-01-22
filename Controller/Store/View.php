@@ -5,7 +5,7 @@
  * versions in the future.
  *
  * @category  Smile
- * @package   Smile\LocalizedRetailer
+ * @package   Smile\StoreLocator
  * @author    Romain Ruaud <romain.ruaud@smile.fr>
  * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
  * @copyright 2016 Smile
@@ -25,7 +25,7 @@ use Smile\Retailer\Api\RetailerRepositoryInterface;
  * Retailer view action (displays the retailer details page).
  *
  * @category Smile
- * @package  Smile\LocalizedRetailer
+ * @package  Smile\StoreLocator
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
  * @author   Guillaume Vrac <guillaume.vrac@smile.fr>
  */

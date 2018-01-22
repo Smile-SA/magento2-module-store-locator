@@ -16,34 +16,17 @@
  */
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    <virtualType name="Smile\StoreLocator\Retailer\ImageUpload" type="Magento\Catalog\Model\ImageUploader">
-        <arguments>
-            <argument name="baseTmpPath" xsi:type="string">retailer/tmp/image</argument>
-            <argument name="basePath" xsi:type="string">seller</argument>
-            <argument name="allowedExtensions" xsi:type="array">
-                <item name="jpg" xsi:type="string">jpg</item>
-                <item name="jpeg" xsi:type="string">jpeg</item>
-                <item name="gif" xsi:type="string">gif</item>
-                <item name="png" xsi:type="string">png</item>
-            </argument>
-        </arguments>
-    </virtualType>
+    
+    <preference for="Smile\StoreLocator\Api\Data\RetailerAddressInterface" type="Smile\StoreLocator\Model\Data\RetailerAddress" />
+    <preference for="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface" type="Smile\StoreLocator\Model\Data\RetailerTimeSlot" />
 
-    <type name="Smile\StoreLocator\Model\Retailer\Attribute\Backend\Image">
+    <type name="Magento\Framework\EntityManager\MetadataPool">
         <arguments>
-            <argument name="imageUploader" xsi:type="object">Smile\StoreLocator\Retailer\ImageUpload</argument>
-        </arguments>
-    </type>
-
-    <!-- Models -->
-    <preference for="Smile\StoreLocator\Api\Data\Retailer\ImageInterface" type="Smile\StoreLocator\Model\Retailer\Image"/>
-
-    <type name="Smile\StoreLocator\Model\Retailer\Images\ReadHandler">
-        <arguments>
-            <argument name="imagesAttributes" xsi:type="array">
-                <item name="image1" xsi:type="string">image1</item>
-                <item name="image2" xsi:type="string">image2</item>
-                <item name="image3" xsi:type="string">image3</item>
+            <argument name="metadata" xsi:type="array">
+                <item name="Smile\StoreLocator\Api\Data\RetailerAddressInterface" xsi:type="array">
+                    <item name="entityTableName" xsi:type="string">smile_retailer_address</item>
+                    <item name="identifierField" xsi:type="string">address_id</item>
+                </item>
             </argument>
         </arguments>
     </type>
@@ -51,13 +34,43 @@
     <type name="Magento\Framework\EntityManager\Operation\ExtensionPool">
         <arguments>
             <argument name="extensionActions" xsi:type="array">
-                <item name="Smile\Seller\Api\Data\SellerInterface" xsi:type="array">
+                <item name="Smile\Retailer\Api\Data\RetailerInterface" xsi:type="array">
+                    <item name="create" xsi:type="array">
+                        <item name="create_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressSaveHandler</item>
+                        <item name="create_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursSaveHandler</item>
+                        <item name="create_retailer_special_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursSaveHandler</item>
+                    </item>
+                    <item name="update" xsi:type="array">
+                        <item name="update_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressSaveHandler</item>
+                        <item name="update_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursSaveHandler</item>
+                        <item name="update_retailer_special_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursSaveHandler</item>
+                    </item>
                     <item name="read" xsi:type="array">
-                        <item name="read_images" xsi:type="string">Smile\StoreLocator\Model\Retailer\Images\ReadHandler</item>
+                        <item name="read_retailer_address" xsi:type="string">Smile\StoreLocator\Model\Retailer\AddressReadHandler</item>
+                        <item name="read_retailer_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\OpeningHoursReadHandler</item>
+                        <item name="read_retailer_special_opening_hours" xsi:type="string">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursReadHandler</item>
                     </item>
                 </item>
             </argument>
         </arguments>
+    </type>
+
+    <type name="Smile\Retailer\Controller\Adminhtml\Retailer\Save">
+        <arguments>
+            <argument name="postDataHandlers" xsi:type="array">
+                <item name="addressDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\AddressPostDataHandler</item>
+                <item name="openingHoursDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\OpeningHoursPostDataHandler</item>
+                <item name="specialOpeningHoursDataHandler" xsi:type="object">Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursPostDataHandler</item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <type name="Smile\Retailer\Model\ResourceModel\Retailer\Collection">
+        <plugin name="smile_store_locator_add_extension_attributes" type="Smile\StoreLocator\Plugin\RetailerCollectionPlugin" />
+    </type>
+    
+    <type name="Smile\Seller\Ui\Component\Seller\Form\DataProvider">
+        <plugin name="smile_store_locator_add_address" type="Smile\StoreLocator\Plugin\RetailerEditFormPlugin" />
     </type>
 
 </config>

@@ -1,12 +1,12 @@
 // /**
 //  * DISCLAIMER
 //  *
-//  * Do not edit or add to this file if you wish to upgrade Smile Elastic Suite to newer
+//  * Do not edit or add to this file if you wish to upgrade this module to newer
 //  * versions in the future.
 //  *
 //  *
 //  * @category  Smile
-//  * @package   Smile\LocalizedRetailer
+//  * @package   Smile\StoreLocator
 //  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
 //  * @copyright 2016 Smile
 //  * @license   Open Software License ("OSL") v. 3.0
@@ -14,8 +14,200 @@
 
 
 //
+//  Shop View
+//  _____________________________________________
+
+.smile-store-locator-store-view, .smile-store-locator-store-search  {
+
+    .set-store-button {
+        float: right;
+    }
+
+    .shop-details {
+        width: 100%;
+
+        .map {
+            width: 100%;
+            height: 150px;
+            border-bottom: 1px solid #CCC;
+            z-index: 1;
+        }
+
+        .address-info {
+            display: flex;
+            padding: 10px;
+
+            .box-title {
+                margin-right: 10px;
+                font-weight: bold;
+            }
+
+            .address {
+                flex: 1;
+            }
+        }
+
+        .opening-hours-info {
+            padding: 10px;
+            clear: both;
+
+            .box-title {
+                margin-right: 10px;
+                p {
+                    font-weight: bold;
+                    float:left;
+                }
+
+                .showopeninghours {
+                    float:left;
+                    margin-left:10px;
+                    cursor: pointer;
+                    font-weight: bold;
+                    font-size: 13px;
+
+                    :after {
+                        content: @icon-down;
+                        display:inline-block;
+                        font-family: @icons__font-name;
+                        vertical-align: top;
+                        margin: 0;
+                        color: inherit;
+                        font-size: 10px;
+                        line-height: 22px;
+                        margin-left: 10px;
+                    }
+                }
+
+                .showopeninghours.active {
+                    :after {
+                        content: @icon-up;
+                    }
+                }
+            }
+        }
+    }
+
+    .action.secondary {
+        background: #eeeeee;
+        border: 1px solid #cccccc;
+        color: #333333;
+        font-weight: 500;
+    }
+}
+
+.smile-store-locator-store-view {
+    .shop-details {
+        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+        border: 1px solid #CCC;
+        margin: 10px 0 26px;
+    }
+
+    .shop-informations {
+        display: flex;
+        flex-direction: column;
+        flex-flow: row wrap;
+
+        .store-view-map {
+            flex: 0 0 100%;
+        }
+
+        .opening-hours-container {
+            flex: 1 1 auto;
+            float:none;
+        }
+
+        .contact-info {
+            flex: 1 1 auto;
+            .contact-info-wrapper {
+                padding: 10px;
+                h3 {
+                    margin-top: 0;
+                }
+                box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
+                border: 1px solid #CCC;
+                margin-right: 10px;
+                margin-bottom: 10px;
+                max-height: 200px;
+            }
+        }
+    }
+}
+
+.smile-store-locator-store-search {
+    .shop-details {
+
+        width: auto;
+        max-width: 480px;
+
+        .shop-details-wrapper {
+            padding: 10px;
+            .actions {
+                .right {
+                    margin-left: auto;
+                }
+            }
+        }
+
+        h2 {
+            margin-top: 10px;
+            margin-left: 10px;
+            font-weight: bold;
+            color: #333333;
+        }
+
+        .opening-hours-table {
+            td {
+                padding: 2px 2px;
+            }
+
+            td:first-child {
+                padding-right: 10px;
+            }
+        }
+
+        .actions-toolbar {
+            .actions {
+                margin: 5px;
+                border-top: 1px solid #cccccc;
+                padding-top: 10px;
+                display: flex;
+            }
+        }
+
+        .close {
+            .lib-button-icon(
+                @icon-remove,
+                @_icon-font-size: 32px,
+                @_icon-font-line-height: 32px,
+                @_icon-font-text-hide: true
+            );
+            .lib-button-reset();
+            height: 40px;
+            position: absolute;
+            right: 5px;
+            top: 5px;
+            width: 40px;
+            color: @color-gray56;
+            :hover {
+                color: #333333;
+            }
+        }
+    }
+}
+
+.opening-hours-table {
+    .currentDay {
+        font-weight: bold;
+    }
+}
+
+//
 //  Shops search
 //  _____________________________________________
+
+.smile-store-locator-store-view .page-title .set-store-button {
+    float: right;
+}
 
 #store-locator-search-wrapper {
 
@@ -25,40 +217,64 @@
         width : 100%;
         height: 100%;
         background: #666;
+        z-index:1;
     }
 
     .contextual-bar {
         position: absolute;
-        width: 300px;
+
         margin: 20px;
         padding: 0px 0px;
         background: #FFFFFF;
-        z-index: 500;
+        z-index: 2;
         box-shadow: 0 1px 10px;
         display: flex;
         flex-direction: column;
-        max-height: 540px;
 
-        .fulltext-search-wrapper {
-            border-bottom: 1px solid #c2c2c2;
-            padding: 10px;
+        .shop-search {
+            width: 300px;
+            .fulltext-search-wrapper {
+                border-bottom: 1px solid #c2c2c2;
+                padding: 10px;
 
-            .form {
-                display: flex;
-                padding: 10px 0 5px;
+                .form {
+                    display: flex;
+                    padding: 10px 0 5px;
+                    align-items: center;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: center;
 
-                .field {
-                    flex: 1;
-                }
-                .actions-toolbar {
+                    .field {
+                        flex: 1;
+                    }
 
-                    .primary .action {
-                        margin: 0;
-                        border-top-left-radius: 0px;
-                        border-bottom-left-radius: 0px;
-                        span {
-                            line-height: 1.3em;
+                    .actions-toolbar {
+
+                        .primary .action {
+                            margin: 0;
+                            border-top-left-radius: 0px;
+                            border-bottom-left-radius: 0px;
+                            span {
+                                line-height: 1.3em;
+                            }
                         }
+                    }
+
+                    .geolocalize-container {
+                        flex: 0 0 100%;
+                        a {
+                            width:100%;
+                            text-align:center;
+                        }
+                    }
+
+                    .store-search-form {
+                        display: flex;
+                        margin-left: auto;
+                        align-items: center;
+                        flex: 0 0 100%;
+                        margin-top: 5px;
                     }
                 }
             }
@@ -66,7 +282,6 @@
 
         .search-result-list {
             flex: 1;
-            overflow: scroll;
 
             .search-result-header {
                 background-color: #8f8f8f;
@@ -86,19 +301,297 @@
             }
 
             ul {
+                overflow-y: scroll;
+                max-height: 400px;
                 list-style-type: none;
-                margin: 10px 0 0;
                 padding: 0;
+                margin: 0;
 
-                li {
+                li.result-item {
                     margin: 0;
                     padding: 5px;
+
                 }
 
-                li:nth-child(even) {
+                li.result-item:nth-child(even) {
                     background: #F0F0F0;
+                }
+            }
+        }
+
+        .shop-details {
+            .search-result-list {
+                ul {
+                    max-height: 180px;
+                }
+            }
+
+            .header {
+                .store-name {
+                    max-width: 85%;
+                    float: left;
+                }
+
+                .actions {
+                    float: right;
                 }
             }
         }
     }
 }
+
+@icon-marker: '\e60A';
+
+//
+//  Store chooser
+//  _____________________________________________
+
+#top-storelocator-chooser {
+    float: right;
+    margin-right: @indent__s;
+
+    .lib-dropdown(
+        @_toggle-selector: ~'.action.showpicker',
+        @_options-selector: ~'.top-storelocator-chooser-content',
+        @_dropdown-toggle-icon-content: @icon-marker,
+        @_dropdown-toggle-active-icon-content: @icon-marker,
+        @_dropdown-list-item-padding: false,
+        @_dropdown-list-item-hover: false,
+        @_icon-font-position: before,
+        @_icon-font-size: 22px,
+        @_icon-font-line-height: 28px,
+        @_icon-font-color: @minicart-icons-color,
+        @_icon-font-color-hover: @minicart-icons-color,
+        @_icon-font-color-active: @minicart-icons-color
+    );
+
+    .top-storelocator-chooser-content {
+
+        width: 320px;
+        right: -22px;
+        z-index: 10000;
+
+        &:after {
+            left: auto;
+            right: 25px;
+        }
+
+        &:before {
+            left: auto;
+            right: 26px;
+        }
+
+        .store-search, .current-store {
+            padding: 10px;
+        }
+
+        .current-store {
+            .title {
+                font-size: 110%;
+                font-weight: bold;
+            }
+        }
+
+        .current-store {
+            border-bottom: 1px solid @color-gray80;
+        }
+
+        .store-search {
+            display: flex;
+            align-items: center;
+            flex-direction: row;
+            flex-wrap: wrap;
+            justify-content: center;
+
+            div.geolocalize-container {
+                flex: 0 0 100%;
+                a {
+                    width: 100%;
+                    text-align: center;
+                }
+            }
+
+            .store-search-form {
+                display: flex;
+                margin-left: auto;
+                align-items: center;
+                flex: 0 0 100%;
+                margin-top: 5px;
+                .field {
+                    flex: 2;
+                }
+                .actions {
+                    flex:1;
+                    button {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+
+        .actions {
+            a.primary {
+                width: 100%;
+                text-align:center;
+            }
+        }
+    }
+
+    .action.showpicker .text {
+        padding: 0 5px 0 0;
+        font-size: 14px;
+        line-height: 31px;
+    }
+}
+
+a.geolocalize {
+    span {
+        padding-left: 5px;
+        padding-top: 5px;
+        display:inline-block;
+    }
+}
+
+a.geolocalize:before {
+    content: @icon-marker;
+    font-family: @icons__font-name;
+    -webkit-font-smoothing: antialiased;
+    font-size: 22px;
+    line-height: 28px;
+    margin: 0;
+    vertical-align: top;
+    display: inline-block;
+    font-weight: normal;
+    overflow: hidden;
+    text-align: center;
+}
+//
+//  Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__s) {
+    #top-storelocator-chooser {
+        margin-top: @indent__s;
+        margin-right: 5px;
+        .top-storelocator-chooser-content {
+            width: 280px;
+            .filler {
+                display:none;
+            }
+
+            .store-search-form {
+                margin-left: 0;
+                margin-top: 15px;
+            }
+        }
+    }
+
+    .block-search {
+        .minisearch {
+            label:before {
+                margin-right: 5px;
+            }
+        }
+    }
+
+    .smile-store-locator-store-view {
+        .set-store-button {
+            float: none;
+            a {
+                width: 100%;
+                text-align: center;
+            }
+        }
+
+        .shop-informations {
+            .contact-info {
+                .contact-info-wrapper {
+                    box-shadow: none;
+                    border: none;
+                    margin-right: 0;
+                    margin-bottom: 10px;
+                }
+            }
+        }
+    }
+
+    #store-locator-search-wrapper {
+        height: auto;
+        .contextual-bar {
+            position: relative;
+            margin: 0;
+            box-shadow: none;
+            border: 1px solid #F0F0F0;
+            .search-result-list {
+                .search-result-header{
+                    padding-top: 5px;
+                    padding-bottom: 5px;
+                }
+                ul {
+                    max-height: 160px;
+                    li {
+                        p {
+                            margin-bottom: 0.5rem;
+                        }
+                    }
+                }
+            }
+
+            .shop-search {
+                width: auto;
+            }
+
+            .shop-details {
+                .actions-toolbar {
+                    .actions {
+                        margin:0px;
+                        flex-flow: row wrap;
+                        div.primary {
+                            width: 100%;
+                            text-align: center;
+                            margin: 2px;
+                            a {
+                                width: 100%;
+                            }
+                        }
+                        .action {
+                            padding: 5px 10px;
+                        }
+
+                        .right {
+                            flex: 0 0 100%;
+                            display: flex;
+                        }
+                    }
+                }
+            }
+        }
+
+        .map {
+            height: 300px;
+            margin-top: 5px;
+        }
+    }
+}
+
+//
+//  Tablet + Mobile
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+    .action.showpicker .text {
+        display: none;
+    }
+}
+
+//
+//  Desktop
+//  _____________________________________________
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+    #top-storelocator-chooser {
+        margin-left: @indent__s;
+        margin-right: 0;
+    }
+}
+

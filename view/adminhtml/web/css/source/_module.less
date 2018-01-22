@@ -1,0 +1,108 @@
+// /**
+//  * DISCLAIMER
+//  *
+//  * Do not edit or add to this file if you wish to upgrade this module to newer
+//  * versions in the future.
+//  *
+//  * @category  Smile
+//  * @package   Smile\Retailer
+//  * @author    Romain Ruaud <romain.ruaud@smile.fr>
+//  * @copyright 2016 Smile
+//  * @license   Open Software License ("OSL") v. 3.0
+//  */
+
+/** Import the base elessar module stylesheet **/
+@import (inline) 'elessar/elessar.less';
+
+@timebar-height: 10px;
+
+.opening-hours-container-fieldset {
+    margin-left:70px;
+    margin-top: -30px;
+
+    .admin__field-tooltip {
+        max-width: 100%;
+        width: 100%;
+        margin-bottom: 20px;
+        .admin__field-tooltip-action {
+            &:before {
+                margin-right: 5px;
+            }
+        }
+    }
+}
+
+.opening-hours-fieldset-wrapper {
+    .admin__fieldset {
+        padding-top: 1rem;
+    }
+}
+
+.elessar-range {
+    background:@color-phoenix;
+    height: @timebar-height;
+    overflow: visible;
+}
+.elessar-handle {
+    background-color: @color-gray85;
+    border-radius: 4px;
+    border: 1px solid @color-dark-gray;
+    height: 15px;
+    top: -3px;
+    width: 15px;
+}
+.elessar-rangebar {
+    height: @timebar-height;
+}
+div.opening-hours-container {
+    margin-bottom: 20px;
+    width: 80%;
+    label {
+        margin-top: 20px;
+    }
+}
+div.opening-hours-rangebar {
+    div.elessar-rangebar {
+        background: #FFFFFF;
+        border: 1px solid @color-dark-grayish;
+        margin-left: -1px;
+    }
+}
+div.opening-hours-indicator {
+    margin-top: 40px;
+    span.elessar-barlabel {
+        color: @color-dark-gray;
+        left: -30px;
+        position:relative;
+        top:-35px;
+        &:after {
+            border-left: 1px solid @color-dark-gray;
+            content: " ";
+            display: block;
+            height: @timebar-height;
+            left: 29px;
+            position: relative;
+            top: -5px;
+        }
+    }
+    .elessar-rangebar {
+        height: 0;
+    }
+}
+span.opening-hours-day {
+    color: @color-dark-gray;
+    font-size: 80%;
+}
+
+.admin__control-table td {
+    .admin__control-text._has-datepicker.smile-special-opening-hours-datepicker {
+        width: 15rem;
+    }
+    .opening-hours-wrapper {
+        min-width: 90rem;
+        margin-left: 10%;
+        .opening-hours-container {
+            width: 90%;
+        }
+    }
+}

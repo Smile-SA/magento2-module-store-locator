@@ -1,0 +1,33 @@
+<?php
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\StoreLocator
+ * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @copyright 2017 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ *
+ * Opening Hours form element renderer.
+ */
+?>
+
+<?php
+/** @var \Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Container\Renderer $block */
+
+$element = $block->getElement();
+$fieldId = ($element->getHtmlContainerId()) ? ' id="' . $element->getHtmlContainerId() . '"' : '';
+$fieldClass = "fieldset-{$element->getId()} {$element->getClass()}";
+$fieldClass .= ($element->getRequired()) ? ' required' : '';
+$fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId('form-field', $element->getId());
+?>
+
+<div<?php /* @escapeNotVerified */ echo $fieldAttributes ?>>
+    <div class="admin__field-tooltip">
+        <p class="note admin__field-tooltip-action"><?php echo __("Double-click on an opening hour range to delete it."); ?></p>
+    </div>
+    <?php echo $block->getInputHtml() ?>
+</div>

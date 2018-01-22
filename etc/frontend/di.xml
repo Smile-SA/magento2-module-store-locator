@@ -10,7 +10,7 @@
  *
  * @category  Smile
  * @package   Smile\StoreLocator
- * @author    Romain RUAUD <romain.ruaud@smile.fr>
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
  * @copyright 2016 Smile
  * @license   Apache License Version 2.0
  */
@@ -19,11 +19,19 @@
     <type name="Magento\Framework\App\RouterList">
         <arguments>
             <argument name="routerList" xsi:type="array">
-                <item name="cms" xsi:type="array">
+                <item name="storelocator" xsi:type="array">
                     <item name="class" xsi:type="string">Smile\StoreLocator\Controller\Router</item>
                     <item name="disable" xsi:type="boolean">false</item>
                     <item name="sortOrder" xsi:type="string">50</item>
                 </item>
+            </argument>
+        </arguments>
+    </type>
+    
+    <type name="Magento\Customer\CustomerData\SectionPoolInterface">
+        <arguments>
+            <argument name="sectionSourceMap" xsi:type="array">
+                <item name="current-store" xsi:type="string">Smile\StoreLocator\CustomerData\CurrentStore</item>
             </argument>
         </arguments>
     </type>

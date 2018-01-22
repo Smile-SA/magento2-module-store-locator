@@ -1,96 +1,64 @@
 <?php
 /**
  * DISCLAIMER
- *
  * Do not edit or add to this file if you wish to upgrade this module to newer
  * versions in the future.
  *
  * @category  Smile
  * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
  * @copyright 2016 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
-
 namespace Smile\StoreLocator\Setup;
 
+use Magento\Eav\Setup\EavSetup;
+use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Setup\InstallDataInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
-use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\StoreLocator\Setup\StoreLocatorSetupFactory;
 
 /**
- * Installer for Store Locator Data.
- * Basically adds attributes to Retailer entity.
+ * Store locator data setup.
  *
  * @category Smile
  * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
- * @author   Guillaume Vrac <guillaume.vrac@smile.fr>
+ * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class InstallData implements InstallDataInterface
 {
     /**
-     * @var StoreLocatorSetupFactory
+     * @var EavSetupFactory
      */
-    private $storeLocatorSetupFactory;
+    private $eavSetupFactory;
 
     /**
-     * InstallData constructor
-     *
-     * @param StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup factory
+     * @var \Smile\StoreLocator\Setup\StoreLocatorSetup
      */
-    public function __construct(StoreLocatorSetupFactory $storeLocatorSetupFactory)
+    private $storeLocatorSetup;
+
+    /**
+     * Constructor.
+     *
+     * @param EavSetupFactory          $eavSetupFactory          EAV Setup Factory.
+     * @param StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
+     */
+    public function __construct(EavSetupFactory $eavSetupFactory, StoreLocatorSetupFactory $storeLocatorSetupFactory)
     {
-        $this->storeLocatorSetupFactory = $storeLocatorSetupFactory;
+        $this->eavSetupFactory = $eavSetupFactory;
+        $this->storeLocatorSetup = $storeLocatorSetupFactory->create();
     }
 
     /**
-     * {@inheritDoc}
+     * {@inheritdoc}
      */
     public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
-        $setup->startSetup();
+        /** @var EavSetup $eavSetup */
+        $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);
 
-        /** @var storeLocatorSetup $storeLocatorSetup */
-        $storeLocatorSetup = $this->storeLocatorSetupFactory->create(['setup' => $setup]);
-        $storeLocatorSetup->installEntities();
-
-        $this->installlStoreLocatorAttributesAttributes($storeLocatorSetup);
-
-        $setup->endSetup();
-    }
-
-
-    /**
-     * Initialize the Store locator attributes.
-     *
-     * @param StoreLocatorSetup $setup The Retailer Setup
-     */
-    protected function installlStoreLocatorAttributesAttributes(StoreLocatorSetup $setup)
-    {
-        $attributeSetsDefinition = $setup->getAttributeSetDefinition();
-        $groupsDefinition        = $setup->getGroupsDefinition();
-
-        foreach ($attributeSetsDefinition as $attributeSetName => $groups) {
-            $setup->addAttributeSet(RetailerInterface::ENTITY, $attributeSetName);
-
-            foreach ($groups as $groupName => $attributes) {
-                $sortOrder = $groupsDefinition[$groupName];
-                $setup->addAttributeGroup(RetailerInterface::ENTITY, $attributeSetName, $groupName, $sortOrder);
-
-                foreach ($attributes as $key => $attributeCode) {
-                    $sortOrder = ($key + 1 ) * 10;
-                    $setup->addAttributeToGroup(
-                        RetailerInterface::ENTITY,
-                        $attributeSetName,
-                        $groupName,
-                        $attributeCode,
-                        $sortOrder
-                    );
-                }
-            }
-        }
+        $this->storeLocatorSetup->addUrlKeyAttribute($eavSetup);
+        $this->storeLocatorSetup->addContactInformation($eavSetup);
     }
 }

@@ -12,7 +12,7 @@
  */
 namespace Smile\StoreLocator\Helper;
 
-use Magento\Store\Model\ScopeInterface;
+use Smile\Retailer\Api\Data\RetailerInterface;
 
 /**
  * Store locator helper.
@@ -23,45 +23,46 @@ use Magento\Store\Model\ScopeInterface;
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
-    const BASE_URL_XML_PATH = 'store_locator/seo/base_url';
-
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var \Smile\StoreLocator\Model\Url
      */
-    private $storeManager;
+    private $urlModel;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context      $context      Helper context.
-     * @param \Magento\Store\Model\StoreManagerInterface $storeManager Store manager.
+     * @param \Magento\Framework\App\Helper\Context $context  Helper context.
+     * @param \Smile\StoreLocator\Model\Url         $urlModel Retailer URL model.
      */
     public function __construct(
         \Magento\Framework\App\Helper\Context $context,
-        \Magento\Store\Model\StoreManagerInterface $storeManager
-    )
-    {
+        \Smile\StoreLocator\Model\Url $urlModel
+    ) {
         parent::__construct($context);
-
-        $this->storeManager = $storeManager;
+        $this->urlModel = $urlModel;
     }
 
-    public function getBaseUrlPrefix()
+    /**
+     * Store locator home URL.
+     *
+     * @param int|NULL $storeId Store id.
+     *
+     * @return string
+     */
+    public function getHomeUrl($storeId = null)
     {
-        $storeId = $this->storeManager->getStore()->getId();
-
-        return $this->scopeConfig->getValue(self::BASE_URL_XML_PATH, ScopeInterface::SCOPE_STORE, $storeId);
+        return $this->urlModel->getHomeUrl($storeId);
     }
 
-    public function getBaseUrl()
+    /**
+     * Retailer URL.
+     *
+     * @param RetailerInterface $retailer Retailer.
+     *
+     * @return string
+     */
+    public function getRetailerUrl(RetailerInterface $retailer)
     {
-        return $this->_urlBuilder->getUrl(null, ['_direct' => $this->getBaseUrlPrefix()]);
-    }
-
-    public function getStoreUrl($store)
-    {
-        $url = sprintf("%s/%s", $this->getBaseUrlPrefix(), "test");
-
-        return $this->_urlBuilder->getUrl(null, ['_direct' => $url]);
+        return $this->urlModel->getUrl($retailer);
     }
 }

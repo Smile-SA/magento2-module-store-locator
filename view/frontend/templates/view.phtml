@@ -1,0 +1,28 @@
+<?php
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\StoreLocator
+ * @author    Romain Ruaud <romain.ruaud@smile.fr>
+ * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ *
+ * Retailer frontend view block
+ */
+?>
+
+<?php
+/** @var \Smile\StoreLocator\Block\View $block */
+$retailer = $block->getRetailer();
+?>
+
+<div class="shop-details">
+    <div class="shop-informations">
+        <?php echo $block->getChildHtml(); ?>
+    </div>
+</div>

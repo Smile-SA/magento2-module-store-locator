@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ *
+ * @category  Smile
+ * @package   Smile\Retailer
+ * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @copyright 2016 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ */
+ -->
+<page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
+
+    <update handle="smile_map_styles"/>
+
+    <body>
+        <referenceContainer name="header-wrapper">
+            <block class="Smile\StoreLocator\Block\StoreChooser" name="top.storelocator.chooser" template="chooser.phtml" before="top.search">
+                <arguments>
+                    <argument name="jsLayout" xsi:type="array">
+                        <item name="components" xsi:type="array">
+                            <item name="top-storelocator-chooser" xsi:type="array">
+                                <item name="component" xsi:type="string">Smile_StoreLocator/js/retailer/chooser</item>
+                                <item name="template" xsi:type="string">Smile_StoreLocator/retailer/chooser</item>
+                                <item name="children" xsi:type="array">
+                                    <item name="geocoder" xsi:type="array">
+                                        <item name="component" xsi:type="string">smile-geocoder</item>
+                                    </item>
+                                </item>
+                            </item>
+                        </item>
+                    </argument>
+                </arguments>
+            </block>
+        </referenceContainer>
+    </body>
+</page>
