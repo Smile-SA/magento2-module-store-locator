@@ -15,7 +15,7 @@
 /*jshint browser:true jquery:true*/
 /*global alert*/
 
-define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate'], function ($, Component, moment, ko) {
+define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'], function ($, Component, moment, ko) {
 
     "use strict";
 
