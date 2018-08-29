@@ -63,6 +63,38 @@ class StoreLocatorSetup
 
         return $this;
     }
+
+    /**
+     * Update latitude and longitude column type.
+     *
+     * @param SchemaSetupInterface $setup Schema setup.
+     *
+     * @return $this
+     */
+    public function updateDecimalDegreesColumns(SchemaSetupInterface $setup)
+    {
+        $setup->getConnection()->modifyColumn(
+            $setup->getTable('smile_retailer_address'),
+            'latitude',
+            [
+                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+                'length' => '10,6',
+                'nullable' => false,
+            ]
+        );
+        $setup->getConnection()->modifyColumn(
+            $setup->getTable('smile_retailer_address'),
+            'longitude',
+            [
+                'type' => \Magento\Framework\DB\Ddl\Table::TYPE_DECIMAL,
+                'length' => '10,6',
+                'nullable' => false,
+            ]
+        );
+
+        return $this;
+    }
+
     /**
      * Create Opening Hours main table
      *

@@ -57,6 +57,9 @@ class UpgradeSchema implements UpgradeSchemaInterface
         if (version_compare($context->getVersion(), '1.1.0', '<')) {
             $this->storeLocatorSetup->createOpeningHoursTable($setup);
         }
+        if (version_compare($context->getVersion(), '1.2.2', '<')) {
+            $this->storeLocatorSetup->updateDecimalDegreesColumns($setup);
+        }
 
         $setup->endSetup();
     }
