@@ -17,6 +17,11 @@
 -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
     <default>
+        <smile_map>
+            <map>
+                <provider_all_max_visible_shop>1000</provider_all_max_visible_shop>
+            </map>
+        </smile_map>
         <store_locator>
             <seo>
                 <base_url>stores</base_url>

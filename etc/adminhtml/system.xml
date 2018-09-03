@@ -1,0 +1,32 @@
+<?xml version="1.0"?>
+<!--
+/**
+ * Smile_StoreLocator admin configuration UI fields.
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ *
+ * @category  Smile
+ * @package   Smile\StoreLocator
+ * @author    Maxime Leclercq <maxime.leclercq@smile.fr>
+ * @copyright 2018 Smile
+ * @license   Open Software License ("OSL") v. 3.0
+ */
+ -->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
+    <system>
+
+        <section id="smile_map" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
+
+            <group id="map" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="provider_all_max_visible_shop" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
+                    <label>Maximum number of visible stores</label>
+                    <comment>Above this limit, the list of stores will be not display</comment>
+                </field>
+            </group>
+        </section>
+    </system>
+</config>

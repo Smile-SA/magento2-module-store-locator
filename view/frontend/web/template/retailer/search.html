@@ -32,9 +32,16 @@
                 <p data-bind="text: $t(searchResultsLabel).replace('%s', $parent.countDisplayedMarkers.bind($parent))"></p>
                 <span data-bind="if: $parent.displayReset()"><a data-bind="{click: $parent.resetMap.bind($parent)}"><span data-bind="text: $t(viewAllLabel)"></span></a></span>
             </div>
-            <ul data-bind="foreach: $parent.displayedMarkers">
-                <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
+            <!-- ko if: $parent.displayedMarkers().length  < $parent.max_visible_shop -->
+            <ul data-bind="{foreach: $parent.displayedMarkers()}">
+                <li data-bind="{template: $parent.storeListTemplate}" class="result-item"></li>
             </ul>
+            <!-- /ko -->
+            <!-- ko ifnot: $parent.displayedMarkers().length < $parent.max_visible_shop -->
+            <div class="max_stores_message">
+                <strong data-bind="text: $t('Narrow your search to see store details')"></strong>
+            </div>
+            <!-- /ko -->
         </div>
     </div>
 
