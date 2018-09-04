@@ -58,6 +58,7 @@ class Country extends Table
     {
         if ($this->_options === null) {
             $this->_options = $this->countriesFactory->create()
+                ->loadByStore()
                 ->toOptionArray();
         }
 

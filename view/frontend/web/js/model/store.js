@@ -19,7 +19,7 @@ define([
 
         initObservable: function () {
             if (this.schedule) {
-                this.schedule = ko.observable(new Schedule(this.schedule));
+                this.schedule = ko.observable(this.schedule);
             }
 
             return this;
