@@ -40,6 +40,7 @@ class Set extends Action
      * @param \Magento\Framework\App\Action\Context           $context            Action context.
      * @param \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository Retailer repository.
      * @param \Smile\StoreLocator\CustomerData\CurrentStore   $customerData       Store customer data.
+     * @param \Magento\Framework\Event\ManagerInterface       $eventManager       Event manager.
      */
     public function __construct(
         \Magento\Framework\App\Action\Context $context,
@@ -66,6 +67,10 @@ class Set extends Action
         try {
             $retailer   = $this->retailerRepository->get($retailerId);
             $this->customerData->setRetailer($retailer);
+
+            $this->_eventManager->dispatch(
+              'store_locator_controller_store_set_after',
+              ['myRetailer'=>$retailer]);
         } catch (\Exception $exception) {
             $this->messageManager->addExceptionMessage($exception, __("We are sorry, an error occured when switching retailer."));
         }
