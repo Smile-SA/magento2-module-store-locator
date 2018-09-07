@@ -12,6 +12,8 @@
  */
 namespace Smile\StoreLocator\Block;
 
+use Magento\Framework\DataObject\IdentityInterface;
+
 /**
  * Retailer View Block
  *
@@ -19,7 +21,7 @@ namespace Smile\StoreLocator\Block;
  * @package  Smile\StoreLocator
  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class View extends AbstractView
+class View extends AbstractView implements IdentityInterface
 {
     /**
      * @var \Smile\StoreLocator\Helper\Data
@@ -42,6 +44,21 @@ class View extends AbstractView
     ) {
         parent::__construct($context, $coreRegistry, $data);
         $this->storeLocatorHelper = $storeLocatorHelper;
+    }
+
+    /**
+     * Return unique ID(s) for each object in system
+     *
+     * @return string[]
+     */
+    public function getIdentities()
+    {
+        $identities = [];
+        if ($this->getRetailer()) {
+            $identities = $this->getRetailer()->getIdentities();
+        }
+
+        return $identities;
     }
 
     /**
