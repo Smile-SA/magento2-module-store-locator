@@ -74,21 +74,13 @@
                 </item>
             </argument>
         </field>
-        <field name="country_id">
+        <field name="country_id" component="Magento_Ui/js/form/element/select"  formElement="select">
             <argument name="data" xsi:type="array">
                 <item name="options" xsi:type="object">Smile\StoreLocator\Model\RetailerAddress\Source\Country</item>
                 <item name="config" xsi:type="array">
                     <item name="sortOrder" xsi:type="number">40</item>
-                    <item name="formElement" xsi:type="string">select</item>
-                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
-                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
                     <item name="label" xsi:type="string" translate="true">Country</item>
                     <item name="dataScope" xsi:type="string">address.country_id</item>
-                    <item name="filterOptions" xsi:type="boolean">true</item>
-                    <item name="showCheckbox" xsi:type="boolean">false</item>
-                    <item name="disableLabel" xsi:type="boolean">true</item>
-                    <item name="multiple" xsi:type="boolean">false</item>
-                    <item name="levelsVisibility" xsi:type="number">1</item>
                     <item name="visible" xsi:type="boolean">true</item>
                     <item name="source" xsi:type="string">retailer</item>
                     <item name="validation" xsi:type="array">
@@ -102,6 +94,32 @@
                     </item>
                 </item>
             </argument>
+        </field>
+        <field name="region_id" component="Magento_Ui/js/form/element/region" formElement="select">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Magento\Directory\Model\ResourceModel\Region\Collection</item>
+                <item name="config" xsi:type="array">
+                    <item name="dataType" xsi:type="string">text</item>
+                    <item name="label" xsi:type="string" translate="true">State/Region</item>
+                    <item name="source" xsi:type="string">retailer</item>
+                    <item name="dataScope" xsi:type="string">address.region_id</item>
+                    <item name="sortOrder" xsi:type="number">45</item>
+                    <item name="validation" xsi:type="array">
+                        <item name="required-entry" xsi:type="boolean">true</item>
+                    </item>
+                </item>
+            </argument>
+            <formElements>
+                <select>
+                    <settings>
+                        <filterBy>
+                            <field>country_id</field>
+                            <target>${ $.provider }:${ $.parentScope }.country_id</target>
+                        </filterBy>
+                        <customEntry>address.region</customEntry>
+                    </settings>
+                </select>
+            </formElements>
         </field>
         <field name="latitude">
             <argument name="data" xsi:type="array">
