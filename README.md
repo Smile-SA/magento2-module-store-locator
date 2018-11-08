@@ -2,7 +2,7 @@
 
 This module is a plugin for [ElasticSuite](https://github.com/Smile-SA/elasticsuite).
 
-This module add a store locator to the website. You can search a retailer on map.
+This module adds a store locator to the website. You can search a retailer on map.
 
 ### Requirements
 
