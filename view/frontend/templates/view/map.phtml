@@ -23,6 +23,11 @@ $retailer = $block->getRetailer();
     <div class="map" data-bind="afterRender: initMap"> </div>
 
     <div class="address-info">
+        <div class="address">
+            <?php echo $block->getDescription(); ?>
+        </div>
+    </div>
+    <div class="address-info">
         <div class="box-title">
             <p><?php echo __('Store Address'); ?> :</p>
         </div>
