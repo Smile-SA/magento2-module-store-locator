@@ -26,3 +26,9 @@ The module requires :
 
 ``` bin/magento setup:upgrade ```
 
+### How to configure
+
+> Stores > Configuration > Services  > Smile Map > Map Settings
+
+Maximum number of visible stores : Above this limit, the list of stores will be not display
+
