@@ -17,7 +17,8 @@
 //  Shop View
 //  _____________________________________________
 
-.smile-store-locator-store-view, .smile-store-locator-store-search  {
+.smile-store-locator-store-view, .smile-store-locator-store-search,
+.smile_store_locator-store-view, .smile_store_locator-store-search {
 
     .set-store-button {
         float: right;
@@ -95,7 +96,7 @@
     }
 }
 
-.smile-store-locator-store-view {
+.smile-store-locator-store-view, .smile_store_locator-store-view {
     .shop-details {
         box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
         border: 1px solid #CCC;
@@ -133,7 +134,7 @@
     }
 }
 
-.smile-store-locator-store-search {
+.smile-store-locator-store-search, .smile_store_locator-store-search {
     .shop-details {
 
         width: auto;
@@ -205,8 +206,10 @@
 //  Shops search
 //  _____________________________________________
 
-.smile-store-locator-store-view .page-title .set-store-button {
-    float: right;
+.smile-store-locator-store-view, .smile_store_locator-store-view {
+    .page-title .set-store-button {
+        float: right;
+    }
 }
 
 #store-locator-search-wrapper {
@@ -499,7 +502,7 @@ a.geolocalize:before {
         }
     }
 
-    .smile-store-locator-store-view {
+    .smile-store-locator-store-view, .smile_store_locator-store-view {
         .set-store-button {
             float: none;
             a {
