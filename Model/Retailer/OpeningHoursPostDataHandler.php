@@ -7,13 +7,15 @@
  * @category  Smile
  * @package   Smile\StoreLocator
  * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
+ * @author    Fanny DECLERCK <fadec@smile.fr>
+ * @copyright 2019 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Smile\Retailer\Api\RetailerRepositoryInterface;
 
 /**
  * Post Data Handler for Retailer Opening Hours
@@ -21,6 +23,7 @@ use Magento\Framework\Json\Helper\Data as JsonHelper;
  * @category Smile
  * @package  Smile\StoreLocator
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * @author   Fanny DECLERCK <fadec@smile.fr>
  */
 class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\PostDataHandlerInterface
 {
@@ -35,15 +38,25 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
     private $jsonHelper;
 
     /**
+     * @var RetailerRepositoryInterface
+     */
+    private $retailerRepository;
+
+    /**
      * OpeningHoursPostDataHandler constructor.
      *
-     * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory Time Slot Factory
-     * @param JsonHelper                       $jsonHelper      JSON Helper
+     * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory    Time Slot Factory
+     * @param JsonHelper                       $jsonHelper         JSON Helper
+     * @param RetailerRepositoryInterface      $retailerRepository Retailer Repository Interface
      */
-    public function __construct(RetailerTimeSlotInterfaceFactory $timeSlotFactory, JsonHelper $jsonHelper)
-    {
-        $this->timeSlotFactory = $timeSlotFactory;
-        $this->jsonHelper      = $jsonHelper;
+    public function __construct(
+        RetailerTimeSlotInterfaceFactory $timeSlotFactory,
+        JsonHelper $jsonHelper,
+        RetailerRepositoryInterface $retailerRepository
+    ) {
+        $this->timeSlotFactory    = $timeSlotFactory;
+        $this->jsonHelper         = $jsonHelper;
+        $this->retailerRepository = $retailerRepository;
     }
 
     /**
@@ -75,8 +88,29 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
             }
 
             $data['opening_hours'] = $openingHours;
+
+            if (isset($data['opening_hours_seller_ids'])) {
+                $this->updateOpeningHoursBySellerIds($data['opening_hours_seller_ids'],$data['opening_hours']);
+            }
         }
 
         return $data;
+    }
+
+    /**
+     * Update opening hours by seller ids.
+     *
+     * @param array $sellerIds    Seller ids to update
+     * @param array $openingHours Opening hours by days
+     *
+     * @return void
+     */
+    private function updateOpeningHoursBySellerIds($sellerIds, $openingHours)
+    {
+        foreach ($sellerIds as $id) {
+            $model = $this->retailerRepository->get($id);
+            $model->setData('opening_hours', $openingHours);
+            $this->retailerRepository->save($model);
+        }
     }
 }
