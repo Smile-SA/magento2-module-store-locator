@@ -19,8 +19,8 @@
       xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
     <argument name="data" xsi:type="array">
         <item name="js_config" xsi:type="array">
-            <item name="provider" xsi:type="string">smile_retailer_form.smile_retailer_form_data_source</item>
-            <item name="deps" xsi:type="string">smile_retailer_form.smile_retailer_form_data_source</item>
+            <item name="provider" xsi:type="string">storelocator_retailer_form.storelocator_retailer_form_data_source</item>
+            <item name="deps" xsi:type="string">storelocator_retailer_form.storelocator_retailer_form_data_source</item>
         </item>
         <item name="label" xsi:type="string" translate="true">Retailer Information</item>
         <item name="template" xsi:type="string">templates/form/collapsible</item>
@@ -31,14 +31,14 @@
         </item>
         <item name="config" xsi:type="array">
             <item name="dataScope" xsi:type="string">data</item>
-            <item name="namespace" xsi:type="string">smile_retailer_form</item>
+            <item name="namespace" xsi:type="string">storelocator_retailer_form</item>
         </item>
         <item name="reverseMetadataMerge" xsi:type="boolean">true</item>
     </argument>
-    <dataSource name="smile_retailer_form_data_source">
+    <dataSource name="storelocator_retailer_form_data_source">
         <argument name="dataProvider" xsi:type="configurableObject">
             <argument name="class" xsi:type="string">Smile\Retailer\Ui\Component\Retailer\Form\DataProvider</argument>
-            <argument name="name" xsi:type="string">smile_retailer_form_data_source</argument>
+            <argument name="name" xsi:type="string">storelocator_retailer_form_data_source</argument>
             <argument name="primaryFieldName" xsi:type="string">entity_id</argument>
             <argument name="requestFieldName" xsi:type="string">id</argument>
             <argument name="collectionFactory" xsi:type="object">Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory</argument>

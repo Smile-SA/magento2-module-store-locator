@@ -38,7 +38,7 @@ class MassEditHours extends AbstractRetailer implements HttpPostActionInterface
 
         $retailerIds = $this->getRequest()->getParam('selected', false);
         $this->coreRegistry->register('retailer_ids', $retailerIds);
-
+var_dump($resultPage);die;
         $resultPage->getConfig()->getTitle()->prepend(__('Edit retailers informations'));
         $resultPage->addBreadcrumb(__('Retailer'), __('Retailer'));
 

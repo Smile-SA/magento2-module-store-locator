@@ -12,7 +12,7 @@
  * @license   Open Software License ("OSL") v. 3.0
  */
 
-namespace Smile\Retailer\Controller\Adminhtml\Retailer;
+namespace Smile\StoreLocator\Controller\Adminhtml\Retailer;
 
 use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\ResultFactory;
