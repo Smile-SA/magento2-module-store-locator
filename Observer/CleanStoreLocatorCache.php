@@ -44,7 +44,7 @@ class CleanStoreLocatorCache implements ObserverInterface
     /**
      * Clean store locator marker cache when save a seller.
      *
-     * @param Observer $observer
+     * @param Observer $observer Observer.
      *
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameters)

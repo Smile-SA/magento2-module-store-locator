@@ -58,7 +58,7 @@ class SpecialOpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retail
         JsonHelper $jsonHelper,
         TimezoneInterface $localeDate,
         RetailerRepositoryInterface $retailerRepository
-    ){
+    ) {
         $this->timeSlotFactory    = $timeSlotFactory;
         $this->jsonHelper         = $jsonHelper;
         $this->localeDate         = $localeDate;
@@ -103,12 +103,7 @@ class SpecialOpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retail
 
             $data['special_opening_hours'] = $specialOpeningHours;
 
-            if (isset($data['special_opening_hours_seller_ids'])) {
-                $this->updateSpecialOpeningHoursBySellerIds(
-                    $data['special_opening_hours_seller_ids'],
-                    $data['special_opening_hours']
-                );
-            }
+            $this->updateSpecialOpeningHoursBySellerIds($data);
         }
 
         return $data;
@@ -135,17 +130,18 @@ class SpecialOpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retail
     /**
      * Update special opening hours by seller ids.
      *
-     * @param array $sellerIds           Seller ids to update
-     * @param array $specialOpeningHours Special Opening hours by days
+     * @param array $data Data seller ids /Special Opening hours by days.
      *
      * @return void
      */
-    private function updateSpecialOpeningHoursBySellerIds($sellerIds, $specialOpeningHours)
+    private function updateSpecialOpeningHoursBySellerIds($data)
     {
-        foreach ($sellerIds as $id) {
-            $model = $this->retailerRepository->get($id);
-            $model->setData('special_opening_hours', $specialOpeningHours);
-            $this->retailerRepository->save($model);
+        if (isset($data['special_opening_hours_seller_ids'])) {
+            foreach ($data['special_opening_hours_seller_ids'] as $id) {
+                $model = $this->retailerRepository->get($id);
+                $model->setData('special_opening_hours', $data['special_opening_hours']);
+                $this->retailerRepository->save($model);
+            }
         }
     }
 }

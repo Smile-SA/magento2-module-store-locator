@@ -20,6 +20,7 @@ use Smile\Retailer\Api\Data\RetailerInterface;
 
 /**
  * Shop search block.
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  *
  * @category Smile
  * @package  Smile\StoreLocator
