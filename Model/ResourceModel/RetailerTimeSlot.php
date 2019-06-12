@@ -34,6 +34,11 @@ class RetailerTimeSlot extends AbstractDb
     private $localeResolver;
 
     /**
+     * @var null
+     */
+    private $locale;
+
+    /**
      * RetailerTimeSlot constructor.
      *
      * @param Context     $context        Context
@@ -43,6 +48,7 @@ class RetailerTimeSlot extends AbstractDb
     public function __construct(Context $context, Resolver $localeResolver, $connectionName = null)
     {
         $this->localeResolver = $localeResolver;
+        $this->locale = $this->localeResolver->getLocale();
         parent::__construct($context, $connectionName);
     }
 
@@ -217,9 +223,8 @@ class RetailerTimeSlot extends AbstractDb
      */
     private function dateToHour($date)
     {
-        $date = new Zend_Date($date, DateTime::DATETIME_INTERNAL_FORMAT);
-        $date->setLocale($this->localeResolver->getLocale());
+        setlocale(LC_TIME, $this->locale);
 
-        return $date->toString(Zend_Date::TIME_SHORT);
+        return $date = strftime('%H:%M', strtotime($date));
     }
 }
