@@ -223,8 +223,12 @@ class RetailerTimeSlot extends AbstractDb
      */
     private function dateToHour($date)
     {
-        setlocale(LC_TIME, $this->locale);
+        $formatter = new \IntlDateFormatter(
+            $this->locale,
+            \IntlDateFormatter::NONE,
+            \IntlDateFormatter::SHORT
+        );
 
-        return $date = strftime('%H:%M', strtotime($date));
+        return $formatter->format(\DateTime::createFromFormat('Y-m-d H:i:s', $date));
     }
 }
