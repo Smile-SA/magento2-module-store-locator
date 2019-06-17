@@ -27,7 +27,7 @@ use Smile\Retailer\Api\Data\RetailerInterface;
  */
 class Search extends \Magento\Framework\View\Element\Template implements IdentityInterface
 {
-    const CACHE_TAG = 'smile_store_locator_makers';
+    const CACHE_TAG = 'smile_store_locator_markers';
 
     /**
      * @var MapInterface
@@ -105,7 +105,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         $this->addData(
             [
                 'cache_lifetime' => false,
-                'cache_tags'     => $this->getRetailerCollection()->getNewEmptyItem()->getCacheTags(),
+                'cache_tags'     => $this->getIdentities(),
             ]
         );
     }
@@ -203,7 +203,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
      */
     public function getIdentities()
     {
-        return [self::CACHE_TAG];
+        return array_merge([self::CACHE_TAG], $this->getRetailerCollection()->getNewEmptyItem()->getCacheTags() ?? []);
     }
 
     /**
