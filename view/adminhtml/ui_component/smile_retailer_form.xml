@@ -179,6 +179,32 @@
                 </argument>
             </htmlContent>
         </container>
+        <field name="opening_hours_seller_ids">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Smile\RetailerOffer\Ui\Component\Offer\Form\Retailer\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Apply for retailers</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="formElement" xsi:type="string">multiselect</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="dataScope" xsi:type="string">opening_hours_seller_ids</item>
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">true</item>
+                    </item>
+                    <item name="listens" xsi:type="array">
+                        <item name="${ $.namespace }.${ $.namespace }:responseData" xsi:type="string">setParsed</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
     </fieldset>
 
     <fieldset name="special_opening_hours">
@@ -205,5 +231,31 @@
                 </argument>
             </htmlContent>
         </container>
+        <field name="special_opening_hours_seller_ids">
+            <argument name="data" xsi:type="array">
+                <item name="options" xsi:type="object">Smile\RetailerOffer\Ui\Component\Offer\Form\Retailer\Options</item>
+                <item name="config" xsi:type="array">
+                    <item name="label" xsi:type="string" translate="true">Apply for retailers</item>
+                    <item name="componentType" xsi:type="string">field</item>
+                    <item name="formElement" xsi:type="string">multiselect</item>
+                    <item name="component" xsi:type="string">Magento_Ui/js/form/element/ui-select</item>
+                    <item name="elementTmpl" xsi:type="string">ui/grid/filters/elements/ui-select</item>
+                    <item name="dataScope" xsi:type="string">special_opening_hours_seller_ids</item>
+                    <item name="filterOptions" xsi:type="boolean">true</item>
+                    <item name="showCheckbox" xsi:type="boolean">false</item>
+                    <item name="disableLabel" xsi:type="boolean">true</item>
+                    <item name="multiple" xsi:type="boolean">true</item>
+                    <item name="levelsVisibility" xsi:type="number">1</item>
+                    <item name="sortOrder" xsi:type="number">30</item>
+                    <item name="required" xsi:type="boolean">false</item>
+                    <item name="imports" xsi:type="array">
+                        <item name="visible" xsi:type="string">true</item>
+                    </item>
+                    <item name="listens" xsi:type="array">
+                        <item name="${ $.namespace }.${ $.namespace }:responseData" xsi:type="string">setParsed</item>
+                    </item>
+                </item>
+            </argument>
+        </field>
     </fieldset>
 </form>

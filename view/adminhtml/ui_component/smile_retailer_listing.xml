@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+/**
+ * Storelocator listing UI Component
+ *
+ * DISCLAIMER
+ *
+ * Do not edit or add to this file if you wish to upgrade this module to newer
+ * versions in the future.
+ *
+ * @category  Smile
+ * @package   Smile\Storelocator
+ * @author    Fanny DECLERCK <fadec@smile.fr>
+ * @copyright 2019 Smile
+ * @license   Apache License Version 2.0
+ */
+-->
+<listing xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Ui:etc/ui_configuration.xsd">
+    <listingToolbar name="listing_top">
+        <massaction name="listing_massaction">
+            <action name="opening_hours">
+                <settings>
+                    <url path="storelocator/retailer/massEditHours"/>
+                    <type>opening_hours</type>
+                    <label translate="true">Update opening hours</label>
+                </settings>
+            </action>
+        </massaction>
+    </listingToolbar>
+</listing>
