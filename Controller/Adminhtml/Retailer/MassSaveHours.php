@@ -14,7 +14,6 @@
 
 namespace Smile\StoreLocator\Controller\Adminhtml\Retailer;
 
-use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Backend\App\Action\Context;
 use Smile\Retailer\Controller\Adminhtml\AbstractRetailer;
@@ -28,7 +27,7 @@ use Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursPostDataHandler;
  * @package  Smile\StoreLocator
  * @author   Fanny DECLERCK <fadec@smile.fr>
  */
-class MassSaveHours extends AbstractRetailer implements HttpPostActionInterface
+class MassSaveHours extends AbstractRetailer
 {
     /**
      * @var OpeningHoursPostDataHandler
