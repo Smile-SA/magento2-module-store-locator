@@ -52,7 +52,7 @@
                 data-bind="{ click : $parent.resetBounds.bind($parent), attr: { title: $t('Close') }}">
             <span data-bind="i18n: 'Close'"></span>
         </button>
-        <!-- ko if: $parent.selectedMarker.bind($parent) -->
+        <!-- ko if: ($parent.selectedMarker() && $parent.selectedMarker.bind($parent)) -->
             <div class="shop-details-wrapper" data-bind="{template: { name: storeDetailTemplate, data: $parent.selectedMarker() }}"></div>
         <!-- /ko -->
         <!-- ko if: $parent.nearbyMarkers -->
