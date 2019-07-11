@@ -16,6 +16,7 @@ namespace Smile\StoreLocator\Model\Retailer;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
+use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot;
 
 /**
  * Post Data Handler for Retailer Opening Hours
@@ -43,20 +44,28 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
     private $retailerRepository;
 
     /**
+     * @var RetailerTimeSlot
+     */
+    private $retailerTimeSlot;
+
+    /**
      * OpeningHoursPostDataHandler constructor.
      *
      * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory    Time Slot Factory
      * @param JsonHelper                       $jsonHelper         JSON Helper
      * @param RetailerRepositoryInterface      $retailerRepository Retailer Repository Interface
+     * @param RetailerTimeSlot                 $retailerTimeSlot   Retailer Time Slot Resource Model
      */
     public function __construct(
         RetailerTimeSlotInterfaceFactory $timeSlotFactory,
         JsonHelper $jsonHelper,
-        RetailerRepositoryInterface $retailerRepository
+        RetailerRepositoryInterface $retailerRepository,
+        RetailerTimeSlot $retailerTimeSlot
     ) {
         $this->timeSlotFactory    = $timeSlotFactory;
         $this->jsonHelper         = $jsonHelper;
         $this->retailerRepository = $retailerRepository;
+        $this->retailerTimeSlot   = $retailerTimeSlot;
     }
 
     /**
@@ -86,6 +95,11 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
                     );
                     $openingHours[$date][] = $timeSlotModel;
                 }
+            }
+
+            // If not a single opening hour is saved, we delete existing entry for current retailer
+            if (empty($openingHours)) {
+                $this->retailerTimeSlot->deleteByRetailerId($data['entity_id']);
             }
 
             $data['opening_hours'] = $openingHours;
