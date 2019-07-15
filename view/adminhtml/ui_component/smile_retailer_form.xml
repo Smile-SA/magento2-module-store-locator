@@ -181,7 +181,7 @@
         </container>
         <field name="opening_hours_seller_ids">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Smile\RetailerOffer\Ui\Component\Offer\Form\Retailer\Options</item>
+                <item name="options" xsi:type="object">Smile\Retailer\Ui\Component\Form\Retailer\Options</item>
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Apply for retailers</item>
                     <item name="componentType" xsi:type="string">field</item>
@@ -233,7 +233,7 @@
         </container>
         <field name="special_opening_hours_seller_ids">
             <argument name="data" xsi:type="array">
-                <item name="options" xsi:type="object">Smile\RetailerOffer\Ui\Component\Offer\Form\Retailer\Options</item>
+                <item name="options" xsi:type="object">Smile\Retailer\Ui\Component\Form\Retailer\Options</item>
                 <item name="config" xsi:type="array">
                     <item name="label" xsi:type="string" translate="true">Apply for retailers</item>
                     <item name="componentType" xsi:type="string">field</item>
