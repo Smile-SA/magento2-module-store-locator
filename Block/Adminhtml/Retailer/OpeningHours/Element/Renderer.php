@@ -161,8 +161,8 @@ class Renderer extends Template implements RendererInterface
         if ($this->element->getValue()) {
             foreach ($this->element->getValue() as $timeSlot) {
                 $date   = new Zend_Date($this->date->date()->format('Y-m-d'));
-                $startTime = $date->setTime($timeSlot->getStartTime(), 'h:i a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
-                $endTime   = $date->setTime($timeSlot->getEndTime(), 'h:i a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
+                $startTime = $date->setTime($timeSlot->getStartTime(), 'h:mm a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
+                $endTime   = $date->setTime($timeSlot->getEndTime(), 'h:mm a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
                 $values[]  = [$startTime, $endTime];
             }
         }
