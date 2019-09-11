@@ -68,4 +68,12 @@
     </div>
 </div>
 
-<div class="map" data-bind="afterRender: initMap"> </div>
+<div class="map" data-bind="afterRender: initMap">
+    <!-- ko if: isShowCopyrightInfo() -->
+    <div class="copyright-info-wrapper">
+        <a class="copyright-link" data-bind="attr: { href: getCopyrightLink() }">
+            <span class="copyright-text" data-bind="text: getCopyrightText()"></span>
+        </a>
+    </div>
+    <!-- /ko -->
+</div>
