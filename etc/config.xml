@@ -19,6 +19,8 @@
     <default>
         <smile_map>
             <map>
+                <provider_osm_copyright_text>© OpenStreetMap contributors</provider_osm_copyright_text>
+                <provider_osm_copyright_link>https://www.openstreetmap.org/copyright</provider_osm_copyright_link>
                 <provider_all_max_visible_shop>1000</provider_all_max_visible_shop>
             </map>
         </smile_map>
