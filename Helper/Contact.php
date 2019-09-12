@@ -33,9 +33,12 @@ class Contact extends AbstractHelper
      */
     public function hasContactInformation($retailer)
     {
-        return (($retailer->getCustomAttribute('contact_mail') && $retailer->getCustomAttribute('contact_mail')->getValue())
-            || ($retailer->getCustomAttribute('contact_phone') && $retailer->getCustomAttribute('contact_phone')->getValue())
-            || ($retailer->getCustomAttribute('contact_fax') && $retailer->getCustomAttribute('contact_fax')->getValue())
+        return (($retailer->getCustomAttribute('contact_mail')
+                && $retailer->getCustomAttribute('contact_mail')->getValue())
+            || ($retailer->getCustomAttribute('contact_phone')
+                && $retailer->getCustomAttribute('contact_phone')->getValue())
+            || ($retailer->getCustomAttribute('contact_fax')
+                && $retailer->getCustomAttribute('contact_fax')->getValue())
         );
     }
 

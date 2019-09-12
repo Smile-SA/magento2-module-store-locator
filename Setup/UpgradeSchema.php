@@ -16,6 +16,9 @@ use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
 use Magento\Framework\Setup\UpgradeSchemaInterface;
 
+use Smile\StoreLocator\Setup\StoreLocatorSetup;
+use Smile\StoreLocator\Setup\StoreLocatorSetupFactory;
+
 /**
  * Upgrade Schema for StoreLocator Module
  *
@@ -26,14 +29,14 @@ use Magento\Framework\Setup\UpgradeSchemaInterface;
 class UpgradeSchema implements UpgradeSchemaInterface
 {
     /**
-     * @var \Smile\StoreLocator\Setup\StoreLocatorSetup
+     * @var StoreLocatorSetup
      */
     private $storeLocatorSetup;
 
     /**
      * InstallSchema constructor.
      *
-     * @param \Smile\StoreLocator\Setup\StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
+     * @param StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
      */
     public function __construct(StoreLocatorSetupFactory $storeLocatorSetupFactory)
     {
@@ -48,6 +51,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
      * @param SchemaSetupInterface   $setup   Setup
      * @param ModuleContextInterface $context Context
      *
+     * @throws \Zend_Db_Exception
      * @return void
      */
     public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
