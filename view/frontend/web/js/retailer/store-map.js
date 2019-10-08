@@ -20,9 +20,10 @@ define([
         initMarkers: function() {
             var markersList = new StoreCollection({items : this.markers});
             this.markers = markersList.getList();
-
             this.markers.forEach(function(marker) {
-                marker.distance = ko.observable(0);
+                 marker.distance = ko.observable('');
+                 marker.distanceBetween = ko.observable('');
+                 marker.shopStatus = ko.observable('');
             });
 
             this.displayedMarkers = ko.observable(this.markers);

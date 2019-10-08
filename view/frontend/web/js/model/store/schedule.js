@@ -136,6 +136,95 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
             return result;
         },
 
+
+        /**
+         * Get current time store closure.
+         *
+         * @param isOpen
+         * @returns {string}
+         */
+        getTodayCloseTime: function (isOpen) {
+            var now    = new Date();
+            var currentTime = now.getTime();
+            var index  = moment(now).format(this.dateFormat);
+
+            var result = false;
+            var openDay = '';
+            if (this.calendar.hasOwnProperty(index)) {
+                var exist = this.calendar[index];
+                if(!exist.length || isOpen === 'closeNow'){
+                    exist = this.getNextDayData();
+                }
+                if(exist) {
+                    if(isOpen === 'Open') {
+                        var currentStatus = exist[exist.length - 1].end_time;
+                        var currDate = moment(currentStatus, [this.timeFormat]).toDate();
+                        var currDateTime = currDate.getTime();
+
+                        if( currDateTime < currentTime ) {
+                            result = 'closeNow';
+                        } else {
+                            result = exist[exist.length - 1].end_time;
+                        }
+                    } else  {
+                        var openDay  = exist[exist.length - 1];
+                        var openTime = exist[0][0].start_time;
+                        result = openDay + ' ' + openTime;
+                    }
+                }
+            }
+
+            return result;
+        },
+        /**
+         * Get current time and day opening store, if he is closed.
+         *
+         * @param isOpen
+         * @returns []
+         */
+        getNextDayData: function (){
+            var nextDate, day;
+            var indexCurrNexDate;
+            var weekDay = 7;
+            var i = 1;
+            var choiseNextDate = [];
+            while(!choiseNextDate.length && weekDay > i) {
+                if(indexCurrNexDate != null) {
+                    nextDate = new Date(indexCurrNexDate)
+                } else {
+                    nextDate = new Date();
+                }
+                nextDate.setDate(nextDate.getDate() + 1);
+                indexCurrNexDate = moment(nextDate).format(this.dateFormat);
+                choiseNextDate = this.calendar[indexCurrNexDate];
+                i++
+            }
+            if (i === 2) {
+                day = 'tomorrow';
+            } else {
+                day = this.getDayWhenStoreOpen(indexCurrNexDate);
+            }
+
+            return [choiseNextDate, day];
+        },
+        /**
+         * Get current day opening store, if he is closed.
+         *
+         * @param indexCurrNexDate
+         * @returns {string}
+         */
+        getDayWhenStoreOpen: function (indexCurrNexDate) {
+            if(!indexCurrNexDate) {
+                var day = null;
+                return day;
+            } else {
+                var nextDate = new Date(indexCurrNexDate);
+                var options = {weekday: 'long'};
+                var day = nextDate.toLocaleDateString('en-us', options);
+            }
+            return day;
+        },
+
         /**
          * Check if the store will close soon
          *
@@ -163,7 +252,6 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
         getLinkLabel : function () {
             if (this.isOpenToday()) {
                 var label = $.mage.__('Open Today');
-
                 var closeTime = this.getTodayNextCloseTime();
                 var todayHours = this.getTodayOpeningHours();
 

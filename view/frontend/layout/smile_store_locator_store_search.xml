@@ -28,18 +28,29 @@
                                 <item name="children" xsi:type="array">
                                     <item name="geocoder" xsi:type="array">
                                         <item name="component" xsi:type="string">smile-geocoder</item>
-                                        <item name="searchTitleText" xsi:type="string" translate="true">Find a store :</item>
+                                        <item name="searchTitleText" xsi:type="string" translate="true">Search shop </item>
                                         <item name="searchPlaceholderText" xsi:type="string" translate="true">City, Zipcode, Department, ...</item>
                                         <item name="searchButtonText" xsi:type="string" translate="true">Search</item>
                                     </item>
                                     <item name="store-list" xsi:type="array">
                                         <item name="component" xsi:type="string">uiComponent</item>
                                         <item name="storeListTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/store-list</item>
+                                        <item name="nearbyStoreTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/nearby-store</item>
                                         <item name="storeDetailTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/store-detail</item>
-                                        <item name="searchResultsLabel" xsi:type="string" translate="true">%s result(s)</item>
+                                        <item name="searchResultsLabel" xsi:type="string" translate="true">%s stores</item>
                                         <item name="nearbySearchLabel" xsi:type="string" translate="true">%s shop(s) nearby</item>
                                         <item name="viewAllLabel" xsi:type="string" translate="true">View all</item>
                                     </item>
+                                    <!--/new-->
+                                    <item name="service" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="storeServiceTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/services-list</item>
+                                    </item>
+                                    <item name="promotion" xsi:type="array">
+                                        <item name="component" xsi:type="string">uiComponent</item>
+                                        <item name="storePromotionalTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/promotion-list</item>
+                                    </item>
+                                    <!--new-->
                                 </item>
                             </item>
                         </item>

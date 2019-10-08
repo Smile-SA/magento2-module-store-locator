@@ -13,11 +13,20 @@
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
 
+//revert
+use Smile\RetailerPromotion\Api\PromotionRepositoryInterface;
+use Magento\Framework\Api\SearchCriteriaBuilder;
+use Smile\RetailerPromotion\Api\Data\PromotionInterface;
+
+use Smile\RetailerService\Api\ServiceRepositoryInterface;
+use Smile\RetailerService\Api\Data\ServiceInterface;
+//revert
 /**
  * Shop search block.
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -70,6 +79,11 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
      */
     private $serializer;
 
+    //revert
+    private $promotionRepository;
+    private $searchCriteriaBuilder;
+    private $serviceRepositoryInterface;
+    //revert
     /**
      * Constructor.
      *
@@ -92,6 +106,11 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         \Smile\StoreLocator\Helper\Schedule $scheduleHelper,
         \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement,
         SerializerInterface $serializer,
+//        revert
+        PromotionRepositoryInterface $promotionRepository,
+        SearchCriteriaBuilder $searchCriteriaBuilder,
+        ServiceRepositoryInterface $serviceRepositoryInterface,
+//        revert
         $data = []
     ) {
         parent::__construct($context, $data);
@@ -103,6 +122,11 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         $this->scheduleManager           = $scheduleManagement;
         $this->cacheInterface            = $context->getCache();
         $this->serializer = $serializer;
+//        revert
+        $this->promotionRepository = $promotionRepository;
+        $this->searchCriteriaBuilder = $searchCriteriaBuilder;
+        $this->serviceRepositoryInterface = $serviceRepositoryInterface;
+//        revert
         $this->addData(
             [
                 'cache_lifetime' => false,
@@ -150,7 +174,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     {
         $collection = $this->getRetailerCollection();
         $cacheKey = sprintf("%s_%s", 'smile_storelocator_search', $collection->getStoreId());
-        $markers  = $this->cacheInterface->load($cacheKey);
+        $markers  = null; //$this->cacheInterface->load($cacheKey);
 
         if (!$markers) {
             \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
@@ -181,6 +205,32 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                         'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
                     ]
                 );
+                
+//                rever
+
+                    $promoList = $this->getPromoListByRetailerId($retailer->getId());
+                        foreach ($promoList as $promo) {
+                            $markerData['promotion'][] =
+                                [
+                                    'media'         => $promo->getMediaPath(),
+                                    'title'         => $promo->getTitle(),
+                                    'description'   => $promo->getDescription(),
+                                ];
+                        }
+                    $servicesList = $this->getServiceListByRetailerId($retailer->getId());
+                    $imageUrl = $this->getImageUrl().'/retailerservice/';
+                        foreach ($servicesList as $services) {
+
+                            $markerData['service'][] =
+                                [
+                                    'media'         => $imageUrl.$services->getMediaPath(),
+                                    'title'         => $services->getName(),
+                                    'description'   => $services->getDescription(),
+                                ];
+                        }
+
+//                rever
+
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
                 $markers[] = $markerData;
             }
@@ -254,4 +304,41 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
 
         return ['action' => $setUrl, 'data' => $postData];
     }
+
+//revert
+    public function getPromoListByRetailerId($retailerId)
+    {
+        $this->searchCriteriaBuilder
+            ->addFilter(PromotionInterface::RETAILER_ID, $retailerId);
+
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $searchResult = $this->promotionRepository->getList($searchCriteria);
+
+        $items = $searchResult->getItems();
+
+        return $items;
+    }
+
+    public function getServiceListByRetailerId($retailerId)
+    {
+        $this->searchCriteriaBuilder
+            ->addFilter(ServiceInterface::RETAILER_ID, $retailerId);
+
+        $searchCriteria = $this->searchCriteriaBuilder->create();
+        $searchResult = $this->serviceRepositoryInterface->getList($searchCriteria);
+
+        $items = $searchResult->getItems();
+
+        return $items;
+    }
+
+    public function getImageUrl(){
+        $_objectManager = \Magento\Framework\App\ObjectManager::getInstance(); //instance of\Magento\Framework\App\ObjectManager
+        $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
+        $currentStore = $storeManager->getStore();
+        $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
+        return $mediaUrl;
+    }
+
+//revert
 }
