@@ -8,7 +8,8 @@
 //  * @category  Smile
 //  * @package   Smile\StoreLocator
 //  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
-//  * @copyright 2016 Smile
+//  * @author    Ihor KVASNYTSKYI <ihor.kvasnytskyi@smile-ukraine.com>
+//  * @copyright 2019 Smile
 //  * @license   Open Software License ("OSL") v. 3.0
 //  */
 
@@ -17,241 +18,10 @@
 //  Shop View
 //  _____________________________________________
 
-.store-locator-services-container {
-    float: left;
-    width: 100%;
-    position: relative;
-    background-color: #F8F8F8;
-    &:after {
-        display: block;
-        width: 100%;
-        content: '';
-        background-color: #F8F8F8;
-        height: 100%;
-        width: 100%;
-        right: 100%;
-        position: absolute;
-        top: 0;
-    }
-    &:before {
-        display: block;
-        width: 100%;
-        content: '';
-        background-color: #F8F8F8;
-        height: 100%;
-        width: 100%;
-        left: 100%;
-        position: absolute;
-        top: 0;
-    }
 
-    h4 {
-        color: #333435;
-        font-family: "Open Sans";
-        font-size: 36px;
-        font-weight: 600;
-        line-height: 49px;
-        text-align: center;
-        margin-button: 60px;
-    }
-}
-.store-locator-services-wrapper {
-  text-align: center;
-  max-width: 900px;
-  width: 100%;
-  margin: 0 auto;
-  padding-top: 50px;
-  padding-bottom: 70px;
-}
+@import "nearby-markers/_nearby-markers";
 
-.store-locator-services-item {
-  width: 23%;
-  display: inline-block;
-  margin-right: 2%;
-  text-align: center;
-}
 
-.store-locator-promotions-container {
-    float: left;
-    width: 100%;
-    position: relative;
-    background-color: #F8F8F8;
-    &:after {
-        display: block;
-        width: 100%;
-        content: '';
-        background-color: #F8F8F8;
-        height: 100%;
-        width: 100%;
-        right: 100%;
-        position: absolute;
-        top: 0;
-    }
-    &:before {
-        display: block;
-        width: 100%;
-        content: '';
-        background-color: #F8F8F8;
-        height: 100%;
-        width: 100%;
-        left: 100%;
-        position: absolute;
-        top: 0;
-    }
-    h4 {
-        color: #333435;
-        font-family: "Open Sans";
-        font-size: 36px;
-        font-weight: 600;
-        line-height: 49px;
-        text-align: center;
-        margin-button: 60px;
-    }
-}
-
-.store-locator-promotions-wrapper {
-    text-align: center;
-    max-width: 1020px;
-    width: 100%;
-    margin: 0 auto;
-    padding-top: 50px;
-    padding-bottom: 70px;
-}
-
-.store-locator-promotions-item {
-    display: inline-block;
-    margin-right: 2.55%;
-    width: 32%;
-    max-width: 320px;
-    background: white;
-    height: 368px;
-    vertical-align: text-top;
-    border: 1px solid #E2E2E2;
-    box-shadow: 0 4px 12px 0 rgba(0,0,0,0.06);
-    padding: 30px;
-    box-sizing: border-box;
-
-    &:last-of-type {
-        margin-right: 0;
-    }
-    .image-wrapper {
-        width: 100%;
-        height: 123px;
-        position: relative;
-
-        img {
-            max-height: 123px;
-            display: block;
-            margin: 0 auto;
-            position: absolute;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            top: 0;
-        }
-    }
-
-    h4 {
-        color: #EE5C1D;
-        font-family: "Open Sans";
-        font-size: 28px;
-        font-weight: 600;
-        line-height: 30px;
-        margin: 10px 0 20px 0;
-    }
-
-    .description-container {
-        color: #333435;
-        font-family: "Open Sans";
-        font-size: 15px;
-        line-height: 27px;
-        text-align: center;
-        max-height: 108px;
-    }
-}
-.nearby-marker-wrapper {
-    &-container {
-      float: left;
-      width: 100%;
-      position: relative;
-      background-color: #ffffff;
-      padding-bottom: 20px;
-    }
-    &-list {
-      text-align: center;
-      max-width: 900px;
-      width: 100%;
-      margin: 0 auto;
-      padding-top: 50px;
-      list-style: none;
-      padding-left: 0;
-    }
-
-    &-item {
-      display: inline-block;
-      margin-right: 2.55%;
-      width: 30%;
-      max-width: 320px;
-      background: white;
-      height: auto;
-      vertical-align: text-top;
-      padding: 30px;
-      box-sizing: border-box;
-      h4 {
-        color: #333435;
-        font-family: "Open Sans";
-        font-size: 36px;
-        font-weight: 600;
-        line-height: 49px;
-        text-align: center;
-        margin-button: 60px;
-        &.title {
-          color: #333435;
-          font-family: "Open Sans";
-          font-size: 24px;
-          font-weight: 600;
-          line-height: 33px;
-          width: 100%;
-          margin: 0 0 15px 0;
-        }
-      }
-      .image-wrapper {
-        width: 132px;
-        height: 132px;
-        background: grey;
-        border-radius: 50%;
-        margin: 20px auto;
-        display: block;
-      }
-      .address {
-        margin-top: 15px;
-        font-family: "Open Sans";
-        font-size: 14px;
-        line-height: 24px;
-        .value {
-          font-weight: 600;
-        }
-      }
-      a {
-        text-decoration: none;
-        color: #333435;
-        font-family: "Open Sans";
-        font-size: 24px;
-        font-weight: 600;
-        line-height: 33px;
-
-        &:hover {
-          text-decoration: none;
-        }
-      }
-      &:first-of-type {
-        display: none;
-      }
-      &:last-of-type {
-        display: inline-block !important;
-      }
-    }
-}
 .smile-store-locator-store-view, .smile-store-locator-store-search,
 .smile_store_locator-store-view, .smile_store_locator-store-search {
     .current-status-shop {
@@ -260,6 +30,7 @@
         font-family: "Open Sans";
         font-size: 14px;
         line-height: 19px;
+        width: 83%;
         .open-shop {
             color: #5ACA2B;
             font-weight: bold;
@@ -400,6 +171,9 @@
 }
 
 .smile-store-locator-store-search, .smile_store_locator-store-search {
+    .page-wrapper {
+        overflow-x: hidden;
+    }
     .shop-details {
         width: auto;
         max-width: 480px;
@@ -452,22 +226,6 @@
         .close-btn-wrapper {
             padding: 0 20px 0 30px;
             .close {
-                //.lib-button-icon(
-                //    @icon-remove,
-                //    @_icon-font-size: 32px,
-                //    @_icon-font-line-height: 32px,
-                //    @_icon-font-text-hide: true
-                //);
-                //.lib-button-reset();
-                //height: 40px;
-                //position: absolute;
-                //right: 5px;
-                //top: 5px;
-                //width: 40px;
-                //color: @color-gray56;
-                //:hover {
-                //    color: #333333;
-                //}
 
                 height: 50px;
                 position: relative;
@@ -567,7 +325,6 @@
     height: 762px;
 
     .map {
-        //width: 69.1%;
         max-width: 986px;
         height: 100%;
         background: #666;
@@ -861,9 +618,6 @@
                     }
                 }
 
-                //li.result-item:nth-child(even) {
-                //    background: #F0F0F0;
-                //}
             }
 
             .max_stores_message {
@@ -1104,11 +858,6 @@ a.geolocalize:before {
                 }
             }
         }
-
-        //.map {
-        //    height: 300px;
-        //    margin-top: 5px;
-        //}
     }
 }
 .leaflet-marker-icon {
@@ -1253,6 +1002,7 @@ a.geolocalize:before {
                             margin-bottom: 9px;
                             font-size: 12px;
                             line-height: 17px;
+
                             .open-shop {
                                 color: #5ACA2B;
                                 font-weight: bold;
@@ -1357,13 +1107,10 @@ a.geolocalize:before {
                         }
 
                         .geolocalize-container {
-                            //flex: 0 0 100%;
                             position: absolute;
                             right: -1px;
                             top: 22px;
                             a {
-                                //width:100%;
-                                //text-align:center;
                                 width: 100%;
                                 text-align: center;
                                 background: transparent;
@@ -1390,7 +1137,7 @@ a.geolocalize:before {
         .map {
             width: 100%;
             height: 420px;
-            position: absolute;
+            position: absolute !important;
             bottom: 0;
             left: 0;
             z-index: 5;
@@ -1419,7 +1166,7 @@ a.geolocalize:before {
             padding: 0 10px;
 
             .display-btn {
-                width: 49.4%;
+                width: 49.3%;
                 background: white;
                 text-align: center;
                 border: 0;

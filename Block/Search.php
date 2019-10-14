@@ -19,14 +19,13 @@ use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
 
-//revert
 use Smile\RetailerPromotion\Api\PromotionRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Smile\RetailerPromotion\Api\Data\PromotionInterface;
 
 use Smile\RetailerService\Api\ServiceRepositoryInterface;
 use Smile\RetailerService\Api\Data\ServiceInterface;
-//revert
+
 /**
  * Shop search block.
  * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
@@ -79,11 +78,9 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
      */
     private $serializer;
 
-    //revert
     private $promotionRepository;
     private $searchCriteriaBuilder;
     private $serviceRepositoryInterface;
-    //revert
     /**
      * Constructor.
      *
@@ -106,11 +103,9 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         \Smile\StoreLocator\Helper\Schedule $scheduleHelper,
         \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement,
         SerializerInterface $serializer,
-//        revert
         PromotionRepositoryInterface $promotionRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
         ServiceRepositoryInterface $serviceRepositoryInterface,
-//        revert
         $data = []
     ) {
         parent::__construct($context, $data);
@@ -122,11 +117,9 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         $this->scheduleManager           = $scheduleManagement;
         $this->cacheInterface            = $context->getCache();
         $this->serializer = $serializer;
-//        revert
         $this->promotionRepository = $promotionRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->serviceRepositoryInterface = $serviceRepositoryInterface;
-//        revert
         $this->addData(
             [
                 'cache_lifetime' => false,
@@ -205,31 +198,29 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                         'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
                     ]
                 );
-                
-//                rever
 
                     $promoList = $this->getPromoListByRetailerId($retailer->getId());
+                    $imageUrlPromotion = $this->getImageUrl().'/retailerpromotion/';
                         foreach ($promoList as $promo) {
                             $markerData['promotion'][] =
                                 [
-                                    'media'         => $promo->getMediaPath(),
+                                    'media'         => $imageUrlPromotion.$promo->getMediaPath(),
                                     'title'         => $promo->getTitle(),
                                     'description'   => $promo->getDescription(),
                                 ];
                         }
                     $servicesList = $this->getServiceListByRetailerId($retailer->getId());
-                    $imageUrl = $this->getImageUrl().'/retailerservice/';
+                    $imageUrlService = $this->getImageUrl().'/retailerservice/';
                         foreach ($servicesList as $services) {
 
                             $markerData['service'][] =
                                 [
-                                    'media'         => $imageUrl.$services->getMediaPath(),
+                                    'media'         => $imageUrlService.$services->getMediaPath(),
                                     'title'         => $services->getName(),
                                     'description'   => $services->getDescription(),
                                 ];
                         }
 
-//                rever
 
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
                 $markers[] = $markerData;
@@ -305,11 +296,17 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         return ['action' => $setUrl, 'data' => $postData];
     }
 
-//revert
     public function getPromoListByRetailerId($retailerId)
     {
+        $now = new \DateTime();
+        $currDateFormat = $now->format('Y-m-d H:i:s');
+
         $this->searchCriteriaBuilder
-            ->addFilter(PromotionInterface::RETAILER_ID, $retailerId);
+            ->addFilter(PromotionInterface::RETAILER_ID, $retailerId)
+            ->addFilter(PromotionInterface::STATUS, 2)
+            ->addFilter(PromotionInterface::IS_ACTIVE, true)
+            ->addFilter(PromotionInterface::CREATED_AT, $currDateFormat, 'lteq')
+            ->addFilter(PromotionInterface::END_AT, $currDateFormat, 'gteq');
 
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $searchResult = $this->promotionRepository->getList($searchCriteria);
@@ -322,7 +319,8 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     public function getServiceListByRetailerId($retailerId)
     {
         $this->searchCriteriaBuilder
-            ->addFilter(ServiceInterface::RETAILER_ID, $retailerId);
+            ->addFilter(ServiceInterface::RETAILER_ID, $retailerId)
+            ->addFilter(ServiceInterface::SORT, 1);
 
         $searchCriteria = $this->searchCriteriaBuilder->create();
         $searchResult = $this->serviceRepositoryInterface->getList($searchCriteria);
@@ -333,12 +331,9 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     }
 
     public function getImageUrl(){
-        $_objectManager = \Magento\Framework\App\ObjectManager::getInstance(); //instance of\Magento\Framework\App\ObjectManager
-        $storeManager = $_objectManager->get('Magento\Store\Model\StoreManagerInterface');
-        $currentStore = $storeManager->getStore();
+        $currentStore = $this->_storeManager->getStore();
         $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
         return $mediaUrl;
     }
 
-//revert
 }

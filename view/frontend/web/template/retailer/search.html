@@ -11,6 +11,7 @@
                     <div class="geolocalize-container">
                         <div class="primary">
                             <a data-bind="{click: $parent.geolocalize.bind($parent), attr : {title: $t('Geolocalize me') } }" class="action primary geolocalize" href="#">
+                                <!--<span data-bind="i18n: 'Geolocalize me'"></span>-->
                             </a>
                         </div>
                     </div>
@@ -72,7 +73,7 @@
 <div class="store-locator-services-container" data-bind="{scope: requestChild('service'), visible: selectedMarker() !== null}">
     <!--ko if: $parent.selectedMarker-->
     <div data-bind="visible: $parent.selectedMarker().service">
-        <h4>Services</h4>
+        <h4 class="store-locator-services-title">Services</h4>
         <div class="store-locator-services-wrapper clearfix" data-bind="{foreach: $parent.selectedMarker().service}">
             <div class="store-locator-services-item" data-bind="{template: $parent.storeServiceTemplate}"></div>
         </div>
@@ -84,7 +85,7 @@
     <!--ko if: $parent.selectedMarker -->
     <div data-bind="visible: $parent.selectedMarker().promotion">
         <h4>Promotional code</h4>
-        <div class="store-locator-promotions-wrapper clearfix" data-bind="{foreach: $parent.selectedMarker().promotion}">
+        <div class="store-locator-promotions-wrapper clearfix" data-bind="{foreach: $parent.selectedMarker().promotion, mageInit: {'promotionSlider':{}}}">
             <div class="store-locator-promotions-item" data-bind="{template: $parent.storePromotionalTemplate}"></div>
         </div>
     </div>

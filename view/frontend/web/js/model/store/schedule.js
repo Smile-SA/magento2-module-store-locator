@@ -8,7 +8,8 @@
  * @category  Smile
  * @package   Smile\StoreLocator
  * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
+ * @author    Ihor KVASNYTSKYI <ihor.kvasnytskyi@smile-ukraine.com>
+ * @copyright 2019 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
 
@@ -199,7 +200,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
                 choiseNextDate = this.calendar[indexCurrNexDate];
                 i++
             }
-            if (i === 2) {
+            if (i == 2) {
                 day = 'tomorrow';
             } else {
                 day = this.getDayWhenStoreOpen(indexCurrNexDate);
@@ -211,7 +212,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
          * Get current day opening store, if he is closed.
          *
          * @param indexCurrNexDate
-         * @returns {string}
+         * @returns {}
          */
         getDayWhenStoreOpen: function (indexCurrNexDate) {
             if(!indexCurrNexDate) {

@@ -41,16 +41,6 @@
                                         <item name="nearbySearchLabel" xsi:type="string" translate="true">%s shop(s) nearby</item>
                                         <item name="viewAllLabel" xsi:type="string" translate="true">View all</item>
                                     </item>
-                                    <!--/new-->
-                                    <item name="service" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="storeServiceTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/services-list</item>
-                                    </item>
-                                    <item name="promotion" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="storePromotionalTemplate" xsi:type="string">Smile_StoreLocator/retailer/search/promotion-list</item>
-                                    </item>
-                                    <!--new-->
                                 </item>
                             </item>
                         </item>
