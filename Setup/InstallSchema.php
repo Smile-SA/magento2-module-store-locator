@@ -15,6 +15,7 @@ namespace Smile\StoreLocator\Setup;
 use Magento\Framework\Setup\InstallSchemaInterface;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\SchemaSetupInterface;
+use Smile\StoreLocator\Setup\StoreLocatorSetup;
 use Smile\StoreLocator\Setup\StoreLocatorSetupFactory;
 
 /**
@@ -27,14 +28,14 @@ use Smile\StoreLocator\Setup\StoreLocatorSetupFactory;
 class InstallSchema implements InstallSchemaInterface
 {
     /**
-     * @var \Smile\StoreLocator\Setup\StoreLocatorSetup
+     * @var StoreLocatorSetup
      */
     private $storeLocatorSetup;
 
     /**
      * InstallSchema constructor.
      *
-     * @param \Smile\StoreLocator\Setup\StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
+     * @param StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
      */
     public function __construct(StoreLocatorSetupFactory $storeLocatorSetupFactory)
     {
@@ -43,6 +44,7 @@ class InstallSchema implements InstallSchemaInterface
 
     /**
      * {@inheritdoc}
+     * @throws \Zend_Db_Exception
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
     public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)

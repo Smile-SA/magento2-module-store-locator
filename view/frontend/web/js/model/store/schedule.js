@@ -284,7 +284,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
          * @returns {*}
          */
         getLocale : function() {
-            return this.locale.replace("_", "-");
+            return this.locale.replace(new RegExp('_', 'g'), "-");
         },
 
         /**

@@ -62,6 +62,7 @@ class Schedule extends AbstractHelper
     /**
      * Retrieve configuration used by schedule components
      *
+     * @throws \Zend_Locale_Exception
      * @return array
      */
     public function getConfig()

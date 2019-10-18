@@ -101,7 +101,7 @@ class RetailerCollectionPlugin
             foreach ($collection->getItems() as $currentItem) {
                 // Process hydrating Item data with the extension attributes Data.
                 $data = $this->joinProcessor->extractExtensionAttributes($entityType, $currentItem->getData());
-                if ($data[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]) {
+                if (isset($data[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY])) {
                     $currentItem->setExtensionAttributes($data[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]);
                 }
 

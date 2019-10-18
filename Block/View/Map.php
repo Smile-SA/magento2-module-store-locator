@@ -126,4 +126,14 @@ class Map extends AbstractView
     {
         return $this->map->getDirectionUrl($this->getCoordinates());
     }
+
+    /**
+     * Returns retailer description
+     *
+     * @return null|string
+     */
+    public function getDescription()
+    {
+        return $this->getRetailer()->getDescription();
+    }
 }

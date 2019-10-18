@@ -73,4 +73,7 @@
         <plugin name="smile_store_locator_add_address" type="Smile\StoreLocator\Plugin\RetailerEditFormPlugin" />
     </type>
 
+    <type name="Magento\Ui\Component\Form">
+        <plugin name="smile_store_locator_ui_component_form" type="Smile\StoreLocator\Plugin\RetailerUiComponentFormPlugin" />
+    </type>
 </config>

@@ -12,20 +12,24 @@
  */
 namespace Smile\StoreLocator\Block;
 
+use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Serialize\SerializerInterface;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
-use Smile\StoreLocator\Helper\Schedule;
 
 /**
  * Shop search block.
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  *
  * @category Smile
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class Search extends \Magento\Framework\View\Element\Template
+class Search extends \Magento\Framework\View\Element\Template implements IdentityInterface
 {
+    const CACHE_TAG = 'smile_store_locator_markers';
+
     /**
      * @var MapInterface
      */
@@ -42,7 +46,7 @@ class Search extends \Magento\Framework\View\Element\Template
     private $storeLocatorHelper;
 
     /**
-     * @var \Smile\Map\Model\AddressFormatter
+     * @var AddressFormatter
      */
     private $addressFormatter;
 
@@ -62,15 +66,21 @@ class Search extends \Magento\Framework\View\Element\Template
     private $cacheInterface;
 
     /**
+     * @var SerializerInterface
+     */
+    private $serializer;
+
+    /**
      * Constructor.
      *
      * @param \Magento\Framework\View\Element\Template\Context               $context                   Block context.
      * @param \Smile\Map\Api\MapProviderInterface                            $mapProvider               Map provider.
      * @param \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory Retailer collection factory.
      * @param \Smile\StoreLocator\Helper\Data                                $storeLocatorHelper        Store locator helper.
-     * @param \Smile\Map\Model\AddressFormatter                              $addressFormatter          Address formatter tool.
+     * @param AddressFormatter                                               $addressFormatter          Address formatter tool.
      * @param \Smile\StoreLocator\Helper\Schedule                            $scheduleHelper            Schedule Helper
      * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement          $scheduleManagement        Schedule Management
+     * @param SerializerInterface                                            $serializer                JSON Serializer
      * @param array                                                          $data                      Additional data.
      */
     public function __construct(
@@ -78,9 +88,10 @@ class Search extends \Magento\Framework\View\Element\Template
         \Smile\Map\Api\MapProviderInterface $mapProvider,
         \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory,
         \Smile\StoreLocator\Helper\Data $storeLocatorHelper,
-        \Smile\Map\Model\AddressFormatter $addressFormatter,
+        AddressFormatter $addressFormatter,
         \Smile\StoreLocator\Helper\Schedule $scheduleHelper,
         \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement,
+        SerializerInterface $serializer,
         $data = []
     ) {
         parent::__construct($context, $data);
@@ -91,10 +102,11 @@ class Search extends \Magento\Framework\View\Element\Template
         $this->scheduleHelper            = $scheduleHelper;
         $this->scheduleManager           = $scheduleManagement;
         $this->cacheInterface            = $context->getCache();
+        $this->serializer = $serializer;
         $this->addData(
             [
                 'cache_lifetime' => false,
-                'cache_tags'     => $this->getRetailerCollection()->getNewEmptyItem()->getCacheTags(),
+                'cache_tags'     => $this->getIdentities(),
             ]
         );
     }
@@ -124,7 +136,7 @@ class Search extends \Magento\Framework\View\Element\Template
             $jsLayout['components']['store-locator-search']['children']['geocoder']['fulltextSearch'] = $this->escapeJsQuote($query);
         }
 
-        return json_encode($jsLayout);
+        return $this->serializer->serialize($jsLayout);
     }
 
     /**
@@ -174,15 +186,25 @@ class Search extends \Magento\Framework\View\Element\Template
             }
             \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES');
 
-            $markers = json_encode($markers);
+            $markers = $this->serializer->serialize($markers);
             $this->cacheInterface->save(
                 $markers,
                 $cacheKey,
-                $collection->getNewEmptyItem()->getCacheTags()
+                $this->getIdentities()
             );
         }
 
-        return json_decode($markers);
+        return $this->serializer->unserialize($markers);
+    }
+
+    /**
+     * Return unique ID(s) for each object in system
+     *
+     * @return array|string[]
+     */
+    public function getIdentities()
+    {
+        return array_merge([self::CACHE_TAG], $this->getRetailerCollection()->getNewEmptyItem()->getCacheTags() ?? []);
     }
 
     /**
@@ -206,11 +228,12 @@ class Search extends \Magento\Framework\View\Element\Template
      * Collection of displayed retailers.
      *
      * @return \Smile\Retailer\Model\ResourceModel\Retailer\Collection
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
     private function getRetailerCollection()
     {
         $retailerCollection = $this->retailerCollectionFactory->create();
-        $retailerCollection->addAttributeToSelect('*');
+        $retailerCollection->addAttributeToSelect(['name', 'contact_mail', 'contact_phone', 'contact_mail']);
         $retailerCollection->addFieldToFilter('is_active', (int) true);
         $retailerCollection->addOrder('name', 'asc');
 
@@ -222,7 +245,7 @@ class Search extends \Magento\Framework\View\Element\Template
      *
      * @param \Smile\Retailer\Api\Data\RetailerInterface $retailer The store
      *
-     * @return string
+     * @return array
      */
     private function getSetStorePostData($retailer)
     {

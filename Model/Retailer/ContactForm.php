@@ -90,7 +90,7 @@ class ContactForm
                 ->setTemplateIdentifier($this->scopeConfig->getValue(\Magento\Contact\Controller\Index::XML_PATH_EMAIL_TEMPLATE, $storeScope))
                 ->setTemplateOptions(
                     [
-                        'area'  => \Magento\Backend\App\Area\FrontNameResolver::AREA_CODE,
+                        'area'  => \Magento\Framework\App\Area::AREA_FRONTEND,
                         'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
                     ]
                 )

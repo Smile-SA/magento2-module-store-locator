@@ -54,7 +54,7 @@ class Country extends Table
     /**
      * {@inheritdoc}
      */
-    public function getAllOptions()
+    public function getAllOptions($withEmpty = true, $defaultValues = false)
     {
         if ($this->_options === null) {
             $this->_options = $this->countriesFactory->create()

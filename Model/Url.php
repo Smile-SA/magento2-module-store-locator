@@ -87,9 +87,8 @@ class Url
     public function getUrlKey(RetailerInterface $retailer)
     {
         $urlKey = !empty($retailer->getUrlKey()) ? $retailer->getUrlKey() : $retailer->getName();
-        $this->filter->translitUrl($urlKey);
 
-        return $this->filter->translitUrl($urlKey);
+        return $urlKey !== null ? $this->filter->translitUrl($urlKey) : null;
     }
 
     /**
