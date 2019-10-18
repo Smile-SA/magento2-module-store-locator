@@ -12,6 +12,8 @@
  */
 namespace Smile\StoreLocator\Plugin;
 
+use Magento\Ui\Component\Form;
+
 /**
  * Retailer ui component form plugin.
  *
@@ -22,23 +24,23 @@ namespace Smile\StoreLocator\Plugin;
 class RetailerUiComponentFormPlugin
 {
     /**
-     * Add retailer ids selected to datasource data
+     * Data source name
+     */
+    const DATA_SOURCE_NAME = 'storelocator_retailer_mass_edit_hours_form_data_source';
+
+    /**
+     * @param Form  $subject
+     * @param array $result
      *
-     * @param \Magento\Ui\Component\Form $form    Form
-     * @param \Closure                   $proceed Closure
      * @return array
      */
-    public function aroundGetDataSourceData(\Magento\Ui\Component\Form $form, \Closure $proceed)
+    public function afterGetDataSourceData(Form $subject, array $result)
     {
-        $dataSource = $proceed();
-
-        $dataProvider = $form->getContext()->getDataProvider();
-        if ($dataProvider->getName() == 'storelocator_retailer_mass_edit_hours_form_data_source'
-            && !isset($dataSource['data'])
-        ) {
-            $dataSource['data'] = $dataProvider->getData();
+        $dataProvider = $subject->getContext()->getDataProvider();
+        if ($dataProvider->getName() == self::DATA_SOURCE_NAME && empty($result['data'])) {
+            $result['data'] = $dataProvider->getData();
         }
 
-        return $dataSource;
+        return $result;
     }
 }

@@ -13,6 +13,7 @@
 namespace Smile\StoreLocator\Plugin;
 
 use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\Seller\Ui\Component\Seller\Form\DataProvider;
 
 /**
  * Retailer form data provider plugin.
@@ -24,41 +25,38 @@ use Smile\Retailer\Api\Data\RetailerInterface;
 class RetailerEditFormPlugin
 {
     /**
-     * Append address to the dataprovider data.
-     *
-     * @param \Smile\Seller\Ui\Component\Seller\Form\DataProvider $dataProvider DataProvider.
-     * @param \Closure                                            $proceed      Original method.
+     * @param DataProvider  $subject
+     * @param array         $result
      *
      * @return array
      */
-    public function aroundGetData(\Smile\Seller\Ui\Component\Seller\Form\DataProvider $dataProvider, \Closure $proceed)
+    public function afterGetData(DataProvider $subject, $result)
     {
-        $data     = $proceed();
-        $retailer = $this->getRetailer($dataProvider);
+        $retailer = $this->getRetailer($subject);
 
         if ($retailer !== null && $retailer->getExtensionAttributes()->getAddress()) {
             $address = $retailer->getExtensionAttributes()->getAddress();
-            $data[$retailer->getId()]['address'] = $address->getData();
+            $result[$retailer->getId()]['address'] = $address->getData();
 
             if ($address->getCoordinates()) {
-                $data[$retailer->getId()]['address']['coordinates'] = [
+                $result[$retailer->getId()]['address']['coordinates'] = [
                     'latitude'  => $address->getCoordinates()->getLatitude(),
                     'longitude' => $address->getCoordinates()->getLongitude(),
                 ];
             }
         }
 
-        return $data;
+        return $result;
     }
 
     /**
      * Return the currently edited retailer.
      *
-     * @param \Smile\Seller\Ui\Component\Seller\Form\DataProvider $dataProvider DataProvider.
+     * @param DataProvider $dataProvider DataProvider.
      *
-     * @return NULL|\Smile\Retailer\Api\Data\RetailerInterface
+     * @return NULL|RetailerInterface
      */
-    private function getRetailer(\Smile\Seller\Ui\Component\Seller\Form\DataProvider $dataProvider)
+    private function getRetailer(DataProvider $dataProvider)
     {
         $retailer = $dataProvider->getCollection()->getFirstItem();
 
