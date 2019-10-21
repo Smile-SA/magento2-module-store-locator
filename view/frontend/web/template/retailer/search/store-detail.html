@@ -1,4 +1,7 @@
 <div class="header">
+    <div class="image-wrapper-header" data-bind="visible: image != false">
+        <img data-bind="{attr : {src: image}}" alt="">
+    </div>
     <div class="store-name"><h2 data-bind="text: name"></h2></div>
     <div class="actions">
 

@@ -57,11 +57,21 @@
         <!-- ko if: ($parent.selectedMarker() && $parent.selectedMarker.bind($parent)) -->
             <div class="shop-details-wrapper" data-bind="{template: { name: storeDetailTemplate, data: $parent.selectedMarker() }}"></div>
         <!-- /ko -->
+        <!--ko if: $parent.nearbyMarkers -->
+        <!--<div class="search-result-list" data-bind="{ visible: $parent.nearbyMarkers().length > 0}">-->
+            <!--<div class="search-result-header">-->
+                <!--<p data-bind="text: $t(nearbySearchLabel).replace('%s', $parent.countNearbyMarkers.bind($parent))"></p>-->
+            <!--</div>-->
+            <!--<ul data-bind="foreach: $parent.nearbyMarkers">-->
+                <!--<li data-bind="template: $parent.storeListTemplate" class="result-item"></li>-->
+            <!--</ul>-->
+        <!--</div>-->
+         <!--/ko -->
         <div class="close-btn-wrapper">
             <button type="button"
                     class="action close"
                     data-action="close"
-                    data-bind="{ click : $parent.resetBounds.bind($parent), attr: { title: $t('Close') }}">
+                    data-bind="{ click : $parent.closeDetails.bind($parent), attr: { title: $t('Close') }}">
                 <span data-bind="i18n: 'Close'"></span>
             </button>
         </div>
@@ -82,6 +92,7 @@
 </div>
 
 <div class="store-locator-promotions-container" data-bind="{scope: requestChild('promotion'), visible: selectedMarker() !== null}">
+
     <!--ko if: $parent.selectedMarker -->
     <div data-bind="visible: $parent.selectedMarker().promotion">
         <h4>Promotional code</h4>

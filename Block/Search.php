@@ -172,9 +172,11 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         if (!$markers) {
             \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
             /** @var RetailerInterface $retailer */
+            $imageUrlRetailer = $this->getImageUrl().'seller/';
             foreach ($collection as $retailer) {
                 $address = $retailer->getExtensionAttributes()->getAddress();
                 \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_DATA');
+                $image = $retailer->getMediaPath() ? $imageUrlRetailer.$retailer->getMediaPath() : false;
                 $markerData = [
                     'id'           => $retailer->getId(),
                     'latitude'     => $address->getCoordinates()->getLatitude(),
@@ -184,6 +186,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                     'url'          => $this->storeLocatorHelper->getRetailerUrl($retailer),
                     'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
                     'setStoreData' => $this->getSetStorePostData($retailer),
+                    'image'        => $image,
                 ];
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_DATA');
                 foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
@@ -274,7 +277,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     private function getRetailerCollection()
     {
         $retailerCollection = $this->retailerCollectionFactory->create();
-        $retailerCollection->addAttributeToSelect(['name', 'contact_mail', 'contact_phone', 'contact_mail']);
+        $retailerCollection->addAttributeToSelect(['name', 'contact_mail', 'contact_phone', 'contact_mail', 'image']);
         $retailerCollection->addFieldToFilter('is_active', (int) true);
         $retailerCollection->addOrder('name', 'asc');
 
