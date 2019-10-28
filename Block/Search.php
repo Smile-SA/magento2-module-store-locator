@@ -21,7 +21,6 @@ use Smile\Retailer\Api\Data\RetailerInterface;
 
 use Smile\RetailerPromotion\Api\PromotionRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
-use Smile\RetailerPromotion\Api\Data\PromotionInterface;
 
 use Smile\RetailerService\Api\ServiceRepositoryInterface;
 use Smile\RetailerService\Api\Data\ServiceInterface;
@@ -78,8 +77,8 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
      */
     private $serializer;
 
-    private $promotionRepository;
     private $searchCriteriaBuilder;
+
     private $serviceRepositoryInterface;
     /**
      * Constructor.
@@ -117,7 +116,6 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         $this->scheduleManager           = $scheduleManagement;
         $this->cacheInterface            = $context->getCache();
         $this->serializer = $serializer;
-        $this->promotionRepository = $promotionRepository;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
         $this->serviceRepositoryInterface = $serviceRepositoryInterface;
         $this->addData(
@@ -167,7 +165,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     {
         $collection = $this->getRetailerCollection();
         $cacheKey = sprintf("%s_%s", 'smile_storelocator_search', $collection->getStoreId());
-        $markers  = null; //$this->cacheInterface->load($cacheKey);
+        $markers  = null;
 
         if (!$markers) {
             \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
@@ -201,28 +199,6 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                         'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
                     ]
                 );
-
-                    $promoList = $this->getPromoListByRetailerId($retailer->getId());
-                    $imageUrlPromotion = $this->getImageUrl().'/retailerpromotion/';
-                        foreach ($promoList as $promo) {
-                            $markerData['promotion'][] =
-                                [
-                                    'media'         => $imageUrlPromotion.$promo->getMediaPath(),
-                                    'title'         => $promo->getTitle(),
-                                    'description'   => $promo->getDescription(),
-                                ];
-                        }
-                    $servicesList = $this->getServiceListByRetailerId($retailer->getId());
-                    $imageUrlService = $this->getImageUrl().'/retailerservice/';
-                        foreach ($servicesList as $services) {
-
-                            $markerData['service'][] =
-                                [
-                                    'media'         => $imageUrlService.$services->getMediaPath(),
-                                    'title'         => $services->getName(),
-                                    'description'   => $services->getDescription(),
-                                ];
-                        }
 
 
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
@@ -299,39 +275,6 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         return ['action' => $setUrl, 'data' => $postData];
     }
 
-    public function getPromoListByRetailerId($retailerId)
-    {
-        $now = new \DateTime();
-        $currDateFormat = $now->format('Y-m-d H:i:s');
-
-        $this->searchCriteriaBuilder
-            ->addFilter(PromotionInterface::RETAILER_ID, $retailerId)
-            ->addFilter(PromotionInterface::STATUS, 2)
-            ->addFilter(PromotionInterface::IS_ACTIVE, true)
-            ->addFilter(PromotionInterface::CREATED_AT, $currDateFormat, 'lteq')
-            ->addFilter(PromotionInterface::END_AT, $currDateFormat, 'gteq');
-
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $searchResult = $this->promotionRepository->getList($searchCriteria);
-
-        $items = $searchResult->getItems();
-
-        return $items;
-    }
-
-    public function getServiceListByRetailerId($retailerId)
-    {
-        $this->searchCriteriaBuilder
-            ->addFilter(ServiceInterface::RETAILER_ID, $retailerId)
-            ->addFilter(ServiceInterface::SORT, 1);
-
-        $searchCriteria = $this->searchCriteriaBuilder->create();
-        $searchResult = $this->serviceRepositoryInterface->getList($searchCriteria);
-
-        $items = $searchResult->getItems();
-
-        return $items;
-    }
 
     public function getImageUrl(){
         $currentStore = $this->_storeManager->getStore();

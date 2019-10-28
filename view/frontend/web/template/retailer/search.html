@@ -80,28 +80,15 @@
 
 <div class="map" data-bind="afterRender: initMap"> </div>
 
-<div class="store-locator-services-container" data-bind="{scope: requestChild('service'), visible: selectedMarker() !== null}">
+<!--This wrapper need for include promotion and service data-->
+<div class="store-locator-banners" data-bind="{scope: requestChild('banner-container'), visible: selectedMarker() !== null}">
     <!--ko if: $parent.selectedMarker-->
-    <div data-bind="visible: $parent.selectedMarker().service">
-        <h4 class="store-locator-services-title">Services</h4>
-        <div class="store-locator-services-wrapper clearfix" data-bind="{foreach: $parent.selectedMarker().service}">
-            <div class="store-locator-services-item" data-bind="{template: $parent.storeServiceTemplate}"></div>
-        </div>
-    </div>
-    <!--/ko-->
-</div>
-
-<div class="store-locator-promotions-container" data-bind="{scope: requestChild('promotion'), visible: selectedMarker() !== null}">
-
-    <!--ko if: $parent.selectedMarker -->
-    <div data-bind="visible: $parent.selectedMarker().promotion">
-        <h4>Promotional code</h4>
-        <div class="store-locator-promotions-wrapper clearfix" data-bind="{foreach: $parent.selectedMarker().promotion, mageInit: {'promotionSlider':{}}}">
-            <div class="store-locator-promotions-item" data-bind="{template: $parent.storePromotionalTemplate}"></div>
-        </div>
-    </div>
-
-    <!--/ko-->
+    <!-- ko foreach: {data: elems, as: 'element' } -->
+    <!-- ko if: hasTemplate() -->
+    <!-- ko template: getTemplate() --><!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
+    <!-- /ko -->
 </div>
 
 <div class="nearby-marker-wrapper-container" data-bind="{scope: requestChild('store-list'), visible: selectedMarker() !== null}">
