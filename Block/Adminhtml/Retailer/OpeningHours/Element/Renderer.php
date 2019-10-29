@@ -57,9 +57,9 @@ class Renderer extends Template implements RendererInterface
     private $jsonHelper;
 
     /**
-     * @var \Magento\Framework\Locale\Resolver
+     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
      */
-    private $localeResolver;
+    private $date;
 
     /**
      * Block constructor.
@@ -68,18 +68,19 @@ class Renderer extends Template implements RendererInterface
      * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory Form element factory.
      * @param \Magento\Framework\Json\Helper\Data          $jsonHelper     Helper for JSON
      * @param \Magento\Framework\Locale\Resolver           $localeResolver Locale Resolver
+     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface  $date
      * @param array                                        $data           Additional data.
      */
     public function __construct(
         \Magento\Backend\Block\Template\Context $context,
         \Magento\Framework\Data\Form\Element\Factory $elementFactory,
         \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \Magento\Framework\Locale\Resolver $localeResolver,
+        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $date,
         array $data = []
     ) {
         $this->elementFactory = $elementFactory;
         $this->jsonHelper     = $jsonHelper;
-        $this->localeResolver = $localeResolver;
+        $this->date           = $date;
 
         parent::__construct($context, $data);
     }
@@ -159,10 +160,9 @@ class Renderer extends Template implements RendererInterface
         $values = [];
         if ($this->element->getValue()) {
             foreach ($this->element->getValue() as $timeSlot) {
-                $date      = new Zend_Date();
-                $date->setLocale($this->localeResolver->getLocale());
-                $startTime = $date->setTime($timeSlot->getStartTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
-                $endTime   = $date->setTime($timeSlot->getEndTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
+                $date   = new Zend_Date($this->date->date()->format('Y-m-d'));
+                $startTime = $date->setTime($timeSlot->getStartTime(), 'h:mm a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
+                $endTime   = $date->setTime($timeSlot->getEndTime(), 'h:mm a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
                 $values[]  = [$startTime, $endTime];
             }
         }

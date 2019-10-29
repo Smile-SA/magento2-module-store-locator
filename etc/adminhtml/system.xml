@@ -22,6 +22,20 @@
         <section id="smile_map" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
 
             <group id="map" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <field id="provider_osm_copyright_text" translate="label" type="text" sortOrder="90" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Copyright text</label>
+                    <comment>For example: © OpenStreetMap contributors</comment>
+                    <depends>
+                        <field id="provider">osm</field>
+                    </depends>
+                </field>
+                <field id="provider_osm_copyright_link" translate="label" type="text" sortOrder="95" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Copyright link</label>
+                    <comment>For example: https://www.openstreetmap.org/copyright</comment>
+                    <depends>
+                        <field id="provider">osm</field>
+                    </depends>
+                </field>
                 <field id="provider_all_max_visible_shop" translate="label" type="text" showInDefault="1" showInWebsite="1" showInStore="1" sortOrder="100">
                     <label>Maximum number of visible stores</label>
                     <comment>Above this limit, the list of stores will be not display</comment>
