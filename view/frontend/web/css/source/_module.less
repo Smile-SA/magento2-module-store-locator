@@ -8,7 +8,8 @@
 //  * @category  Smile
 //  * @package   Smile\StoreLocator
 //  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
-//  * @copyright 2016 Smile
+//  * @author    Ihor KVASNYTSKYI <ihor.kvasnytskyi@smile-ukraine.com>
+//  * @copyright 2019 Smile
 //  * @license   Open Software License ("OSL") v. 3.0
 //  */
 
@@ -17,9 +18,28 @@
 //  Shop View
 //  _____________________________________________
 
+
+@import "nearby-markers/_nearby-markers";
+
+
 .smile-store-locator-store-view, .smile-store-locator-store-search,
 .smile_store_locator-store-view, .smile_store_locator-store-search {
-
+    .current-status-shop {
+        margin-bottom: 0;
+        color: #333435;
+        font-family: "Open Sans";
+        font-size: 14px;
+        line-height: 19px;
+        width: 83%;
+        .open-shop {
+            color: #5ACA2B;
+            font-weight: bold;
+        }
+        .close-shop {
+            color: #EE5C1D;
+            font-weight: bold;
+        }
+    }
     .set-store-button {
         float: right;
     }
@@ -36,7 +56,7 @@
 
         .address-info {
             display: flex;
-            padding: 10px;
+            padding: 10px 0 22px 0;
 
             .box-title {
                 margin-right: 10px;
@@ -44,29 +64,44 @@
             }
 
             .address {
-                flex: 1;
+                width: 80%;
+                display: inline-block;
+            }
+        }
+        .contact-info-block {
+            .contact-info-item {
+                margin-bottom: 5px;
+                .value {
+                    font-weight: 600;
+                }
             }
         }
 
         .opening-hours-info {
-            padding: 10px;
             clear: both;
 
             .box-title {
                 margin-right: 10px;
+                position: relative;
+                width: 100%;
+                .distance-label {
+                  color: #333435;
+                  font-family: "Open Sans";
+                  font-size: 14px;
+                  font-weight: bold;
+                  line-height: 19px;
+                  position: absolute;
+                  right: 0;
+                }
                 p {
                     font-weight: bold;
                     float:left;
                 }
-
                 .showopeninghours {
                     float:left;
-                    margin-left:10px;
                     cursor: pointer;
-                    font-weight: bold;
-                    font-size: 13px;
 
-                    :after {
+                    &:after {
                         content: @icon-down;
                         display:inline-block;
                         font-family: @icons__font-name;
@@ -75,12 +110,12 @@
                         color: inherit;
                         font-size: 10px;
                         line-height: 22px;
-                        margin-left: 10px;
+                        margin-left: 3px;
                     }
                 }
 
                 .showopeninghours.active {
-                    :after {
+                    &:after {
                         content: @icon-up;
                     }
                 }
@@ -119,6 +154,7 @@
 
         .contact-info {
             flex: 1 1 auto;
+
             .contact-info-wrapper {
                 padding: 10px;
                 h3 {
@@ -135,10 +171,14 @@
 }
 
 .smile-store-locator-store-search, .smile_store_locator-store-search {
+    .page-wrapper {
+        overflow-x: hidden;
+    }
     .shop-details {
-
         width: auto;
         max-width: 480px;
+        padding-bottom: 65px;
+        position: relative;
 
         .shop-details-wrapper {
             padding: 10px;
@@ -151,11 +191,16 @@
 
         h2 {
             margin-top: 10px;
-            margin-left: 10px;
-            font-weight: bold;
+            margin-left: 20px;
+            font-family: "Open Sans";
+            font-size: 24px;
+            font-weight: 600;
+            line-height: 33px;
             color: #333333;
         }
-
+        .opening-hours {
+            padding: 10px 0;
+        }
         .opening-hours-table {
             td {
                 padding: 2px 2px;
@@ -164,33 +209,79 @@
             td:first-child {
                 padding-right: 10px;
             }
+
+            .opening-row-hours {
+                text-align: right;
+            }
         }
 
         .actions-toolbar {
+            padding-left: 20px;
+            padding-right: 10px;
             .actions {
-                margin: 5px;
-                border-top: 1px solid #cccccc;
                 padding-top: 10px;
                 display: flex;
             }
         }
+        .close-btn-wrapper {
+            padding: 0 20px 0 30px;
+            .close {
 
-        .close {
-            .lib-button-icon(
-                @icon-remove,
-                @_icon-font-size: 32px,
-                @_icon-font-line-height: 32px,
-                @_icon-font-text-hide: true
-            );
-            .lib-button-reset();
-            height: 40px;
-            position: absolute;
-            right: 5px;
-            top: 5px;
-            width: 40px;
-            color: @color-gray56;
-            :hover {
-                color: #333333;
+                height: 50px;
+                position: relative;
+                width: 100%;
+                display: table;
+                width: 100%;
+                text-align: center;
+                vertical-align: middle;
+                border: 1px solid #E6E6E6;
+                border-radius: 3px;
+                background-color: #FFFFFF;
+                box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
+
+                span {
+                    color: #333435;
+                    font-family: "Open Sans";
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 19px;
+                }
+            }
+        }
+
+    }
+    .directions {
+        display: table;
+        width: 100%;
+        &-btn {
+            height: 50px;
+            display: table-cell;
+            vertical-align: middle;
+            width: 100%;
+            border-radius: 3px;
+            background-color: #EE5C1D;
+            box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+            color: #FFFFFF;
+            font-family: "Open Sans";
+            font-size: 14px;
+            font-weight: 600;
+            line-height: 27px;
+            text-align: center;
+            text-decoration: none;
+            &:hover {
+                text-decoration: none;
+            }
+            &-icon {
+                position: relative;
+                display: inline-block;
+                margin-right: 3px;
+                content: '';
+                width: 20px;
+                height: 20px;
+                top: 5px;
+                background: url("Smile_StoreLocator::images/direction-details.svg") center center;
+                background-repeat: no-repeat;
+                transform: scale(1.7);
             }
         }
     }
@@ -211,17 +302,35 @@
         float: right;
     }
 }
+.smile_store_locator-store-search {
+    overflow-x: hidden;
+    .page-main {
+        max-width: 1440px;
+        .page-title-wrapper {
+            display: none;
+        }
+    }
+}
 
+.opened-details-store {
+    #store-locator-search-wrapper {
+        .contextual-bar {
+            border: none;
+            box-shadow: none;
+        }
+    }
+}
 #store-locator-search-wrapper {
 
-    height: 600px;
+    height: 762px;
 
     .map {
-        width : 100%;
+        max-width: 986px;
         height: 100%;
         background: #666;
         z-index:1;
-
+        float: left;
+      
         .copyright-info-wrapper {
             background: #FFFFFF;
             box-shadow: 0 1px 10px;
@@ -234,40 +343,66 @@
     }
 
     .contextual-bar {
-        position: absolute;
-
-        margin: 20px;
+        position: relative;
+        float: left;
         padding: 0px 0px;
         background: #FFFFFF;
         z-index: 2;
-        box-shadow: 0 1px 10px;
-        display: flex;
-        flex-direction: column;
+        display: block;
+        max-width: 380px;
+        height: 100%;
+        display: block;
 
         .shop-search {
-            width: 300px;
+            width: 100%;
+            border: 1px solid #E8E8E8;
+            box-shadow: inset 0 1px 0 0 #E8E8E8;
+            .block-title {
+                span {
+                    color: #333435;
+                    font-family: "Open Sans";
+                    font-size: 28px;
+                    font-weight: 600;
+                    line-height: 38px;
+                    display: block;
+                    margin: 32px 0 20px 30px;
+                }
+            }
             .fulltext-search-wrapper {
-                border-bottom: 1px solid #c2c2c2;
                 padding: 10px;
 
                 .form {
-                    display: flex;
                     padding: 10px 0 5px;
-                    align-items: center;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    justify-content: center;
+                    position: relative;
+                    padding-left: 25px;
 
                     .field {
-                        flex: 1;
+                        display: block;
+                        width: 93%;
+                        input {
+                            height: 54px;
+                            width: 100%;
+                            border: 1px solid #E1E1E1;
+                            border-radius: 3px;
+                            background-color: #FAFAFA;
+                            padding-right: 15%;
+                        }
                     }
 
                     .actions-toolbar {
 
                         .primary .action {
-                            margin: 0;
-                            border-top-left-radius: 0px;
-                            border-bottom-left-radius: 0px;
+                            background: transparent;
+                            border: none;
+                            width: 30px;
+                            height: 54px;
+                            position: absolute;
+                            top: 15px;
+                            right: 5%;
+                            content: '';
+                            font-size: 0;
+                            background: url("Smile_StoreLocator::images/location-search.svg") center center;
+                            background-repeat: no-repeat;
                             span {
                                 line-height: 1.3em;
                             }
@@ -275,10 +410,18 @@
                     }
 
                     .geolocalize-container {
-                        flex: 0 0 100%;
+                        position: absolute;
+                        right: -13px;
+                        top: 22px;
                         a {
-                            width:100%;
-                            text-align:center;
+                            width: 100%;
+                            text-align: center;
+                            background: transparent;
+                            border: none;
+                            padding: 5px;
+                            &:before {
+                                color: #EE5C1D;
+                            }
                         }
                     }
 
@@ -295,15 +438,28 @@
 
         .search-result-list {
             flex: 1;
+            overflow: hidden;
 
             .search-result-header {
-                background-color: #8f8f8f;
-                padding: 10px;
+                background-color: white;
+                padding: 10px 10px 20px 38px;
                 display: flex;
+                border-bottom: 1px solid #E8E8E8;
                 p {
                     margin: 0;
-                    color: #FFF;
-                    flex: 1;
+                    color:  #EE5C1D;
+                    font-family: "Open Sans";
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 19px;
+                }
+                span {
+                    color: #333435;
+                    font-family: "Open Sans";
+                    font-size: 14px;
+                    font-weight: 600;
+                    line-height: 19px;
+                    padding-left: 3px;
                 }
                 a {
                     color: #FFF;
@@ -314,21 +470,164 @@
             }
 
             ul {
-                overflow-y: scroll;
-                max-height: 400px;
+                overflow-y: auto;
+                height: 100%;
+                max-height: 529px;
                 list-style-type: none;
                 padding: 0;
                 margin: 0;
+                &::-webkit-scrollbar {
+                    width: 9px;
+                    padding: 4px 5px;
+                    height: 8px;
+                    border-radius: 4.5px;
+                    background-color: #F8F8F8;
+                    box-shadow: inset 0 1px 0 0 #E8E8E8, 0 1px 0 0 #E8E8E8;
+                }
+                &::-webkit-scrollbar-thumb {
+                    width: 9px;
+                    border-radius: 4.5px;
+                    background-color: #989B9D;
+                }
 
                 li.result-item {
+                    border-top: 1px solid #E8E8E8;
                     margin: 0;
-                    padding: 5px;
+                    padding: 18px 5px 18px 50px;
+                    position: relative;
+                    tr {
+                        display: none;
+                        &.today {
+                            display: block;
+                        }
+                    }
+                    p {
+                      margin-bottom: 0;
+                    }
 
+                    .location-number-block {
+                        display: table;
+                        position: absolute;
+                        left: -15%;
+                        top: 0;
+                        width: 13%;
+                        vertical-align: middle;
+                        float: left;
+                        text-align: center;
+                        span {
+                            display: table-cell;
+                            color: #B4B7B8;
+                            font-family: "Open Sans";
+                            font-size: 14px;
+                            font-weight: bold;
+                            line-height: 19px;
+                        }
+                    }
+                    .result-item-container {
+                        width: 96%;
+                        float: left;
+                        .name-label {
+                            strong {
+                                color: #333435;
+                                font-family: "Open Sans";
+                                font-size: 16px;
+                                font-weight: 600;
+                                line-height: 22px;
+                            }
+                        }
+
+                    }
+                    .current-status-shop {
+                        margin-bottom: 12px;
+                        color: #333435;
+                        font-family: "Open Sans";
+                        font-size: 14px;
+                        line-height: 19px;
+                        .open-shop {
+                            color: #5ACA2B;
+                            font-weight: bold;
+                        }
+                        .close-shop {
+                            color: #EE5C1D;
+                            font-weight: bold;
+                        }
+                    }
+                    .render-btn {
+                        position: relative;
+                        padding-left: 30px;
+                        color: #333435;
+                        font-family: "Open Sans";
+                        font-size: 14px;
+                        font-weight: 600;
+                        line-height: 19px;
+                        float: left;
+                        &:before {
+                            position: absolute;
+                            display: inline-block;
+                            left: 0;
+                            top: 0;
+                            content: '';
+                            transform: scale(1.8);
+                            opacity: 0.5;
+                            width: 20px;
+                            height: 20px;
+                            background: url("Smile_StoreLocator::images/direction-1.svg") center center;
+                        }
+                    }
+                    .distance {
+                        float: right;
+                        color: #333435;
+                        font-family: "Open Sans";
+                        font-size: 14px;
+                        font-weight: bold;
+                        line-height: 19px;
+                        position: relative;
+                    }
+
+                    .details-shop-btn {
+                        font-size: 0;
+                        content: '';
+                        height: 24px;
+                        width: 24px;
+                        background-color: #EE5C1D;
+                        position: absolute;
+                        right: 0;
+                        display:inline-block;
+                        border-radius: 50%;
+                        &:before {
+                            height: 6px;
+                            width: 6px;
+                            transform: rotate(135deg);
+                            border-radius: 1px;
+                            border-left: 2px solid #ffffff;
+                            border-top: 2px solid #ffffff;
+                            content: '';
+                            top: 8px;
+                            right: 9px;
+                            display: block;
+                            position: absolute;
+                        }
+                    }
+
+                    .details {
+                        padding-right: 50px;
+                        color: #333435;
+                        font-family: "Open Sans";
+                        font-size: 14px;
+                        line-height: 19px;
+                        margin-bottom: 17px;
+                        position: relative;
+                    }
+                    &:last-of-type {
+                        border-bottom: 1px solid #E8E8E8;
+                    }
+
+                    &:hover {
+                        background-color: #F8F8F8;
+                        cursor: pointer;
+                    }
                 }
 
-                li.result-item:nth-child(even) {
-                    background: #F0F0F0;
-                }
             }
 
             .max_stores_message {
@@ -352,6 +651,17 @@
 
                 .actions {
                     float: right;
+                }
+
+                .image-wrapper-header {
+                    width: 100%;
+
+                    img {
+                        height: auto;
+                        max-width: 100%;
+                        width: 100%;
+                        max-height: 200px;
+                    }
                 }
             }
         }
@@ -539,21 +849,6 @@ a.geolocalize:before {
             position: relative;
             margin: 0;
             box-shadow: none;
-            border: 1px solid #F0F0F0;
-            .search-result-list {
-                .search-result-header{
-                    padding-top: 5px;
-                    padding-bottom: 5px;
-                }
-                ul {
-                    max-height: 160px;
-                    li {
-                        p {
-                            margin-bottom: 0.5rem;
-                        }
-                    }
-                }
-            }
 
             .shop-search {
                 width: auto;
@@ -584,13 +879,69 @@ a.geolocalize:before {
                 }
             }
         }
+    }
+}
+.leaflet-marker-icon {
+    border: none;
+    background: transparent;
+}
+.custum-lf-popup {
+    display: inline-block;
+    height: 24px;
+    width: 24px;
+    background-color: #EE5C1D;
+    -webkit-box-shadow:  -1px -1px 6px -1px rgba(0,0,0,0.85);
+    -moz-box-shadow:  -1px -1px 6px -1px rgba(0,0,0,0.85);
+    box-shadow:  -1px -1px 6px -1px rgba(0,0,0,0.85);
+    border-radius: 50%;
+    color: white;
+    text-align: center;
+    padding-top: 5px;
+    font-size: 12px;
+    border: none;
+    position:relative;
+    z-index: 2;
+    box-sizing:border-box;
+    span {
+        position: relative;
+        z-index: 4;
+    }
 
-        .map {
-            height: 300px;
-            margin-top: 5px;
+    &.current {
+        transform: scale(1.3);
+        z-index: 300;
+    }
+
+    &.my-position {
+        &:before {
+            position: absolute;
+            display: inline-block;
+            left: 2px;
+            top: 3px;
+            content: '';
+            transform: scale(1.8);
+            opacity: 0.8;
+            width: 20px;
+            height: 20px;
+            background: url(../Smile_StoreLocator/images/direction-1.svg) center center;
+            z-index: 19;
         }
     }
 }
+
+.button-decor{
+    z-index: 3;
+    width: 10px;
+    height: 10px;
+    display: inline-block;
+    background-color: #EE5C1D;
+    content: '';
+    bottom: -3px;
+    left: 7px;
+    position: absolute;
+    transform: rotate(-45deg);
+}
+
 
 //
 //  Tablet + Mobile
@@ -599,6 +950,262 @@ a.geolocalize:before {
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
     .action.showpicker .text {
         display: none;
+    }
+    .smile_store_locator-store-search {
+        .page-main {
+            padding: 0;
+        }
+    }
+    #store-locator-search-wrapper {
+        overflow: hidden;
+        position: relative;
+        .contextual-bar {
+            margin: 10px;
+            width: 100%;
+            border: none;
+            max-width: 100%;
+            .search-result-list {
+                .search-result-header {
+                    padding-top: 0;
+                    padding-bottom: 20px;
+                    padding-left: 10px;
+                    border-bottom: none;
+                    p {
+                        font-family: "Open Sans";
+                        font-size: 12px;
+                        font-weight: 600;
+                        line-height: 16px;
+                    }
+                    span {
+                        font-size: 12px;
+                        font-weight: 600;
+                        line-height: 16px;
+                    }
+                    a {
+                        font-size: 12px;
+                        font-weight: 600;
+                        line-height: 16px;
+                        text-decoration: underline;
+                        cursor: pointer;
+                    }
+                }
+                ul {
+                    overflow-y: auto;
+                    height: 100%;
+                    height: 420px;
+                    list-style-type: none;
+                    padding: 0;
+                    margin: 0;
+
+                    li.result-item {
+                        border-top: 1px solid #E8E8E8;
+                        margin: 0;
+                        padding: 18px 5px 18px 10px;
+                        position: relative;
+
+                        p {
+                            margin-bottom: 0;
+                        }
+
+                        .result-item-container {
+                            width: 96%;
+                            float: left;
+                            .name-label {
+                                strong {
+                                    font-size: 14px;
+                                    font-weight: 600;
+                                    line-height: 19px;
+                                }
+                            }
+
+                        }
+                        .current-status-shop {
+                            margin-bottom: 9px;
+                            font-size: 12px;
+                            line-height: 17px;
+
+                            .open-shop {
+                                color: #5ACA2B;
+                                font-weight: bold;
+                            }
+                            .close-shop {
+                                color: #EE5C1D;
+                                font-weight: bold;
+                            }
+                        }
+                        .render-btn {
+                            position: relative;
+                            padding-left: 30px;
+                            color: #333435;
+                            font-size: 12px;
+                            line-height: 17px;
+                            float: left;
+                            &:before {
+                                position: absolute;
+                                display: inline-block;
+                                left: 0;
+                                top: 0;
+                                content: '';
+                                transform: scale(1.7);
+                                opacity: 0.5;
+                                width: 20px;
+                                height: 20px;
+                                background: url("Smile_StoreLocator::images/direction-1.svg") center center;
+                            }
+                        }
+                        .distance {
+                            font-size: 12px;
+                            line-height: 17px;
+                        }
+
+
+                        .details {
+                            padding-right: 50px;
+                            color: #333435;
+                            font-family: "Open Sans";
+                            font-size: 14px;
+                            line-height: 19px;
+                            margin-bottom: 17px;
+                            position: relative;
+                        }
+
+                        &:last-of-type {
+                            border-bottom: 0;
+                        }
+                    }
+
+                }
+            }
+
+            .shop-search {
+                width: 100%;
+                .block-title {
+                    span {
+                        font-size: 22px;
+                        line-height: 30px;
+                        display: block;
+                        margin: 0;
+                    }
+                }
+                .fulltext-search-wrapper {
+                    padding: 10px;
+
+                    .form {
+                        padding: 10px 0 5px;
+                        position: relative;
+                        padding-left: 0;
+
+                        .field {
+                            display: block;
+                            width: 100%;
+                            input {
+                                height: 50px;
+                                padding-right: 15%;
+                                font-family: "Open Sans";
+                                font-size: 12px;
+                                line-height: 17px;
+                            }
+                        }
+
+                        .actions-toolbar {
+
+                            .primary .action {
+                                background: transparent;
+                                border: none;
+                                width: 30px;
+                                height: 54px;
+                                position: absolute;
+                                top: 0;
+                                right: 12px;
+                                content: '';
+                                font-size: 0;
+                                background: url("Smile_StoreLocator::images/location-search.svg") center center;
+                                background-repeat: no-repeat;
+                                span {
+                                    line-height: 1.3em;
+                                }
+                            }
+                        }
+
+                        .geolocalize-container {
+                            position: absolute;
+                            right: -1px;
+                            top: 22px;
+                            a {
+                                width: 100%;
+                                text-align: center;
+                                background: transparent;
+                                border: none;
+                                padding: 5px;
+                                &:before {
+                                    color: #EE5C1D;
+                                }
+                            }
+                        }
+
+                        .store-search-form {
+                            display: block;
+                            width: 90%;
+                            margin-top: 5px;
+                            margin-left: 0;
+                            position: relative;
+                        }
+                    }
+                }
+            }
+        }
+
+        .map {
+            width: 100%;
+            height: 420px;
+            position: absolute !important;
+            bottom: 0;
+            left: 0;
+            z-index: 5;
+            -webkit-transform: translate(100%);
+            -ms-transform: translate(100%);
+            transform: translate(100%);
+            -webkit-transition: .3s;
+            -o-transition: .3s;
+            transition: .3s;
+
+            &.map-open {
+                -webkit-transform: translate(0);
+                -ms-transform: translate(0);
+                transform: translate(0);
+            }
+
+            .leaflet-div-icon {
+                background: transparent;
+                border: none;
+            }
+        }
+
+        .store-locator-display-wrapper {
+            display: block;
+            margin: 0 auto;
+            padding: 0 10px;
+
+            .display-btn {
+                width: 49.3%;
+                background: white;
+                text-align: center;
+                border: 0;
+                box-shadow: none;
+                display: inline-block;
+                color: #333435;
+                font-family: "Open Sans";
+                font-size: 16px;
+                font-weight: 600;
+                line-height: 22px;
+                border-radius: 0;
+                border-bottom: 3px solid transparent;
+
+                &.active {
+                    border-bottom: 3px solid #EE5C1D;
+                }
+            }
+        }
     }
 }
 
@@ -610,6 +1217,32 @@ a.geolocalize:before {
     #top-storelocator-chooser {
         margin-left: @indent__s;
         margin-right: 0;
+    }
+    #store-locator-search-wrapper {
+        .contextual-bar {
+            margin: 0 2% 0 0;
+            width: 40.4%;
+        }
+
+        .map {
+            width: 57%;
+        }
+        .store-locator-display-wrapper {
+            display: none;
+        }
+    }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+    #store-locator-search-wrapper {
+        .contextual-bar {
+            margin: 0 2% 0 0;
+            width: 28.1%;
+        }
+
+        .map {
+            width: 69.6%;
+        }
     }
 }
 

@@ -98,7 +98,7 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
             }
 
             // If not a single opening hour is saved, we delete existing entry for current retailer
-            if (empty($openingHours) && isset($data['entity_id']) && !empty($data['entity_id'])) {
+            if (empty($openingHours)) {
                 $this->retailerTimeSlot->deleteByRetailerId($data['entity_id']);
             }
 

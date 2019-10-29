@@ -1,0 +1,201 @@
+
+// /**
+//  * DISCLAIMER
+//  *
+//  * Do not edit or add to this file if you wish to upgrade this module to newer
+//  * versions in the future.
+//  *
+//  *
+//  * @category  Smile
+//  * @package   Smile\StoreLocator
+//  * @author    Ihor KVASNYTSKYI <ihor.kvasnytskyi@smile-ukraine.com>
+//  * @copyright 2019 Smile
+//  * @license   Open Software License ("OSL") v. 3.0
+//  */
+
+
+//
+//  Nearby Markers View
+//  _____________________________________________
+
+
+.nearby-marker-wrapper {
+  &-container {
+    float: left;
+    width: 100%;
+    position: relative;
+    background-color: #ffffff;
+
+    .current-status-shop {
+      width: 100% !important;
+    }
+  }
+  &-list {
+    text-align: center;
+    max-width: 900px;
+    width: 100%;
+    margin: 0 auto;
+    list-style: none;
+    padding-left: 0;
+  }
+
+  &-item {
+    display: inline-block;
+    margin-right: 2.55%;
+    width: 30%;
+    max-width: 320px;
+    background: white;
+    height: auto;
+    vertical-align: text-top;
+    padding: 30px;
+    box-sizing: border-box;
+    h4 {
+      color: #333435;
+      font-family: "Open Sans";
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 49px;
+      text-align: center;
+      margin-top: 50px;
+      margin-button: 60px;
+      &.title {
+        color: #333435;
+        font-family: "Open Sans";
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 33px;
+        width: 100%;
+        margin: 0 0 15px 0;
+      }
+    }
+    .image-wrapper {
+      width: 132px;
+      height: 132px;
+      background: grey;
+      border-radius: 50%;
+      margin: 20px auto;
+      display: block;
+      overflow: hidden;
+
+      div {
+        width: 100%;
+        height: 100%;
+        img {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+    .address {
+      margin-top: 15px;
+      font-family: "Open Sans";
+      font-size: 14px;
+      line-height: 24px;
+      .value {
+        font-weight: 600;
+      }
+    }
+    a {
+      text-decoration: none;
+      color: #333435;
+      font-family: "Open Sans";
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 33px;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+
+    &:first-of-type {
+      display: none !important;
+    }
+  }
+}
+
+//Desktop
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
+  .store-locator-services {
+    &-title {
+      font-size: 36px;
+      line-height: 49px;
+    }
+  }
+}
+
+//Tablet
+
+.media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__m) {
+
+}
+
+// Mobile
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+  .nearby-marker-wrapper {
+    &-container {
+      float: left;
+      width: 100%;
+      position: relative;
+      background-color: #ffffff;
+    }
+    &-list {
+      text-align: center;
+      max-width: 900px;
+      width: 100%;
+      margin: 0 auto;
+      list-style: none;
+      padding-left: 0;
+    }
+
+    &-item {
+      display: block;
+      position: relative;
+      width: 90%;
+      margin: 0 auto;
+      padding: 10px 0 20px 90px;
+      box-sizing: border-box;
+
+      h4 {
+        font-size: 24px;
+        font-weight: 600;
+        line-height: 33px;
+        margin-button: 30px;
+        margin-top: 50px;
+        &.title {
+          font-size: 18px;
+          font-weight: 600;
+          line-height: 24px;
+        }
+      }
+      .image-wrapper {
+        position: absolute;
+        left:0;
+        top: 0;
+        width: 86px;
+        height: 86px;
+        background: grey;
+        border-radius: 50%;
+        margin: 0 10px 0 0;
+        display: inline-block;
+      }
+      .address {
+        margin-top: 15px;
+        font-family: "Open Sans";
+        font-size: 12px;
+        line-height: 20px;
+      }
+      a {
+        font-size: 18px;
+        font-weight: 600;
+        line-height: 24px;
+      }
+
+      &:last-of-type {
+        display: block;
+      }
+    }
+  }
+}
