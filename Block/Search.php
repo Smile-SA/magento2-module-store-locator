@@ -19,7 +19,6 @@ use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
 
-use Smile\RetailerPromotion\Api\PromotionRepositoryInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 
 use Smile\RetailerService\Api\ServiceRepositoryInterface;
@@ -78,8 +77,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     private $serializer;
 
     private $searchCriteriaBuilder;
-
-    private $serviceRepositoryInterface;
+    
     /**
      * Constructor.
      *
@@ -102,9 +100,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         \Smile\StoreLocator\Helper\Schedule $scheduleHelper,
         \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement,
         SerializerInterface $serializer,
-        PromotionRepositoryInterface $promotionRepository,
         SearchCriteriaBuilder $searchCriteriaBuilder,
-        ServiceRepositoryInterface $serviceRepositoryInterface,
         $data = []
     ) {
         parent::__construct($context, $data);
@@ -117,7 +113,6 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         $this->cacheInterface            = $context->getCache();
         $this->serializer = $serializer;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
-        $this->serviceRepositoryInterface = $serviceRepositoryInterface;
         $this->addData(
             [
                 'cache_lifetime' => false,
