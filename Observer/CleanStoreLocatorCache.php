@@ -12,7 +12,8 @@
  */
 namespace Smile\StoreLocator\Observer;
 
-use Magento\PageCache\Model\Cache\Type as Cache;
+use Magento\CacheInvalidate\Model\PurgeCache;
+use Magento\Framework\App\CacheInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Smile\Seller\Api\Data\SellerInterface;
@@ -27,17 +28,24 @@ use Smile\StoreLocator\Block\Search;
 class CleanStoreLocatorCache implements ObserverInterface
 {
     /**
-     * @var Cache
+     * @var PurgeCache
      */
-    private $cache;
+    protected $purgeCache;
+
+    /**
+     * @var CacheInterface
+     */
+    protected $cache;
 
     /**
      * CleanStoreLocatorCache constructor.
      *
-     * @param Cache $cache Cache.
+     * @param PurgeCache     $purgeCache PurgeCache.
+     * @param CacheInterface $cache      Cache.
      */
-    public function __construct(Cache $cache)
+    public function __construct(PurgeCache $purgeCache, CacheInterface $cache)
     {
+        $this->purgeCache = $purgeCache;
         $this->cache = $cache;
     }
 
@@ -53,8 +61,13 @@ class CleanStoreLocatorCache implements ObserverInterface
     {
         /** @var SellerInterface $seller */
         $seller = $observer->getEvent()->getSeller();
+
         if ($seller->hasDataChanges()) {
-            $this->cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, [Search::CACHE_TAG]);
+            $formattedTag = sprintf('((^|,)%s(,|$))', Search::CACHE_TAG);
+
+            $this->purgeCache->sendPurgeRequest($formattedTag);
+
+            $this->cache->clean([Search::CACHE_TAG]);
         }
     }
 }
