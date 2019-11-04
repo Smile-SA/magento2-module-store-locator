@@ -66,5 +66,9 @@ class UpgradeData implements UpgradeDataInterface
         if (version_compare($context->getVersion(), '1.2.1', '<')) {
             $this->storeLocatorSetup->setContactFormRequired($eavSetup);
         }
+
+        if (version_compare($context->getVersion(), '2.0.0', '<')) {
+            $this->storeLocatorSetup->addImage($eavSetup);
+        }
     }
 }

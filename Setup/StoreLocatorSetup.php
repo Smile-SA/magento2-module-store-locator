@@ -419,4 +419,34 @@ class StoreLocatorSetup
             1
         );
     }
+
+
+    /**
+     * Add image attribute to Retailers
+     *
+     * @param \Magento\Eav\Setup\EavSetup $eavSetup EAV module Setup
+     */
+    public function addImage($eavSetup)
+    {
+        $entityId  = SellerInterface::ENTITY;
+        $attrSetId = RetailerInterface::ATTRIBUTE_SET_RETAILER;
+        $groupId   = 'General';
+
+        $eavSetup->addAttribute(
+            SellerInterface::ENTITY,
+            'image',
+            [
+                'type'         => 'varchar',
+                'label'        => 'Media',
+                'input'        => 'image',
+                'required'     => false,
+                'user_defined' => true,
+                'sort_order'   => 17,
+                'backend_model' => 'Magento\Catalog\Model\Category\Attribute\Backend\Image',
+                'global'       => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+            ]
+        );
+
+        $eavSetup->addAttributeToGroup($entityId, $attrSetId, $groupId, 'image', 50);
+    }
 }
