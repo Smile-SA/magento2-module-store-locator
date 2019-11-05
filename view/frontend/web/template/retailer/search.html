@@ -41,7 +41,7 @@
             </div>
             <!-- ko if: $parent.displayedMarkers().length  < $parent.max_visible_shop -->
             <ul data-bind="{foreach: $parent.displayedMarkers()}">
-                <li data-bind="{template: $parent.storeListTemplate, attr: { 'data-shop-name': name}, mageInit: {'listItemEvent':{}}}" class="result-item clearfix"></li>
+                <li data-bind="{click: $parents[1].selectMarker.bind($parents[1]), template: $parent.storeListTemplate, attr: { 'data-shop-name': name}, mageInit: {'listItemEvent':{}}}" class="result-item clearfix"></li>
             </ul>
             <!-- /ko -->
             <!-- ko ifnot: $parent.displayedMarkers().length < $parent.max_visible_shop -->
