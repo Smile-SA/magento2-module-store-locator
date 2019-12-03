@@ -28,7 +28,7 @@ class SetStoreLink extends \Smile\StoreLocator\Block\AbstractView
      */
     public function getSetStorePostJson()
     {
-        $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set');
+        $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set', ['_secure' => true]);
         $postData = ['id' => $this->getRetailer()->getId()];
 
         return json_encode(['action' => $setUrl, 'data' => $postData]);
