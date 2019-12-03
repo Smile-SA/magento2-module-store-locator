@@ -249,7 +249,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
      */
     private function getSetStorePostData($retailer)
     {
-        $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set');
+        $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set', ['_secure' => true]);
         $postData = ['id' => $retailer->getId()];
 
         return ['action' => $setUrl, 'data' => $postData];
