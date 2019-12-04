@@ -12,9 +12,12 @@
  */
 namespace Smile\StoreLocator\Observer;
 
-use Magento\PageCache\Model\Cache\Type as Cache;
+use Magento\Framework\App\CacheInterface;
+use Magento\Framework\Event\ManagerInterface;
 use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
+use Magento\Framework\Indexer\CacheContext;
+use Magento\Framework\Indexer\CacheContextFactory;
 use Smile\Seller\Api\Data\SellerInterface;
 use Smile\StoreLocator\Block\Search;
 
@@ -27,17 +30,31 @@ use Smile\StoreLocator\Block\Search;
 class CleanStoreLocatorCache implements ObserverInterface
 {
     /**
-     * @var Cache
+     * @var CacheContextFactory
      */
-    private $cache;
+    protected $cacheContextFactory;
+
+    /**
+     * @var ManagerInterface
+     */
+    protected $eventManager;
+
+    /**
+     * @var CacheInterface
+     */
+    protected $cache;
 
     /**
      * CleanStoreLocatorCache constructor.
      *
-     * @param Cache $cache Cache.
+     * @param CacheContextFactory $cacheContextFactory CacheContextFactory.
+     * @param ManagerInterface $eventManager EventManager.
+     * @param CacheInterface $cache Cache.
      */
-    public function __construct(Cache $cache)
+    public function __construct(CacheContextFactory $cacheContextFactory, ManagerInterface $eventManager, CacheInterface $cache)
     {
+        $this->cacheContextFactory = $cacheContextFactory;
+        $this->eventManager = $eventManager;
         $this->cache = $cache;
     }
 
@@ -53,8 +70,14 @@ class CleanStoreLocatorCache implements ObserverInterface
     {
         /** @var SellerInterface $seller */
         $seller = $observer->getEvent()->getSeller();
+
         if ($seller->hasDataChanges()) {
-            $this->cache->clean(\Zend_Cache::CLEANING_MODE_MATCHING_TAG, [Search::CACHE_TAG]);
+            /** @var CacheContext $cacheContext */
+            $cacheContext = $this->cacheContextFactory->create();
+            $cacheContext->registerTags([Search::CACHE_TAG]);
+            $this->eventManager->dispatch('clean_cache_by_tags', ['object' => $cacheContext]);
+
+            $this->cache->clean([Search::CACHE_TAG]);
         }
     }
 }

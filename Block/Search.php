@@ -165,7 +165,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     {
         $collection = $this->getRetailerCollection();
         $cacheKey = sprintf("%s_%s", 'smile_storelocator_search', $collection->getStoreId());
-        $markers  = null;
+        $markers = $this->cacheInterface->load($cacheKey);
 
         if (!$markers) {
             \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
@@ -269,7 +269,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
      */
     private function getSetStorePostData($retailer)
     {
-        $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set');
+        $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set', ['_secure' => true]);
         $postData = ['id' => $retailer->getId()];
 
         return ['action' => $setUrl, 'data' => $postData];
