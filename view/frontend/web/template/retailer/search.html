@@ -4,15 +4,13 @@
         <div class="fulltext-search-wrapper" data-bind="{ scope: requestChild('geocoder'), visible: selectedMarker() === null }">
             <div class="geocoder-wrapper" data-bind=" afterRender: initGeocoder">
                 <div class="block-title">
-                    <span role="heading" aria-level="1" data-bind="text: searchTitleText"></span>
+                    <strong role="heading" aria-level="1" data-bind="text: searchTitleText"></strong>
                 </div>
 
                 <form class="form" data-bind="submit: onSearch">
                     <div class="geolocalize-container">
                         <div class="primary">
-                            <a data-bind="{click: $parent.geolocalize.bind($parent), attr : {title: $t('Geolocalize me') } }" class="action primary geolocalize" href="#">
-                                <!--<span data-bind="i18n: 'Geolocalize me'"></span>-->
-                            </a>
+                            <a data-bind="{click: $parent.geolocalize.bind($parent), attr : {title: $t('Geolocalize me') } }" class="action primary geolocalize" href="#"><span data-bind="i18n: 'Geolocalize me'"></span></a>
                         </div>
                     </div>
                     <div class="store-search-form">
@@ -32,16 +30,11 @@
         <div class="search-result-list" data-bind="{scope: requestChild('store-list'), visible: selectedMarker() === null }">
             <div class="search-result-header">
                 <p data-bind="text: $t(searchResultsLabel).replace('%s', $parent.countDisplayedMarkers.bind($parent))"></p>
-                <span> within 10 km</span>
                 <span data-bind="if: $parent.displayReset()"><a data-bind="{click: $parent.resetMap.bind($parent)}"><span data-bind="text: $t(viewAllLabel)"></span></a></span>
-            </div>
-            <div class="store-locator-display-wrapper" data-bind="{mageInit: {'mapMobile':{}}}">
-                <button id="display-store-list-mobile" class="display-btn active">List</button>
-                <button id="display-store-map-mobile" class="display-btn">Map</button>
             </div>
             <!-- ko if: $parent.displayedMarkers().length  < $parent.max_visible_shop -->
             <ul data-bind="{foreach: $parent.displayedMarkers()}">
-                <li data-bind="{click: $parents[1].selectMarker.bind($parents[1]), template: $parent.storeListTemplate, attr: { 'data-shop-name': name}, mageInit: {'listItemEvent':{}}}" class="result-item clearfix"></li>
+                <li data-bind="{template: $parent.storeListTemplate}" class="result-item"></li>
             </ul>
             <!-- /ko -->
             <!-- ko ifnot: $parent.displayedMarkers().length < $parent.max_visible_shop -->
@@ -53,32 +46,29 @@
     </div>
 
     <div class="shop-details" data-bind="{scope: requestChild('store-list'), visible: selectedMarker() !== null }">
-
+        <button type="button"
+                class="action close"
+                data-action="close"
+                data-bind="{ click : $parent.resetBounds.bind($parent), attr: { title: $t('Close') }}">
+            <span data-bind="i18n: 'Close'"></span>
+        </button>
         <!-- ko if: ($parent.selectedMarker() && $parent.selectedMarker.bind($parent)) -->
             <div class="shop-details-wrapper" data-bind="{template: { name: storeDetailTemplate, data: $parent.selectedMarker() }}"></div>
         <!-- /ko -->
-        <!--ko if: $parent.nearbyMarkers -->
-        <!--<div class="search-result-list" data-bind="{ visible: $parent.nearbyMarkers().length > 0}">-->
-            <!--<div class="search-result-header">-->
-                <!--<p data-bind="text: $t(nearbySearchLabel).replace('%s', $parent.countNearbyMarkers.bind($parent))"></p>-->
-            <!--</div>-->
-            <!--<ul data-bind="foreach: $parent.nearbyMarkers">-->
-                <!--<li data-bind="template: $parent.storeListTemplate" class="result-item"></li>-->
-            <!--</ul>-->
-        <!--</div>-->
-         <!--/ko -->
-        <div class="close-btn-wrapper">
-            <button type="button"
-                    class="action close"
-                    data-action="close"
-                    data-bind="{ click : $parent.closeDetails.bind($parent), attr: { title: $t('Close') }}">
-                <span data-bind="i18n: 'Close'"></span>
-            </button>
+        <!-- ko if: $parent.nearbyMarkers -->
+        <div class="search-result-list" data-bind="{ visible: $parent.nearbyMarkers().length > 0}">
+            <div class="search-result-header">
+                <p data-bind="text: $t(nearbySearchLabel).replace('%s', $parent.countNearbyMarkers.bind($parent))"></p>
+            </div>
+            <ul data-bind="foreach: $parent.nearbyMarkers">
+                <li data-bind="template: $parent.storeListTemplate" class="result-item"></li>
+            </ul>
         </div>
+        <!-- /ko -->
     </div>
 </div>
 
-<div class="map" data-bind="afterRender: initMap"> 
+<div class="map" data-bind="afterRender: initMap">
     <!-- ko if: isShowCopyrightInfo() -->
     <div class="copyright-info-wrapper">
         <a class="copyright-link" data-bind="attr: { href: getCopyrightLink() }">
@@ -87,23 +77,3 @@
     </div>
     <!-- /ko -->
 </div>
-
-<!--This wrapper need for include promotion and service data-->
-<div class="store-locator-banners" data-bind="{scope: requestChild('banner-container'), visible: selectedMarker() !== null}">
-    <!--ko if: $parent.selectedMarker-->
-    <!-- ko foreach: {data: elems, as: 'element' } -->
-    <!-- ko if: hasTemplate() -->
-    <!-- ko template: getTemplate() --><!-- /ko -->
-    <!-- /ko -->
-    <!-- /ko -->
-    <!-- /ko -->
-</div>
-
-<div class="nearby-marker-wrapper-container" data-bind="{scope: requestChild('store-list'), visible: selectedMarker() !== null}">
-    <!--ko if: $parent.selectedMarker-->
-            <ul class="nearby-marker-wrapper-list" data-bind="foreach: $parent.displayedMarkers()">
-                <li data-bind="template: $parent.nearbyStoreTemplate" class="nearby-marker-wrapper-item"></li>
-            </ul>
-    <!--/ko-->
-</div>
-
