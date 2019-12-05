@@ -60,5 +60,6 @@ class InstallData implements InstallDataInterface
 
         $this->storeLocatorSetup->addUrlKeyAttribute($eavSetup);
         $this->storeLocatorSetup->addContactInformation($eavSetup);
+        $this->storeLocatorSetup->addImage($eavSetup);
     }
 }
