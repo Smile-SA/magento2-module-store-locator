@@ -1,0 +1,20 @@
+<div class="result-item-container">
+        <div class="image-wrapper">
+            <div data-bind="visible: image != false">
+                <img data-bind="{attr : {src: image}}" alt="">
+            </div>
+        </div>
+        <div class="details" style="display: flex">
+            <h4 class="title"><a data-bind="attr: {href: url}, text: name" class="details-shop-btn"></a></h4>
+        </div>
+        <div class="current-status-shop" data-bind="html: shopStatus()"></div>
+        <p class="address"><span data-bind="html: address"></span></p>
+        <!-- ko if: contact_phone != '' -->
+            <div class="contact-info-block">
+                <div class="phone contact-info-item">
+                    <span class="label">Tél.:</span>
+                    <span class="value" data-bind="text: contact_phone"></span>
+                </div>
+            </div>
+        <!-- /ko -->
+</div>
