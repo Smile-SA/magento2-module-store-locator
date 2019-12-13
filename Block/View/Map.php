@@ -341,12 +341,10 @@ class Map extends AbstractView
         $markers  = null;
 
         if (!$markers) {
-            \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
             /** @var RetailerInterface $retailer */
             $imageUrlRetailer = $this->getImageUrl().'seller/';
             foreach ($collection as $retailer) {
                 $address = $retailer->getExtensionAttributes()->getAddress();
-                \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_DATA');
                 $image = $retailer->getMediaPath() ? $imageUrlRetailer.$retailer->getMediaPath() : false;
                 $markerData = [
                     'id'           => $retailer->getId(),
@@ -359,11 +357,11 @@ class Map extends AbstractView
                     'setStoreData' => $this->getSetStorePostData($retailer),
                     'image'        => $image,
                 ];
-                \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_DATA');
+
                 foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
                     $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ? $retailer->getData($contactAttribute) : '';
                 }
-                \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_SCHEDULE');
+
                 $markerData['schedule'] = array_merge(
                     $this->scheduleHelper->getConfig(),
                     [
@@ -374,7 +372,6 @@ class Map extends AbstractView
                 );
 
 
-                \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
                 $markers[] = $markerData;
             }
         }
