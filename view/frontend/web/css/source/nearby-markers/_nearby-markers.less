@@ -29,6 +29,16 @@
     .current-status-shop {
       width: 100% !important;
     }
+    .shops-nearby-title {
+      color: #333435;
+      font-family: "Open Sans";
+      font-size: 36px;
+      font-weight: 600;
+      line-height: 49px;
+      text-align: center;
+      display: block;
+      margin: 50px 0 60px 0;
+    }
   }
   &-list {
     text-align: center;
@@ -107,10 +117,6 @@
         text-decoration: none;
       }
     }
-
-    &:first-of-type {
-      display: none !important;
-    }
   }
 }
 
@@ -134,67 +140,75 @@
 // Mobile
 
 .media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
-  .nearby-marker-wrapper {
-    &-container {
-      float: left;
-      width: 100%;
-      position: relative;
-      background-color: #ffffff;
-    }
-    &-list {
-      text-align: center;
-      max-width: 900px;
-      width: 100%;
-      margin: 0 auto;
-      list-style: none;
-      padding-left: 0;
-    }
+  .smile_store_locator-store-view {
+    .nearby-marker-wrapper {
+      &-container {
+        float: left;
+        width: 100%;
+        position: relative;
+        background-color: #ffffff;
+        padding-left: 15px;
+      }
 
-    &-item {
-      display: block;
-      position: relative;
-      width: 90%;
-      margin: 0 auto;
-      padding: 10px 0 20px 90px;
-      box-sizing: border-box;
+      &-list {
+        text-align: center;
+        max-width: 900px;
+        width: 100%;
+        margin: 0 auto;
+        list-style: none;
+        padding-left: 0;
+      }
 
-      h4 {
-        font-size: 24px;
-        font-weight: 600;
-        line-height: 33px;
-        margin-button: 30px;
-        margin-top: 50px;
-        &.title {
+      &-item {
+        display: block;
+        position: relative;
+        width: 90%;
+        margin: 0 auto;
+        padding: 10px 0 20px 90px;
+        box-sizing: border-box;
+
+        h4 {
+          font-size: 24px;
+          font-weight: 600;
+          line-height: 33px;
+          margin-button: 5px;
+          margin-top: 0;
+
+        }
+
+        .image-wrapper {
+          position: absolute;
+          left: 0;
+          top: 15px;
+          width: 86px;
+          height: 86px;
+          background: grey;
+          border-radius: 50%;
+          margin: 0 10px 0 0;
+          display: inline-block;
+        }
+
+        .address {
+          margin-top: 15px;
+          font-family: "Open Sans";
+          font-size: 12px;
+          line-height: 20px;
+        }
+
+        a {
           font-size: 18px;
           font-weight: 600;
           line-height: 24px;
         }
-      }
-      .image-wrapper {
-        position: absolute;
-        left:0;
-        top: 0;
-        width: 86px;
-        height: 86px;
-        background: grey;
-        border-radius: 50%;
-        margin: 0 10px 0 0;
-        display: inline-block;
-      }
-      .address {
-        margin-top: 15px;
-        font-family: "Open Sans";
-        font-size: 12px;
-        line-height: 20px;
-      }
-      a {
-        font-size: 18px;
-        font-weight: 600;
-        line-height: 24px;
+
+        &:last-of-type {
+          display: block;
+        }
       }
 
-      &:last-of-type {
-        display: block;
+      .simple-text {
+        width: 90%;
+        font-size: 12px;
       }
     }
   }
