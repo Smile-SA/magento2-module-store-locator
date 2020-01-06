@@ -22,6 +22,46 @@
 @import "nearby-markers/_nearby-markers";
 @import "store-view/_store-view";
 
+
+.search-result-display {
+    position: absolute;
+    z-index: 20;
+    left: 1px;
+    right: -1px;
+    bottom: -2px;
+    top: 0;
+    background: white;
+    display: none;
+    &.show-result {
+        display: block;
+        .result-item {
+            display: block;
+            .render-btn {
+                position: relative;
+                padding-left: 30px;
+                color: #333435;
+                font-family: "Open Sans";
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 19px;
+                float: left;
+                &:before {
+                    position: absolute;
+                    display: inline-block;
+                    left: 0;
+                    top: 0;
+                    content: '';
+                    transform: scale(1.8);
+                    opacity: 0.5;
+                    width: 20px;
+                    height: 20px;
+                    background: url("Smile_StoreLocator::images/direction-1.svg") center center;
+                }
+            }
+        }
+    }
+}
+
 .smile-store-locator-store-view, .smile-store-locator-store-search,
 .smile_store_locator-store-view, .smile_store_locator-store-search {
     .current-status-shop {
@@ -43,13 +83,6 @@
 
     .shop-details {
         width: 100%;
-
-        //.map {
-        //    width: 100%;
-        //    height: 150px;
-        //    border-bottom: 1px solid #CCC;
-        //    z-index: 1;
-        //}
 
         .address-info {
             display: flex;
@@ -209,6 +242,7 @@
                 border: 1px solid #E6E6E6;
                 border-radius: 3px;
                 background-color: #FFFFFF;
+                -webkit-box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
                 box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
 
                 span {
@@ -415,6 +449,7 @@
             }
             .fulltext-search-wrapper {
                 padding: 10px;
+                position: relative;
 
                 .form {
                     padding: 10px 0 5px;
@@ -456,8 +491,8 @@
 
                     .geolocalize-container {
                         position: absolute;
-                        right: -13px;
-                        top: 22px;
+                        right: 0;
+                        top: -10px;
                         a {
                             width: 100%;
                             text-align: center;
@@ -477,6 +512,14 @@
                         flex: 0 0 100%;
                         margin-top: 5px;
                     }
+                }
+
+                .geocoder-wrapper__btn {
+                    display: inline-block;
+                    position: absolute;
+                    bottom: 0;
+                    height: 50px;
+                    right: 0;
                 }
             }
         }
@@ -1188,8 +1231,8 @@ a.geolocalize:before {
 
                         .geolocalize-container {
                             position: absolute;
-                            right: -1px;
-                            top: 22px;
+                            right: 0;
+                            top: -10px;
                             a {
                                 width: 100%;
                                 text-align: center;
@@ -1470,3 +1513,64 @@ a.geolocalize:before {
     }
 }
 
+
+.map-search-autocomplete {
+    .ui-helper-hidden-accessible {
+        display: none !important;
+    }
+    .ui-autocomplete {
+        position: absolute !important;
+        background: #f4f4f4;
+        z-index: 5;
+        padding-left: 0;
+        list-style: none;
+        top: 80px !important;
+        display: block;
+        border-radius: 4px;
+        -webkit-box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
+        -moz-box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
+        box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
+
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 17px;
+            height: 17px;
+            -webkit-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            z-index: -1;
+            position: absolute;
+            background: #f4f4f4;
+            top: -7px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        li {
+            height: 40px;
+            margin: 0;
+            border-top: 1px solid lightgrey;
+
+            &:first-of-type {
+                border-top: none;
+            }
+            a {
+                color: black;
+                display: block;
+                height: 100%;
+                line-height: 40px;
+                padding-left: 10px;
+            }
+            &:hover {
+                cursor: pointer;
+                a {
+                    color: #EE5C1D;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}
