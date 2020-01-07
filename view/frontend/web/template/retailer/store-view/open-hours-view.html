@@ -22,8 +22,6 @@
         <p data-bind="i18n: 'Special Opening Hours'"></p>
     </div>
 
-    <div data-bind="afterRender: closestShopDisplayRender"></div>
-
     <div class="opening-hours special-opening-hours" data-bind="visible: displayedMarkers()[0].schedule().hasSpecialOpeningHours()">
         <table class="opening-hours-table">
             <tbody data-bind="foreach: displayedMarkers()[0].schedule().specialOpeningHoursList()">
@@ -36,3 +34,4 @@
     </div>
 </div>
 <div data-bind="afterRender: displayedMarkers()[0].schedule().initDropdown()"></div>
+<div data-bind="afterRender: closestShopDisplayRender"></div>

@@ -171,6 +171,9 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                     'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
                     'setStoreData' => $this->getSetStorePostData($retailer),
                     'image'        => $image,
+                    'postCode'     => $address->getPostcode(),
+                    'city'         => $address->getCity(),
+                    'street'       => $address->getStreet(),
                 ];
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_DATA');
                 foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
