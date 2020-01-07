@@ -1530,6 +1530,8 @@ a.geolocalize:before {
         -webkit-box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
         -moz-box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
         box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
+        max-height: 400px;
+        overflow-y: auto;
 
         &:after {
             content: '';
@@ -1549,7 +1551,11 @@ a.geolocalize:before {
         }
 
         li {
-            height: 40px;
+            height: auto;
+            min-height: 40px;
+            display: table;
+            width: 100%;
+            vertical-align: middle;
             margin: 0;
             border-top: 1px solid lightgrey;
 
@@ -1558,9 +1564,10 @@ a.geolocalize:before {
             }
             a {
                 color: black;
-                display: block;
                 height: 100%;
-                line-height: 40px;
+                line-height: 24px;
+                vertical-align: middle;
+                display: table-cell;
                 padding-left: 10px;
             }
             &:hover {
