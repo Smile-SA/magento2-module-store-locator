@@ -1,6 +1,6 @@
 <!-- ko if: displayedMarkers()[0].shopStatus -->
 <div>
-    <!-- ko if: closestShopsDisplay != undefined-->
+    <!-- ko if: closestShopsDisplay != undefined && closestShopsDisplay.length > 0 -->
         <div>
             <h3 data-bind="i18n: 'Shops nearby'" class="shops-nearby-title"></h3>
             <ul class="nearby-marker-wrapper-list" data-bind="foreach: closestShopsDisplay">
