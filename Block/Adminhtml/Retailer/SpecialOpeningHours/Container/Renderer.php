@@ -179,7 +179,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
 
         $this->appendDatePickerConfiguration($element);
 
-        return $this->escapeScriptTags($element->getElementHtml());
+        return $element->getElementHtml();
     }
 
     /**
@@ -202,7 +202,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
         $input->setName($this->_getCellInputElementName($columnName));
         $input->setRenderer($elementRenderer);
 
-        return $this->escapeScriptTags($input->toHtml());
+        return $input->toHtml();
     }
 
     /**
@@ -237,21 +237,6 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
 JAVASCRIPT;
 
         $element->setAfterElementHtml($datePickerJsInit);
-    }
-
-    /**
-     * Escape a string's contents. Needed since array content rendering fails without this.
-     *
-     * @param string $string The string to escape
-     *
-     * @return string
-     */
-    private function escapeScriptTags($string)
-    {
-        $string = str_replace("\n", "", $string);
-        $string = str_replace("</script>", "<\/script>", $string);
-
-        return $string;
     }
 
     /**
