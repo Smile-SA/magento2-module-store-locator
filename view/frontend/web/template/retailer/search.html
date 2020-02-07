@@ -38,7 +38,7 @@
         <div class="search-result-list" data-bind="{scope: requestChild('store-list'), visible: selectedMarker() === null }">
             <div class="search-result-header">
                 <p data-bind="text: $t(searchResultsLabel).replace('%s', $parent.countDisplayedMarkers.bind($parent))"></p>
-                <span data-bind="if: $parent.displayReset()"><a data-bind="{click: $parent.resetMap.bind($parent)}"><span data-bind="text: $t(viewAllLabel)"></span></a></span>
+                <span data-bind="if: $parent.displayReset()"><a data-bind="{click: $parent.resetMap.bind($parent)}"><span class="span-underline" data-bind="text: $t(viewAllLabel)"></span></a></span>
             </div>
             <div class="store-locator-display-wrapper" data-bind="{mageInit: {'mapMobile':{}}}">
                 <button id="display-store-list-mobile" class="display-btn active">List</button>

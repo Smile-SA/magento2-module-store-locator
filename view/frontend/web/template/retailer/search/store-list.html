@@ -5,15 +5,8 @@
         </div>
         <div class="current-status-shop" data-bind="html: $data.shopStatus()"></div>
         <div class="details" style="display: flex">
-            <div class="location-number-block">
-                <span data-bind="text : $index() + 1"></span>
-            </div>
             <p class="address" style="flex:1"><span data-bind="html: address"></span></p>
             <span class="details-shop-btn"></span>
-        </div>
-        <div class="render-distance clearfix">
-            <span class="render-btn">M’y rendre</span>
-            <span class="distance" data-bind="text: distanceBetween"></span>
         </div>
     </div>
 </a>

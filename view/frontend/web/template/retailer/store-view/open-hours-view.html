@@ -5,6 +5,7 @@
             <a href="#" onClick="return false;"></a>
         </div>
     </div>
+    <div data-block="opening-hours-dropdown"></div>
     <div class="block catalog-product-stores-availability-content" data-role="openingHoursDropDown">
         <div class="opening-hours">
             <table class="opening-hours-table">
@@ -18,7 +19,7 @@
         </div>
     </div>
 
-    <div class="box-title" data-bind="visible: displayedMarkers()[0].schedule().hasSpecialOpeningHours()">
+    <div class="box-title title-special-opening-hours" data-bind="visible: displayedMarkers()[0].schedule().hasSpecialOpeningHours()">
         <p data-bind="i18n: 'Special Opening Hours'"></p>
     </div>
 
