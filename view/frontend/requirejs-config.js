@@ -9,7 +9,8 @@
  * @package   Smile\StoreLocator
  * @author    Romain Ruaud <romain.ruaud@smile.fr>
  * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
- * @copyright 2016 Smile
+ * @author    Fanny DECLERCK <fadec@smile.fr>
+ * @copyright 2020 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
 
