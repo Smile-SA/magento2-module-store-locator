@@ -72,7 +72,8 @@ $helper = $this->helper(\Smile\StoreLocator\Helper\Data::class);
                                data-bind="value: fulltextSearch, event: {keydown: onKeydown}"
                                type="text"
                                name="query"
-                               placeholder="<?php echo $block->escapeHtml(__('City, Zipcode, Department, ...'));?>"/>
+                               placeholder="<?php echo $block->escapeHtml(__('City, Zipcode, Department, ...'));?>"
+                               autocomplete="off"/>
                             <input type="hidden" id="suggest_url" value="<?= $block->escapeUrl($helper->getSuggestUrl())?>" />
                         </div>
                         <div class="actions">
@@ -83,7 +84,7 @@ $helper = $this->helper(\Smile\StoreLocator\Helper\Data::class);
                     </div>
                 </div>
             </form>
-            <div id="search_store_autocomplete" class="search-autocomplete"></div>
+            <div id="search_store_autocomplete" class="search-autocomplete search-store-autocomplete"></div>
         </div>
     </div>
 </div>

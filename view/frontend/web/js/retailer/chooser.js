@@ -31,6 +31,7 @@ define([
     var retailer = storage.get('current-store');
 
     return Component.extend({
+        xhrJson: null,
 
         /**
          * Component Constructor
@@ -51,7 +52,7 @@ define([
                 template:
                 '<li class="<%- data.row_class %>" id="qs-option-<%- data.index %>" role="option">' +
                 '<span class="qs-option-name">' +
-                ' <%- data.title %>' +
+                ' <a class="store-url-link" href="<%- data.url %>"><%- data.title %></a>' +
                 '</span>' +
                 '</li>',
             }
@@ -114,6 +115,10 @@ define([
                 var keepElt = this.fulltextSearch().split('').splice(0, this.fulltextSearch().trim().length-1).join('');
                 this.fulltextSearch(keepElt);
             }
+            if (event.keyCode == 46) {
+                this.fulltextSearch('');
+                this.autoComplete.hide();
+            }
 
             if (event.key.length == 1 && /^[a-zA-Z0-9 ]+$/.test(event.key)) {
                 this.fulltextSearch(this.fulltextSearch() + event.key);
@@ -130,7 +135,8 @@ define([
                     dropdown = $('<ul role="listbox"></ul>'),
                     value = this.fulltextSearch();
 
-                $.getJSON(this.options.url, {
+                if (this.xhrJson !== null) this.xhrJson.abort();
+                this.xhrJson = $.getJSON(this.options.url, {
                     q: value
                 }, $.proxy(function (data) {
                     if (data.length) {
