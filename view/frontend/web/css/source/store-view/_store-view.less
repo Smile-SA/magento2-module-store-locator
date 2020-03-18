@@ -1,0 +1,340 @@
+// /**
+//  * DISCLAIMER
+//  *
+//  * Do not edit or add to this file if you wish to upgrade this module to newer
+//  * versions in the future.
+//  *
+//  *
+//  * @category  Smile
+//  * @package   Smile\StoreLocator
+//  * @author    Ihor KVASNYTSKYI <ihor.kvasnytskyi@smile-ukraine.com>
+//  * @copyright 2019 Smile
+//  * @license   Open Software License ("OSL") v. 3.0
+//  */
+
+
+//
+//  Shop View
+//  _____________________________________________
+
+
+.smile_store_locator-store-view {
+  #maincontent {
+    max-width: 1440px;
+    .column.main {
+      padding-bottom: 0;
+    }
+  }
+  .page-title-wrapper {
+    display: none;
+  }
+
+  .page-wrapper {
+    overflow-x: hidden;
+  }
+  .store-view-map {
+    .current-status-shop {
+      width: 85%;
+    }
+  }
+
+}
+.store-view-map {
+  height: auto;
+  .current-status-shop {
+    width: 95%;
+  }
+
+  .map {
+    max-width: 986px;
+    height: 762px;
+    background: #666;
+    z-index:1;
+    float: left;
+    display: inline-block;
+    margin-bottom: 20px;
+
+    .copyright-info-wrapper {
+      background: #FFFFFF;
+      box-shadow: 0 1px 10px;
+      padding: 0 8px;
+      bottom: 0;
+      right: 0;
+      position: absolute;
+      z-index: 1000;
+    }
+  }
+
+  .shop-details-wrapper {
+    position: relative;
+    float: left;
+    padding: 0 10px;
+    background: #FFFFFF;
+    z-index: 2;
+    max-width: 380px;
+    height: 100%;
+    display: inline-block;
+    margin: 0 2% 0 0;
+    width: 28.1%;
+    box-sizing: border-box;
+    padding-bottom: 20px;
+  }
+
+  .store-name {
+    h2 {
+      margin-top: 10px;
+      margin-left: 20px;
+      font-family: "Open Sans";
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 33px;
+      color: #333333;
+      width: 90%;
+      max-width: 322px;
+    }
+  }
+
+  .image-wrapper-header {
+    width: 100%;
+
+    img {
+      height: auto;
+      max-width: 100%;
+      width: 100%;
+      max-height: 200px;
+    }
+  }
+
+  .opening-hours {
+    &-info {
+      margin-top: 10px;
+      margin-left: 20px;
+      max-width: 322px;
+    }
+    .opening-row {
+      color: #333435;
+      font-family: "Open Sans";
+      font-size: 14px;
+      line-height: 23px;
+
+      &-day {
+        padding: 0 0 5px 0;
+        width: 55%;
+      }
+
+      &-hours {
+        padding: 0 0 5px 5px;
+        text-align: right;
+      }
+    }
+  }
+
+  .contact-information {
+    margin-top: 10px;
+    margin-left: 20px;
+    max-width: 322px;
+
+    &-label {
+      color: #333435;
+      font-family: "Open Sans";
+      font-size: 14px;
+      line-height: 24px;
+    }
+
+    &-value {
+      font-weight: 600;
+    }
+  }
+
+  .address-info {
+    color: #333435;
+    font-family: "Open Sans";
+    font-size: 14px;
+    line-height: 24px;
+    margin-top: 10px;
+    margin-left: 20px;
+    max-width: 322px;
+  }
+
+  .directions {
+    margin: 10px 0 100px 0;
+    display: table;
+    width: 100%;
+    max-width: 322px;
+
+    &-btn {
+      height: 50px;
+      display: table-cell;
+      vertical-align: middle;
+      width: 100%;
+      border-radius: 3px;
+      background-color: #EE5C1D;
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+      color: #FFFFFF;
+      font-family: "Open Sans";
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 27px;
+      text-align: center;
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+        opacity: 0.9;
+      }
+      &-icon {
+        position: relative;
+        display: inline-block;
+        margin-right: 3px;
+        content: '';
+        width: 20px;
+        height: 20px;
+        top: 5px;
+        background: url("Smile_StoreLocator::images/direction-details.svg") center center;
+        background-repeat: no-repeat;
+        transform: scale(1.7);
+      }
+    }
+  }
+
+  .set-store-button {
+    margin: 20px 0 20px 0;
+    display: table;
+    width: 100%;
+    max-width: 322px;
+    float: none;
+
+    .action-set-store {
+      height: 50px;
+      display: table-cell;
+      vertical-align: middle;
+      width: 100%;
+      border-radius: 3px;
+      background-color: #EE5C1D;
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+      color: #FFFFFF;
+      font-family: "Open Sans";
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 27px;
+      text-align: center;
+      text-decoration: none;
+      &:hover {
+        text-decoration: none;
+        opacity: 0.9;
+      }
+    }
+  }
+
+  .back-to-result-btn {
+    display: table;
+    width: 100%;
+    height: 50px;
+    border: 1px solid #E6E6E6;
+    border-radius: 3px;
+    background-color: #FFFFFF;
+    box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
+    color: #333435;
+    font-family: "Open Sans";
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 19px;
+    text-align: center;
+    padding: 14px;
+    box-sizing: border-box;
+    max-width: 322px;
+
+    &:hover {
+      text-decoration: none;
+    }
+  }
+
+  .simple-text {
+    width: 65%;
+    display: block;
+    margin: 20px auto;
+    text-align: center;
+    color: #333435;
+    font-family: "Open Sans";
+    font-size: 14px;
+    line-height: 22px;
+  }
+
+  .btn-wrapper {
+    padding-left: 20px;
+  }
+}
+
+.media-width(@extremum, @break) when (@extremum = 'max') and (@break = @screen__m) {
+
+  .smile_store_locator-store-view {
+    .page-header {
+      margin: 0;
+      border: none;
+    }
+  }
+  .store-view-map {
+    .shop-details-wrapper {
+      margin: 0 auto;
+    }
+    .shops-nearby-title {
+      font-size: 24px;
+      font-weight: 600;
+      line-height: 33px;
+    }
+
+    .set-store-button {
+      margin: 20px auto 20px auto;
+      display: table;
+      width: 90%;
+      max-width: 322px;
+      padding-left: 0;
+      float: none;
+
+      .action-set-store {
+        height: 50px;
+        display: table-cell;
+        vertical-align: middle;
+        width: 100%;
+        border-radius: 3px;
+        background-color: #EE5C1D;
+        box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+        color: #FFFFFF;
+        font-family: "Open Sans";
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 27px;
+        text-align: center;
+        text-decoration: none;
+
+        &:hover {
+          text-decoration: none;
+          opacity: 0.9;
+        }
+      }
+    }
+
+    .back-to-result-btn {
+      display: table;
+      width: 90%;
+      height: 50px;
+      border: 1px solid #E6E6E6;
+      border-radius: 3px;
+      background-color: #FFFFFF;
+      box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+      color: #333435;
+      font-family: "Open Sans";
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 19px;
+      text-align: center;
+      padding: 14px;
+      box-sizing: border-box;
+      margin: 0 auto;
+      max-width: 322px;
+
+      &:hover {
+        text-decoration: none;
+      }
+    }
+  }
+}

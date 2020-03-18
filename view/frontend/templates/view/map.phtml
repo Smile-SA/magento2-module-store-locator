@@ -8,7 +8,8 @@
  * @category  Smile
  * @package   Smile\StoreLocator
  * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
+ * @author    Ihor KVASNYTSKYI <ihor.kvasnytskyi@smile-ukraine.com>
+ * @copyright 2019 Smile
  * @license   Open Software License ("OSL") v. 3.0
  *
  * Retailer frontend view block
@@ -18,36 +19,82 @@
 <?php
 /** @var \Smile\StoreLocator\Block\View\Map $block */
 $retailer = $block->getRetailer();
+$image = $block->getImage();
+$phone = $block->getPhone();
+$mail = $block->getContactMail();
+$storeName = $block->getStoreName();
 ?>
-<div id="store-view-map" class="store-view-map" data-bind="scope: 'store-locator-store-view'" >
-    <div class="map" data-bind="afterRender: initMap"> </div>
 
-    <div class="address-info">
-        <div class="address">
-            <?php echo $block->getDescription(); ?>
+<div id="store-view-map" class="store-view-map clearfix" data-bind="scope: 'store-locator-store-view'" >
+    <div data-bind="{ scope: requestChild('geocoder')}">
+        <div data-bind=" afterRender: initGeocoder"></div>
+    </div>
+    <div class="shop-details-wrapper">
+        <div class="header">
+            <div class="image-wrapper-header">
+                <?php if ($image) : ?>
+                    <img src="<?php echo $image; ?>"/>
+                <?php endif; ?>
+            </div>
+            <div class="store-name">
+                <h2><?php echo $storeName; ?></h2>
+            </div>
+            <div data-bind="template: storeDetailsWrap"></div>
+            <div class="address-info">
+                <div class="address">
+                   <?php echo $block->getAddressHtml(); ?>
+                </div>
+                <div itemscope itemprop="address" itemtype="http://schema.org/PostalAddress">
+                    <meta itemprop="streetAddress" content="<?php echo $block->escapeHtml(implode(' ', $block->getAddress()->getStreet()));?>"/>
+                    <meta itemprop="postalCode" content="<?php echo $block->escapeHtml($block->getAddress()->getPostcode());?>"/>
+                    <meta itemprop="addressLocality" content="<?php echo $block->escapeHtml($block->getAddress()->getCity());?>"/>
+                    <meta itemprop="addressCountry" content="<?php echo $block->escapeHtml($block->getAddress()->getCountryId());?>"/>
+                </div>
+                <div itemscope itemprop="geo" itemtype="http://schema.org/GeoCoordinates">
+                    <meta itemprop="latitude" content="<?php echo $block->escapeHtml($block->getAddress()->getCoordinates()->getLatitude());?>"/>
+                    <meta itemprop="longitude" content="<?php echo $block->escapeHtml($block->getAddress()->getCoordinates()->getLongitude());?>"/>
+                </div>
+            </div>
+            <?php if ($phone || $mail) : ?>
+                <div class="contact-information">
+                    <?php if ($phone) : ?>
+                        <div class="contact-information-phone">
+                            <span class="contact-information-label"><?php echo __('Tel'); ?>. :</span>
+                            <span class="contact-information-value"><?php echo $phone; ?></span>
+                        </div>
+                    <?php endif; ?>
+                    <?php if ($mail) : ?>
+                        <div class="contact-information-mail">
+                            <span class="contact-information-label">E-mail. :</span>
+                            <span class="contact-information-value"><?php echo $mail; ?></span>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            <?php endif; ?>
+            <div class="btn-wrapper">
+                <div class="directions">
+                    <a target="_blank" class="directions-btn" href="<?php echo $this->getDirectionUrl(); ?>">
+                        <span class="directions-btn-icon"></span>
+                        <span><?php echo __('Go there'); ?></span>
+                    </a>
+                </div>
+
+                <div class="set-store-button">
+                    <a href="#"
+                       title="<?php echo $block->escapeHtml(__('Choose this store')); ?>"
+                       class="action-set-store"
+                       data-post='<?php /* @escapeNotVerified */ echo $block->getSetStorePostJson(); ?>'>
+                        <span><?php echo $block->escapeHtml(__('Choose this store')); ?></span>
+                    </a>
+                </div>
+
+                <a class= "back-to-result-btn" href="<?php echo $this->getStoreListUrl(); ?>"><?php echo __('Back to result'); ?></a>
+            </div>
         </div>
     </div>
-    <div class="address-info">
-        <div class="box-title">
-            <p><?php echo __('Store Address'); ?> :</p>
-        </div>
-        <div class="address">
-            <em><?php echo $block->getAddressHtml(); ?></em>
-        </div>
-        <div class="actions">
-            <p class="directions"><a target="_blank" href="<?php echo $this->getDirectionUrl(); ?>"><?php echo __('Directions'); ?></a></p>
-        </div>
-        <div itemscope itemprop="address" itemtype="http://schema.org/PostalAddress">
-            <meta itemprop="streetAddress" content="<?php echo $block->escapeHtml(implode(' ', $block->getAddress()->getStreet()));?>"/>
-            <meta itemprop="postalCode" content="<?php echo $block->escapeHtml($block->getAddress()->getPostcode());?>"/>
-            <meta itemprop="addressLocality" content="<?php echo $block->escapeHtml($block->getAddress()->getCity());?>"/>
-            <meta itemprop="addressCountry" content="<?php echo $block->escapeHtml($block->getAddress()->getCountryId());?>"/>
-        </div>
-        <div itemscope itemprop="geo" itemtype="http://schema.org/GeoCoordinates">
-            <meta itemprop="latitude" content="<?php echo $block->escapeHtml($block->getAddress()->getCoordinates()->getLatitude());?>"/>
-            <meta itemprop="longitude" content="<?php echo $block->escapeHtml($block->getAddress()->getCoordinates()->getLongitude());?>"/>
-        </div>
-    </div>
+    <div class="map" data-bind="afterRender: initMap"></div>
+    <div class="banners-wrap" data-bind="template: viewBanersWrapper"></div>
+    <div class="nearby-marker-wrapper-container" data-bind="template: nearbyStoreWrapper"></div>
 </div>
 
 <script type="text/x-magento-init">

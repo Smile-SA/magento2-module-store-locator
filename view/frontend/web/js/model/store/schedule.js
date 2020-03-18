@@ -153,6 +153,9 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
             var openDay = '';
             if (this.calendar.hasOwnProperty(index)) {
                 var exist = this.calendar[index];
+                if(exist.length == 0){
+                    return result;
+                }
                 if(!exist.length || isOpen === 'closeNow'){
                     exist = this.getNextDayData();
                 }
@@ -282,7 +285,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
          */
         initOpeningHoursList : function() {
             var list = [];
-            for (var day in this.openingHours) if (this.openingHours.hasOwnProperty(day)) {
+            for (var day in this.openingHours) if (this.openingHours.hasOwnProperty(day) && day != 0) {
                 if (Array.isArray(this.openingHours[day])) {
                     var object = {
                         "day": this.getDayLabel(day),
@@ -293,6 +296,14 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
                 }
             }
 
+            if (this.openingHours.hasOwnProperty(0) && Array.isArray(this.openingHours[0])) {
+                var sunday = {
+                    "day": this.getDayLabel(0),
+                    "hours": this.extractOpeningTimes(this.openingHours[0])
+                };
+                list.push(sunday);
+            }
+
             this.openingHoursList = ko.observableArray(list);
         },
 
@@ -301,7 +312,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
          */
         initSpecialOpeningHoursList : function() {
             var list = [];
-            for (var day in this.specialOpeningHours) if (this.specialOpeningHours.hasOwnProperty(day)) {
+            for (var day in this.specialOpeningHours) if (this.specialOpeningHours.hasOwnProperty(day) && day != 0) {
                 if (Array.isArray(this.specialOpeningHours[day])) {
                     var object = {
                         "day": moment(day, this.dateFormat).toDate().toLocaleString(
@@ -313,6 +324,13 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
 
                     list.push(object);
                 }
+            }
+            if (this.specialOpeningHours.hasOwnProperty(0) && Array.isArray(this.specialOpeningHours[0])) {
+                var sunday = {
+                    "day": this.getDayLabel(0),
+                    "hours": this.extractOpeningTimes(this.specialOpeningHours[0])
+                };
+                list.push(sunday);
             }
 
             this.specialOpeningHoursList = ko.observableArray(list);
@@ -404,7 +422,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
 
         initDropdown : function (element, component) {
             $('[data-role=openingHoursDropDown]').dropdownDialog({
-                'appendTo': '[data-block=opening-hours-info]',
+                'appendTo': '[data-block=opening-hours-dropdown]',
                 'triggerTarget': '.showopeninghours',
                 'timeout': '2000',
                 'closeOnMouseLeave': false,

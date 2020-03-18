@@ -41,10 +41,6 @@
                                         <item name="nearbySearchLabel" xsi:type="string" translate="true">%s shop(s) nearby</item>
                                         <item name="viewAllLabel" xsi:type="string" translate="true">View all</item>
                                     </item>
-                                    <item name="banner-container" xsi:type="array">
-                                        <item name="component" xsi:type="string">uiComponent</item>
-                                        <item name="displayArea" xsi:type="string">banner-container</item>
-                                    </item>
                                 </item>
                             </item>
                         </item>

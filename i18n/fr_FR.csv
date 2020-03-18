@@ -26,6 +26,7 @@ Email,Email
 "What’s on your mind?","Que souhaitez-vous nous dire ?"
 Submit,Envoyer
 Telephone,Téléphone
+Tel,Tél
 Fax,Fax
 Mail,Mail
 "Contact Us","Contactez Nous"
@@ -59,3 +60,4 @@ Longitude,Longitude
 "Maximum number of visible stores","Nombre maximum de magasins visible"
 "Above this limit, the list of stores will be not display","Au-delà de cette limite, la liste des magasins ne sera pas affichée"
 "Apply for retailers","Appliquer pour les magasins"
+"Shops nearby", "Commerces à proximité"

@@ -1,0 +1,38 @@
+
+<div data-block="opening-hours-info">
+    <div class="box-title clearfix">
+        <div data-bind="html: displayedMarkers()[0].shopStatus" class="showopeninghours current-status-shop">
+            <a href="#" onClick="return false;"></a>
+        </div>
+    </div>
+    <div data-block="opening-hours-dropdown"></div>
+    <div class="block catalog-product-stores-availability-content" data-role="openingHoursDropDown">
+        <div class="opening-hours">
+            <table class="opening-hours-table">
+                <tbody data-bind="{foreach: displayedMarkers()[0].schedule().openingHoursList}" data-role="opening-hours-table">
+                <tr data-bind="css: { currentDay: $parent.displayedMarkers()[0].schedule().isCurrentDay(day) == true }" class="opening-row">
+                    <td class="opening-row-day" data-bind="text:day"></td>
+                    <td class="opening-row-hours" data-bind="text:hours"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <div class="box-title title-special-opening-hours" data-bind="visible: displayedMarkers()[0].schedule().hasSpecialOpeningHours()">
+        <p data-bind="i18n: 'Special Opening Hours'"></p>
+    </div>
+
+    <div class="opening-hours special-opening-hours" data-bind="visible: displayedMarkers()[0].schedule().hasSpecialOpeningHours()">
+        <table class="opening-hours-table">
+            <tbody data-bind="foreach: displayedMarkers()[0].schedule().specialOpeningHoursList()">
+            <tr class="opening-row">
+                <td class="opening-row-day" data-bind="text:day"></td>
+                <td class="opening-row-hours" data-bind="text:hours"></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+<div data-bind="afterRender: displayedMarkers()[0].schedule().initDropdown()"></div>
+<div data-bind="afterRender: closestShopDisplayRender"></div>

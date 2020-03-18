@@ -20,7 +20,47 @@
 
 
 @import "nearby-markers/_nearby-markers";
+@import "store-view/_store-view";
 
+
+.search-result-display {
+    position: absolute;
+    z-index: 20;
+    left: 1px;
+    right: -1px;
+    bottom: -2px;
+    top: 0;
+    background: white;
+    display: none;
+    &.show-result {
+        display: block;
+        .result-item {
+            display: block;
+            .render-btn {
+                position: relative;
+                padding-left: 30px;
+                color: #333435;
+                font-family: "Open Sans";
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 19px;
+                float: left;
+                &:before {
+                    position: absolute;
+                    display: inline-block;
+                    left: 0;
+                    top: 0;
+                    content: '';
+                    transform: scale(1.8);
+                    opacity: 0.5;
+                    width: 20px;
+                    height: 20px;
+                    background: url("Smile_StoreLocator::images/direction-1.svg") center center;
+                }
+            }
+        }
+    }
+}
 
 .smile-store-locator-store-view, .smile-store-locator-store-search,
 .smile_store_locator-store-view, .smile_store_locator-store-search {
@@ -40,23 +80,13 @@
             font-weight: bold;
         }
     }
-    .set-store-button {
-        float: right;
-    }
 
     .shop-details {
         width: 100%;
 
-        .map {
-            width: 100%;
-            height: 150px;
-            border-bottom: 1px solid #CCC;
-            z-index: 1;
-        }
-
         .address-info {
             display: flex;
-            padding: 10px 0 22px 0;
+            padding: 10px 0 0 0;
 
             .box-title {
                 margin-right: 10px;
@@ -80,6 +110,9 @@
         .opening-hours-info {
             clear: both;
 
+            .title-special-opening-hours {
+                margin-right: 60px;
+            }
             .box-title {
                 margin-right: 10px;
                 position: relative;
@@ -124,48 +157,27 @@
     }
 }
 
-.smile-store-locator-store-view, .smile_store_locator-store-view {
-    .shop-details {
-        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-        border: 1px solid #CCC;
-        margin: 10px 0 26px;
-    }
-
-    .shop-informations {
-        display: flex;
-        flex-direction: column;
-        flex-flow: row wrap;
-
-        .store-view-map {
-            flex: 0 0 100%;
-        }
-
-        .opening-hours-container {
-            flex: 1 1 auto;
-            float:none;
-        }
-
-        .contact-info {
-            flex: 1 1 auto;
-
-            .contact-info-wrapper {
-                padding: 10px;
-                h3 {
-                    margin-top: 0;
-                }
-                box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.2);
-                border: 1px solid #CCC;
-                margin-right: 10px;
-                margin-bottom: 10px;
-                max-height: 200px;
-            }
-        }
-    }
-}
-
 .smile-store-locator-store-search, .smile_store_locator-store-search {
     .page-wrapper {
         overflow-x: hidden;
+    }
+    .details-link {
+        border-top: 1px solid #E8E8E8;
+        margin: 0;
+        position: relative;
+        min-height: 120px;
+        display: block;
+        color: #333435;
+        font-family: "Open Sans";
+        font-size: 14px;
+        line-height: 24px;
+        width: 100%;
+        height: 100%;
+        padding: 18px 5px 18px 20px;
+        box-sizing: border-box;
+        &:hover {
+            text-decoration: none;
+        }
     }
     .shop-details {
         width: auto;
@@ -231,6 +243,7 @@
                 border: 1px solid #E6E6E6;
                 border-radius: 3px;
                 background-color: #FFFFFF;
+                -webkit-box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
                 box-shadow: 0 2px 8px 0 rgba(0,0,0,0.12);
 
                 span {
@@ -268,6 +281,7 @@
             z-index: 2;
         }
         &-link {
+            background: #eeeeee;
             position: relative;
             color: #333333;
             font-weight: 500;
@@ -279,7 +293,6 @@
             box-sizing: border-box;
             border-radius: 3px;
             background-color: #FFFFFF;
-            -webkit-box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
             box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
             span {
                 color: #333435;
@@ -367,9 +380,7 @@
 //  _____________________________________________
 
 .smile-store-locator-store-view, .smile_store_locator-store-view {
-    .page-title .set-store-button {
-        float: right;
-    }
+
 }
 .smile_store_locator-store-search {
     overflow-x: hidden;
@@ -439,6 +450,7 @@
             }
             .fulltext-search-wrapper {
                 padding: 10px;
+                position: relative;
 
                 .form {
                     padding: 10px 0 5px;
@@ -470,8 +482,6 @@
                             right: 5%;
                             content: '';
                             font-size: 0;
-                            background: url("Smile_StoreLocator::images/location-search.svg") center center;
-                            background-repeat: no-repeat;
                             span {
                                 line-height: 1.3em;
                             }
@@ -480,8 +490,8 @@
 
                     .geolocalize-container {
                         position: absolute;
-                        right: -13px;
-                        top: 22px;
+                        right: 0;
+                        top: -10px;
                         a {
                             width: 100%;
                             text-align: center;
@@ -501,6 +511,14 @@
                         flex: 0 0 100%;
                         margin-top: 5px;
                     }
+                }
+
+                .geocoder-wrapper__btn {
+                    display: inline-block;
+                    position: absolute;
+                    bottom: 0;
+                    height: 50px;
+                    right: 0;
                 }
             }
         }
@@ -527,12 +545,15 @@
                     line-height: 19px;
                 }
                 span {
+                    .span-underline {
+                        text-decoration-line: underline
+                    }
                     color: #333435;
                     font-family: "Open Sans";
                     font-size: 14px;
                     font-weight: 600;
                     line-height: 19px;
-                    padding-left: 3px;
+                    padding-left: 102px;
                 }
                 a {
                     color: #FFF;
@@ -564,10 +585,7 @@
                 }
 
                 li.result-item {
-                    border-top: 1px solid #E8E8E8;
                     margin: 0;
-                    padding: 18px 5px 18px 50px;
-                    position: relative;
                     tr {
                         display: none;
                         &.today {
@@ -698,6 +716,10 @@
                     &:hover {
                         background-color: #F8F8F8;
                         cursor: pointer;
+                    }
+
+                    .render-distance {
+                        margin-bottom: 18px;
                     }
                 }
 
@@ -981,8 +1003,18 @@ a.geolocalize:before {
     }
 
     &.current {
+        -webkit-transform: scale(1.3);
+        -ms-transform: scale(1.3);
         transform: scale(1.3);
         z-index: 300;
+    }
+    a {
+        position: absolute;
+        left: 0;
+        right: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 5;
     }
 
     &.my-position {
@@ -992,6 +1024,8 @@ a.geolocalize:before {
             left: 2px;
             top: 3px;
             content: '';
+            -webkit-transform: scale(1.8);
+            -ms-transform: scale(1.8);
             transform: scale(1.8);
             opacity: 0.8;
             width: 20px;
@@ -999,6 +1033,11 @@ a.geolocalize:before {
             background: url(../Smile_StoreLocator/images/direction-1.svg) center center;
             z-index: 19;
         }
+    }
+    &:hover {
+        -webkit-transform: scale(1.3);
+        -ms-transform: scale(1.3);
+        transform: scale(1.3);
     }
 }
 
@@ -1071,10 +1110,6 @@ a.geolocalize:before {
                     margin: 0;
 
                     li.result-item {
-                        border-top: 1px solid #E8E8E8;
-                        margin: 0;
-                        padding: 18px 5px 18px 10px;
-                        position: relative;
 
                         p {
                             margin-bottom: 0;
@@ -1202,8 +1237,8 @@ a.geolocalize:before {
 
                         .geolocalize-container {
                             position: absolute;
-                            right: -1px;
-                            top: 22px;
+                            right: 0;
+                            top: -10px;
                             a {
                                 width: 100%;
                                 text-align: center;
@@ -1280,6 +1315,149 @@ a.geolocalize:before {
             }
         }
     }
+    #maincontent {
+        padding: 0;
+    }
+    .store-view-map {
+        .current-status-shop {
+            width: 100%;
+            font-size: 12px;
+            line-height: 17px;
+        }
+        .map {
+            width: 100%;
+            height: 400px;
+            position: absolute;
+            z-index: -1;
+        }
+        .shop-details-wrapper {
+            position: relative;
+            float: none;
+            padding: 0 0 50px 0;
+            background: #FFFFFF;
+            z-index: 2;
+            max-width: 380px;
+            height: 100%;
+            display: block;
+            width: 100%;
+            box-sizing: border-box;
+        }
+
+        .store-name {
+            h2 {
+                margin: 10px auto;
+                font-family: "Open Sans";
+                font-size: 24px;
+                font-weight: 600;
+                line-height: 33px;
+                color: #333333;
+                width: 90%;
+            }
+        }
+
+        .image-wrapper-header {
+            width: 100%;
+
+            img {
+                height: auto;
+                max-width: 100%;
+                width: 100%;
+                max-height: 200px;
+            }
+        }
+
+        .opening-hours {
+            &-info {
+                margin: 10px auto;
+                max-width: 322px;
+                width: 90%;
+            }
+            .opening-row {
+                color: #333435;
+                font-family: "Open Sans";
+                font-size: 14px;
+                line-height: 23px;
+
+                &-day {
+                    padding: 0 0 5px 0;
+                    width: 55%;
+                }
+
+                &-hours {
+                    padding: 0 0 5px 5px;
+                    text-align: right;
+                }
+            }
+        }
+
+        .contact-information {
+            margin: 10px auto;
+            max-width: 322px;
+            width: 90%;
+
+            &-label {
+                color: #333435;
+                font-family: "Open Sans";
+                font-size: 14px;
+                line-height: 24px;
+            }
+
+            &-value {
+                font-weight: 600;
+            }
+        }
+
+        .address-info {
+            color: #333435;
+            font-family: "Open Sans";
+            font-size: 14px;
+            line-height: 24px;
+            margin: 10px auto;
+            max-width: 322px;
+            width: 90%;
+        }
+
+        .directions {
+            margin: 28px auto 20px auto;
+            display: table;
+            width: 90%;
+            max-width: 322px;
+            padding-left: 0;
+
+            &-btn {
+                height: 50px;
+                display: table-cell;
+                vertical-align: middle;
+                width: 100%;
+                border-radius: 3px;
+                background-color: #EE5C1D;
+                box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.12);
+                color: #FFFFFF;
+                font-family: "Open Sans";
+                font-size: 14px;
+                font-weight: 600;
+                line-height: 27px;
+                text-align: center;
+                text-decoration: none;
+                &:hover {
+                    text-decoration: none;
+                }
+                &-icon {
+                    position: relative;
+                    display: inline-block;
+                    margin-right: 3px;
+                    content: '';
+                    width: 20px;
+                    height: 20px;
+                    top: 5px;
+                    background: url("Smile_StoreLocator::images/direction-details.svg") center center;
+                    background-repeat: no-repeat;
+                    transform: scale(1.7);
+                }
+            }
+        }
+
+    }
 }
 
 //
@@ -1304,6 +1482,17 @@ a.geolocalize:before {
             display: none;
         }
     }
+
+    .store-view-map {
+        .map {
+            width: 57.6%;
+        }
+
+        .shop-details-wrapper {
+            margin: 0 2% 0 0;
+            width: 40.1%;
+        }
+    }
 }
 
 .media-width(@extremum, @break) when (@extremum = 'min') and (@break = @screen__l) {
@@ -1317,5 +1506,92 @@ a.geolocalize:before {
             width: 69.6%;
         }
     }
+
+    .store-view-map {
+        .map {
+            width: 69.6%;
+        }
+
+        .shop-details-wrapper {
+            margin: 0 2% 0 0;
+            width: 28.1%;
+        }
+    }
 }
 
+.search-store-autocomplete {
+    padding-left: 11px;
+    width: 209px !important;
+    margin-top: -9px !important;
+    .store-url-link{
+        color: #333333;
+    }
+}
+
+.map-search-autocomplete {
+    .ui-helper-hidden-accessible {
+        display: none !important;
+    }
+    .ui-autocomplete {
+        position: absolute !important;
+        background: #f4f4f4;
+        z-index: 5;
+        padding-left: 0;
+        list-style: none;
+        top: 80px !important;
+        display: block;
+        border-radius: 4px;
+        -webkit-box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
+        -moz-box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
+        box-shadow: -1px 2px 13px -1px rgba(0,0,0,0.75);
+        max-height: 400px;
+        overflow-y: auto;
+
+        &:after {
+            content: '';
+            display: inline-block;
+            width: 17px;
+            height: 17px;
+            -webkit-transform: rotate(-45deg);
+            -ms-transform: rotate(-45deg);
+            transform: rotate(-45deg);
+            z-index: -1;
+            position: absolute;
+            background: #f4f4f4;
+            top: -7px;
+            left: 0;
+            right: 0;
+            margin: auto;
+        }
+
+        li {
+            height: auto;
+            min-height: 40px;
+            display: table;
+            width: 100%;
+            vertical-align: middle;
+            margin: 0;
+            border-top: 1px solid lightgrey;
+
+            &:first-of-type {
+                border-top: none;
+            }
+            a {
+                color: black;
+                height: 100%;
+                line-height: 24px;
+                vertical-align: middle;
+                display: table-cell;
+                padding-left: 10px;
+            }
+            &:hover {
+                cursor: pointer;
+                a {
+                    color: #EE5C1D;
+                    text-decoration: none;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

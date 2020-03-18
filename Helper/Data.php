@@ -6,8 +6,9 @@
  *
  * @category  Smile
  * @package   Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@gmail.com>
- * @copyright 2016 Smile
+ * @author    Aurelien FOUCRET <aurelien.foucret@gmail.com>
+ * @author    Fanny DECLERCK <fadec@smile.fr>
+ * @copyright 2020 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
 namespace Smile\StoreLocator\Helper;
@@ -20,6 +21,7 @@ use Smile\Retailer\Api\Data\RetailerInterface;
  * @category Smile
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@gmail.com>
+ * @author   Fanny DECLERCK <fadec@smile.fr>
  */
 class Data extends \Magento\Framework\App\Helper\AbstractHelper
 {
@@ -64,5 +66,18 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     public function getRetailerUrl(RetailerInterface $retailer)
     {
         return $this->urlModel->getUrl($retailer);
+    }
+
+    /**
+     * Retrieve suggest url
+     *
+     * @return string
+     */
+    public function getSuggestUrl()
+    {
+        return $this->_getUrl(
+            'storelocator/ajax/suggest',
+            ['_secure' => $this->_getRequest()->isSecure()]
+        );
     }
 }
