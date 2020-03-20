@@ -233,7 +233,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     private function getRetailerCollection()
     {
         $retailerCollection = $this->retailerCollectionFactory->create();
-        $retailerCollection->addAttributeToSelect(['name', 'contact_mail', 'contact_phone', 'contact_mail']);
+        $retailerCollection->addAttributeToSelect(['name', 'url_key', 'contact_mail', 'contact_phone', 'contact_mail']);
         $retailerCollection->addFieldToFilter('is_active', (int) true);
         $retailerCollection->addOrder('name', 'asc');
 
