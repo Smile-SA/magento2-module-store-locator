@@ -17,10 +17,6 @@
 
 <?php
 /** @var \Smile\StoreLocator\Block\StoreChooser $block */
-$dataScope = $block->getDataScope();
-
-/** @var $helper \Magento\Search\Helper\Data */
-$helper = $this->helper(\Smile\StoreLocator\Helper\Data::class);
 ?>
 
 <?php $dataScope = $block->getDataScope(); ?>
@@ -57,7 +53,7 @@ $helper = $this->helper(\Smile\StoreLocator\Helper\Data::class);
                     </div>
                 </div>
             </div>
-            <form id="search_store_mini_form" action="<?php echo $block->getStoreLocatorHomeUrl() ?>" data-bind="submit: onSubmit">
+            <form action="<?php echo $block->getStoreLocatorHomeUrl() ?>" data-bind="submit: onSubmit">
                 <div class="store-search">
                     <div class="geolocalize-container" data-bind="scope: requestChild('geocoder')">
                         <div class="primary" data-bind="afterRender: initGeocoder">
@@ -68,13 +64,7 @@ $helper = $this->helper(\Smile\StoreLocator\Helper\Data::class);
                     </div>
                     <div class="store-search-form">
                         <div class="field">
-                            <input id="search_store"
-                               data-bind="value: fulltextSearch, event: {keydown: onKeydown}"
-                               type="text"
-                               name="query"
-                               placeholder="<?php echo $block->escapeHtml(__('City, Zipcode, Department, ...'));?>"
-                               autocomplete="off"/>
-                            <input type="hidden" id="suggest_url" value="<?= $block->escapeUrl($helper->getSuggestUrl())?>" />
+                            <input data-bind="{ value: fulltextSearch }" type="text" name="query" placeholder="<?php echo $block->escapeHtml(__('City, Zipcode, Department, ...'));?>"/>
                         </div>
                         <div class="actions">
                             <div class="primary">
@@ -84,11 +74,10 @@ $helper = $this->helper(\Smile\StoreLocator\Helper\Data::class);
                     </div>
                 </div>
             </form>
-            <div id="search_store_autocomplete" class="search-autocomplete search-store-autocomplete"></div>
         </div>
     </div>
 </div>
 
 <script type="text/x-magento-init">
-    {"*" : {"Magento_Ui/js/core/app": <?php echo  /* @noEscape */ $block->getJsLayout(); ?>} }
+    { "*" : { "Magento_Ui/js/core/app": <?php echo  /* @noEscape */ $block->getJsLayout(); ?> } }
 </script>

@@ -67,17 +67,4 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     {
         return $this->urlModel->getUrl($retailer);
     }
-
-    /**
-     * Retrieve suggest url
-     *
-     * @return string
-     */
-    public function getSuggestUrl()
-    {
-        return $this->_getUrl(
-            'storelocator/ajax/suggest',
-            ['_secure' => $this->_getRequest()->isSecure()]
-        );
-    }
 }
