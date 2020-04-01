@@ -4,7 +4,7 @@ define([
     'ko',
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
-], function ($, L, ko, registry, MarkersList, Schedule) {
+], function ($, L, ko, MarkersList, Schedule) {
     'use strict';
 
     var mixin = {
@@ -13,8 +13,7 @@ define([
          * Init markers on the map
          */
         initMarkers: function() {
-            var markersList = new MarkersList({items : this.markers});
-            this.markers = markersList.getList();
+            this.markers = new MarkersList({items : this.markers}).getList();
             this.markers.forEach(function(marker) {
                 marker.distance = ko.observable(0);
                 marker.distanceBetween = ko.observable(0);
@@ -29,6 +28,7 @@ define([
                     marker.shopStatus = ko.observable(0);
                 });
             }
+
             this.displayedMarkers = ko.observable(this.markers);
         },
 
