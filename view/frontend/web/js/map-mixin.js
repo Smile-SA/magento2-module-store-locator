@@ -156,7 +156,7 @@ define([
                 var currentMarker = [markerData.latitude, markerData.longitude];
                 var markerOptionLocator = L.divIcon({
                     iconSize: null,
-                    html: '<div class="custum-lf-popup" data-lat="'+ markerData.latitude +'" data-lon="'+ markerData.longitude +'" data-n="'+ markerData.name +'"><div class="button-decor"></div><a href="'+ markerData.url +'" </div>'
+                    html: '<div class="custum-lf-popup" data-lat="'+ markerData.latitude +'" data-lon="'+ markerData.longitude +'" data-n="'+ markerData.name +'"><div class="button-decor"></div><a href="'+ markerData.url +'"></a></div>'
                 });
                 var marker = L.marker(currentMarker, {icon: markerOptionLocator});
                 if (!isMarkerCluster) {
