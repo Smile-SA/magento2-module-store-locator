@@ -156,7 +156,7 @@ define([
                 var currentMarker = [markerData.latitude, markerData.longitude];
                 var markerOptionLocator = L.divIcon({
                     iconSize: null,
-                    html: '<div class="custum-lf-popup" data-lat="'+ markerData.latitude +'" data-lon="'+ markerData.longitude +'" data-n="'+ markerData.name +'"><div class="button-decor"></div><a href="'+ markerData.url +'"></a></div>'
+                    html: this.getMarkerLinkHtmlString(markerData)
                 });
                 var marker = L.marker(currentMarker, {icon: markerOptionLocator});
                 if (!isMarkerCluster) {
@@ -408,7 +408,19 @@ define([
                 },
                 source: markerInfoBase
             });
-        }
+        },
+
+        /**
+         * Get marker html string with link
+         *
+         * @param {Object} markerData
+         * @returns {string}
+         */
+        getMarkerLinkHtmlString: function (markerData) {
+            return '<div class="custum-lf-popup" data-lat="' + markerData.latitude + '" data-lon="' +
+                markerData.longitude + '" data-n="' + markerData.name + '"><div class="button-decor"></div><a href="' +
+                markerData.url + '"></a></div>';
+        },
     };
 
     return function (Component) {
