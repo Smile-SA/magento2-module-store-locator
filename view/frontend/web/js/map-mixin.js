@@ -417,9 +417,16 @@ define([
          * @returns {string}
          */
         getMarkerLinkHtmlString: function (markerData) {
-            return '<div class="custum-lf-popup" data-lat="' + markerData.latitude + '" data-lon="' +
-                markerData.longitude + '" data-n="' + markerData.name + '"><div class="button-decor"></div><a href="' +
-                markerData.url + '"></a></div>';
+            let html = '<div class="custum-lf-popup" data-lat="' + markerData.latitude + '" data-lon="' +
+                markerData.longitude + '" data-n="' + markerData.name + '"><div class="button-decor"></div>';
+
+            if (typeof markerData.url !== 'undefined') {
+                html += '<a href="' + markerData.url + '"></a>';
+            }
+
+            html += '</div>';
+
+            return html;
         },
     };
 
