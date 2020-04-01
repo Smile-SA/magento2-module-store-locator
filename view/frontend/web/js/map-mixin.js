@@ -156,7 +156,7 @@ define([
                 var currentMarker = [markerData.latitude, markerData.longitude];
                 var markerOptionLocator = L.divIcon({
                     iconSize: null,
-                    html: this.getMarkerLinkHtmlString(markerData)
+                    html: this.getMarkerIconHtmlString(markerData)
                 });
                 var marker = L.marker(currentMarker, {icon: markerOptionLocator});
                 if (!isMarkerCluster) {
@@ -411,12 +411,12 @@ define([
         },
 
         /**
-         * Get marker html string with link
+         * Get marker icon html string
          *
          * @param {Object} markerData
          * @returns {string}
          */
-        getMarkerLinkHtmlString: function (markerData) {
+        getMarkerIconHtmlString: function (markerData) {
             let html = '<div class="custum-lf-popup" data-lat="' + markerData.latitude + '" data-lon="' +
                 markerData.longitude + '" data-n="' + markerData.name + '"><div class="button-decor"></div>';
 
