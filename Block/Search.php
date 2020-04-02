@@ -28,7 +28,7 @@ use Smile\Retailer\Api\Data\RetailerInterface;
  */
 class Search extends \Magento\Framework\View\Element\Template implements IdentityInterface
 {
-    const DEFAULT_ATTRIBUTES_TO_SELECT = ['name', 'url_key', 'contact_mail', 'contact_phone', 'contact_mail'];
+    const DEFAULT_ATTRIBUTES_TO_SELECT = ['name', 'url_key', 'contact_mail', 'contact_phone', 'contact_fax'];
     const CACHE_TAG = 'smile_store_locator_markers';
 
     /**
