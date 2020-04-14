@@ -9,6 +9,8 @@ define([
 
     var mixin = {
 
+        markerHasDistance: false,
+
         /**
          * Init markers on the map
          */
@@ -29,7 +31,7 @@ define([
                 });
             }
 
-            this.displayedMarkers = ko.observable(this.markers);
+            this.displayedMarkers = ko.observableArray(this.markers);
         },
 
         /**
@@ -88,9 +90,13 @@ define([
          * @param position
          */
         displayPositionAndDistance: function(position) {
-            if(position.coords.longitude != undefined) {
+            if(position.coords.longitude !== undefined) {
                 this.addMarkerWithMyPosition(position);
                 this.applyDistanceBetween(position);
+                this.changeDisplayList(
+                    this.markers(),
+                    new L.latLng(position.coords.latitude, position.coords.longitude)
+                );
             }
         },
 
@@ -100,21 +106,24 @@ define([
          * @param position
          */
         applyDistanceBetween: function (position) {
-            var newLat = position.coords.latitude;
-            var newLon = position.coords.longitude;
-            var coords = new L.latLng(newLat, newLon);
-            this.changeDisplayList(this.markers(), coords);
+            let coords = new L.latLng(position.coords.latitude, position.coords.longitude);
+
             this.markers().forEach(function (marker) {
-                var itemPosition = new L.LatLng(marker.latitude, marker.longitude);
-                var distanceFromCoords = itemPosition.distanceTo(coords);
-                var result = (distanceFromCoords / 1000).toFixed(1);
+                let itemPosition = new L.LatLng(marker.latitude, marker.longitude),
+                    distanceFromCoords = itemPosition.distanceTo(coords),
+                    result = (distanceFromCoords / 1000).toFixed(1);
+
                 if(result === '0.0') {
                     result = (distanceFromCoords / 1000).toFixed(3) + ' m';
                 } else {
                     result = (distanceFromCoords / 1000).toFixed(1) + ' km';
                 }
+
+                marker.distance(distanceFromCoords);
                 marker.distanceBetween(result);
             });
+
+            this.markerHasDistance = true;
         },
 
         /**
@@ -124,14 +133,12 @@ define([
          * @param bounds
          */
         changeDisplayList: function (markers, bounds) {
+            let nearbyMarkers = markers;
+
             if (this.geocoder) {
-                var nearbyMarkers = this.geocoder.filterMarkersListByPositionRadius(this.markers(), bounds);
-                nearbyMarkers = nearbyMarkers.sort(function(a, b) {
-                    var distanceA = ko.isObservable(a['distance']) ? a['distance']() : a['distance'],
-                        distanceB = ko.isObservable(b['distance']) ? b['distance']() : b['distance'];
-                    return ((distanceA < distanceB) ? - 1 : ((distanceA > distanceB) ? 1 : 0));
-                });
+                nearbyMarkers = this.geocoder.filterMarkersListByPositionRadius(markers, bounds);
             }
+
             this.displayedMarkers(nearbyMarkers);
         },
 
@@ -244,13 +251,9 @@ define([
                 this.map.setZoom(zoom);
             }
 
-            // displayedMarkers = this.addDistanceToMarkers(displayedMarkers, this.map.getCenter());
-
-            displayedMarkers = displayedMarkers.sort(function(a, b) {
-                var distanceA = ko.isObservable(a['distance']) ? a['distance']() : a['distance'],
-                    distanceB = ko.isObservable(b['distance']) ? b['distance']() : b['distance'];
-                return ((distanceA < distanceB) ? - 1 : ((distanceA > distanceB) ? 1 : 0));
-            });
+            if (this.markerHasDistance) {
+                displayedMarkers = displayedMarkers.sort(this.sortMarkersByDistance);
+            }
 
             var position = this.getLocationFromHash();
             if(position === null) {
@@ -428,6 +431,21 @@ define([
 
             return html;
         },
+
+        /**
+         * Sort markers by distance
+         *
+         * @param {Object} markerA
+         * @param {Object} markerB
+         *
+         * @returns {Number}
+         */
+        sortMarkersByDistance: function (markerA, markerB) {
+            let distanceA = ko.isObservable(markerA.distance) ? markerA.distance() : markerA.distance,
+                distanceB = ko.isObservable(markerB.distance) ? markerB.distance() : markerB.distance;
+
+            return ((distanceA < distanceB) ? - 1 : ((distanceA > distanceB) ? 1 : 0));
+        }
     };
 
     return function (Component) {
