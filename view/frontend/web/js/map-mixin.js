@@ -156,16 +156,11 @@ define([
          * Load the markers and centers the map on them.
          */
         loadMarkers: function() {
-            var markers = [],
+            let markers = [],
                 isMarkerCluster = this.marker_cluster === '1';
-            var icon = L.icon({iconUrl: this.markerIcon, iconSize: this.markerIconSize});
+
             this.markers().forEach(function(markerData) {
-                var currentMarker = [markerData.latitude, markerData.longitude];
-                var markerOptionLocator = L.divIcon({
-                    iconSize: null,
-                    html: this.getMarkerIconHtmlString(markerData)
-                });
-                var marker = L.marker(currentMarker, {icon: markerOptionLocator});
+                let marker = this.generateMarker(markerData);
                 if (!isMarkerCluster) {
                     marker.addTo(this.map);
                 }
@@ -173,12 +168,15 @@ define([
                 markers.push(marker);
                 markerData.shopStatus(this.prepareShopStatus(markerData));
             }.bind(this));
-            var group = new L.featureGroup(markers);
+
+            let group = new L.featureGroup(markers);
+
             if (isMarkerCluster) {
                 group = new L.markerClusterGroup();
                 group.addLayers(markers);
                 this.map.addLayer(group);
             }
+
             this.initialBounds = group.getBounds();
         },
 
@@ -411,6 +409,22 @@ define([
                 },
                 source: markerInfoBase
             });
+        },
+
+        /**
+         * Generate marker
+         *
+         * @param {Object} markerData
+         * @return {Object}
+         */
+        generateMarker: function (markerData) {
+            let currentMarker = [markerData.latitude, markerData.longitude],
+                markerOptionLocator = L.divIcon({
+                    iconSize: null,
+                    html: this.getMarkerIconHtmlString(markerData)
+                });
+
+            return L.marker(currentMarker, {icon: markerOptionLocator});
         },
 
         /**
