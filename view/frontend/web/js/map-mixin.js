@@ -4,6 +4,7 @@ define([
     'ko',
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
+    'jquery/ui'
 ], function ($, L, ko, registry, MarkersList, Schedule) {
     'use strict';
 
