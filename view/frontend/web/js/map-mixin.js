@@ -4,17 +4,18 @@ define([
     'ko',
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
-], function ($, L, ko, registry, MarkersList, Schedule) {
+], function ($, L, ko, MarkersList, Schedule) {
     'use strict';
 
     var mixin = {
+
+        markerHasDistance: false,
 
         /**
          * Init markers on the map
          */
         initMarkers: function() {
-            var markersList = new MarkersList({items : this.markers});
-            this.markers = markersList.getList();
+            this.markers = new MarkersList({items : this.markers}).getList();
             this.markers.forEach(function(marker) {
                 marker.distance = ko.observable(0);
                 marker.distanceBetween = ko.observable(0);
@@ -29,7 +30,8 @@ define([
                     marker.shopStatus = ko.observable(0);
                 });
             }
-            this.displayedMarkers = ko.observable(this.markers);
+
+            this.displayedMarkers = ko.observableArray(this.markers);
         },
 
         /**
@@ -88,9 +90,13 @@ define([
          * @param position
          */
         displayPositionAndDistance: function(position) {
-            if(position.coords.longitude != undefined) {
+            if(position.coords.longitude !== undefined) {
                 this.addMarkerWithMyPosition(position);
                 this.applyDistanceBetween(position);
+                this.changeDisplayList(
+                    this.markers(),
+                    new L.latLng(position.coords.latitude, position.coords.longitude)
+                );
             }
         },
 
@@ -100,21 +106,24 @@ define([
          * @param position
          */
         applyDistanceBetween: function (position) {
-            var newLat = position.coords.latitude;
-            var newLon = position.coords.longitude;
-            var coords = new L.latLng(newLat, newLon);
-            this.changeDisplayList(this.markers(), coords);
+            let coords = new L.latLng(position.coords.latitude, position.coords.longitude);
+
             this.markers().forEach(function (marker) {
-                var itemPosition = new L.LatLng(marker.latitude, marker.longitude);
-                var distanceFromCoords = itemPosition.distanceTo(coords);
-                var result = (distanceFromCoords / 1000).toFixed(1);
+                let itemPosition = new L.LatLng(marker.latitude, marker.longitude),
+                    distanceFromCoords = itemPosition.distanceTo(coords),
+                    result = (distanceFromCoords / 1000).toFixed(1);
+
                 if(result === '0.0') {
                     result = (distanceFromCoords / 1000).toFixed(3) + ' m';
                 } else {
                     result = (distanceFromCoords / 1000).toFixed(1) + ' km';
                 }
+
+                marker.distance(distanceFromCoords);
                 marker.distanceBetween(result);
             });
+
+            this.markerHasDistance = true;
         },
 
         /**
@@ -124,14 +133,12 @@ define([
          * @param bounds
          */
         changeDisplayList: function (markers, bounds) {
+            let nearbyMarkers = markers;
+
             if (this.geocoder) {
-                var nearbyMarkers = this.geocoder.filterMarkersListByPositionRadius(this.markers(), bounds);
-                nearbyMarkers = nearbyMarkers.sort(function(a, b) {
-                    var distanceA = ko.isObservable(a['distance']) ? a['distance']() : a['distance'],
-                        distanceB = ko.isObservable(b['distance']) ? b['distance']() : b['distance'];
-                    return ((distanceA < distanceB) ? - 1 : ((distanceA > distanceB) ? 1 : 0));
-                });
+                nearbyMarkers = this.geocoder.filterMarkersListByPositionRadius(markers, bounds);
             }
+
             this.displayedMarkers(nearbyMarkers);
         },
 
@@ -149,16 +156,11 @@ define([
          * Load the markers and centers the map on them.
          */
         loadMarkers: function() {
-            var markers = [],
+            let markers = [],
                 isMarkerCluster = this.marker_cluster === '1';
-            var icon = L.icon({iconUrl: this.markerIcon, iconSize: this.markerIconSize});
+
             this.markers().forEach(function(markerData) {
-                var currentMarker = [markerData.latitude, markerData.longitude];
-                var markerOptionLocator = L.divIcon({
-                    iconSize: null,
-                    html: '<div class="custum-lf-popup" data-lat="'+ markerData.latitude +'" data-lon="'+ markerData.longitude +'" data-n="'+ markerData.name +'"><div class="button-decor"></div><a href="'+ markerData.url +'" </div>'
-                });
-                var marker = L.marker(currentMarker, {icon: markerOptionLocator});
+                let marker = this.generateMarker(markerData);
                 if (!isMarkerCluster) {
                     marker.addTo(this.map);
                 }
@@ -166,12 +168,15 @@ define([
                 markers.push(marker);
                 markerData.shopStatus(this.prepareShopStatus(markerData));
             }.bind(this));
-            var group = new L.featureGroup(markers);
+
+            let group = new L.featureGroup(markers);
+
             if (isMarkerCluster) {
                 group = new L.markerClusterGroup();
                 group.addLayers(markers);
                 this.map.addLayer(group);
             }
+
             this.initialBounds = group.getBounds();
         },
 
@@ -244,13 +249,9 @@ define([
                 this.map.setZoom(zoom);
             }
 
-            // displayedMarkers = this.addDistanceToMarkers(displayedMarkers, this.map.getCenter());
-
-            displayedMarkers = displayedMarkers.sort(function(a, b) {
-                var distanceA = ko.isObservable(a['distance']) ? a['distance']() : a['distance'],
-                    distanceB = ko.isObservable(b['distance']) ? b['distance']() : b['distance'];
-                return ((distanceA < distanceB) ? - 1 : ((distanceA > distanceB) ? 1 : 0));
-            });
+            if (this.markerHasDistance) {
+                displayedMarkers = displayedMarkers.sort(this.sortMarkersByDistance);
+            }
 
             var position = this.getLocationFromHash();
             if(position === null) {
@@ -408,6 +409,56 @@ define([
                 },
                 source: markerInfoBase
             });
+        },
+
+        /**
+         * Generate marker
+         *
+         * @param {Object} markerData
+         * @return {Object}
+         */
+        generateMarker: function (markerData) {
+            let currentMarker = [markerData.latitude, markerData.longitude],
+                markerOptionLocator = L.divIcon({
+                    iconSize: null,
+                    html: this.getMarkerIconHtmlString(markerData)
+                });
+
+            return L.marker(currentMarker, {icon: markerOptionLocator});
+        },
+
+        /**
+         * Get marker icon html string
+         *
+         * @param {Object} markerData
+         * @returns {string}
+         */
+        getMarkerIconHtmlString: function (markerData) {
+            let html = '<div class="custum-lf-popup" data-lat="' + markerData.latitude + '" data-lon="' +
+                markerData.longitude + '" data-n="' + markerData.name + '"><div class="button-decor"></div>';
+
+            if (typeof markerData.url !== 'undefined') {
+                html += '<a href="' + markerData.url + '"></a>';
+            }
+
+            html += '</div>';
+
+            return html;
+        },
+
+        /**
+         * Sort markers by distance
+         *
+         * @param {Object} markerA
+         * @param {Object} markerB
+         *
+         * @returns {Number}
+         */
+        sortMarkersByDistance: function (markerA, markerB) {
+            let distanceA = ko.isObservable(markerA.distance) ? markerA.distance() : markerA.distance,
+                distanceB = ko.isObservable(markerB.distance) ? markerB.distance() : markerB.distance;
+
+            return ((distanceA < distanceB) ? - 1 : ((distanceA > distanceB) ? 1 : 0));
         }
     };
 
