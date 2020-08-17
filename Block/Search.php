@@ -13,7 +13,6 @@
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\DataObject\IdentityInterface;
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\SerializerInterface;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Model\AddressFormatter;
@@ -29,6 +28,7 @@ use Smile\Retailer\Api\Data\RetailerInterface;
  */
 class Search extends \Magento\Framework\View\Element\Template implements IdentityInterface
 {
+    const DEFAULT_ATTRIBUTES_TO_SELECT = ['name', 'url_key', 'contact_mail', 'contact_phone', 'contact_fax'];
     const CACHE_TAG = 'smile_store_locator_markers';
 
     /**
@@ -72,17 +72,23 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     private $serializer;
 
     /**
+     * @var array
+     */
+    private $attributesToSelect;
+
+    /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context               $context                   Block context.
-     * @param \Smile\Map\Api\MapProviderInterface                            $mapProvider               Map provider.
-     * @param \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory Retailer collection factory.
-     * @param \Smile\StoreLocator\Helper\Data                                $storeLocatorHelper        Store locator helper.
-     * @param AddressFormatter                                               $addressFormatter          Address formatter tool.
-     * @param \Smile\StoreLocator\Helper\Schedule                            $scheduleHelper            Schedule Helper
-     * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement          $scheduleManagement        Schedule Management
-     * @param SerializerInterface                                            $serializer                JSON Serializer
-     * @param array                                                          $data                      Additional data.
+     * @param \Magento\Framework\View\Element\Template\Context               $context                      Block context.
+     * @param \Smile\Map\Api\MapProviderInterface                            $mapProvider                  Map provider.
+     * @param \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory    Retailer collection factory.
+     * @param \Smile\StoreLocator\Helper\Data                                $storeLocatorHelper           Store locator helper.
+     * @param AddressFormatter                                               $addressFormatter             Address formatter tool.
+     * @param \Smile\StoreLocator\Helper\Schedule                            $scheduleHelper               Schedule Helper
+     * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement          $scheduleManagement           Schedule Management
+     * @param SerializerInterface                                            $serializer                   JSON Serializer
+     * @param array                                                          $additionalAttributesToSelect Additional attributes to select
+     * @param array                                                          $data                         Additional data.
      */
     public function __construct(
         \Magento\Framework\View\Element\Template\Context $context,
@@ -93,6 +99,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         \Smile\StoreLocator\Helper\Schedule $scheduleHelper,
         \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement,
         SerializerInterface $serializer,
+        array $additionalAttributesToSelect = [],
         $data = []
     ) {
         parent::__construct($context, $data);
@@ -104,6 +111,10 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         $this->scheduleManager           = $scheduleManagement;
         $this->cacheInterface            = $context->getCache();
         $this->serializer                = $serializer;
+        $this->attributesToSelect        = array_values(
+            array_merge(self::DEFAULT_ATTRIBUTES_TO_SELECT, $additionalAttributesToSelect)
+        );
+
         $this->addData(
             [
                 'cache_lifetime' => false,
@@ -152,6 +163,8 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
         $collection = $this->getRetailerCollection();
         $cacheKey = sprintf("%s_%s", 'smile_storelocator_search', $collection->getStoreId());
         $markers = $this->cacheInterface->load($cacheKey);
+        $attributes = $this->attributesToSelect;
+        unset($attributes['name'], $attributes['url_key']);
 
         if (!$markers) {
             \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
@@ -176,7 +189,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                     'street'       => $address->getStreet(),
                 ];
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_DATA');
-                foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
+                foreach ($attributes as $contactAttribute) {
                     $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ? $retailer->getData($contactAttribute) : '';
                 }
                 \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_SCHEDULE');
@@ -188,7 +201,6 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                         'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
                     ]
                 );
-
 
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
                 $markers[] = $markerData;
@@ -242,7 +254,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     private function getRetailerCollection()
     {
         $retailerCollection = $this->retailerCollectionFactory->create();
-        $retailerCollection->addAttributeToSelect(['name', 'url_key', 'contact_mail', 'contact_phone', 'contact_mail']);
+        $retailerCollection->addAttributeToSelect($this->attributesToSelect);
         $retailerCollection->addFieldToFilter('is_active', (int) true);
         $retailerCollection->addOrder('name', 'asc');
 
