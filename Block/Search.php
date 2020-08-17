@@ -161,7 +161,8 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
     public function getMarkers()
     {
         $collection = $this->getRetailerCollection();
-        $cacheKey = sprintf("%s_%s", 'smile_storelocator_search', $collection->getStoreId());
+        $todayDate = (new \DateTime())->format('Y-m-d');
+        $cacheKey = sprintf('%s_%s_%s', 'smile_storelocator_search', $collection->getStoreId(), $todayDate);
         $markers = $this->cacheInterface->load($cacheKey);
         $attributes = $this->attributesToSelect;
         unset($attributes['name'], $attributes['url_key']);
@@ -211,7 +212,8 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
             $this->cacheInterface->save(
                 $markers,
                 $cacheKey,
-                $this->getIdentities()
+                $this->getIdentities(),
+                86400
             );
         }
 
