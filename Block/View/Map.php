@@ -183,13 +183,11 @@ class Map extends AbstractView
     /**
      * Get current url for button "return to stores list".
      *
-     * @return mixed
+     * @return string
      */
-
-    public function getStoreListUrl() {
-
-        return $this->_urlBuilder->getUrl('stores');
-
+    public function getStoreListUrl()
+    {
+        return $this->storeLocatorHelper->getHomeUrl();
     }
 
     /**
