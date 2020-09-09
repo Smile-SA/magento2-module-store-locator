@@ -48,9 +48,9 @@ class Schedule extends AbstractHelper
     /**
      * Schedule constructor.
      *
-     * @param Context            $context        Application Context
-     * @param Resolver           $localeResolver Locale Resolver
-     * @param TimezoneInterface  $timezone       Locale Format
+     * @param Context           $context        Application Context
+     * @param Resolver          $localeResolver Locale Resolver
+     * @param TimezoneInterface $timezone       Locale Format
      */
     public function __construct(
         Context $context,
