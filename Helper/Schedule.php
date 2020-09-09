@@ -1,4 +1,5 @@
 <?php
+
 /**
  * DISCLAIMER
  * Do not edit or add to this file if you wish to upgrade this module to newer
@@ -10,12 +11,15 @@
  * @copyright 2017 Smile
  * @license   Open Software License ("OSL") v. 3.0
  */
+
 namespace Smile\StoreLocator\Helper;
 
+use IntlDateFormatter;
 use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Stdlib\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Schedule Helper
@@ -32,37 +36,36 @@ class Schedule extends AbstractHelper
     const DEFAULT_WARNING_THRESOLD = 60;
 
     /**
-     * @var \Magento\Framework\Locale\Resolver
+     * @var Resolver
      */
     private $localeResolver;
 
     /**
-     * @var \Zend_Locale_Format
+     * @var TimezoneInterface
      */
-    private $localeFormat;
+    private $timezone;
 
     /**
      * Schedule constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context $context        Application Context
-     * @param \Magento\Framework\Locale\Resolver    $localeResolver Locale Resolver
-     * @param \Zend_Locale_Format                   $localeFormat   Locale Format
+     * @param Context            $context        Application Context
+     * @param Resolver           $localeResolver Locale Resolver
+     * @param TimezoneInterface  $timezone       Locale Format
      */
     public function __construct(
         Context $context,
         Resolver $localeResolver,
-        \Zend_Locale_Format $localeFormat
+        TimezoneInterface $timezone
     ) {
         parent::__construct($context);
 
         $this->localeResolver = $localeResolver;
-        $this->localeFormat   = $localeFormat;
+        $this->timezone = $timezone;
     }
 
     /**
      * Retrieve configuration used by schedule components
      *
-     * @throws \Zend_Locale_Exception
      * @return array
      */
     public function getConfig()
@@ -89,11 +92,10 @@ class Schedule extends AbstractHelper
      * Retrieve Time Format
      *
      * @return string
-     * @throws \Zend_Locale_Exception
      */
     private function getTimeFormat()
     {
-        return $this->localeFormat->getTimeFormat($this->localeResolver->getLocale());
+        return $this->timezone->getTimeFormat(IntlDateFormatter::MEDIUM);
     }
 
     /**
