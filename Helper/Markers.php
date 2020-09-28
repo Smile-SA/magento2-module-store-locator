@@ -146,13 +146,13 @@ class Markers extends AbstractHelper
         $markers = $this->getMarkersFromCache($collection->getStoreId());
 
         if (!$markers) {
-            Profiler::start(self::PROFILER_NAME . ':STORES');
+            Profiler::start(static::PROFILER_NAME . ':STORES');
 
             foreach ($collection as $retailer) {
                 $markers[] = $this->getMarkerData($retailer, $attributesToSelect);
             }
 
-            Profiler::stop(self::PROFILER_NAME . ':STORES');
+            Profiler::stop(static::PROFILER_NAME . ':STORES');
 
             $markers = $this->serializer->serialize($markers);
             $this->setMarkersToCache($markers, $collection->getStoreId(), $this->getIdentities($collection));
@@ -174,13 +174,13 @@ class Markers extends AbstractHelper
     {
         unset($attributes['name'], $attributes['url_key']);
         $address = $retailer->getExtensionAttributes()->getAddress();
-        Profiler::start(self::PROFILER_NAME . ':STORES_DATA');
+        Profiler::start(static::PROFILER_NAME . ':STORES_DATA');
         $markerData = [
             'id'           => $retailer->getId(),
             'latitude'     => $address->getCoordinates()->getLatitude(),
             'longitude'    => $address->getCoordinates()->getLongitude(),
             'name'         => $retailer->getName(),
-            'address'      => $this->addressFormatter->formatAddress($address, self::ADDRESS_FORMAT),
+            'address'      => $this->addressFormatter->formatAddress($address, static::ADDRESS_FORMAT),
             'url'          => $this->storeLocatorHelper->getRetailerUrl($retailer),
             'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
             'setStoreData' => $this->getSetStorePostData($retailer),
@@ -194,8 +194,8 @@ class Markers extends AbstractHelper
             $markerData[$customAttribute] = $retailer->getData($customAttribute) ?: '';
         }
 
-        Profiler::stop(self::PROFILER_NAME . ':STORES_DATA');
-        Profiler::start(self::PROFILER_NAME . ':STORES_SCHEDULE');
+        Profiler::stop(static::PROFILER_NAME . ':STORES_DATA');
+        Profiler::start(static::PROFILER_NAME . ':STORES_SCHEDULE');
 
         $markerData['schedule'] = array_merge(
             $this->scheduleHelper->getConfig(),
@@ -206,7 +206,7 @@ class Markers extends AbstractHelper
             ]
         );
 
-        Profiler::stop(self::PROFILER_NAME . ':STORES_SCHEDULE');
+        Profiler::stop(static::PROFILER_NAME . ':STORES_SCHEDULE');
 
         return $markerData;
     }
@@ -304,7 +304,7 @@ class Markers extends AbstractHelper
      */
     private function getMarkersCacheKey($storeId)
     {
-        return sprintf('%s_%s_%s', self::MARKERS_DATA_CACHE_KEY, $storeId, $this->dateTime->gmtDate('Y-m-d'));
+        return sprintf('%s_%s_%s', static::MARKERS_DATA_CACHE_KEY, $storeId, $this->dateTime->gmtDate('Y-m-d'));
     }
 
     /**
@@ -316,6 +316,6 @@ class Markers extends AbstractHelper
      */
     private function getIdentities(RetailerCollection $retailerCollection)
     {
-        return array_merge([self::CACHE_TAG], $retailerCollection->getNewEmptyItem()->getCacheTags() ?? []);
+        return array_merge([static::CACHE_TAG], $retailerCollection->getNewEmptyItem()->getCacheTags() ?? []);
     }
 }
