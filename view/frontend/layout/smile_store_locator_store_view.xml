@@ -15,14 +15,12 @@
  */
  -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
-
     <update handle="smile_map_styles"/>
-    
+
     <body>
         <attribute name="itemtype" value="http://schema.org/Store" />
         <attribute name="itemscope" value="itemscope"/>
         <referenceBlock name="page.main.title">
-            <block class="Smile\StoreLocator\Block\View\SetStoreLink" name="smile_store_locator_retailer_view.setstorelink" template="view/setStoreLink.phtml"/>
             <arguments>
                 <argument name="add_base_attribute" xsi:type="string">itemprop="name"</argument>
             </arguments>
@@ -33,8 +31,8 @@
             </arguments>
         </referenceBlock>
         <referenceContainer name="content">
-            <block class="Smile\StoreLocator\Block\View" name="smile_store_locator_retailer_view" template="view.phtml">
-                <block class="Smile\StoreLocator\Block\View\Map" name="smile_store_locator_retailer_view.map" template="view/map.phtml">
+            <block class="Smile\StoreLocator\Block\View" name="smile_store_locator_retailer_view" template="Smile_StoreLocator::view.phtml">
+                <block class="Smile\StoreLocator\Block\View\Map" name="smile_store_locator_retailer_view.map" template="Smile_StoreLocator::view/map.phtml">
                     <arguments>
                         <argument name="jsLayout" xsi:type="array">
                             <item name="components" xsi:type="array">
@@ -58,6 +56,7 @@
                             </item>
                         </argument>
                     </arguments>
+                    <block class="Smile\StoreLocator\Block\View\SetStoreLink" name="smile_store_locator_retailer_view.setstorelink" as="setstorelink" template="Smile_StoreLocator::view/setStoreLink.phtml"/>
                 </block>
             </block>
         </referenceContainer>
