@@ -1,11 +1,12 @@
 define([
     'jquery',
+    'mage/translate',
     'leaflet',
     'ko',
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
     'jquery/ui'
-], function ($, L, ko, MarkersList, Schedule) {
+], function ($, $t, L, ko, MarkersList, Schedule) {
     'use strict';
 
     var mixin = {
@@ -196,24 +197,25 @@ define([
             var isOpen = schedule.isOpenToday();
             var statusClass;
             if(!isOpen) {
-                isOpen = 'Closed';
+                isOpen = $t('Closed');
                 statusClass = 'close-shop';
             } else {
-                isOpen = 'Open';
+                isOpen = $t('Open');
                 statusClass = 'open-shop';
             }
-            var time = schedule.getTodayCloseTime(isOpen);
+            var time = schedule.getTodayCloseTime(isOpen) ? schedule.getTodayCloseTime(isOpen) : "";
             if(time === 'closeNow') {
                 isOpen = 'closeNow';
                 statusClass = 'close-shop';
                 time = schedule.getTodayCloseTime(isOpen);
-                isOpen = 'Closed';
+                isOpen = $('Closed');
             }
             var openDay = schedule.getDayWhenStoreOpen();
             if (!openDay) {
                 openDay = '';
             }
-            var html = '<span class="'+ statusClass +'">'+ isOpen +'</span> - today until <span>'+ time +'</span><span>'+ openDay +'</span>';
+            var until = time !== "" ? $t('today until') : $t('the whole day');
+            var html = '<span class="'+ statusClass +'">'+ isOpen +'</span> - '+ until +' <span>'+ time +'</span><span>'+ openDay +'</span>';
             return html;
         },
 

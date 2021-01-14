@@ -1,0 +1,68 @@
+"Opening Hours","Horário de Funcionamento"
+"Special Opening Hours","Horário de Funcionamento Especial"
+"Add Special Opening Hours","Adicionar horário de funcionamento especial"
+"Contact %1","Contato %1"
+Home,Início
+"Go to Home Page","Ir para o Início"
+"Our stores","Lojas"
+Contact,Contato
+"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","Obrigado por nos contatar com seus comentários e perguntas. Nós responderemos em breve."
+"We can't process your request right now. Sorry, that's all we know.","Não conseguimos processar sua solicitação. Desculpe, isso é tudo que sabemos."
+"We are sorry, an error occured when switching retailer.","Sentimos muito, um erro ocorreu enquanto alterava a loja."
+"Retailer url_key ""%1"" already exists.","Chave da loja ""%1"" já existe."
+"Name cannot be empty","Nome não pode ser vazio"
+"Contact form cannot be empty","Formulário de contato não pode estar em branco"
+"Contact mail cannot be empty","E-mail para contato não pode estar em branco"
+"Unable to validate form","Não foi possível validar seu formulário"
+"Unable to retrieve retailer informations","Não foi possivel buscar as informações da loja"
+"Geolocalize me","Minha localização"
+"City, Zipcode, Department, ...","Cidade, CEP, Departamento, ..."
+Search,Pesquisa
+"* Required Fields","* Campos obrigatórios"
+"Write Us","Escreva para nós"
+Name,Nome
+Email,E-mail
+"Phone Number","Número de telefone"
+"What’s on your mind?","O que você está pensando?"
+Submit,Enviar
+Telephone,Telefone
+Tel,Tel
+Fax,Fax
+Mail,Mail
+"Contact Us","Contate-nos"
+"Store Address","Endereço da loja"
+Go there,Rotas
+"Choose this store","Escolher essa loja"
+Close,Fechar
+Details,Detalhes
+"Open Today","Aberto hoje"
+"Open Today (%1)","Aberto hoje (%1)"
+"Closing soon (%1)","Fechando em breve (%1)"
+"Closed (%1)","Fechado (%1)"
+Closed,Fechado
+"Find a store ...","Encontre a loja..."
+"My store : %s","Minha loja: %s"
+Address,Endereço
+Street,Rua
+Postcode,CEP
+City,Cidade
+Country,País
+Latitude,Latitude
+Longitude,Longitude
+"Find a store :","Encontre uma loja:"
+"%s result(s)","%s resultado(s)"
+"%s shop(s) nearby","%s loja(s) próxima(s)"
+"View all","Ver todas"
+"Shop Search","Buscar loja"
+"Search shop","Lojas"
+"View Shop Page","Ver página da loja"
+"Double-click on an opening hour range to delete it.","Clique duas vezes em um horário de funcionamento para deletá-lo"
+"Narrow your search to see store details","Limite sua pesquisa para ver os detalhes da loja"
+"Maximum number of visible stores","Número máximo de lojas visíveis"
+"Above this limit, the list of stores will be not display","Acima desse limite, a lista de lojas não será mostrada"
+"Apply for retailers","Aplicar para todas as lojas"
+"Shops nearby", "Lojas próximas"
+"today until", "hoje até"
+"the whole day", "o dia todo"
+"Back to result", "Voltar para os resultados"
+"%s stores", "%s lojas"
