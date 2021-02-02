@@ -19,7 +19,6 @@ use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Block\AbstractView;
 
-
 /**
  * Map rendering block.
  *
@@ -54,24 +53,23 @@ class Map extends AbstractView
      */
     private $scheduleManager;
 
-
     /**
      * @var RetailerCollectionFactory
      */
     private $retailerCollectionFactory;
 
-
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context      $context                Application context.
-     * @param \Magento\Framework\Registry                           $coreRegistry           Application registry.
-     * @param \Smile\Map\Api\MapProviderInterface                   $mapProvider            Map configuration provider.
-     * @param \Smile\StoreLocator\Helper\Data                       $storeLocatorHelper     Store locacator helper.
-     * @param AddressFormatter                                      $addressFormatter       Address formatter.
-     * @param \Smile\StoreLocator\Helper\Schedule                   $scheduleHelper         Schedule Helper
-     * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement     Schedule Management
-     * @param array                                                 $data                   Additional data.
+     * @param \Magento\Framework\View\Element\Template\Context $context Application context.
+     * @param \Magento\Framework\Registry $coreRegistry Application registry.
+     * @param \Smile\Map\Api\MapProviderInterface $mapProvider Map configuration provider.
+     * @param \Smile\StoreLocator\Helper\Data $storeLocatorHelper Store locacator helper.
+     * @param AddressFormatter $addressFormatter Address formatter.
+     * @param \Smile\StoreLocator\Helper\Schedule $scheduleHelper Schedule Helper
+     * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement Schedule Management
+     * @param \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory The retailer collection factory.
+     * @param array $data Additional data.
      */
 
     public function __construct(
@@ -105,8 +103,13 @@ class Map extends AbstractView
         return $this->getRetailer()->getAddress();
     }
 
-
-    public function getId() {
+    /**
+     * Return the retailer ID.
+     *
+     * @return int|null
+     */
+    public function getId()
+    {
         return $this->getRetailer()->getId();
     }
 
@@ -142,20 +145,18 @@ class Map extends AbstractView
         return json_encode($jsLayout);
     }
 
-
     /**
      * Create full marker data for store view.
      *
      * @return array|null
      */
-    public function getMarkerData() {
-
+    public function getMarkerData()
+    {
         $result = null;
         $mediaPath = $this->getMediaPath();
         $imageUrlRetailer = $this->getImageUrl() . 'seller/';
         $image = $mediaPath ? $imageUrlRetailer . $mediaPath : false;
         $retailer = $this->getRetailer();
-
 
         $storeMarkerData = [
             'latitude'  => $this->getCoordinates()->getLatitude(),
@@ -163,14 +164,14 @@ class Map extends AbstractView
             'image' => $image,
             'id' => $this->getId(),
             'phone' => $this->getPhone(),
-            'mail' => $this->getContactMailMail(),
+            'mail' => $this->getContactMail(),
             'closestShops' => $this->collectionFull(),
         ];
         $storeMarkerData['schedule'] = array_merge(
             $this->scheduleHelper->getConfig(),
             [
-                'calendar'            => $this->scheduleManager->getCalendar($retailer),
-                'openingHours'        => $this->scheduleManager->getWeekOpeningHours($retailer),
+                'calendar' => $this->scheduleManager->getCalendar($retailer),
+                'openingHours' => $this->scheduleManager->getWeekOpeningHours($retailer),
                 'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
             ]
         );
@@ -200,7 +201,6 @@ class Map extends AbstractView
         return $this->addressFormatter->formatAddress($this->getAddress(), AddressFormatter::FORMAT_HTML);
     }
 
-
     /**
      * Get URL used to redirect user to the direction API.
      *
@@ -227,12 +227,11 @@ class Map extends AbstractView
      * @return mixed
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getImageUrl(){
-
+    public function getImageUrl()
+    {
         $currentStore = $this->_storeManager->getStore();
-        $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
 
-        return $mediaUrl;
+        return $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
     }
 
     /**
@@ -240,23 +239,9 @@ class Map extends AbstractView
      *
      * @return bool|string
      */
-    protected function getMediaPath() {
-
-        $retailer = $this->getRetailer();
-
-        return $retailer ? $retailer->getMediaPath() : false;
-    }
-
-    /**
-     * Get current retailer.
-     *
-     * @return \Smile\Retailer\Api\Data\RetailerInterface
-     */
-    protected function currentRetailer() {
-
-        $retailer = $this->getRetailer();
-
-        return $retailer;
+    protected function getMediaPath()
+    {
+        return $this->getRetailer()->getMediaPath() ?: false;
     }
 
     /**
@@ -264,13 +249,12 @@ class Map extends AbstractView
      *
      * @return bool|string
      */
-    public function getImage() {
-
+    public function getImage()
+    {
         $mediaPath = $this->getMediaPath();
         $imageUrlRetailer = $this->getImageUrl() . 'seller/';
-        $image = $mediaPath ? $imageUrlRetailer . $mediaPath : false;
 
-        return $image;
+        return $mediaPath ? $imageUrlRetailer . $mediaPath : false;
     }
 
     /**
@@ -278,39 +262,29 @@ class Map extends AbstractView
      *
      * @return string
      */
-    public function getStoreName() {
-
-        $name = $this->getRetailer()->getName();
-
-        return $name;
+    public function getStoreName()
+    {
+        return $this->getRetailer()->getName();
     }
 
     /**
      * Get phone number.
      *
-     * @return null|string
+     * @return bool|string
      */
-    public function getPhone() {
-
-        $retailer = $this->getRetailer();
-        $phone = $retailer->getContactPhone();
-        $result = $phone ? $phone : false;
-
-        return $result;
+    public function getPhone()
+    {
+        return $this->getRetailer()->getContactPhone() ?: false;
     }
 
     /**
      * Get email address.
      *
-     * @return null|string
+     * @return bool|string
      */
-    public function getContactMailMail() {
-
-        $retailer = $this->getRetailer();
-        $mail = $retailer->getMail();
-        $result = $mail ? $mail : false;
-
-        return $result;
+    public function getContactMail()
+    {
+        return $this->getRetailer()->getContactMail() ?: false;
     }
 
     /**
@@ -318,8 +292,8 @@ class Map extends AbstractView
      *
      * @return mixed
      */
-
-    public function getAllMarkers() {
+    public function getAllMarkers()
+    {
         $retailerCollection = $this->retailerCollectionFactory->create();
         $retailerCollection->addAttributeToSelect(['name', 'contact_mail', 'contact_phone', 'contact_mail', 'image']);
         $retailerCollection->addFieldToFilter('is_active', (int) true);
@@ -333,17 +307,18 @@ class Map extends AbstractView
      *
      * @return array|null
      */
-    public function collectionFull() {
+    public function collectionFull()
+    {
         $collection = $this->getAllMarkers();
 
         $markers  = null;
 
         if (!$markers) {
             /** @var RetailerInterface $retailer */
-            $imageUrlRetailer = $this->getImageUrl().'seller/';
+            $imageUrlRetailer = $this->getImageUrl() . 'seller/';
             foreach ($collection as $retailer) {
                 $address = $retailer->getExtensionAttributes()->getAddress();
-                $image = $retailer->getMediaPath() ? $imageUrlRetailer.$retailer->getMediaPath() : false;
+                $image = $retailer->getMediaPath() ? $imageUrlRetailer . $retailer->getMediaPath() : false;
                 $markerData = [
                     'id'           => $retailer->getId(),
                     'latitude'     => $address->getCoordinates()->getLatitude(),
@@ -357,7 +332,7 @@ class Map extends AbstractView
                 ];
 
                 foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
-                    $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ? $retailer->getData($contactAttribute) : '';
+                    $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ?: '';
                 }
 
                 $markerData['schedule'] = array_merge(

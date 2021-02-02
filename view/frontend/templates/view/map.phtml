@@ -79,14 +79,7 @@ $storeName = $block->getStoreName();
                     </a>
                 </div>
 
-                <div class="set-store-button">
-                    <a href="#"
-                       title="<?php echo $block->escapeHtml(__('Choose this store')); ?>"
-                       class="action-set-store"
-                       data-post='<?php /* @escapeNotVerified */ echo $block->getSetStorePostJson(); ?>'>
-                        <span><?php echo $block->escapeHtml(__('Choose this store')); ?></span>
-                    </a>
-                </div>
+                <?= /** @noEscape */$block->getChildHtml('setstorelink') ?>
 
                 <a class= "back-to-result-btn" href="<?php echo $this->getStoreListUrl(); ?>"><?php echo __('Back to result'); ?></a>
             </div>

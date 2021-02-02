@@ -12,6 +12,8 @@
  */
 namespace Smile\StoreLocator\Block\View;
 
+use Smile\StoreLocator\Block\AbstractView;
+
 /**
  * Set store link block.
  *
@@ -19,7 +21,7 @@ namespace Smile\StoreLocator\Block\View;
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class SetStoreLink extends \Smile\StoreLocator\Block\AbstractView
+class SetStoreLink extends AbstractView
 {
     /**
      * Get the JSON post data used to build the set store link.
