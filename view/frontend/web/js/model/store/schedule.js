@@ -204,7 +204,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
                 i++
             }
             if (i == 2) {
-                day = 'tomorrow';
+                day = $.mage.__('tomorrow');
             } else {
                 day = this.getDayWhenStoreOpen(indexCurrNexDate);
             }

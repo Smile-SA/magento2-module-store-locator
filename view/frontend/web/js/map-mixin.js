@@ -188,14 +188,14 @@ define([
          * @returns {string}
          */
         prepareShopStatus: function (markerData) {
-            if(!markerData.nerby) {
+            if (!markerData.nerby) {
                 var schedule = markerData.getSchedule();
             } else {
                 var schedule = markerData.schedule;
             }
             var isOpen = schedule.isOpenToday();
             var statusClass;
-            if(!isOpen) {
+            if (!isOpen) {
                 isOpen = 'Closed';
                 statusClass = 'close-shop';
             } else {
@@ -203,17 +203,29 @@ define([
                 statusClass = 'open-shop';
             }
             var time = schedule.getTodayCloseTime(isOpen);
-            if(time === 'closeNow') {
+            if (time === 'closeNow') {
                 isOpen = 'closeNow';
                 statusClass = 'close-shop';
                 time = schedule.getTodayCloseTime(isOpen);
                 isOpen = 'Closed';
             }
+            var htmlTime = '';
+            if (time) {
+                htmlTime = $.mage.__(' - today until ') + '<span>' + time + '</span>';
+            }
+
             var openDay = schedule.getDayWhenStoreOpen();
             if (!openDay) {
                 openDay = '';
             }
-            var html = '<span class="'+ statusClass +'">'+ isOpen +'</span> - today until <span>'+ time +'</span><span>'+ openDay +'</span>';
+            // add translation to 'Open' term used in getTodayCloseTime()
+            if (isOpen === 'Open') {
+                isOpen =  $.mage.__('Open');
+            } else if (isOpen === 'Closed') {
+                isOpen =  $.mage.__('Closed');
+            }
+            var html = '<span class="' + statusClass + '">' + isOpen +  '</span>' + htmlTime + '<span>' + openDay + '</span>';
+
             return html;
         },
 
