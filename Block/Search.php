@@ -12,6 +12,7 @@
  */
 namespace Smile\StoreLocator\Block;
 
+use Magento\Framework\DataObject;
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Serialize\SerializerInterface;
 use Smile\Map\Api\MapInterface;
@@ -204,7 +205,9 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                 );
 
                 \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES_SCHEDULE');
-                $markers[] = $markerData;
+                $marketDataObject = new DataObject($markerData);
+                $this->_eventManager->dispatch('smile_store_locator_marker_data', ['data_object' => $marketDataObject]);
+                $markers[] = $marketDataObject->getData();
             }
             \Magento\Framework\Profiler::stop('SmileStoreLocator:STORES');
 
