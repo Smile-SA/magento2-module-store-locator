@@ -171,6 +171,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
             \Magento\Framework\Profiler::start('SmileStoreLocator:STORES');
             /** @var RetailerInterface $retailer */
             $imageUrlRetailer = $this->getImageUrl().'seller/';
+            $markers = [];
             foreach ($collection as $retailer) {
                 $address = $retailer->getExtensionAttributes()->getAddress();
                 \Magento\Framework\Profiler::start('SmileStoreLocator:STORES_DATA');
