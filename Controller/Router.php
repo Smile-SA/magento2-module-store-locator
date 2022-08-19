@@ -112,7 +112,7 @@ class Router implements \Magento\Framework\App\RouterInterface
     /**
      * Check if the current request path match a retailer URL and returns its id.
      *
-     * @param unknown $requestPath Request path.
+     * @param string $requestPath Request path.
      *
      * @return int|false
      */

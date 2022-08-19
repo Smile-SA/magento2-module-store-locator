@@ -13,8 +13,7 @@
 
 define([
     'Magento_Ui/js/form/components/html',
-    'jquery',
-    'MutationObserver'
+    'jquery'
 ], function (Component, $) {
     'use strict';
 
