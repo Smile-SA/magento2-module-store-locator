@@ -4,7 +4,7 @@
         <div class="fulltext-search-wrapper clearfix" >
             <div class="geocoder-wrapper">
                 <div class="block-title">
-                    <span role="heading" aria-level="1">Search shop</span>
+                    <span role="heading" aria-level="1" data-bind="i18n: 'Shop Search'">Shop Search</span>
                 </div>
                 <form class="form" data-bind="submit: searchCurrentPlaces">
                     <div class="store-search-form">
@@ -73,7 +73,7 @@
     </div>
 </div>
 
-<div class="map" data-bind="afterRender: initMap"> 
+<div class="map" data-bind="afterRender: initMap">
     <!-- ko if: isShowCopyrightInfo() -->
     <div class="copyright-info-wrapper">
         <a class="copyright-link" data-bind="attr: { href: getCopyrightLink() }">

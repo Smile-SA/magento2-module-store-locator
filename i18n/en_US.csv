@@ -1,63 +1,67 @@
-"Opening Hours","Opening Hours"
-"Special Opening Hours","Special Opening Hours"
-"Add Special Opening Hours","Add Special Opening Hours"
-"Contact %1","Contact %1"
-Home,Home
-"Go to Home Page","Go to Home Page"
-"Our stores","Our stores"
-Contact,Contact
-"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","Thanks for contacting us with your comments and questions. We'll respond to you very soon."
-"We can't process your request right now. Sorry, that's all we know.","We can't process your request right now. Sorry, that's all we know."
-"We are sorry, an error occured when switching retailer.","We are sorry, an error occured when switching retailer."
-"Retailer url_key ""%1"" already exists.","Retailer url_key ""%1"" already exists."
-"Name cannot be empty","Name cannot be empty"
-"Contact form cannot be empty","Contact form cannot be empty"
-"Contact mail cannot be empty","Contact mail cannot be empty"
-"Unable to validate form","Unable to validate form"
-"Unable to retrieve retailer informations","Unable to retrieve retailer informations"
-"Geolocalize me","Geolocalize me"
-"City, Zipcode, Department, ...","City, Zipcode, Department, ..."
-Search,Search
-"* Required Fields","* Required Fields"
-"Write Us","Write Us"
-Name,Name
-Email,Email
-"Phone Number","Phone Number"
-"What’s on your mind?","What’s on your mind?"
-Submit,Submit
-Telephone,Telephone
-Tel,Tel
-Fax,Fax
-Mail,Mail
-"Contact Us","Contact Us"
-"Store Address","Store Address"
-Go there,Go there
-"Choose this store","Choose this store"
-Close,Close
-Details,Details
-"Open Today","Open Today"
-"Open Today (%1)","Open Today (%1)"
-"Closing soon (%1)","Closing soon (%1)"
-"Closed (%1)","Closed (%1)"
-Closed,Closed
-"Find a store ...","Find a store ..."
-"My store : %s","My store : %s"
-Address,Address
-Street,Street
-Postcode,Postcode
-City,City
-Country,Country
-Latitude,Latitude
-Longitude,Longitude
-"Find a store :","Find a store :"
 "%s result(s)","%s result(s)"
 "%s shop(s) nearby","%s shop(s) nearby"
-"View all","View all"
-"Shop Search","Shop Search"
-"View Shop Page","View Shop Page"
-"Double-click on an opening hour range to delete it.","Double-click on an opening hour range to delete it."
-"Narrow your search to see store details","Narrow your search to see store details"
-"Maximum number of visible stores","Maximum number of visible stores"
+"* Required Fields","* Required Fields"
 "Above this limit, the list of stores will be not display","Above this limit, the list of stores will be not display"
+"Add Special Opening Hours","Add Special Opening Hours"
 "Apply for retailers","Apply for retailers"
+"Back to results", "Back to results"
+"Choose this store","Choose this store"
+"City, Zipcode, Department, ...","City, Zipcode, Department, ..."
+"Closed (%1)","Closed (%1)"
+"Closing soon (%1)","Closing soon (%1)"
+"Contact %1","Contact %1"
+"Contact form cannot be empty","Contact form cannot be empty"
+"Contact mail cannot be empty","Contact mail cannot be empty"
+"Contact Us","Contact Us"
+"Double-click on an opening hour range to delete it.","Double-click on an opening hour range to delete it."
+"Find a store ...","Find a store ..."
+"Find a store :","Find a store :"
+"Geolocalize me","Geolocalize me"
+"Go there","Go there"
+"Go to Home Page","Go to Home Page"
+"Maximum number of visible stores","Maximum number of visible stores"
+"My store : %s","My store : %s"
+"Name cannot be empty","Name cannot be empty"
+"Narrow your search to see store details","Narrow your search to see store details"
+"Open Today (%1)","Open Today (%1)"
+"Open Today","Open Today"
+"Opening Hours","Opening Hours"
+"Our stores","Our stores"
+"Phone Number","Phone Number"
+"Retailer url_key ""%1"" already exists.","Retailer url_key ""%1"" already exists."
+"Shop Search","Shop Search"
 "Shops nearby", "Shops nearby"
+"Special Opening Hours","Special Opening Hours"
+"Store Address","Store Address"
+"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","Thanks for contacting us with your comments and questions. We'll respond to you very soon."
+"today","today"
+"Unable to retrieve retailer informations","Unable to retrieve retailer informations"
+"Unable to validate form","Unable to validate form"
+"until","until"
+"View all","View all"
+"View Shop Page","View Shop Page"
+"We are sorry, an error occured when switching retailer.","We are sorry, an error occured when switching retailer."
+"We can't process your request right now. Sorry, that's all we know.","We can't process your request right now. Sorry, that's all we know."
+"What’s on your mind?","What’s on your mind?"
+"Write Us","Write Us"
+Address,Address
+City,City
+Close,Close
+Closed,Closed
+Contact,Contact
+Country,Country
+Details,Details
+Email,Email
+Fax,Fax
+Home,Home
+Latitude,Latitude
+Longitude,Longitude
+Mail,Mail
+Name,Name
+Opened,Opened
+Postcode,Postcode
+Search,Search
+Street,Street
+Submit,Submit
+Tel,Tel
+Telephone,Telephone
