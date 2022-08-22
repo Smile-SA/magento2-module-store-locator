@@ -150,7 +150,6 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
             var index  = moment(now).format(this.dateFormat);
 
             var result = false;
-            var openDay = '';
             if (this.calendar.hasOwnProperty(index)) {
                 var exist = this.calendar[index];
                 if(exist.length == 0){
@@ -160,7 +159,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
                     exist = this.getNextDayData();
                 }
                 if(exist) {
-                    if(isOpen === 'Open') {
+                    if(isOpen === 'Opened') {
                         var currentStatus = exist[exist.length - 1].end_time;
                         var currDate = moment(currentStatus, [this.timeFormat]).toDate();
                         var currDateTime = currDate.getTime();
@@ -204,7 +203,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
                 i++
             }
             if (i == 2) {
-                day = 'tomorrow';
+                day = $.mage.__('tomorrow');
             } else {
                 day = this.getDayWhenStoreOpen(indexCurrNexDate);
             }

@@ -1,63 +1,67 @@
-"Opening Hours","Horaires d'ouverture"
-"Special Opening Hours","Horaires exceptionnels"
-"Add Special Opening Hours","Ajouter une heure d'ouverture exceptionnelle"
-"Contact %1","Contacter %1"
-Home,Accueil
-"Go to Home Page","Aller à la page d'accueil"
-"Our stores","Nos magasins"
-Contact,Contact
-"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","Merci de nous avoir soumis votre question. Nous vous répondrons très bientôt."
-"We can't process your request right now. Sorry, that's all we know.","Nous sommes désolés, une erreur s'est produite durant l'envoi du formulaire."
-"We are sorry, an error occured when switching retailer.","Nous sommes désolés, une erreur s'est produite durant le choix du magasin."
-"Retailer url_key ""%1"" already exists.","La clef d'url ""%1"" existe déjà."
-"Name cannot be empty","Le nom ne peut pas être vide"
-"Contact form cannot be empty","Le formulaire de contact ne peut pas être laissé vide"
-"Contact mail cannot be empty","L'adresse email ne peut pas être vide"
-"Unable to validate form","Impossible de valider le formulaire"
-"Unable to retrieve retailer informations","Impossible de récupérer les informations du magasin"
-"Geolocalize me","Me géolocaliser"
-"City, Zipcode, Department, ...","Ville, Code postal, Département ..."
-Search,Search
-"* Required Fields","* Champs obligatoires"
-"Write Us","Nous écrire"
-Name,Name
-Email,Email
-"Phone Number","Numéro de téléphone"
-"What’s on your mind?","Que souhaitez-vous nous dire ?"
-Submit,Envoyer
-Telephone,Téléphone
-Tel,Tél
-Fax,Fax
-Mail,Mail
-"Contact Us","Contactez Nous"
-"Store Address","Adresse du magasin"
-Go there,M’y rendre
-"Choose this store","Choisir ce magasin"
-Close,Fermer
-Details,Détails
-"Open Today","Ouvert aujourd'hui"
-"Open Today (%1)","Ouvert aujourd'hui (%1)"
-"Closing soon (%1)","Fermeture imminente (%1)"
-"Closed (%1)","Fermé (%1)"
-Closed,Fermé
-"Find a store ...","Trouver un magasin ..."
-"My store : %s","Mon magasin : %s"
-Address,Adresse
-Street,Rue
-Postcode,"Code postal"
-City,Ville
-Country,Pays
-Latitude,Latitude
-Longitude,Longitude
-"Find a store :","Trouver un magasin :"
 "%s result(s)","%s résultat(s)"
 "%s shop(s) nearby","%s magasin(s) à proximité"
-"View all","Voir tout"
-"Shop Search","Localiser un magasin"
-"View Shop Page","Voir la page du magasin"
-"Double-click on an opening hour range to delete it.","Double-cliquez sur une tranche horaire pour la supprimer."
-"Narrow your search to see store details","Affinez votre recherche pour voir le détail des magasins"
-"Maximum number of visible stores","Nombre maximum de magasins visible"
+"* Required Fields","* Champs obligatoires"
 "Above this limit, the list of stores will be not display","Au-delà de cette limite, la liste des magasins ne sera pas affichée"
+"Add Special Opening Hours","Ajouter une heure d'ouverture exceptionnelle"
 "Apply for retailers","Appliquer pour les magasins"
+"Back to results","Retourner à la liste"
+"Choose this store","Choisir ce magasin"
+"City, Zipcode, Department, ...","Ville, Code postal, Département ..."
+"Closed (%1)","Fermé (%1)"
+"Closing soon (%1)","Fermeture imminente (%1)"
+"Contact %1","Contacter %1"
+"Contact form cannot be empty","Le formulaire de contact ne peut pas être laissé vide"
+"Contact mail cannot be empty","L'adresse email ne peut pas être vide"
+"Contact Us","Contactez Nous"
+"Double-click on an opening hour range to delete it.","Double-cliquez sur une tranche horaire pour la supprimer."
+"Find a store ...","Trouver un magasin ..."
+"Find a store :","Trouver un magasin :"
+"Geolocalize me","Me géolocaliser"
+"Go there","M’y rendre"
+"Go to Home Page","Aller à la page d'accueil"
+"Maximum number of visible stores","Nombre maximum de magasins visible"
+"My store : %s","Mon magasin : %s"
+"Name cannot be empty","Le nom ne peut pas être vide"
+"Narrow your search to see store details","Affinez votre recherche pour voir le détail des magasins"
+"Open Today (%1)","Ouvert aujourd'hui (%1)"
+"Open Today","Ouvert aujourd'hui"
+"Opening Hours","Horaires d'ouverture"
+"Our stores","Nos magasins"
+"Phone Number","Numéro de téléphone"
+"Retailer url_key ""%1"" already exists.","La clef d'url ""%1"" existe déjà."
+"Shop Search","Localiser un magasin"
 "Shops nearby", "Commerces à proximité"
+"Special Opening Hours","Horaires exceptionnels"
+"Store Address","Adresse du magasin"
+"Thanks for contacting us with your comments and questions. We'll respond to you very soon.","Merci de nous avoir soumis votre question. Nous vous répondrons très bientôt."
+"today","aujourd'hui"
+"Unable to retrieve retailer informations","Impossible de récupérer les informations du magasin"
+"Unable to validate form","Impossible de valider le formulaire"
+"until","jusqu'à"
+"View all","Voir tout"
+"View Shop Page","Voir la page du magasin"
+"We are sorry, an error occured when switching retailer.","Nous sommes désolés, une erreur s'est produite durant le choix du magasin."
+"We can't process your request right now. Sorry, that's all we know.","Nous sommes désolés, une erreur s'est produite durant l'envoi du formulaire."
+"What’s on your mind?","Que souhaitez-vous nous dire ?"
+"Write Us","Nous écrire"
+Address,Adresse
+City,Ville
+Close,Fermer
+Closed,Fermé
+Contact,Contact
+Country,Pays
+Details,Détails
+Email,Email
+Fax,Fax
+Home,Accueil
+Latitude,Latitude
+Longitude,Longitude
+Mail,Mail
+Name,Name
+Opened,Ouvert
+Postcode,"Code postal"
+Search,Search
+Street,Rue
+Submit,Envoyer
+Tel,Tél
+Telephone,Téléphone
