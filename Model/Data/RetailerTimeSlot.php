@@ -69,7 +69,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
      *        which is a value of any type other than a resource.
      * @since 5.4.0
      */
-    public function jsonSerialize()
+    public function jsonSerialize(): mixed
     {
         return [
             'start_time' => $this->getStartTime(),
