@@ -15,7 +15,7 @@
         "magento/module-contact": "*",
         "smile/module-map": "~1.1.0 || ~2.0",
         "smile/module-retailer": "~1.2.0",
-        "willdurand/geocoder": "^3.3"
+        "willdurand/geocoder": "^3.3 || ^4.4"
     },
     "require-dev": {
         "smile/magento2-smilelab-quality-suite": "1.0.0"
