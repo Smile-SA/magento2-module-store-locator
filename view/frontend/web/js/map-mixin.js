@@ -345,8 +345,8 @@ define([
             searchTarget = searchTarget.trim();
             this.markers().forEach(function (marker) {
                 var name = marker.name;
-                var postCode = marker.postCode;
-                var city = marker.city;
+                var postCode = marker.addressData.postCode;
+                var city = marker.addressData.city;
                 var positionLan = marker.latitude;
                 var positionLon = marker.longitude;
                 name = name.toLowerCase();
@@ -383,8 +383,8 @@ define([
             this.markers().forEach(function (marker) {
                 var name = marker.name;
                 name = name.trim();
-                var postCode = marker.postCode;
-                var city = marker.city;
+                var postCode = marker.addressData.postcode;
+                var city = marker.addressData.city;
                 if(!titlesListArr.includes(name)) {
                     titlesListArr.push(name + ', ' + city);
                 }
