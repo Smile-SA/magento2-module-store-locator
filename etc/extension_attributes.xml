@@ -32,7 +32,7 @@
                 <field>longitude</field>
             </join>
         </attribute>
-        <attribute code="opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]"/>
-        <attribute code="special_opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]" />
+        <attribute code="opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterface"/>
+        <attribute code="special_opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterface[]" />
     </extension_attributes>
 </config>

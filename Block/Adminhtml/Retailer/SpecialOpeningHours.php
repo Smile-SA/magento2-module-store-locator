@@ -87,8 +87,8 @@ class SpecialOpeningHours extends \Magento\Backend\Block\AbstractBlock
             ['name' => 'special_opening_hours', 'label' => __('Special Opening Hours'), 'container_id' => 'special_opening_hours']
         );
 
-        if ($this->getRetailer() && $this->getRetailer()->getSpecialOpeningHours()) {
-            $openingHoursFieldset->setSpecialOpeningHours($this->getRetailer()->getSpecialOpeningHours());
+        if ($this->getRetailer() && $this->getRetailer()->getExtensionAttributes() && $this->getRetailer()->getExtensionAttributes()->getSpecialOpeningHours()) {
+            $openingHoursFieldset->setSpecialOpeningHours($this->getRetailer()->getExtensionAttributes()->getSpecialOpeningHours());
         }
 
         $openingHoursRenderer = $this->getLayout()->createBlock('Smile\StoreLocator\Block\Adminhtml\Retailer\SpecialOpeningHours\Container\Renderer');
