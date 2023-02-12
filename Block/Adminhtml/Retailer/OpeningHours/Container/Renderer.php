@@ -119,6 +119,7 @@ class Renderer extends Template implements RendererInterface
         $days = $this->localeList->getOptionWeekdays(true, true);
 
         foreach ($days as $day) {
+            $dayLabel = $day['label'];
             $input = $this->elementFactory->create('text');
             $input->setForm($this->getElement()->getForm());
 
@@ -127,12 +128,12 @@ class Renderer extends Template implements RendererInterface
 
             $elementRenderer->setDateFormat(DateTime::DATETIME_INTERNAL_FORMAT);
 
-            $input->setLabel(ucfirst($day['label']));
-            $input->setName($this->element->getName() . "[{$day['label']}]");
+            $input->setLabel(ucfirst($dayLabel));
+            $input->setName($this->element->getName() . "[{$dayLabel}]");
             $input->setRenderer($elementRenderer);
 
-            if (!empty($values->{'get'.$day}())) {
-                $input->setValue($values->{'get'.$day}());
+            if (isset($values) && $values->{'get'.$dayLabel}() !== null) {
+                $input->setValue($values->{'get'.$dayLabel}());
             }
 
             $html .= $input->toHtml();

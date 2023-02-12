@@ -15,6 +15,7 @@ namespace Smile\StoreLocator\Model\Retailer;
 
 use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
+use Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterfaceFactory;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
@@ -46,23 +47,31 @@ class SpecialOpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retail
     private $localeDate;
 
     /**
+     * @var RetailerTimeSlotDaysInterfaceFactory
+     */
+    private $timeSlotDaysFactory;
+
+    /**
      * OpeningHoursPostDataHandler constructor.
      *
      * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory    Time Slot Factory
      * @param JsonHelper                       $jsonHelper         JSON Helper
      * @param TimezoneInterface                $localeDate         The Locale Date Interface
      * @param RetailerRepositoryInterface      $retailerRepository Retailer Repository Interface
+     * @param RetailerTimeSlotDaysInterfaceFactory $timeSlotDaysFactory Time Slot Days Factory
      */
     public function __construct(
         RetailerTimeSlotInterfaceFactory $timeSlotFactory,
         JsonHelper $jsonHelper,
         TimezoneInterface $localeDate,
-        RetailerRepositoryInterface $retailerRepository
+        RetailerRepositoryInterface $retailerRepository,
+        RetailerTimeSlotDaysInterfaceFactory $timeSlotDaysFactory
     ) {
         $this->timeSlotFactory    = $timeSlotFactory;
         $this->jsonHelper         = $jsonHelper;
         $this->localeDate         = $localeDate;
         $this->retailerRepository = $retailerRepository;
+        $this->timeSlotDaysFactory = $timeSlotDaysFactory;
     }
 
     /**
@@ -79,7 +88,6 @@ class SpecialOpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retail
                 }
 
                 $date = $this->formatDate($item[RetailerTimeSlotInterface::DATE_FIELD]);
-                $specialOpeningHours[$date] = [];
 
                 if (is_string($item['opening_hours'])) {
                     try {
@@ -93,15 +101,20 @@ class SpecialOpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retail
                     continue;
                 }
 
+                $timeSlotDays = $this->timeSlotDaysFactory->create();
+                $timeSlotModels = [];
                 foreach ($item['opening_hours'] as $timeSlot) {
                     $timeSlotModel = $this->timeSlotFactory->create(
-                        ['data' => ['start_time' => $timeSlot[0], 'end_time' => $timeSlot[1]]]
+                        ['data' => ['day' => $date,'start_time' => $timeSlot[0], 'end_time' => $timeSlot[1]]]
                     );
-                    $specialOpeningHours[$date][] = $timeSlotModel;
+                    $timeSlotModels[] = $timeSlotModel;
                 }
+                $timeSlotDays->setDate($timeSlotModels);
+                $specialOpeningHours[] = $timeSlotDays;
             }
 
-            $data['special_opening_hours'] = $specialOpeningHours;
+            unset($data['special_opening_hours']);
+            $data['extension_attributes_list']['special_opening_hours'] = $specialOpeningHours;
 
             $this->updateSpecialOpeningHoursBySellerIds($data);
         }
@@ -139,7 +152,7 @@ class SpecialOpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retail
         if (isset($data['special_opening_hours_seller_ids'])) {
             foreach ($data['special_opening_hours_seller_ids'] as $id) {
                 $model = $this->retailerRepository->get($id);
-                $model->setData('special_opening_hours', $data['special_opening_hours']);
+                $model->getExtensionAttributes()->setData('special_opening_hours', $data['extension_attributes_list']['special_opening_hours']);
                 $this->retailerRepository->save($model);
             }
         }

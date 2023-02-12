@@ -42,6 +42,11 @@ interface RetailerTimeSlotInterface
     public function getEndTime();
 
     /**
+     * @return string
+     */
+    public function getDay();
+
+    /**
      * Set the start time
      *
      * @param string $time The time
@@ -58,4 +63,13 @@ interface RetailerTimeSlotInterface
      * @return mixed
      */
     public function setEndTime($time);
+
+    /**
+     * Set the day
+     *
+     * @param string $day The day
+     *
+     * @return mixed
+     */
+    public function setDay($day);
 }

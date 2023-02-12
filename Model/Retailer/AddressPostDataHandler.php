@@ -61,7 +61,8 @@ class AddressPostDataHandler implements \Smile\Retailer\Model\Retailer\PostDataH
                 $addressData['street'] = explode('\n', $addressData['street']);
             }
 
-            $data['address'] = $this->retailerAddressFactory->create(['data' => $addressData]);
+            unset($data['address']);
+            $data['extension_attributes_list']['address'] = $this->retailerAddressFactory->create(['data' => $addressData]);
         }
 
         return $data;

@@ -60,7 +60,6 @@ class SpecialOpeningHoursReadHandler implements ExtensionInterface
 
         ksort($openingHours);
         $entity->getExtensionAttributes()->setSpecialOpeningHours($openingHours);
-        $entity->setSpecialOpeningHours($openingHours);
 
         return $entity;
     }

@@ -44,8 +44,8 @@ class OpeningHoursSaveHandler implements ExtensionInterface
      */
     public function execute($entity, $arguments = [])
     {
-        if ($entity->getOpeningHours()) {
-            $this->resource->saveTimeSlots($entity->getId(), 'opening_hours', $entity->getOpeningHours());
+        if ($entity->getExtensionAttributes()->getOpeningHours()) {
+            $this->resource->saveTimeSlots($entity->getId(), 'opening_hours', $entity->getExtensionAttributes()->getOpeningHours());
         }
 
         return $entity;

@@ -61,7 +61,7 @@ class AddressSaveHandler implements ExtensionInterface
      */
     public function execute($entity, $arguments = [])
     {
-        $addressEntity = $entity->getAddress();
+        $addressEntity = $entity->getExtensionAttributes()->getAddress();
         $addressEntity->setRetailerId($entity->getId());
 
         $addressModel  = $this->modelFactory->create();
