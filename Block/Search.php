@@ -201,7 +201,7 @@ class Search extends \Magento\Framework\View\Element\Template implements Identit
                     [
                         'calendar'            => $this->scheduleManager->getCalendar($retailer),
                         'openingHours'        => $this->scheduleManager->getWeekOpeningHours($retailer),
-                        'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours()->getData(),
+                        'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours()->getDate(),
                     ]
                 );
 
