@@ -311,10 +311,10 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
          */
         initSpecialOpeningHoursList : function() {
             var list = [];
-            for (var day in this.specialOpeningHours) if (this.specialOpeningHours.hasOwnProperty(day) && day != 0) {
-                if (Array.isArray(this.specialOpeningHours[day])) {
+            for (var day in this.specialOpeningHours) {
+                if (typeof this.specialOpeningHours[day] === 'object') {
                     var object = {
-                        "day": moment(day, this.dateFormat).toDate().toLocaleString(
+                        "day": moment(this.specialOpeningHours[day]['day'], this.dateFormat).toDate().toLocaleString(
                             this.getLocale(),
                             this.dateOptions
                         ),
@@ -323,13 +323,6 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
 
                     list.push(object);
                 }
-            }
-            if (this.specialOpeningHours.hasOwnProperty(0) && Array.isArray(this.specialOpeningHours[0])) {
-                var sunday = {
-                    "day": this.getDayLabel(0),
-                    "hours": this.extractOpeningTimes(this.specialOpeningHours[0])
-                };
-                list.push(sunday);
             }
 
             this.specialOpeningHoursList = ko.observableArray(list);
@@ -349,6 +342,10 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
                     var stringHours = this.openingTimesToString(openingTimes);
                     hours.push(stringHours);
                 }, this);
+            }
+            if (typeof item === 'object' && !Array.isArray(item)) {
+                var stringHours = this.openingTimesToString(item);
+                hours.push(stringHours);
             }
 
             if (hours.length === 0) {

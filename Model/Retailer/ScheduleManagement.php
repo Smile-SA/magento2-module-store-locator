@@ -16,6 +16,7 @@ use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Magento\Framework\Locale\ListsInterface;
 use Magento\Framework\Locale\Resolver;
+use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot;
 
 /**
  * Schedule Management class for Retailers
@@ -67,18 +68,24 @@ class ScheduleManagement
             $dateTime = \DateTime::createFromFormat('Y-m-d', $dateTime);
         }
 
-        $dayOfWeek = $dateTime->format('w');
+        $dayOfWeek = $dateTime->format('l');
         $date      = $dateTime->format('Y-m-d');
 
         $openingHours = $retailer->getExtensionAttributes()->getOpeningHours();
         $specialOpeningHours = $retailer->getExtensionAttributes()->getSpecialOpeningHours();
 
-        if (isset($openingHours[$dayOfWeek])) {
-            $dayOpening = $openingHours[$dayOfWeek];
+        if (!empty($openingHours->{'get'.ucfirst($dayOfWeek)}())) {
+            $dayOpening = $openingHours->{'get'.ucfirst($dayOfWeek)}();
         }
 
-        if (isset($specialOpeningHours[$date])) {
-            $dayOpening = $specialOpeningHours[$date];
+        $specialDayOpening = [];
+        foreach ($specialOpeningHours->getDate() as $item) {
+            if ($item->getDay() === $date) {
+                $specialDayOpening[] = $item;
+            }
+        }
+        if (!empty($specialDayOpening)) {
+            $dayOpening = $specialDayOpening;
         }
 
         return $dayOpening;
@@ -125,7 +132,8 @@ class ScheduleManagement
             $openingHours[$day] = [];
         }
 
-        foreach ($retailer->getExtensionAttributes()->getOpeningHours() as $day => $hours) {
+        foreach ($retailer->getExtensionAttributes()->getOpeningHours()->getData() as $day => $hours) {
+            $day = RetailerTimeSlot::DAY_OF_WEEK[$day];
             $openingHours[$day] = $hours;
         }
 

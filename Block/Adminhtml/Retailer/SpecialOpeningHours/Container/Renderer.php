@@ -16,6 +16,7 @@ use Magento\Backend\Block\Template;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Magento\Framework\Stdlib\DateTime;
+use Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Zend_Date;
 
@@ -242,7 +243,7 @@ JAVASCRIPT;
     /**
      * Parse Values to proper array-renderer compatible format
      *
-     * @param array $values The values coming from model object
+     * @param RetailerTimeSlotDaysInterface $values The values coming from model object
      *
      * @return array
      */
@@ -250,10 +251,14 @@ JAVASCRIPT;
     {
         $arrayValues = [];
 
-        if (!empty($values)) {
-            ksort($values);
+        if (!empty($values->getData())) {
+            $specialOpeningHoursDate = $values->getDate();
+            usort($specialOpeningHoursDate, function ($item1, $item2) {
+                return $item1->getDay() <=> $item2->getDay();
+            });
+            $values->setDate($specialOpeningHoursDate);
 
-            foreach ($values as $date => $timeSlots) {
+            foreach ($values->getData() as $timeSlots) {
                 $timeRanges = [];
 
                 foreach ($timeSlots as $timeSlot) {
@@ -261,14 +266,17 @@ JAVASCRIPT;
                     $timeDate->setLocale($this->localeResolver->getLocale());
                     $startTime  = $timeDate->setTime($timeSlot->getStartTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
                     $endTime    = $timeDate->setTime($timeSlot->getEndTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
-                    $timeRanges[] = [$startTime, $endTime];
+                    $date = new Zend_Date($timeSlot->getDay(), DateTime::DATETIME_INTERNAL_FORMAT);
+                    $date = $date->toString($this->_localeDate->getDateFormatWithLongYear());
+                    $timeRanges[$date][] = [$startTime, $endTime];
                 }
 
-                $date = new Zend_Date($date, DateTime::DATETIME_INTERNAL_FORMAT);
-                $arrayValues[] = [
-                    "date" => $date->toString($this->_localeDate->getDateFormatWithLongYear()),
-                    "opening_hours" => $this->jsonHelper->jsonEncode(array_filter($timeRanges)),
-                ];
+                foreach ($timeRanges as $dateValue => $timeRange) {
+                    $arrayValues[] = [
+                        "date" => $dateValue,
+                        "opening_hours" => $this->jsonHelper->jsonEncode(array_filter($timeRange)),
+                    ];
+                }
             }
         }
 

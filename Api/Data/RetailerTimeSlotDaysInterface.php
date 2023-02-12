@@ -22,49 +22,49 @@ namespace Smile\StoreLocator\Api\Data;
 interface RetailerTimeSlotDaysInterface
 {
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getMonday();
 
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getTuesday();
 
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getWednesday();
 
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getThursday();
 
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getFriday();
 
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getSaturday();
 
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getSunday();
 
     /**
-     * @return RetailerTimeSlotInterface[]
+     * @return \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]
      */
     public function getDate();
 
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */
@@ -73,7 +73,7 @@ interface RetailerTimeSlotDaysInterface
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */
@@ -82,7 +82,7 @@ interface RetailerTimeSlotDaysInterface
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */
@@ -91,7 +91,7 @@ interface RetailerTimeSlotDaysInterface
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */
@@ -100,7 +100,7 @@ interface RetailerTimeSlotDaysInterface
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */
@@ -109,7 +109,7 @@ interface RetailerTimeSlotDaysInterface
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */
@@ -118,7 +118,7 @@ interface RetailerTimeSlotDaysInterface
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */
@@ -127,7 +127,7 @@ interface RetailerTimeSlotDaysInterface
     /**
      * Set the start time
      *
-     * @param RetailerTimeSlotInterface[] $days The time
+     * @param \Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[] $days The time
      *
      * @return mixed
      */

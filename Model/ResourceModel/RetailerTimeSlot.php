@@ -174,8 +174,8 @@ class RetailerTimeSlot extends AbstractDb
 
         $select = $this->getConnection()->select();
         $select->from($this->getMainTable())
-            ->where("retailer_id IN (?)", $retailerIds)
-            ->where("attribute_code = ?", $attributeCode);
+               ->where("retailer_id IN (?)", $retailerIds)
+               ->where("attribute_code = ?", $attributeCode);
 
         $rows = $this->getConnection()->fetchAll($select);
 

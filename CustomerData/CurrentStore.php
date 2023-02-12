@@ -92,10 +92,10 @@ class CurrentStore implements SectionSourceInterface
 
             $data['url']          = $this->urlModel->getUrl($retailer);
             $data['address']      = $this->addressFormatter->formatAddress(
-                $retailer->getAddress(),
+                $retailer->getExtensionAttributes()->getAddress(),
                 AddressFormatter::FORMAT_HTML
             );
-            $data['address_data'] = $retailer->getAddress()->toArray();
+            $data['address_data'] = $retailer->getExtensionAttributes()->getAddress()->toArray();
         }
 
         return $data;
