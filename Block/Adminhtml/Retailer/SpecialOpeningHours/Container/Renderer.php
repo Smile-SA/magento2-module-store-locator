@@ -13,6 +13,7 @@
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\SpecialOpeningHours\Container;
 
 use Magento\Backend\Block\Template;
+use Magento\Framework\DataObject;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Magento\Framework\Stdlib\DateTime;
@@ -157,6 +158,23 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
         $htmlId = $this->getHtmlId();
 
         return "<div id=\"{$htmlId}\">{$html}</div>";
+    }
+
+    /**
+     * Give proper id to each <tr>
+     *
+     * @param DataObject $row
+     * @return void
+     */
+    protected function _prepareArrayRow(DataObject $row): void
+    {
+        $columnValues = [];
+        foreach ($row->getColumnValues() as $key => $value) {
+            $columnValues['special_opening_hours_' . $key] = $value;
+        }
+
+        $row->setData('column_values', $columnValues);
+        $row->setData('_id','special_opening_hours_' . $row->getData('_id'));
     }
 
     /**
