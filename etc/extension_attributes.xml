@@ -22,6 +22,7 @@
                   reference_field="retailer_id"
                   join_on_field="entity_id"
             >
+                <field>address_id</field>
                 <field>street</field>
                 <field>postcode</field>
                 <field>city</field>
