@@ -58,9 +58,12 @@ class SpecialOpeningHoursReadHandler implements ExtensionInterface
 
         $openingHours = $this->converter->toEntity($timeSlots, RetailerTimeSlotInterface::DATE_FIELD);
 
-        ksort($openingHours);
+        $date = $openingHours->getDate() ?? [];
+        usort($date, function ($item1, $item2) {
+            return $item1->getDay() <=> $item2->getDay();
+        });
+        $openingHours->setDate($date);
         $entity->getExtensionAttributes()->setSpecialOpeningHours($openingHours);
-        $entity->setSpecialOpeningHours($openingHours);
 
         return $entity;
     }

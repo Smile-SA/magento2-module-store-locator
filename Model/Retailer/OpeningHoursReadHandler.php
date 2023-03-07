@@ -59,7 +59,6 @@ class OpeningHoursReadHandler implements ExtensionInterface
         $openingHours = $this->converter->toEntity($timeSlots, RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD);
 
         $entity->getExtensionAttributes()->setOpeningHours($openingHours);
-        $entity->setOpeningHours($openingHours);
 
         return $entity;
     }

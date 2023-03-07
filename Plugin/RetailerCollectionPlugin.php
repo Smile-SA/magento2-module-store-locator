@@ -126,7 +126,11 @@ class RetailerCollectionPlugin
                     $specialOpeningHoursData[$currentItem->getId()],
                     RetailerTimeSlotInterface::DATE_FIELD
                 );
-                ksort($specialOpeningHours);
+                $specialOpeningHoursDate = $specialOpeningHours->getDate() ?? [];
+                usort($specialOpeningHoursDate, function ($item1, $item2) {
+                    return $item1->getDay() <=> $item2->getDay();
+                });
+                $specialOpeningHours->setDate($specialOpeningHoursDate);
                 $currentItem->getExtensionAttributes()->setSpecialOpeningHours($specialOpeningHours);
             }
             \Magento\Framework\Profiler::stop('SmileStoreLocator:EXTENSIONS_ATTRIBUTES');

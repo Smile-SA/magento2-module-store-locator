@@ -13,6 +13,8 @@
  */
 namespace Smile\StoreLocator\Model\Retailer;
 
+use Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterface;
+use Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterfaceFactory;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 use Magento\Framework\Json\Helper\Data as JsonHelper;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
@@ -49,23 +51,31 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
     private $retailerTimeSlot;
 
     /**
+     * @var RetailerTimeSlotDaysInterfaceFactory
+     */
+    private $timeSlotDaysFactory;
+
+    /**
      * OpeningHoursPostDataHandler constructor.
      *
      * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory    Time Slot Factory
      * @param JsonHelper                       $jsonHelper         JSON Helper
      * @param RetailerRepositoryInterface      $retailerRepository Retailer Repository Interface
      * @param RetailerTimeSlot                 $retailerTimeSlot   Retailer Time Slot Resource Model
+     * @param RetailerTimeSlotDaysInterfaceFactory $timeSlotDaysFactory Time Slot Days Factory
      */
     public function __construct(
         RetailerTimeSlotInterfaceFactory $timeSlotFactory,
         JsonHelper $jsonHelper,
         RetailerRepositoryInterface $retailerRepository,
-        RetailerTimeSlot $retailerTimeSlot
+        RetailerTimeSlot $retailerTimeSlot,
+        RetailerTimeSlotDaysInterfaceFactory $timeSlotDaysFactory
     ) {
         $this->timeSlotFactory    = $timeSlotFactory;
         $this->jsonHelper         = $jsonHelper;
         $this->retailerRepository = $retailerRepository;
         $this->retailerTimeSlot   = $retailerTimeSlot;
+        $this->timeSlotDaysFactory = $timeSlotDaysFactory;
     }
 
     /**
@@ -74,7 +84,8 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
     public function getData(\Smile\Retailer\Api\Data\RetailerInterface $retailer, $data)
     {
         if (isset($data['opening_hours'])) {
-            $openingHours = [];
+            /** @var RetailerTimeSlotDaysInterface $openingHours */
+            $openingHours = $this->timeSlotDaysFactory->create();
 
             foreach ($data['opening_hours'] as $date => &$timeSlotList) {
                 if (is_string($timeSlotList)) {
@@ -89,20 +100,23 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
                     continue;
                 }
 
+                $timeSlotModels = [];
                 foreach ($timeSlotList as $timeSlot) {
                     $timeSlotModel = $this->timeSlotFactory->create(
                         ['data' => ['start_time' => $timeSlot[0], 'end_time' => $timeSlot[1]]]
                     );
-                    $openingHours[$date][] = $timeSlotModel;
+                    $timeSlotModels[] = $timeSlotModel;
                 }
+                $openingHours->{'set'.ucfirst($date)}($timeSlotModels);
             }
 
             // If not a single opening hour is saved, we delete existing entry for current retailer
-            if (empty($openingHours) && isset($data['entity_id'])) {
+            if ($openingHours->isEmpty() && isset($data['entity_id'])) {
                 $this->retailerTimeSlot->deleteByRetailerId($data['entity_id']);
             }
 
-            $data['opening_hours'] = $openingHours;
+            unset($data['opening_hours']);
+            $data['extension_attributes_list']['opening_hours'] = $openingHours;
 
             $this->updateOpeningHoursBySellerIds($data);
         }
@@ -122,7 +136,7 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
         if (isset($data['opening_hours_seller_ids'])) {
             foreach ($data['opening_hours_seller_ids'] as $id) {
                 $model = $this->retailerRepository->get($id);
-                $model->setData('opening_hours', $data['opening_hours']);
+                $model->getExtensionAttributes()->setData('opening_hours', $data['extension_attributes_list']['opening_hours']);
                 $this->retailerRepository->save($model);
             }
         }

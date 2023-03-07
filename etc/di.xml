@@ -19,6 +19,7 @@
     
     <preference for="Smile\StoreLocator\Api\Data\RetailerAddressInterface" type="Smile\StoreLocator\Model\Data\RetailerAddress" />
     <preference for="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface" type="Smile\StoreLocator\Model\Data\RetailerTimeSlot" />
+    <preference for="Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterface" type="Smile\StoreLocator\Model\Data\RetailerTimeSlotDays" />
 
     <type name="Magento\Framework\EntityManager\MetadataPool">
         <arguments>

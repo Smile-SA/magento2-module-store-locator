@@ -69,7 +69,6 @@ class AddressReadHandler implements ExtensionInterface
         $addressEntity = $this->converter->toEntity($addressModel);
 
         $entity->getExtensionAttributes()->setAddress($addressEntity);
-        $entity->setAddress($addressEntity);
 
         return $entity;
     }

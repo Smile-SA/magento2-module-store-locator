@@ -100,7 +100,7 @@ class Map extends AbstractView
      */
     public function getAddress()
     {
-        return $this->getRetailer()->getAddress();
+        return $this->getRetailer()->getExtensionAttributes()->getAddress();
     }
 
     /**
@@ -172,7 +172,7 @@ class Map extends AbstractView
             [
                 'calendar' => $this->scheduleManager->getCalendar($retailer),
                 'openingHours' => $this->scheduleManager->getWeekOpeningHours($retailer),
-                'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
+                'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours()->getDate(),
             ]
         );
 
@@ -340,7 +340,7 @@ class Map extends AbstractView
                     [
                         'calendar'            => $this->scheduleManager->getCalendar($retailer),
                         'openingHours'        => $this->scheduleManager->getWeekOpeningHours($retailer),
-                        'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
+                        'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours()->getDate(),
                     ]
                 );
 

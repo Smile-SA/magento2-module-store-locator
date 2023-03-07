@@ -44,6 +44,14 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     /**
      * {@inheritDoc}
      */
+    public function getDay()
+    {
+        return $this->getData('day');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function setStartTime($time)
     {
         $this->setData('start_time', $time);
@@ -62,6 +70,16 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    public function setDay($day)
+    {
+        $this->setData('day', $day);
+
+        return $this;
+    }
+
+    /**
      * Specify data which should be serialized to JSON
      *
      * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
@@ -74,6 +92,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
         return [
             'start_time' => $this->getStartTime(),
             'end_time'   => $this->getEndTime(),
+            'day' => $this->getDay(),
         ];
     }
 }

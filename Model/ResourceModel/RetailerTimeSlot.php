@@ -16,6 +16,7 @@ use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
 use Magento\Framework\Stdlib\DateTime;
+use Smile\StoreLocator\Api\Data\RetailerTimeSlotDaysInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Zend_Date;
 
@@ -38,6 +39,16 @@ class RetailerTimeSlot extends AbstractDb
      */
     private $locale;
 
+    public const DAY_OF_WEEK = [
+        'sunday' => 0,
+        'monday' => 1,
+        'tuesday' => 2,
+        'wednesday' => 3,
+        'thursday' => 4,
+        'friday' => 5,
+        'saturday' => 6
+    ];
+
     /**
      * RetailerTimeSlot constructor.
      *
@@ -57,24 +68,44 @@ class RetailerTimeSlot extends AbstractDb
      *
      * @param integer $retailerId    The retailer id
      * @param null    $attributeCode The time slot type to store
-     * @param array   $timeSlots     The time slots to save, array based
+     * @param RetailerTimeSlotDaysInterface[]|RetailerTimeSlotDaysInterface   $timeSlotsDays     The time slots to save, array based
      *
      * @return bool
      *
      * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function saveTimeSlots($retailerId, $attributeCode, $timeSlots)
+    public function saveTimeSlots($retailerId, $attributeCode, $timeSlotsDays)
     {
         $data = [];
         $this->deleteByRetailerId($retailerId, $attributeCode);
 
-        foreach ($timeSlots as $date => $timeSlotList) {
-            $dateField = is_numeric($date) ? RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD : RetailerTimeSlotInterface::DATE_FIELD;
+        if (!is_array($timeSlotsDays)) {
+            $timeSlotsDays = [$timeSlotsDays];
+        }
+        foreach ($timeSlotsDays as $timeSlotsDay) {
+            $this->savePerDay($timeSlotsDay, $retailerId, $attributeCode, $data);
+        }
+
+        $result = true;
+        if (!empty($data)) {
+            $result = (bool) $this->getConnection()->insertMultiple($this->getMainTable(), $data);
+        }
+
+        return $result;
+    }
+
+    public function savePerDay($timeSlots, $retailerId, $attributeCode, &$data)
+    {
+        foreach ($timeSlots->getData() as $date => $timeSlotList) {
+            $isDate = $date === RetailerTimeSlotInterface::DATE_FIELD;
+            $dateField = $isDate ? RetailerTimeSlotInterface::DATE_FIELD : RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD;
+            if (!$isDate) {
+                $date = self::DAY_OF_WEEK[$date];
+            }
 
             $row = [
                 "retailer_id"    => $retailerId,
                 "attribute_code" => $attributeCode,
-                $dateField       => $date,
                 "start_time"     => null,
                 "end_time"       => null,
             ];
@@ -90,17 +121,11 @@ class RetailerTimeSlot extends AbstractDb
                     [
                         'start_time' => $this->dateFromHour($timeSlot->getStartTime()),
                         'end_time'   => $this->dateFromHour($timeSlot->getEndTime()),
+                        $dateField => $isDate ? $timeSlot->getDay() : $date
                     ]
                 );
             }
         }
-
-        $result = true;
-        if (!empty($data)) {
-            $result = (bool) $this->getConnection()->insertMultiple($this->getMainTable(), $data);
-        }
-
-        return $result;
     }
 
     /**
