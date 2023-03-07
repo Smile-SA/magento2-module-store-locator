@@ -46,8 +46,8 @@ class UrlKey extends AbstractBackend
     {
         $urlKey = $this->urlModel->getUrlKey($object);
 
-        if ($urlKey !== $object->getUrlKey()) {
-            $object->setUrlKey($urlKey);
+        if ($urlKey !== $object->getCustomAttribute('url_key')?->getValue()) {
+            $object->setCustomAttribute('url_key', $urlKey);
         }
 
         $retailerIdCheck = $this->urlModel->checkIdentifier($urlKey);
