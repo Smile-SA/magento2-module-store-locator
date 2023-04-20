@@ -31,7 +31,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
     /**
      * @var StoreLocatorSetup
      */
-    private $storeLocatorSetup;
+    private StoreLocatorSetup $storeLocatorSetup;
 
     /**
      * InstallSchema constructor.
@@ -54,7 +54,7 @@ class UpgradeSchema implements UpgradeSchemaInterface
      * @throws \Zend_Db_Exception
      * @return void
      */
-    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(SchemaSetupInterface $setup, ModuleContextInterface $context): void
     {
         $setup->startSetup();
 

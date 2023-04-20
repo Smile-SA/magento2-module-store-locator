@@ -13,11 +13,19 @@
  */
 namespace Smile\StoreLocator\Block\View;
 
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\Template\Context;
+use Smile\Map\Api\Data\GeoPointInterface;
 use Smile\Map\Api\MapInterface;
+use Smile\Map\Api\MapProviderInterface;
 use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory as RetailerCollectionFactory;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Block\AbstractView;
+use Smile\StoreLocator\Helper\Data;
+use Smile\StoreLocator\Helper\Schedule;
+use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
 
 /**
  * Map rendering block.
@@ -31,56 +39,56 @@ class Map extends AbstractView
     /**
      * @var MapInterface
      */
-    private $map;
+    private MapInterface $map;
 
     /**
-     * @var \Smile\StoreLocator\Helper\Data
+     * @var Data
      */
-    private $storeLocatorHelper;
+    private Data $storeLocatorHelper;
 
     /**
-     * @var \Smile\Map\Model\AddressFormatter
+     * @var AddressFormatter
      */
-    private $addressFormatter;
+    private AddressFormatter $addressFormatter;
 
     /**
-     * @var \Smile\StoreLocator\Helper\Schedule
+     * @var Schedule
      */
-    private $scheduleHelper;
+    private Schedule $scheduleHelper;
 
     /**
-     * @var \Smile\StoreLocator\Model\Retailer\ScheduleManagement
+     * @var ScheduleManagement
      */
-    private $scheduleManager;
+    private ScheduleManagement $scheduleManager;
 
     /**
      * @var RetailerCollectionFactory
      */
-    private $retailerCollectionFactory;
+    private RetailerCollectionFactory $retailerCollectionFactory;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context $context Application context.
-     * @param \Magento\Framework\Registry $coreRegistry Application registry.
-     * @param \Smile\Map\Api\MapProviderInterface $mapProvider Map configuration provider.
-     * @param \Smile\StoreLocator\Helper\Data $storeLocatorHelper Store locacator helper.
-     * @param AddressFormatter $addressFormatter Address formatter.
-     * @param \Smile\StoreLocator\Helper\Schedule $scheduleHelper Schedule Helper
-     * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement Schedule Management
-     * @param \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory The retailer collection factory.
-     * @param array $data Additional data.
+     * @param Context                   $context                    Application context.
+     * @param Registry                  $coreRegistry               Application registry.
+     * @param MapProviderInterface      $mapProvider                Map configuration provider.
+     * @param Data                      $storeLocatorHelper         Store locacator helper.
+     * @param AddressFormatter          $addressFormatter           Address formatter.
+     * @param Schedule                  $scheduleHelper             Schedule Helper
+     * @param ScheduleManagement        $scheduleManagement         Schedule Management
+     * @param RetailerCollectionFactory $retailerCollectionFactory  The retailer collection factory.
+     * @param array                     $data                       Additional data.
      */
 
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $coreRegistry,
-        \Smile\Map\Api\MapProviderInterface $mapProvider,
-        \Smile\StoreLocator\Helper\Data $storeLocatorHelper,
-        \Smile\Map\Model\AddressFormatter $addressFormatter,
-        \Smile\StoreLocator\Helper\Schedule $scheduleHelper,
-        \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManagement,
-        \Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory $retailerCollectionFactory,
+        Context $context,
+        Registry $coreRegistry,
+        MapProviderInterface $mapProvider,
+        Data $storeLocatorHelper,
+        AddressFormatter $addressFormatter,
+        Schedule $scheduleHelper,
+        ScheduleManagement $scheduleManagement,
+        RetailerCollectionFactory $retailerCollectionFactory,
         array $data = []
     ) {
         parent::__construct($context, $coreRegistry, $data);
@@ -96,9 +104,9 @@ class Map extends AbstractView
     /**
      * Returns current store address.
      *
-     * @return RetailerAddressInterface
+     * @return ?RetailerAddressInterface
      */
-    public function getAddress()
+    public function getAddress(): ?RetailerAddressInterface
     {
         return $this->getRetailer()->getAddress();
     }
@@ -108,7 +116,7 @@ class Map extends AbstractView
      *
      * @return int|null
      */
-    public function getId()
+    public function getId(): int|null
     {
         return $this->getRetailer()->getId();
     }
@@ -116,9 +124,9 @@ class Map extends AbstractView
     /**
      * Returns current store coordinates.
      *
-     * @return \Smile\Map\Api\Data\GeoPointInterface
+     * @return GeoPointInterface
      */
-    public function getCoordinates()
+    public function getCoordinates(): GeoPointInterface
     {
         return $this->getAddress()->getCoordinates();
     }
@@ -126,7 +134,7 @@ class Map extends AbstractView
     /**
      * {@inheritDoc}
      */
-    public function getJsLayout()
+    public function getJsLayout(): string
     {
         $jsLayout = $this->jsLayout;
 
@@ -150,7 +158,7 @@ class Map extends AbstractView
      *
      * @return array|null
      */
-    public function getMarkerData()
+    public function getMarkerData(): array|null
     {
         $result = null;
         $mediaPath = $this->getMediaPath();
@@ -186,7 +194,7 @@ class Map extends AbstractView
      *
      * @return string
      */
-    public function getStoreListUrl()
+    public function getStoreListUrl(): string
     {
         return $this->storeLocatorHelper->getHomeUrl();
     }
@@ -196,9 +204,9 @@ class Map extends AbstractView
      *
      * @return string
      */
-    public function getAddressHtml()
+    public function getAddressHtml(): string
     {
-        return $this->addressFormatter->formatAddress($this->getAddress(), AddressFormatter::FORMAT_HTML);
+        return $this->getAddress() ? $this->addressFormatter->formatAddress($this->getAddress(), AddressFormatter::FORMAT_HTML) : '';
     }
 
     /**
@@ -206,7 +214,7 @@ class Map extends AbstractView
      *
      * @return string
      */
-    public function getDirectionUrl()
+    public function getDirectionUrl(): string
     {
         return $this->map->getDirectionUrl($this->getCoordinates());
     }
@@ -216,7 +224,7 @@ class Map extends AbstractView
      *
      * @return null|string
      */
-    public function getDescription()
+    public function getDescription(): null|string
     {
         return $this->getRetailer()->getDescription();
     }
@@ -227,7 +235,7 @@ class Map extends AbstractView
      * @return mixed
      * @throws \Magento\Framework\Exception\NoSuchEntityException
      */
-    public function getImageUrl()
+    public function getImageUrl(): mixed
     {
         $currentStore = $this->_storeManager->getStore();
 
@@ -239,7 +247,7 @@ class Map extends AbstractView
      *
      * @return bool|string
      */
-    protected function getMediaPath()
+    protected function getMediaPath(): bool|string
     {
         return $this->getRetailer()->getMediaPath() ?: false;
     }
@@ -249,7 +257,7 @@ class Map extends AbstractView
      *
      * @return bool|string
      */
-    public function getImage()
+    public function getImage(): bool|string
     {
         $mediaPath = $this->getMediaPath();
         $imageUrlRetailer = $this->getImageUrl() . 'seller/';
@@ -260,9 +268,9 @@ class Map extends AbstractView
     /**
      * Get store name.
      *
-     * @return string
+     * @return ?string
      */
-    public function getStoreName()
+    public function getStoreName(): string
     {
         return $this->getRetailer()->getName();
     }
@@ -272,7 +280,7 @@ class Map extends AbstractView
      *
      * @return bool|string
      */
-    public function getPhone()
+    public function getPhone(): bool|string
     {
         return $this->getRetailer()->getContactPhone() ?: false;
     }
@@ -282,7 +290,7 @@ class Map extends AbstractView
      *
      * @return bool|string
      */
-    public function getContactMail()
+    public function getContactMail(): bool|string
     {
         return $this->getRetailer()->getContactMail() ?: false;
     }
@@ -292,7 +300,7 @@ class Map extends AbstractView
      *
      * @return mixed
      */
-    public function getAllMarkers()
+    public function getAllMarkers(): mixed
     {
         $retailerCollection = $this->retailerCollectionFactory->create();
         $retailerCollection->addAttributeToSelect(['name', 'contact_mail', 'contact_phone', 'contact_mail', 'image']);
@@ -307,7 +315,7 @@ class Map extends AbstractView
      *
      * @return array|null
      */
-    public function collectionFull()
+    public function collectionFull(): array|null
     {
         $collection = $this->getAllMarkers();
 

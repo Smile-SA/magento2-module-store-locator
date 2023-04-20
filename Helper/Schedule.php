@@ -16,6 +16,7 @@ use Magento\Framework\App\Helper\AbstractHelper;
 use Magento\Framework\App\Helper\Context;
 use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Stdlib\DateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
  * Schedule Helper
@@ -32,40 +33,39 @@ class Schedule extends AbstractHelper
     const DEFAULT_WARNING_THRESOLD = 60;
 
     /**
-     * @var \Magento\Framework\Locale\Resolver
+     * @var Resolver
      */
-    private $localeResolver;
+    private Resolver $localeResolver;
 
     /**
-     * @var \Zend_Locale_Format
+     * @var TimezoneInterface
      */
-    private $localeFormat;
+    private TimezoneInterface $localeDate;
 
     /**
      * Schedule constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context $context        Application Context
-     * @param \Magento\Framework\Locale\Resolver    $localeResolver Locale Resolver
-     * @param \Zend_Locale_Format                   $localeFormat   Locale Format
+     * @param Context           $context        Application Context
+     * @param Resolver          $localeResolver Locale Resolver
+     * @param TimezoneInterface $localeDate     Locale Format
      */
     public function __construct(
         Context $context,
         Resolver $localeResolver,
-        \Zend_Locale_Format $localeFormat
+        TimezoneInterface $localeDate,
     ) {
         parent::__construct($context);
 
         $this->localeResolver = $localeResolver;
-        $this->localeFormat   = $localeFormat;
+        $this->localeDate     = $localeDate;
     }
 
     /**
      * Retrieve configuration used by schedule components
      *
-     * @throws \Zend_Locale_Exception
      * @return array
      */
-    public function getConfig()
+    public function getConfig(): array
     {
         return [
             'locale'                 => $this->getLocale(),
@@ -80,7 +80,7 @@ class Schedule extends AbstractHelper
      *
      * @return null|string
      */
-    private function getLocale()
+    private function getLocale(): null|string
     {
         return $this->localeResolver->getLocale();
     }
@@ -89,11 +89,10 @@ class Schedule extends AbstractHelper
      * Retrieve Time Format
      *
      * @return string
-     * @throws \Zend_Locale_Exception
      */
-    private function getTimeFormat()
+    private function getTimeFormat(): string
     {
-        return $this->localeFormat->getTimeFormat($this->localeResolver->getLocale());
+        return $this->localeDate->getTimeFormat($this->getLocale());
     }
 
     /**
@@ -101,7 +100,7 @@ class Schedule extends AbstractHelper
      *
      * @return string
      */
-    private function getDateFormat()
+    private function getDateFormat(): string
     {
         return strtoupper(DateTime::DATE_INTERNAL_FORMAT);
     }
@@ -111,7 +110,7 @@ class Schedule extends AbstractHelper
      *
      * @return int
      */
-    private function getClosingWarningThresold()
+    private function getClosingWarningThresold(): int
     {
         return self::DEFAULT_WARNING_THRESOLD;
     }

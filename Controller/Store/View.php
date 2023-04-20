@@ -15,7 +15,9 @@ namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
@@ -36,33 +38,33 @@ class View extends Action
      *
      * @var PageFactory
      */
-    private $resultPageFactory;
+    private PageFactory $resultPageFactory;
 
     /**
      * Forward factory.
      *
      * @var ForwardFactory
      */
-    private $resultForwardFactory;
+    private ForwardFactory $resultForwardFactory;
 
     /**
      * Core registry.
      *
      * @var Registry
      */
-    private $coreRegistry;
+    private Registry $coreRegistry;
 
     /**
      * Store manager.
      *
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
-    private $storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
      * @var RetailerRepositoryInterface
      */
-    private $retailerRepository;
+    private RetailerRepositoryInterface $retailerRepository;
 
     /**
      * Constructor.
@@ -94,7 +96,7 @@ class View extends Action
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): ResponseInterface|ResultInterface
     {
         $retailerId = $this->getRequest()->getParam('id');
         $storeId    = $this->storeManager->getStore()->getId();

@@ -28,14 +28,14 @@ use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 class SpecialOpeningHoursReadHandler implements ExtensionInterface
 {
     /**
-     * @var \Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot
+     * @var TimeSlotResource
      */
-    private $resource;
+    private TimeSlotResource $resource;
 
     /**
-     * @var \Smile\StoreLocator\Model\Data\RetailerTimeSlotConverter
+     * @var RetailerTimeSlotConverter
      */
-    private $converter;
+    private RetailerTimeSlotConverter $converter;
 
     /**
      * OpeningHoursSaveHandler constructor.
@@ -43,8 +43,10 @@ class SpecialOpeningHoursReadHandler implements ExtensionInterface
      * @param RetailerTimeSlotConverter $converter Time Slot Factory
      * @param TimeSlotResource          $resource  Resource Model
      */
-    public function __construct(RetailerTimeSlotConverter $converter, TimeSlotResource $resource)
-    {
+    public function __construct(
+        RetailerTimeSlotConverter $converter,
+        TimeSlotResource $resource
+    ) {
         $this->converter = $converter;
         $this->resource  = $resource;
     }
@@ -52,7 +54,7 @@ class SpecialOpeningHoursReadHandler implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($entity, $arguments = [])
+    public function execute($entity, $arguments = []): bool|object
     {
         $timeSlots = $this->resource->getTimeSlots($entity->getId(), 'special_opening_hours');
 

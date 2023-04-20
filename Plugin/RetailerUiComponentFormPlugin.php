@@ -34,7 +34,7 @@ class RetailerUiComponentFormPlugin
      *
      * @return array
      */
-    public function afterGetDataSourceData(Form $subject, array $result)
+    public function afterGetDataSourceData(Form $subject, array $result): array
     {
         $dataProvider = $subject->getContext()->getDataProvider();
         if ($dataProvider->getName() == self::DATA_SOURCE_NAME && empty($result['data'])) {

@@ -30,7 +30,7 @@ class RetailerEditFormPlugin
      *
      * @return array
      */
-    public function afterGetData(DataProvider $subject, $result)
+    public function afterGetData(DataProvider $subject, array $result): array
     {
         $retailer = $this->getRetailer($subject);
 
@@ -54,9 +54,9 @@ class RetailerEditFormPlugin
      *
      * @param DataProvider $dataProvider DataProvider.
      *
-     * @return NULL|RetailerInterface
+     * @return ?RetailerInterface
      */
-    private function getRetailer(DataProvider $dataProvider)
+    private function getRetailer(DataProvider $dataProvider): ?RetailerInterface
     {
         $retailer = $dataProvider->getCollection()->getFirstItem();
 

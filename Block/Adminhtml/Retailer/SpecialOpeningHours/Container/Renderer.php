@@ -12,12 +12,17 @@
  */
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\SpecialOpeningHours\Container;
 
+use DateTime;
 use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template\Context;
+use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Magento\Framework\Json\Helper\Data as JsonHelper;
-use Magento\Framework\Stdlib\DateTime;
+use Magento\Framework\Data\Form\Element\Factory as FormElementFactory;
+use Magento\Framework\Locale\Resolver;
+use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
+use Magento\Framework\Stdlib\DateTime as MagentoDateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
-use Zend_Date;
 
 /**
  * Special Opening Hours fieldset renderer
@@ -28,45 +33,53 @@ use Zend_Date;
  * @package  Smile\Retailer
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
  */
-class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray
+class Renderer extends AbstractFieldArray
 {
     /**
-     * @var \Magento\Framework\Data\Form\Element\Factory
+     * @var FormElementFactory
      */
-    private $elementFactory;
+    private FormElementFactory $elementFactory;
 
     /**
-     * @var \Magento\Framework\Data\Form\Element\AbstractElement
+     * @var AbstractElement
      */
-    private $element;
+    private AbstractElement $element;
 
     /**
-     * @var \Magento\Framework\Json\Helper\Data
+     * @var JsonSerializer
      */
-    private $jsonHelper;
+    private JsonSerializer $jsonSerializer;
 
     /**
-     * @var \Magento\Framework\Locale\Resolver
+     * @var Resolver
      */
-    private $localeResolver;
+    private Resolver $localeResolver;
 
     /**
-     * @param \Magento\Backend\Block\Template\Context      $context        Application context
-     * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory Element Factory
-     * @param \Magento\Framework\Json\Helper\Data          $jsonHelper     JSON helper
-     * @param \Magento\Framework\Locale\Resolver           $localeResolver Locale Resolver
-     * @param array                                        $data           Element Data
+     * @var TimezoneInterface
+     */
+    private TimezoneInterface $localeDate;
+
+    /**
+     * @param Context               $context            Application context
+     * @param FormElementFactory    $elementFactory     Element Factory
+     * @param JsonSerializer        $jsonSerializer     JSON helper
+     * @param Resolver              $localeResolver     Locale Resolver
+     * @param TimezoneInterface     $localeDate         The Locale Date Interface
+     * @param array                 $data               Element Data
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Data\Form\Element\Factory $elementFactory,
-        JsonHelper $jsonHelper,
-        \Magento\Framework\Locale\Resolver $localeResolver,
+        Context $context,
+        FormElementFactory $elementFactory,
+        JsonSerializer $jsonSerializer,
+        Resolver $localeResolver,
+        TimezoneInterface $localeDate,
         array $data = []
     ) {
         $this->elementFactory = $elementFactory;
-        $this->jsonHelper     = $jsonHelper;
+        $this->jsonSerializer = $jsonSerializer;
         $this->localeResolver = $localeResolver;
+        $this->localeDate     = $localeDate;
 
         parent::__construct($context, $data);
     }
@@ -74,7 +87,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
     /**
      * {@inheritdoc}
      */
-    public function render(AbstractElement $element)
+    public function render(AbstractElement $element): string
     {
         $this->element = $element;
 
@@ -92,7 +105,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      *
      * @return AbstractElement
      */
-    public function getElement()
+    public function getElement(): AbstractElement
     {
         return $this->element;
     }
@@ -102,7 +115,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      *
      * @return string
      */
-    public function getHtmlId()
+    public function getHtmlId(): string
     {
         return $this->getElement()->getContainer()->getHtmlId();
     }
@@ -112,9 +125,10 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      *
      * @param string $columnName The column name
      *
+     * @throws \Exception
      * @return string
      */
-    public function renderCellTemplate($columnName)
+    public function renderCellTemplate($columnName): string
     {
         if ($columnName == 'date' && isset($this->_columns[$columnName])) {
             return $this->renderDateColumn($columnName);
@@ -131,8 +145,9 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      * Initialise form fields
      *
      * @SuppressWarnings(PHPMD.CamelCaseMethodName) Method is inherited
+     * @return void
      */
-    protected function _construct()
+    protected function _construct(): void
     {
         $this->addColumn('date', ['label' => 'Date']);
         $this->addColumn('opening_hours', ['label' => __('Special Opening Hours')]);
@@ -152,7 +167,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      *
      * @return string
      */
-    protected function _afterToHtml($html)
+    protected function _afterToHtml($html): string
     {
         $htmlId = $this->getHtmlId();
 
@@ -166,7 +181,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      *
      * @return string
      */
-    private function renderDateColumn($columnName)
+    private function renderDateColumn(string $columnName): string
     {
         $element = $this->elementFactory->create('date');
         $element->setFormat($this->_localeDate->getDateFormatWithLongYear())
@@ -189,7 +204,7 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      *
      * @return string
      */
-    private function renderOpeningHoursColumn($columnName)
+    private function renderOpeningHoursColumn(string $columnName): string
     {
         $input = $this->elementFactory->create('text');
         $input->setForm($this->getElement()->getForm());
@@ -210,11 +225,12 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
      * Mandatory since Magento does this with x-magento-init tag which is NOT triggered when adding a field into array dynamically
      *
      * @param AbstractElement $element The element to apply calendar on
+     * @return void
      */
-    private function appendDatePickerConfiguration($element)
+    private function appendDatePickerConfiguration(AbstractElement $element): void
     {
         $inputId = $element->getHtmlId();
-        $calendarConfig = $this->jsonHelper->jsonEncode([
+        $calendarConfig = $this->jsonSerializer->serialize([
             'dateFormat'  => $element->getFormat(),
             'showsTime'   => !empty($element->getTimeFormat()),
             'timeFormat'  => $element->getTimeFormat(),
@@ -246,7 +262,7 @@ JAVASCRIPT;
      *
      * @return array
      */
-    private function parseValuesToArray($values)
+    private function parseValuesToArray(array $values): array
     {
         $arrayValues = [];
 
@@ -257,17 +273,16 @@ JAVASCRIPT;
                 $timeRanges = [];
 
                 foreach ($timeSlots as $timeSlot) {
-                    $timeDate   = new Zend_Date();
-                    $timeDate->setLocale($this->localeResolver->getLocale());
-                    $startTime  = $timeDate->setTime($timeSlot->getStartTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
-                    $endTime    = $timeDate->setTime($timeSlot->getEndTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
+                    $timeDate   = new DateTime();
+                    $startTime = $timeDate->setTimestamp(strtotime($timeSlot->getStartTime()))->format(MagentoDateTime::DATETIME_PHP_FORMAT);
+                    $endTime   = $timeDate->setTimestamp(strtotime($timeSlot->getEndTime()))->format(MagentoDateTime::DATETIME_PHP_FORMAT);
                     $timeRanges[] = [$startTime, $endTime];
                 }
 
-                $date = new Zend_Date($date, DateTime::DATETIME_INTERNAL_FORMAT);
+                $date = new DateTime($date);
                 $arrayValues[] = [
-                    "date" => $date->toString($this->_localeDate->getDateFormatWithLongYear()),
-                    "opening_hours" => $this->jsonHelper->jsonEncode(array_filter($timeRanges)),
+                    "date" => $date->format(MagentoDateTime::DATETIME_PHP_FORMAT),
+                    "opening_hours" => $this->jsonSerializer->serialize(array_filter($timeRanges)),
                 ];
             }
         }

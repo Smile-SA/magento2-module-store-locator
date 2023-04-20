@@ -12,8 +12,13 @@
  */
 namespace Smile\StoreLocator\Model;
 
-use Smile\Retailer\Api\Data\RetailerInterface;
+use Magento\Framework\App\Config\ScopeConfigInterface;
+use Magento\Framework\Filter\FilterManager;
+use Magento\Framework\UrlInterface;
 use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\StoreManagerInterface;
+use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\StoreLocator\Model\ResourceModel\Url as ResourceModelUrl;
 
 /**
  * Retailer URL model.
@@ -30,45 +35,45 @@ class Url
     const BASE_URL_XML_PATH = 'store_locator/seo/base_url';
 
     /**
-     * @var \Smile\StoreLocator\Model\ResourceModel\Url
+     * @var ResourceModelUrl
      */
-    private $resourceModel;
+    private ResourceModelUrl $resourceModel;
 
     /**
-     * @var \Magento\Framework\Filter\FilterManager
+     * @var FilterManager
      */
-    private $filter;
+    private FilterManager $filter;
 
     /**
-     * @var \Magento\Framework\UrlInterface
+     * @var UrlInterface
      */
-    private $urlBuilder;
+    private UrlInterface $urlBuilder;
 
     /**
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
-    private $storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
+     * @var ScopeConfigInterface
      */
-    private $scopeConfig;
+    private ScopeConfigInterface $scopeConfig;
 
     /**
      * Constructor.
      *
-     * @param \Smile\StoreLocator\Model\ResourceModel\Url        $resourceModel ResourceModel.
-     * @param \Magento\Store\Model\StoreManagerInterface         $storeManager  Store manager.
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig   Store config.
-     * @param \Magento\Framework\UrlInterface                    $urlBuilder    URL builder.
-     * @param \Magento\Framework\Filter\FilterManager            $filter        Filters.
+     * @param ResourceModelUrl      $resourceModel ResourceModel.
+     * @param StoreManagerInterface $storeManager  Store manager.
+     * @param ScopeConfigInterface  $scopeConfig   Store config.
+     * @param UrlInterface          $urlBuilder    URL builder.
+     * @param FilterManager         $filter        Filters.
      */
     public function __construct(
-        \Smile\StoreLocator\Model\ResourceModel\Url $resourceModel,
-        \Magento\Store\Model\StoreManagerInterface $storeManager,
-        \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig,
-        \Magento\Framework\UrlInterface $urlBuilder,
-        \Magento\Framework\Filter\FilterManager $filter
+        ResourceModelUrl $resourceModel,
+        StoreManagerInterface $storeManager,
+        ScopeConfigInterface $scopeConfig,
+        UrlInterface $urlBuilder,
+        FilterManager $filter
     ) {
         $this->resourceModel = $resourceModel;
         $this->storeManager  = $storeManager;
@@ -82,9 +87,9 @@ class Url
      *
      * @param RetailerInterface $retailer Retailer.
      *
-     * @return string
+     * @return ?string
      */
-    public function getUrlKey(RetailerInterface $retailer)
+    public function getUrlKey(RetailerInterface $retailer): ?string
     {
         $urlKey = !empty($retailer->getUrlKey()) ? $retailer->getUrlKey() : $retailer->getName();
 
@@ -98,7 +103,7 @@ class Url
      *
      * @return string
      */
-    public function getUrl(RetailerInterface $retailer)
+    public function getUrl(RetailerInterface $retailer): string
     {
         $url = sprintf("%s/%s", $this->getRequestPathPrefix($retailer->getStoreId()), $this->getUrlKey($retailer));
 
@@ -108,11 +113,11 @@ class Url
     /**
      * Get store locator home URL.
      *
-     * @param int|NULL $storeId Store Id
+     * @param ?int $storeId Store Id
      *
      * @return string
      */
-    public function getHomeUrl($storeId = null)
+    public function getHomeUrl(?int $storeId = null): string
     {
         return $this->urlBuilder->getUrl(null, ['_direct' => $this->getRequestPathPrefix($storeId)]);
     }
@@ -120,11 +125,11 @@ class Url
     /**
      * Get URL prefix for the store locator.
      *
-     * @param int|NULL $storeId Store Id
+     * @param ?int $storeId Store Id
      *
      * @return string
      */
-    public function getRequestPathPrefix($storeId = null)
+    public function getRequestPathPrefix(?int $storeId = null): string
     {
         if ($storeId === null) {
             $storeId = $this->storeManager->getStore()->getId();
@@ -136,12 +141,12 @@ class Url
     /**
      * Check an URL key exists and returns the retailer id. False if no retailer found.
      *
-     * @param urlKey $urlKey  URL key.
-     * @param int    $storeId Store Id.
+     * @param ?string   $urlKey  URL key.
+     * @param ?int      $storeId Store Id.
      *
      * @return int|false
      */
-    public function checkIdentifier($urlKey, $storeId = null)
+    public function checkIdentifier(?string $urlKey, ?int $storeId = null): int|false
     {
         if ($storeId == null) {
             $storeId = $this->storeManager->getStore()->getId();

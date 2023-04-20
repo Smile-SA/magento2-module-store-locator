@@ -30,7 +30,7 @@ class InstallSchema implements InstallSchemaInterface
     /**
      * @var StoreLocatorSetup
      */
-    private $storeLocatorSetup;
+    private StoreLocatorSetup $storeLocatorSetup;
 
     /**
      * InstallSchema constructor.
@@ -47,7 +47,7 @@ class InstallSchema implements InstallSchemaInterface
      * @throws \Zend_Db_Exception
      * @SuppressWarnings(PHPMD.ExcessiveMethodLength)
      */
-    public function install(SchemaSetupInterface $setup, ModuleContextInterface $context)
+    public function install(SchemaSetupInterface $setup, ModuleContextInterface $context): void
     {
         $setup->startSetup();
         $this->storeLocatorSetup->createRetailerAddressTable($setup);

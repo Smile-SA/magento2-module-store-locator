@@ -25,12 +25,18 @@ use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 class RetailerTimeSlotConverter
 {
     /**
+     * @var RetailerTimeSlotInterfaceFactory
+     */
+    private RetailerTimeSlotInterfaceFactory $timeSlotFactory;
+
+    /**
      * RetailerTimeSlotConverter constructor.
      *
      * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory Time Slot Factory
      */
-    public function __construct(RetailerTimeSlotInterfaceFactory $timeSlotFactory)
-    {
+    public function __construct(
+        RetailerTimeSlotInterfaceFactory $timeSlotFactory
+    ) {
         $this->timeSlotFactory = $timeSlotFactory;
     }
 
@@ -42,7 +48,7 @@ class RetailerTimeSlotConverter
      *
      * @return array
      */
-    public function toEntity($timeSlots, $dateField = RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD)
+    public function toEntity(array $timeSlots, string $dateField = RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD): array
     {
         $openingHours = [];
 

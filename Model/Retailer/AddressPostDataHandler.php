@@ -12,6 +12,11 @@
  */
 namespace Smile\StoreLocator\Model\Retailer;
 
+use Smile\Map\Api\Data\GeoPointInterfaceFactory;
+use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\Retailer\Model\Retailer\PostDataHandlerInterface;
+use Smile\StoreLocator\Api\Data\RetailerAddressInterfaceFactory;
+
 /**
  * Read addresses from post data.
  *
@@ -19,27 +24,27 @@ namespace Smile\StoreLocator\Model\Retailer;
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class AddressPostDataHandler implements \Smile\Retailer\Model\Retailer\PostDataHandlerInterface
+class AddressPostDataHandler implements PostDataHandlerInterface
 {
     /**
-     * @var \Smile\StoreLocator\Api\Data\RetailerAddressInterfaceFactory
+     * @var RetailerAddressInterfaceFactory
      */
-    private $retailerAddressFactory;
+    private RetailerAddressInterfaceFactory $retailerAddressFactory;
 
     /**
-     * @var \Smile\Map\Api\Data\GeoPointInterfaceFactory
+     * @var GeoPointInterfaceFactory
      */
-    private $geoPointFactory;
+    private GeoPointInterfaceFactory $geoPointFactory;
 
     /**
      * Constructor.
      *
-     * @param \Smile\StoreLocator\Api\Data\RetailerAddressInterfaceFactory $retailerAddressFactory Retailer address factory.
-     * @param \Smile\Map\Api\Data\GeoPointInterfaceFactory                 $geoPointFactory        Geo point factory.
+     * @param RetailerAddressInterfaceFactory $retailerAddressFactory Retailer address factory.
+     * @param GeoPointInterfaceFactory        $geoPointFactory        Geo point factory.
      */
     public function __construct(
-        \Smile\StoreLocator\Api\Data\RetailerAddressInterfaceFactory $retailerAddressFactory,
-        \Smile\Map\Api\Data\GeoPointInterfaceFactory $geoPointFactory
+        RetailerAddressInterfaceFactory $retailerAddressFactory,
+        GeoPointInterfaceFactory $geoPointFactory
     ) {
         $this->retailerAddressFactory = $retailerAddressFactory;
         $this->geoPointFactory        = $geoPointFactory;
@@ -48,7 +53,7 @@ class AddressPostDataHandler implements \Smile\Retailer\Model\Retailer\PostDataH
     /**
      * {@inheritDoc}
      */
-    public function getData(\Smile\Retailer\Api\Data\RetailerInterface $retailer, $data)
+    public function getData(RetailerInterface $retailer, mixed $data): mixed
     {
         if (isset($data['address'])) {
             $addressData = $data['address'];

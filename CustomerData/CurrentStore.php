@@ -13,9 +13,13 @@
 namespace Smile\StoreLocator\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
+use Magento\Customer\Model\Session;
+use Magento\Framework\App\Http\Context;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\Retailer\Api\RetailerRepositoryInterface;
+use Smile\StoreLocator\Model\Url;
 
 /**
  * Current Store data.
@@ -32,45 +36,45 @@ class CurrentStore implements SectionSourceInterface
     const CONTEXT_RETAILER = 'smile_retailer_id';
 
     /**
-     * @var \Magento\Customer\Model\Session
+     * @var Session
      */
-    private $customerSession;
+    private Session $customerSession;
 
     /**
-     * @var \Smile\Retailer\Api\RetailerRepositoryInterface
+     * @var RetailerRepositoryInterface
      */
-    private $retailerRepository;
+    private RetailerRepositoryInterface $retailerRepository;
 
     /**
-     * @var \Smile\StoreLocator\Model\Url
+     * @var Url
      */
-    private $urlModel;
+    private Url $urlModel;
 
     /**
-     * @var \Smile\Map\Model\AddressFormatter
+     * @var AddressFormatter
      */
-    private $addressFormatter;
+    private AddressFormatter $addressFormatter;
 
     /**
-     * @var \Magento\Framework\App\Http\Context
+     * @var Context
      */
-    private $httpContext;
+    private Context $httpContext;
 
     /**
      * CurrentStore constructor
      *
-     * @param \Magento\Customer\Model\Session                 $customerSession    Customer session.
-     * @param \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository Retailer repository.
-     * @param \Smile\Map\Model\AddressFormatter               $addressFormatter   Address formatter.
-     * @param \Smile\StoreLocator\Model\Url                   $urlModel           URL model.
-     * @param \Magento\Framework\App\Http\Context             $context            The HTTP Context
+     * @param Session                       $customerSession    Customer session.
+     * @param RetailerRepositoryInterface   $retailerRepository Retailer repository.
+     * @param AddressFormatter              $addressFormatter   Address formatter.
+     * @param Url                           $urlModel           URL model.
+     * @param Context                       $context            The HTTP Context
      */
     public function __construct(
-        \Magento\Customer\Model\Session $customerSession,
-        \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository,
-        \Smile\Map\Model\AddressFormatter $addressFormatter,
-        \Smile\StoreLocator\Model\Url $urlModel,
-        \Magento\Framework\App\Http\Context $context
+        Session $customerSession,
+        RetailerRepositoryInterface $retailerRepository,
+        AddressFormatter $addressFormatter,
+        Url $urlModel,
+        Context $context
     ) {
         $this->customerSession    = $customerSession;
         $this->retailerRepository = $retailerRepository;
@@ -82,7 +86,7 @@ class CurrentStore implements SectionSourceInterface
     /**
      * {@inheritdoc}
      */
-    public function getSectionData()
+    public function getSectionData(): array
     {
         $data     = [];
         $retailer = $this->getRetailer();
@@ -104,9 +108,9 @@ class CurrentStore implements SectionSourceInterface
     /**
      * Get the current session retailer.
      *
-     * @return \Smile\Retailer\Api\Data\RetailerInterface
+     * @return ?RetailerInterface
      */
-    public function getRetailer()
+    public function getRetailer(): ?RetailerInterface
     {
         $retailer = null;
 
@@ -134,7 +138,7 @@ class CurrentStore implements SectionSourceInterface
      *
      * @return $this
      */
-    public function setRetailer($retailer)
+    public function setRetailer(RetailerInterface $retailer): self
     {
         $this->customerSession->setRetailerId($retailer->getId());
         $this->httpContext->setValue(self::CONTEXT_RETAILER, $retailer->getId(), false);

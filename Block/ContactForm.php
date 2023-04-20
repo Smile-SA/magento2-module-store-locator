@@ -14,6 +14,7 @@ namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Registry;
+use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template\Context;
 use \Smile\StoreLocator\Helper\Data as StoreLocatorHelper;
 
@@ -27,28 +28,28 @@ use \Smile\StoreLocator\Helper\Data as StoreLocatorHelper;
 class ContactForm extends AbstractView
 {
     /**
-     * @var \Smile\StoreLocator\Helper\Data
+     * @var StoreLocatorHelper
      */
-    private $storeLocatorHelper;
+    private StoreLocatorHelper $storeLocatorHelper;
 
     /**
-     * @var array
+     * @var ?array
      */
-    private $postData = null;
+    private ?array $postData = null;
 
     /**
      * @var DataPersistorInterface
      */
-    private $dataPersistor;
+    private DataPersistorInterface $dataPersistor;
 
     /**
      * ContactForm constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context $context                Application Context
-     * @param \Magento\Framework\Registry                      $coreRegistry           Core Registry
-     * @param \Smile\StoreLocator\Helper\Data                  $storeLocatorHelper     Store Locator Helper
-     * @param DataPersistorInterface                           $dataPersistorInterface Data Persistor Interface
-     * @param array                                            $data                   Block data
+     * @param Context                $context                Application Context
+     * @param Registry               $coreRegistry           Core Registry
+     * @param StoreLocatorHelper     $storeLocatorHelper     Store Locator Helper
+     * @param DataPersistorInterface $dataPersistorInterface Data Persistor Interface
+     * @param array                  $data                   Block data
      */
     public function __construct(
         Context $context,
@@ -68,7 +69,7 @@ class ContactForm extends AbstractView
      *
      * @return string
      */
-    public function getFormAction()
+    public function getFormAction(): string
     {
         return $this->getUrl('storelocator/store/contactPost', ['_secure' => true]);
     }
@@ -80,7 +81,7 @@ class ContactForm extends AbstractView
      *
      * @return string
      */
-    public function getPostValue($key)
+    public function getPostValue($key): string
     {
         if (null === $this->postData) {
             $this->postData = (array) $this->dataPersistor->get('contact_store');
@@ -98,7 +99,7 @@ class ContactForm extends AbstractView
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      * {@inheritdoc}
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): AbstractBlock
     {
         parent::_prepareLayout();
 
@@ -111,9 +112,9 @@ class ContactForm extends AbstractView
     /**
      * Set the current page title.
      *
-     * @return \Smile\StoreLocator\Block\View
+     * @return $this
      */
-    private function setPageTitle()
+    private function setPageTitle(): self
     {
         $retailer = $this->getRetailer();
 
@@ -131,9 +132,9 @@ class ContactForm extends AbstractView
     /**
      * Build breadcrumbs for the current page.
      *
-     * @return \Smile\StoreLocator\Block\View
+     * @return $this
      */
-    private function setBreadcrumbs()
+    private function setBreadcrumbs(): self
     {
         if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
             $retailer            = $this->getRetailer();

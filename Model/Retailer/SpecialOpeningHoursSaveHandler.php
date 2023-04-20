@@ -25,14 +25,14 @@ use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot as TimeSlotResource;
 class SpecialOpeningHoursSaveHandler implements ExtensionInterface
 {
     /**
-     * @var \Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot
+     * @var TimeSlotResource
      */
-    private $resource;
+    private TimeSlotResource $resource;
 
     /**
      * OpeningHoursSaveHandler constructor.
      *
-     * @param \Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot $resource Resource Model
+     * @param TimeSlotResource $resource Resource Model
      */
     public function __construct(TimeSlotResource $resource)
     {
@@ -42,7 +42,7 @@ class SpecialOpeningHoursSaveHandler implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($entity, $arguments = [])
+    public function execute($entity, $arguments = []): bool|object
     {
         if (empty($entity->getSpecialOpeningHours())) {
             $this->resource->deleteByRetailerId($entity->getId(), 'special_opening_hours');

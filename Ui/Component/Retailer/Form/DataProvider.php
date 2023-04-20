@@ -14,6 +14,8 @@
 
 namespace Smile\StoreLocator\Ui\Component\Retailer\Form;
 
+use Magento\Framework\Registry;
+use Magento\Ui\DataProvider\AbstractDataProvider;
 use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory;
 
 /**
@@ -23,28 +25,33 @@ use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory;
  * @package  Smile\StoreLocator
  * @author   Fanny DECLERCK <fadec@smile.fr>
  */
-class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
+class DataProvider extends AbstractDataProvider
 {
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
-    private $registry;
+    private Registry $registry;
+
+    /**
+     * @var array
+     */
+    protected array $loadData = [];
 
     /**
      * @param string                      $name              Name
      * @param string                      $primaryFieldName  PrimaryFieldName
      * @param string                      $requestFieldName  RequestFieldName
      * @param CollectionFactory           $collectionFactory Collection
-     * @param \Magento\Framework\Registry $registry          Registry.
+     * @param Registry                    $registry          Registry.
      * @param array                       $meta              Meta
      * @param array                       $data              Data
      */
     public function __construct(
-        $name,
-        $primaryFieldName,
-        $requestFieldName,
+        string $name,
+        string $primaryFieldName,
+        string $requestFieldName,
         CollectionFactory $collectionFactory,
-        \Magento\Framework\Registry $registry,
+        Registry $registry,
         array $meta = [],
         array $data = []
     ) {
@@ -59,16 +66,12 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
      *
      * @return array
      */
-    public function getData()
+    public function getData(): array
     {
-        if (!isset($this->loadData)) {
-            $this->loadData = [];
-            if ($retailerIds = $this->getRetailerIds()) {
-                $this->registry->unregister('retailer_ids');
-                $this->loadData = [
-                    'retailer_ids' => json_encode($retailerIds),
-                ];
-            }
+        if ($retailerIds = $this->getRetailerIds()) {
+            $this->loadData = [
+                'retailer_ids' => json_encode($retailerIds),
+            ];
         }
 
         return $this->loadData;
@@ -77,9 +80,9 @@ class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
     /**
      * Get retailer ids
      *
-     * @return int
+     * @return array
      */
-    private function getRetailerIds()
+    private function getRetailerIds(): array
     {
         return $this->registry->registry('retailer_ids');
     }

@@ -27,7 +27,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
     /**
      * {@inheritDoc}
      */
-    public function getId()
+    public function getId(): int
     {
         return $this->getData(self::ADDRESS_ID);
     }
@@ -35,7 +35,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
     /**
      * {@inheritDoc}
      */
-    public function getRetailerId()
+    public function getRetailerId(): int
     {
         return $this->getData(self::RETAILER_ID);
     }
@@ -45,7 +45,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
      *
      * {@inheritDoc}
      */
-    public function setId($id)
+    public function setId(mixed $id): self
     {
         return $this->setData(self::ADDRESS_ID, $id);
     }
@@ -53,7 +53,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
     /**
      * {@inheritDoc}
      */
-    public function setRetailerId($retailerId)
+    public function setRetailerId(string|int $retailerId): self
     {
         return $this->setData(self::RETAILER_ID, $retailerId);
     }

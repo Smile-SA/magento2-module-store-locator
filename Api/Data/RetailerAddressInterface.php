@@ -12,6 +12,8 @@
  */
 namespace Smile\StoreLocator\Api\Data;
 
+use Smile\Map\Api\Data\GeolocalizedAddressInterface;
+
 /**
  * Retailer Store Locator interface
  *
@@ -19,7 +21,7 @@ namespace Smile\StoreLocator\Api\Data;
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-interface RetailerAddressInterface extends \Smile\Map\Api\Data\GeolocalizedAddressInterface
+interface RetailerAddressInterface extends GeolocalizedAddressInterface
 {
     /**#@+
      * Constants for keys of data array. Identical to the name of the getter in snake case
@@ -31,30 +33,30 @@ interface RetailerAddressInterface extends \Smile\Map\Api\Data\GeolocalizedAddre
     /**
      * @return int
      */
-    public function getId();
+    public function getId(): int;
 
     /**
      * @return int
      */
-    public function getRetailerId();
+    public function getRetailerId(): int;
 
     /**
      * Set id.
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
      *
-     * @param int $id Address id.
+     * @param mixed $id Address id.
      *
      * @return $this
      */
-    public function setId($id);
+    public function setId(mixed $id): self;
 
     /**
      * Set retailer id.
      *
-     * @param int $retailerId Retailer id.
+     * @param string|int $retailerId Retailer id.
      *
      * @return $this
      */
-    public function setRetailerId($retailerId);
+    public function setRetailerId(string|int $retailerId): self;
 }

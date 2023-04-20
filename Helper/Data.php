@@ -13,7 +13,10 @@
  */
 namespace Smile\StoreLocator\Helper;
 
+use Magento\Framework\App\Helper\AbstractHelper;
+use Magento\Framework\App\Helper\Context;
 use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\StoreLocator\Model\Url;
 
 /**
  * Store locator helper.
@@ -23,22 +26,22 @@ use Smile\Retailer\Api\Data\RetailerInterface;
  * @author   Aurelien FOUCRET <aurelien.foucret@gmail.com>
  * @author   Fanny DECLERCK <fadec@smile.fr>
  */
-class Data extends \Magento\Framework\App\Helper\AbstractHelper
+class Data extends AbstractHelper
 {
     /**
-     * @var \Smile\StoreLocator\Model\Url
+     * @var Url
      */
-    private $urlModel;
+    private Url $urlModel;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\App\Helper\Context $context  Helper context.
-     * @param \Smile\StoreLocator\Model\Url         $urlModel Retailer URL model.
+     * @param Context   $context  Helper context.
+     * @param Url       $urlModel Retailer URL model.
      */
     public function __construct(
-        \Magento\Framework\App\Helper\Context $context,
-        \Smile\StoreLocator\Model\Url $urlModel
+        Context $context,
+        Url $urlModel
     ) {
         parent::__construct($context);
         $this->urlModel = $urlModel;
@@ -47,11 +50,11 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
     /**
      * Store locator home URL.
      *
-     * @param int|NULL $storeId Store id.
+     * @param ?int $storeId Store id.
      *
      * @return string
      */
-    public function getHomeUrl($storeId = null)
+    public function getHomeUrl(?int $storeId = null): string
     {
         return $this->urlModel->getHomeUrl($storeId);
     }
@@ -63,7 +66,7 @@ class Data extends \Magento\Framework\App\Helper\AbstractHelper
      *
      * @return string
      */
-    public function getRetailerUrl(RetailerInterface $retailer)
+    public function getRetailerUrl(RetailerInterface $retailer): string
     {
         return $this->urlModel->getUrl($retailer);
     }

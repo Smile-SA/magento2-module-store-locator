@@ -14,6 +14,10 @@
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Smile\Map\Api\MapInterface;
+use Smile\Map\Api\MapProviderInterface;
+use Smile\StoreLocator\Helper\Data;
 
 /**
  * Store chooser block.
@@ -25,27 +29,27 @@ use Magento\Framework\View\Element\Template;
 class StoreChooser extends Template
 {
     /**
-     * @var \Smile\StoreLocator\Helper\Data
+     * @var Data
      */
-    private $storeLocatorHelper;
+    private Data $storeLocatorHelper;
 
     /**
-     * @var \Smile\Map\Api\MapInterface
+     * @var MapInterface
      */
-    private $map;
+    private MapInterface $map;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context $context            Template context.
-     * @param \Smile\StoreLocator\Helper\Data                  $storeLocatorHelper Store locator helper.
-     * @param \Smile\Map\Api\MapProviderInterface              $mapProvider        Map Provider.
-     * @param array                                            $data               Additional data.
+     * @param Context               $context            Template context.
+     * @param Data                  $storeLocatorHelper Store locator helper.
+     * @param MapProviderInterface  $mapProvider        Map Provider.
+     * @param array                 $data               Additional data.
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Smile\StoreLocator\Helper\Data $storeLocatorHelper,
-        \Smile\Map\Api\MapProviderInterface $mapProvider,
+        Context $context,
+        Data $storeLocatorHelper,
+        MapProviderInterface $mapProvider,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -56,7 +60,7 @@ class StoreChooser extends Template
     /**
      * {@inheritDoc}
      */
-    public function getJsLayout()
+    public function getJsLayout(): string
     {
         $jsLayout = $this->jsLayout;
 
@@ -76,7 +80,7 @@ class StoreChooser extends Template
      *
      * @return string
      */
-    public function getStoreLocatorHomeUrl()
+    public function getStoreLocatorHomeUrl(): string
     {
         return $this->storeLocatorHelper->getHomeUrl();
     }

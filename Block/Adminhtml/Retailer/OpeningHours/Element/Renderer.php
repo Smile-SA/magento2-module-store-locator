@@ -12,13 +12,18 @@
  */
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element;
 
+use DateTime;
 use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\Data\Form\Element\Factory as FormElementFactory;
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
-use Magento\Framework\Stdlib\DateTime;
+use Magento\Framework\Data\Form\Element\Text as FormElementText;
+use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
+use Magento\Framework\Stdlib\DateTime as MagentoDateTime;
+use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Smile\StoreLocator\Api\Data\TimeSlotsInterface;
-use Zend_Date;
 
 /**
  * Opening Hours field renderer
@@ -32,19 +37,19 @@ use Zend_Date;
 class Renderer extends Template implements RendererInterface
 {
     /**
-     * @var \Magento\Framework\Data\Form\Element\Factory
+     * @var FormElementFactory
      */
-    protected $elementFactory;
+    protected FormElementFactory $elementFactory;
 
     /**
      * @var AbstractElement
      */
-    protected $element;
+    protected AbstractElement $element;
 
     /**
-     * @var \Magento\Framework\Data\Form\Element\Text
+     * @var AbstractElement|FormElementText
      */
-    protected $input;
+    protected AbstractElement|FormElementText $input;
 
     /**
      * @var string
@@ -52,34 +57,33 @@ class Renderer extends Template implements RendererInterface
     protected $_template = 'retailer/openinghours/element.phtml';
 
     /**
-     * @var \Magento\Framework\Json\Helper\Data
+     * @var JsonSerializer
      */
-    private $jsonHelper;
+    private JsonSerializer $jsonSerializer;
 
     /**
-     * @var \Magento\Framework\Stdlib\DateTime\TimezoneInterface
+     * @var TimezoneInterface
      */
-    private $date;
+    private TimezoneInterface $date;
 
     /**
      * Block constructor.
      *
-     * @param \Magento\Backend\Block\Template\Context      $context        Templating context.
-     * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory Form element factory.
-     * @param \Magento\Framework\Json\Helper\Data          $jsonHelper     Helper for JSON
-     * @param \Magento\Framework\Locale\Resolver           $localeResolver Locale Resolver
-     * @param \Magento\Framework\Stdlib\DateTime\TimezoneInterface  $date
-     * @param array                                        $data           Additional data.
+     * @param Context               $context        Templating context.
+     * @param FormElementFactory    $elementFactory Form element factory.
+     * @param JsonSerializer        $jsonSerializer JSON Serializer
+     * @param TimezoneInterface     $date
+     * @param array                 $data           Additional data.
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Data\Form\Element\Factory $elementFactory,
-        \Magento\Framework\Json\Helper\Data $jsonHelper,
-        \Magento\Framework\Stdlib\DateTime\TimezoneInterface $date,
+        Context $context,
+        FormElementFactory $elementFactory,
+        JsonSerializer $jsonSerializer,
+        TimezoneInterface $date,
         array $data = []
     ) {
         $this->elementFactory = $elementFactory;
-        $this->jsonHelper     = $jsonHelper;
+        $this->jsonSerializer = $jsonSerializer;
         $this->date           = $date;
 
         parent::__construct($context, $data);
@@ -88,7 +92,7 @@ class Renderer extends Template implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function render(AbstractElement $element)
+    public function render(AbstractElement $element): string
     {
         $this->element = $element;
         $this->input   = $this->elementFactory->create('hidden');
@@ -109,7 +113,7 @@ class Renderer extends Template implements RendererInterface
      *
      * @return AbstractElement
      */
-    public function getElement()
+    public function getElement(): AbstractElement
     {
         return $this->element;
     }
@@ -119,7 +123,7 @@ class Renderer extends Template implements RendererInterface
      *
      * @return string
      */
-    public function getHtmlId()
+    public function getHtmlId(): string
     {
         return $this->input->getHtmlId();
     }
@@ -129,7 +133,7 @@ class Renderer extends Template implements RendererInterface
      *
      * @return string
      */
-    public function getInputHtml()
+    public function getInputHtml(): string
     {
         if ($this->element->getValue()) {
             $this->input->setValue($this->getJsonValues());
@@ -143,26 +147,27 @@ class Renderer extends Template implements RendererInterface
      *
      * @return string
      */
-    public function getJsonValues()
+    public function getJsonValues(): string
     {
         $values = $this->getValues();
 
-        return $this->jsonHelper->jsonEncode($values);
+        return $this->jsonSerializer->serialize($values);
     }
 
     /**
      * Retrieve element values
      *
+     * @throws \Exception
      * @return array
      */
-    private function getValues()
+    private function getValues(): array
     {
         $values = [];
         if ($this->element->getValue()) {
             foreach ($this->element->getValue() as $timeSlot) {
-                $date   = new Zend_Date($this->date->date()->format('Y-m-d'));
-                $startTime = $date->setTime($timeSlot->getStartTime(), 'h:mm a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
-                $endTime   = $date->setTime($timeSlot->getEndTime(), 'h:mm a')->toString(DateTime::DATETIME_INTERNAL_FORMAT);
+                $date      = new DateTime($this->date->date()->format(MagentoDateTime::DATE_PHP_FORMAT));
+                $startTime = $date->setTimestamp(strtotime($timeSlot->getStartTime()))->format(MagentoDateTime::DATETIME_PHP_FORMAT);
+                $endTime   = $date->setTimestamp(strtotime($timeSlot->getEndTime()))->format(MagentoDateTime::DATETIME_PHP_FORMAT);
                 $values[]  = [$startTime, $endTime];
             }
         }

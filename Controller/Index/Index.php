@@ -15,6 +15,8 @@ namespace Smile\StoreLocator\Controller\Index;
 
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 use Smile\StoreLocator\Helper\Data as StoreLocatorHelper;
 
 /**
@@ -30,7 +32,7 @@ class Index extends Action
     /**
      * @var StoreLocatorHelper
      */
-    private $storeLocatorHelper;
+    private StoreLocatorHelper $storeLocatorHelper;
 
     /**
      * Constructor.
@@ -38,8 +40,10 @@ class Index extends Action
      * @param Context            $context            Controller context.
      * @param StoreLocatorHelper $storeLocatorHelper Store locator helper.
      */
-    public function __construct(Context $context, StoreLocatorHelper $storeLocatorHelper)
-    {
+    public function __construct(
+        Context $context,
+        StoreLocatorHelper $storeLocatorHelper
+    ) {
         parent::__construct($context);
         $this->storeLocatorHelper = $storeLocatorHelper;
     }
@@ -47,7 +51,7 @@ class Index extends Action
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): ResponseInterface|ResultInterface
     {
         $resultRedirect = $this->resultRedirectFactory->create();
         $redirectUrl    = $this->storeLocatorHelper->getHomeUrl();

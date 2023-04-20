@@ -28,7 +28,7 @@ class SetStoreLink extends AbstractView
      *
      * @return string
      */
-    public function getSetStorePostJson()
+    public function getSetStorePostJson(): string
     {
         $setUrl   = $this->_urlBuilder->getUrl('storelocator/store/set', ['_secure' => true]);
         $postData = ['id' => $this->getRetailer()->getId()];

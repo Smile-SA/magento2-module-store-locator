@@ -12,6 +12,7 @@
  */
 namespace Smile\StoreLocator\Model\Retailer;
 
+use DateTime;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Magento\Framework\Locale\ListsInterface;
@@ -32,14 +33,14 @@ class ScheduleManagement
     const CALENDAR_MAX_DATE = 6;
 
     /**
-     * @var \Magento\Framework\Locale\ListsInterface
+     * @var ListsInterface
      */
-    private $localeList;
+    private ListsInterface $localeList;
 
     /**
      * ScheduleManagement constructor.
      *
-     * @param \Magento\Framework\Locale\ListsInterface $localeList Locale Lists
+     * @param ListsInterface $localeList Locale Lists
      */
     public function __construct(ListsInterface $localeList)
     {
@@ -52,19 +53,19 @@ class ScheduleManagement
      * @SuppressWarnings(PHPMD.StaticAccess)
      *
      * @param RetailerInterface $retailer The retailer
-     * @param null              $dateTime The date to retrieve opening hours for
+     * @param ?DateTime         $dateTime The date to retrieve opening hours for
      *
      * @return RetailerTimeSlotInterface[]
      */
-    public function getOpeningHours($retailer, $dateTime = null)
+    public function getOpeningHours(RetailerInterface $retailer, ?DateTime $dateTime = null): array
     {
         $dayOpening = [];
 
         if ($dateTime == null) {
-            $dateTime = new \DateTime();
+            $dateTime = new DateTime();
         }
         if (is_string($dateTime)) {
-            $dateTime = \DateTime::createFromFormat('Y-m-d', $dateTime);
+            $dateTime = DateTime::createFromFormat('Y-m-d', $dateTime);
         }
 
         $dayOfWeek = $dateTime->format('w');
@@ -94,7 +95,7 @@ class ScheduleManagement
      *
      * @return array
      */
-    public function getCalendar($retailer)
+    public function getCalendar(RetailerInterface $retailer): array
     {
         $calendar = [];
         $date = $this->getMinDate();
@@ -115,7 +116,7 @@ class ScheduleManagement
      *
      * @return array
      */
-    public function getWeekOpeningHours($retailer)
+    public function getWeekOpeningHours(RetailerInterface $retailer): array
     {
         $openingHours = [];
 
@@ -135,13 +136,11 @@ class ScheduleManagement
     /**
      * Get min date to calculate calendar
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    private function getMinDate()
+    private function getMinDate(): DateTime
     {
-        $date = new \DateTime();
-
-        return $date;
+        return new DateTime();
     }
 
     /**
@@ -149,9 +148,9 @@ class ScheduleManagement
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      *
-     * @return \DateTime
+     * @return DateTime
      */
-    private function getMaxDate()
+    private function getMaxDate(): DateTime
     {
         $date = $this->getMinDate();
         $date->add(\DateInterval::createFromDateString(sprintf('+%s day', self::CALENDAR_MAX_DATE)));

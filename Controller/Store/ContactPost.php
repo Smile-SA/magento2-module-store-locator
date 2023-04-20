@@ -15,6 +15,7 @@ namespace Smile\StoreLocator\Controller\Store;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Controller\ResultInterface;
@@ -38,39 +39,39 @@ class ContactPost extends Action
      *
      * @var PageFactory
      */
-    private $resultPageFactory;
+    private PageFactory $resultPageFactory;
 
     /**
      * Store manager.
      *
-     * @var \Magento\Store\Model\StoreManagerInterface
+     * @var StoreManagerInterface
      */
-    private $storeManager;
+    private StoreManagerInterface $storeManager;
 
     /**
      * @var RetailerRepositoryInterface
      */
-    private $retailerRepository;
+    private RetailerRepositoryInterface $retailerRepository;
 
     /**
-     * @var \Smile\StoreLocator\Model\Retailer\ContactFormFactory
+     * @var ContactFormFactory
      */
-    private $contactFormFactory;
+    private ContactFormFactory $contactFormFactory;
 
     /**
-     * @var \Magento\Framework\App\Request\DataPersistorInterface
+     * @var DataPersistorInterface
      */
-    private $dataPersistor;
+    private DataPersistorInterface $dataPersistor;
 
     /**
-     * @var \Smile\StoreLocator\Helper\Contact
+     * @var ContactHelper
      */
-    private $contactHelper;
+    private ContactHelper $contactHelper;
 
     /**
-     * @var \Magento\Framework\Controller\Result\ForwardFactory
+     * @var ForwardFactory
      */
-    private $forwardFactory;
+    private ForwardFactory $forwardFactory;
 
     /**
      * Constructor.
@@ -109,9 +110,9 @@ class ContactPost extends Action
      * Post user question
      *
      * @throws \Exception
-     * @return void|ResultInterface
+     * @return ResponseInterface|ResultInterface|void
      */
-    public function execute()
+    public function execute(): ResponseInterface|ResultInterface|null
     {
         $postData   = $this->getRequest()->getPostValue();
         $retailerId = $this->getRequest()->getParam('id');
@@ -127,7 +128,7 @@ class ContactPost extends Action
             if (!$postData) {
                 $this->_redirect($this->contactHelper->getContactFormUrl($retailer));
 
-                return;
+                return null;
             }
 
             $contactForm = $this->contactFormFactory->create(['retailer' => $retailer, 'data' => $postData]);
@@ -139,7 +140,7 @@ class ContactPost extends Action
             $this->dataPersistor->clear('contact_store');
             $this->_redirect($this->contactHelper->getContactFormUrl($retailer));
 
-            return;
+            return null;
         } catch (\Exception $e) {
             $this->messageManager->addErrorMessage(
                 __('We can\'t process your request right now. Sorry, that\'s all we know.')
@@ -147,7 +148,7 @@ class ContactPost extends Action
             $this->dataPersistor->set('contact_store', $postData);
             $this->_redirect($this->contactHelper->getContactFormUrl($retailer));
 
-            return;
+            return null;
         }
     }
 }

@@ -32,17 +32,17 @@ class CleanStoreLocatorCache implements ObserverInterface
     /**
      * @var CacheContextFactory
      */
-    protected $cacheContextFactory;
+    protected CacheContextFactory $cacheContextFactory;
 
     /**
      * @var ManagerInterface
      */
-    protected $eventManager;
+    protected ManagerInterface $eventManager;
 
     /**
      * @var CacheInterface
      */
-    protected $cache;
+    protected CacheInterface $cache;
 
     /**
      * CleanStoreLocatorCache constructor.
@@ -51,8 +51,11 @@ class CleanStoreLocatorCache implements ObserverInterface
      * @param ManagerInterface $eventManager EventManager.
      * @param CacheInterface $cache Cache.
      */
-    public function __construct(CacheContextFactory $cacheContextFactory, ManagerInterface $eventManager, CacheInterface $cache)
-    {
+    public function __construct(
+        CacheContextFactory $cacheContextFactory,
+        ManagerInterface $eventManager,
+        CacheInterface $cache
+    ) {
         $this->cacheContextFactory = $cacheContextFactory;
         $this->eventManager = $eventManager;
         $this->cache = $cache;
@@ -66,7 +69,7 @@ class CleanStoreLocatorCache implements ObserverInterface
      * @return void
      * @SuppressWarnings(PHPMD.UnusedFormalParameters)
      */
-    public function execute(Observer $observer)
+    public function execute(Observer $observer): void
     {
         /** @var SellerInterface $seller */
         $seller = $observer->getEvent()->getSeller();

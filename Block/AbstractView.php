@@ -13,7 +13,11 @@
  */
 namespace Smile\StoreLocator\Block;
 
+use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template;
+use Magento\Framework\View\Element\Template\Context;
+use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\Seller\Api\Data\SellerInterface;
 
 /**
  * Retailer View Block
@@ -28,13 +32,13 @@ class AbstractView extends Template
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context $context      Application context
-     * @param \Magento\Framework\Registry                      $coreRegistry Application Registry
-     * @param array                                            $data         Block Data
+     * @param Context   $context      Application context
+     * @param Registry  $coreRegistry Application Registry
+     * @param array     $data         Block Data
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $coreRegistry,
+        Context $context,
+        Registry $coreRegistry,
         array $data = []
     ) {
         parent::__construct($context, $data);
@@ -44,9 +48,9 @@ class AbstractView extends Template
     /**
      * Get the current shop.
      *
-     * @return \Smile\Retailer\Api\Data\RetailerInterface
+     * @return ?RetailerInterface
      */
-    public function getRetailer()
+    public function getRetailer(): ?RetailerInterface
     {
         return $this->coreRegistry->registry('current_retailer');
     }

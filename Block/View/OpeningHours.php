@@ -17,6 +17,7 @@ use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
+use Smile\StoreLocator\Block\AbstractView;
 use Smile\StoreLocator\Helper\Schedule;
 use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
 
@@ -27,32 +28,32 @@ use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
  * @package  Smile\StoreLocator
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
  */
-class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
+class OpeningHours extends AbstractView
 {
     /**
-     * @var \Smile\StoreLocator\Helper\Schedule
+     * @var Schedule
      */
-    private $scheduleHelper;
+    private Schedule $scheduleHelper;
 
     /**
-     * @var \Smile\StoreLocator\Model\Retailer\ScheduleManagement
+     * @var ScheduleManagement
      */
-    private $scheduleManager;
+    private ScheduleManagement $scheduleManager;
 
     /**
-     * @var \Magento\Framework\Locale\ListsInterface
+     * @var ListsInterface
      */
-    private $localeList;
+    private ListsInterface $localeList;
 
     /**
      * OpeningHours constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context      $context         Application Context
-     * @param \Magento\Framework\Registry                           $coreRegistry    Application Registry
-     * @param \Smile\StoreLocator\Model\Retailer\ScheduleManagement $scheduleManager Schedule Manager
-     * @param \Smile\StoreLocator\Helper\Schedule                   $scheduleHelper  Schedule Helper
-     * @param \Magento\Framework\Locale\ListsInterface              $localeList      Locale List
-     * @param array                                                 $data            Data
+     * @param Context            $context         Application Context
+     * @param Registry           $coreRegistry    Application Registry
+     * @param ScheduleManagement $scheduleManager Schedule Manager
+     * @param Schedule           $scheduleHelper  Schedule Helper
+     * @param ListsInterface     $localeList      Locale List
+     * @param array              $data            Data
      */
     public function __construct(
         Context $context,
@@ -72,10 +73,13 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
     /**
      * {@inheritDoc}
      */
-    public function getJsLayout()
+    public function getJsLayout(): string
     {
         $jsLayout = $this->jsLayout;
 
+        if (!isset($jsLayout['components']['smile-storelocator-store']['schedule'])) {
+            $jsLayout['components']['smile-storelocator-store']['schedule'] = [];
+        }
         $jsLayout['components']['smile-storelocator-store']['retailerId'] = $this->getRetailer()->getId();
         $jsLayout['components']['smile-storelocator-store']['schedule']   = array_merge(
             $jsLayout['components']['smile-storelocator-store']['schedule'],
@@ -95,7 +99,7 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
      *
      * @return array
      */
-    public function getWeekOpeningHours()
+    public function getWeekOpeningHours(): array
     {
         return $this->scheduleManager->getWeekOpeningHours($this->getRetailer());
     }
@@ -108,7 +112,7 @@ class OpeningHours extends \Smile\StoreLocator\Block\AbstractView
      *
      * @return string
      */
-    public function getOpeningHoursMicroFormat()
+    public function getOpeningHoursMicroFormat(): string
     {
         $days   = $this->localeList->getOptionWeekdays(true, true);
 

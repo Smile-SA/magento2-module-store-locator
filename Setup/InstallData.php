@@ -31,12 +31,12 @@ class InstallData implements InstallDataInterface
     /**
      * @var EavSetupFactory
      */
-    private $eavSetupFactory;
+    private EavSetupFactory $eavSetupFactory;
 
     /**
-     * @var \Smile\StoreLocator\Setup\StoreLocatorSetup
+     * @var StoreLocatorSetup
      */
-    private $storeLocatorSetup;
+    private StoreLocatorSetup $storeLocatorSetup;
 
     /**
      * Constructor.
@@ -44,8 +44,10 @@ class InstallData implements InstallDataInterface
      * @param EavSetupFactory          $eavSetupFactory          EAV Setup Factory.
      * @param StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
      */
-    public function __construct(EavSetupFactory $eavSetupFactory, StoreLocatorSetupFactory $storeLocatorSetupFactory)
-    {
+    public function __construct(
+        EavSetupFactory $eavSetupFactory,
+        StoreLocatorSetupFactory $storeLocatorSetupFactory
+    ) {
         $this->eavSetupFactory = $eavSetupFactory;
         $this->storeLocatorSetup = $storeLocatorSetupFactory->create();
     }
@@ -53,7 +55,7 @@ class InstallData implements InstallDataInterface
     /**
      * {@inheritdoc}
      */
-    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function install(ModuleDataSetupInterface $setup, ModuleContextInterface $context): void
     {
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);

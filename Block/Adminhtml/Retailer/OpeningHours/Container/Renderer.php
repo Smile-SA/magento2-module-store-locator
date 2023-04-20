@@ -13,8 +13,12 @@
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Container;
 
 use Magento\Backend\Block\Template;
+use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\Form\Element\AbstractElement;
+use Magento\Framework\Data\Form\Element\Factory;
 use Magento\Framework\Data\Form\Element\Renderer\RendererInterface;
+use Magento\Framework\Data\Form\Element\Text;
+use Magento\Framework\Locale\ListsInterface;
 use Magento\Framework\Stdlib\DateTime;
 
 /**
@@ -29,19 +33,19 @@ use Magento\Framework\Stdlib\DateTime;
 class Renderer extends Template implements RendererInterface
 {
     /**
-     * @var \Magento\Framework\Data\Form\Element\Factory
+     * @var Factory
      */
-    protected $elementFactory;
+    protected Factory $elementFactory;
 
     /**
      * @var AbstractElement
      */
-    protected $element;
+    protected AbstractElement $element;
 
     /**
-     * @var \Magento\Framework\Data\Form\Element\Text
+     * @var Text
      */
-    protected $input;
+    protected Text $input;
 
     /**
      * @var string
@@ -49,22 +53,22 @@ class Renderer extends Template implements RendererInterface
     protected $_template = 'retailer/openinghours/container.phtml';
 
     /**
-     * @var \Magento\Framework\Locale\ListsInterface|null
+     * @var ?ListsInterface
      */
-    private $localeList = null;
+    private ?ListsInterface $localeList = null;
 
     /**
      * Block constructor.
      *
-     * @param \Magento\Backend\Block\Template\Context      $context        Templating context.
-     * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory Form element factory.
-     * @param \Magento\Framework\Locale\ListsInterface     $localeLists    Locale List.
-     * @param array                                        $data           Additional data.
+     * @param Context           $context        Templating context.
+     * @param Factory           $elementFactory Form element factory.
+     * @param ListsInterface    $localeLists    Locale List.
+     * @param array             $data           Additional data.
      */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Data\Form\Element\Factory $elementFactory,
-        \Magento\Framework\Locale\ListsInterface $localeLists,
+        Context $context,
+        Factory $elementFactory,
+        ListsInterface $localeLists,
         array $data = []
     ) {
         $this->elementFactory = $elementFactory;
@@ -76,7 +80,7 @@ class Renderer extends Template implements RendererInterface
     /**
      * {@inheritdoc}
      */
-    public function render(AbstractElement $element)
+    public function render(AbstractElement $element): string
     {
         $this->element = $element;
         $this->element->addClass("opening-hours-container-fieldset");
@@ -89,7 +93,7 @@ class Renderer extends Template implements RendererInterface
      *
      * @return AbstractElement
      */
-    public function getElement()
+    public function getElement(): AbstractElement
     {
         return $this->element;
     }
@@ -99,7 +103,7 @@ class Renderer extends Template implements RendererInterface
      *
      * @return string
      */
-    public function getHtmlId()
+    public function getHtmlId(): string
     {
         return $this->getElement()->getContainer()->getHtmlId();
     }
@@ -109,7 +113,7 @@ class Renderer extends Template implements RendererInterface
      *
      * @return string
      */
-    public function getInputHtml()
+    public function getInputHtml(): string
     {
         if ($this->element->getOpeningHours()) {
             $values = $this->element->getOpeningHours();

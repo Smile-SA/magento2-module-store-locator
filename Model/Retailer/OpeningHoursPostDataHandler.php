@@ -14,8 +14,10 @@
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
-use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
+use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
+use Smile\Retailer\Model\Retailer\PostDataHandlerInterface;
 use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot;
 
 /**
@@ -26,44 +28,44 @@ use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot;
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
  * @author   Fanny DECLERCK <fadec@smile.fr>
  */
-class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\PostDataHandlerInterface
+class OpeningHoursPostDataHandler implements PostDataHandlerInterface
 {
     /**
      * @var RetailerTimeSlotInterfaceFactory
      */
-    private $timeSlotFactory;
+    private RetailerTimeSlotInterfaceFactory $timeSlotFactory;
 
     /**
-     * @var JsonHelper
+     * @var JsonSerializer
      */
-    private $jsonHelper;
+    private JsonSerializer $jsonSerializer;
 
     /**
      * @var RetailerRepositoryInterface
      */
-    private $retailerRepository;
+    private RetailerRepositoryInterface $retailerRepository;
 
     /**
      * @var RetailerTimeSlot
      */
-    private $retailerTimeSlot;
+    private RetailerTimeSlot $retailerTimeSlot;
 
     /**
      * OpeningHoursPostDataHandler constructor.
      *
      * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory    Time Slot Factory
-     * @param JsonHelper                       $jsonHelper         JSON Helper
+     * @param JsonSerializer                   $jsonSerializer     JSON Serializer
      * @param RetailerRepositoryInterface      $retailerRepository Retailer Repository Interface
      * @param RetailerTimeSlot                 $retailerTimeSlot   Retailer Time Slot Resource Model
      */
     public function __construct(
         RetailerTimeSlotInterfaceFactory $timeSlotFactory,
-        JsonHelper $jsonHelper,
+        JsonSerializer $jsonSerializer,
         RetailerRepositoryInterface $retailerRepository,
         RetailerTimeSlot $retailerTimeSlot
     ) {
         $this->timeSlotFactory    = $timeSlotFactory;
-        $this->jsonHelper         = $jsonHelper;
+        $this->jsonSerializer     = $jsonSerializer;
         $this->retailerRepository = $retailerRepository;
         $this->retailerTimeSlot   = $retailerTimeSlot;
     }
@@ -71,7 +73,7 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
     /**
      * {@inheritDoc}
      */
-    public function getData(\Smile\Retailer\Api\Data\RetailerInterface $retailer, $data)
+    public function getData(RetailerInterface $retailer, mixed $data): mixed
     {
         if (isset($data['opening_hours'])) {
             $openingHours = [];
@@ -79,8 +81,8 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
             foreach ($data['opening_hours'] as $date => &$timeSlotList) {
                 if (is_string($timeSlotList)) {
                     try {
-                        $timeSlotList = $this->jsonHelper->jsonDecode($timeSlotList);
-                    } catch (\Zend_Json_Exception $exception) {
+                        $timeSlotList = $this->jsonSerializer->unserialize($timeSlotList);
+                    } catch (\Exception $exception) {
                         $timeSlotList = [];
                     }
                 }
@@ -115,9 +117,11 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
      *
      * @param array $data Data seller ids / Opening hours by days.
      *
+     * @throws \Magento\Framework\Exception\CouldNotSaveException
+     * @throws \Magento\Framework\Exception\NoSuchEntityException
      * @return void
      */
-    private function updateOpeningHoursBySellerIds($data)
+    private function updateOpeningHoursBySellerIds(array $data): void
     {
         if (isset($data['opening_hours_seller_ids'])) {
             foreach ($data['opening_hours_seller_ids'] as $id) {

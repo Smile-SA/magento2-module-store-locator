@@ -34,12 +34,12 @@ interface RetailerTimeSlotInterface
     /**
      * @return string
      */
-    public function getStartTime();
+    public function getStartTime(): string;
 
     /**
      * @return string
      */
-    public function getEndTime();
+    public function getEndTime(): string;
 
     /**
      * Set the start time
@@ -48,7 +48,7 @@ interface RetailerTimeSlotInterface
      *
      * @return mixed
      */
-    public function setStartTime($time);
+    public function setStartTime(string $time): mixed;
 
     /**
      * Set the end time
@@ -57,5 +57,5 @@ interface RetailerTimeSlotInterface
      *
      * @return mixed
      */
-    public function setEndTime($time);
+    public function setEndTime(string $time): mixed;
 }

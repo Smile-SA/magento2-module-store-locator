@@ -30,17 +30,17 @@ class AddressReadHandler implements ExtensionInterface
     /**
      * @var ModelFactory
      */
-    private $modelFactory;
+    private ModelFactory $modelFactory;
 
     /**
      * @var ResourceModel
      */
-    private $resource;
+    private ResourceModel $resource;
 
     /**
      * @var Converter
      */
-    private $converter;
+    private Converter $converter;
 
     /**
      * Constructor.
@@ -49,8 +49,11 @@ class AddressReadHandler implements ExtensionInterface
      * @param ResourceModel $resource     Address resource model.
      * @param Converter     $converter    Adress converter.
      */
-    public function __construct(ModelFactory $modelFactory, ResourceModel $resource, Converter $converter)
-    {
+    public function __construct(
+        ModelFactory $modelFactory,
+        ResourceModel $resource,
+        Converter $converter
+    ) {
         $this->modelFactory = $modelFactory;
         $this->resource     = $resource;
         $this->converter    = $converter;
@@ -59,8 +62,9 @@ class AddressReadHandler implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($entity, $arguments = [])
+    public function execute($entity, $arguments = []): bool|object
     {
+        /** @var $entity \Smile\Retailer\Model\Retailer */
         $addressModel = $this->modelFactory->create();
         $addressModel->setRetailerId($entity->getId());
 

@@ -13,7 +13,12 @@
 namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Smile\Retailer\Api\RetailerRepositoryInterface;
+use Smile\StoreLocator\CustomerData\CurrentStore;
 
 /**
  * Frontend Controller meant to set current Retailer to customer session
@@ -25,26 +30,26 @@ use Magento\Framework\Controller\ResultFactory;
 class Set extends Action
 {
     /**
-     * @var \Smile\StoreLocator\CustomerData\CurrentStore
+     * @var CurrentStore
      */
-    private $customerData;
+    private CurrentStore $customerData;
 
     /**
-     * @var \Smile\Retailer\Api\RetailerRepositoryInterface
+     * @var RetailerRepositoryInterface
      */
-    private $retailerRepository;
+    private RetailerRepositoryInterface $retailerRepository;
 
     /**
      * Set constructor.
      *
-     * @param \Magento\Framework\App\Action\Context           $context            Action context.
-     * @param \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository Retailer repository.
-     * @param \Smile\StoreLocator\CustomerData\CurrentStore   $customerData       Store customer data.
+     * @param Context                       $context            Action context.
+     * @param RetailerRepositoryInterface   $retailerRepository Retailer repository.
+     * @param CurrentStore                  $customerData       Store customer data.
      */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository,
-        \Smile\StoreLocator\CustomerData\CurrentStore $customerData
+        Context $context,
+        RetailerRepositoryInterface $retailerRepository,
+        CurrentStore $customerData
     ) {
         parent::__construct($context);
 
@@ -57,9 +62,9 @@ class Set extends Action
      *
      * @throws \Magento\Framework\Exception\NotFoundException
      *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
+     * @return ResponseInterface|ResultInterface
      */
-    public function execute()
+    public function execute(): ResponseInterface|ResultInterface
     {
         $retailerId = $this->getRequest()->getParam('id', false);
 

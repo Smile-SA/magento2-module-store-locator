@@ -14,6 +14,7 @@ namespace Smile\StoreLocator\Plugin;
 
 use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface;
+use Magento\Framework\Profiler;
 use Smile\Map\Api\Data\GeoPointInterfaceFactory;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Model\ResourceModel\Retailer\Collection as RetailerCollection;
@@ -31,24 +32,24 @@ use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot as TimeSlotResource;
 class RetailerCollectionPlugin
 {
     /**
-     * @var \Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface
+     * @var JoinProcessorInterface
      */
-    private $joinProcessor;
+    private JoinProcessorInterface $joinProcessor;
 
     /**
-     * @var \Smile\Map\Api\Data\GeoPointInterfaceFactory
+     * @var GeoPointInterfaceFactory
      */
-    private $geoPointFactory;
+    private GeoPointInterfaceFactory $geoPointFactory;
 
     /**
-     * @var \Smile\StoreLocator\Model\Data\RetailerTimeSlotConverter
+     * @var RetailerTimeSlotConverter
      */
-    private $timeSlotConverter;
+    private RetailerTimeSlotConverter $timeSlotConverter;
 
     /**
-     * @var \Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot
+     * @var TimeSlotResource
      */
-    private $timeSlotResource;
+    private TimeSlotResource $timeSlotResource;
 
     /**
      * Constructor.
@@ -80,12 +81,16 @@ class RetailerCollectionPlugin
      * @param bool               $printQuery Print queries used to load the collection.
      * @param bool               $logQuery   Log queries used to load the collection.
      *
-     * @return \Smile\Retailer\Model\ResourceModel\Retailer\Collection
+     * @return RetailerCollection
      */
-    public function aroundLoad(RetailerCollection $collection, \Closure $proceed, $printQuery = false, $logQuery = false)
-    {
+    public function aroundLoad(
+        RetailerCollection $collection,
+        \Closure $proceed,
+        bool $printQuery = false,
+        bool $logQuery = false
+    ): RetailerCollection {
         if (!$collection->isLoaded()) {
-            \Magento\Framework\Profiler::start('SmileStoreLocator:EXTENSIONS_ATTRIBUTES');
+            Profiler::start('SmileStoreLocator:EXTENSIONS_ATTRIBUTES');
 
             // Process joining for Address : defined via extension_attributes.xml file.
             $this->joinProcessor->process($collection);
@@ -129,7 +134,7 @@ class RetailerCollectionPlugin
                 ksort($specialOpeningHours);
                 $currentItem->getExtensionAttributes()->setSpecialOpeningHours($specialOpeningHours);
             }
-            \Magento\Framework\Profiler::stop('SmileStoreLocator:EXTENSIONS_ATTRIBUTES');
+            Profiler::stop('SmileStoreLocator:EXTENSIONS_ATTRIBUTES');
         }
 
         return $collection;

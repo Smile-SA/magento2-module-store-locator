@@ -14,9 +14,18 @@
 
 namespace Smile\StoreLocator\Controller\Adminhtml\Retailer;
 
+use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Result\PageFactory;
+use Magento\Ui\Component\MassAction\Filter;
+use Smile\Retailer\Api\Data\RetailerInterfaceFactory;
+use Smile\Retailer\Api\RetailerRepositoryInterface;
 use Smile\Retailer\Controller\Adminhtml\AbstractRetailer;
+use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory;
 use Smile\StoreLocator\Model\Retailer\OpeningHoursPostDataHandler;
 use Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursPostDataHandler;
 
@@ -32,33 +41,36 @@ class MassSaveHours extends AbstractRetailer
     /**
      * @var OpeningHoursPostDataHandler
      */
-    protected $openingHoursHandler;
+    protected OpeningHoursPostDataHandler $openingHoursHandler;
 
     /**
      * @var SpecialOpeningHoursPostDataHandler
      */
-    protected $specialOpeningHoursHandler;
+    protected SpecialOpeningHoursPostDataHandler $specialOpeningHoursHandler;
 
     /**
      * Abstract constructor.
      *
-     * @param \Magento\Backend\App\Action\Context                 $context                    Application context.
-     * @param \Magento\Framework\View\Result\PageFactory          $resultPageFactory          Result Page factory.
-     * @param \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory       Result forward factory.
-     * @param \Magento\Framework\Registry                         $coreRegistry               Application registry.
-     * @param \Smile\Retailer\Api\RetailerRepositoryInterface     $retailerRepository         Retailer Repository
-     * @param \Smile\Retailer\Api\Data\RetailerInterfaceFactory   $retailerFactory            Retailer Factory.
-     * @param OpeningHoursPostDataHandler                         $openingHoursHandler        Opening Hours Handler.
-     * @param SpecialOpeningHoursPostDataHandler                  $specialOpeningHoursHandler Special Opening Hours
-     *                                                                                        Handler.
+     * @param Context                               $context                    Application context.
+     * @param PageFactory                           $resultPageFactory          Result Page factory.
+     * @param ForwardFactory                        $resultForwardFactory       Result forward factory.
+     * @param Registry                              $coreRegistry               Application registry.
+     * @param RetailerRepositoryInterface           $retailerRepository         Retailer Repository
+     * @param RetailerInterfaceFactory              $retailerFactory            Retailer Factory.
+     * @param OpeningHoursPostDataHandler           $openingHoursHandler        Opening Hours Handler.
+     * @param SpecialOpeningHoursPostDataHandler    $specialOpeningHoursHandler Special Opening Hours Handler.
+     * @param Filter                                $filter                     Mass Action Filter.
+     * @param CollectionFactory                     $collectionFactory          Retailer collection for Mass Action.
      */
     public function __construct(
-        \Magento\Backend\App\Action\Context $context,
-        \Magento\Framework\View\Result\PageFactory $resultPageFactory,
-        \Magento\Framework\Controller\Result\ForwardFactory $resultForwardFactory,
-        \Magento\Framework\Registry $coreRegistry,
-        \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository,
-        \Smile\Retailer\Api\Data\RetailerInterfaceFactory $retailerFactory,
+        Context $context,
+        PageFactory $resultPageFactory,
+        ForwardFactory $resultForwardFactory,
+        Registry $coreRegistry,
+        RetailerRepositoryInterface $retailerRepository,
+        RetailerInterfaceFactory $retailerFactory,
+        Filter $filter,
+        CollectionFactory $collectionFactory,
         OpeningHoursPostDataHandler $openingHoursHandler,
         SpecialOpeningHoursPostDataHandler $specialOpeningHoursHandler
     ) {
@@ -71,17 +83,19 @@ class MassSaveHours extends AbstractRetailer
             $resultForwardFactory,
             $coreRegistry,
             $retailerRepository,
-            $retailerFactory
+            $retailerFactory,
+            $filter,
+            $collectionFactory
         );
     }
 
     /**
      * Execute action
      *
-     * @return \Magento\Backend\Model\View\Result\Redirect
-     * @throws \Magento\Framework\Exception\LocalizedException|\Exception
+     * @return Redirect
+     * @throws LocalizedException|\Exception
      */
-    public function execute()
+    public function execute(): Redirect
     {
         $retailerIds = json_decode($this->getRequest()->getParam('retailer_ids'));
         $data = [];
@@ -94,27 +108,34 @@ class MassSaveHours extends AbstractRetailer
             $data['special_opening_hours'] = $specialOpeningHoursPost;
         }
 
-        foreach ($retailerIds as $id) {
-            $model = $this->retailerRepository->get($id);
+        if (is_iterable($retailerIds)) {
+            foreach ($retailerIds as $id) {
+                $model = $this->retailerRepository->get($id);
 
-            $openingHours = $this->openingHoursHandler->getData($model, $data);
-            if (isset($openingHours['opening_hours'])) {
-                $model->setData('opening_hours', $openingHours['opening_hours']);
+                $openingHours = $this->openingHoursHandler->getData($model, $data);
+                if (isset($openingHours['opening_hours'])) {
+                    $model->setData('opening_hours', $openingHours['opening_hours']);
+                }
+
+                $specialOpeningHours = $this->specialOpeningHoursHandler->getData($model, $data);
+                if (isset($specialOpeningHours['special_opening_hours'])) {
+                    $model->setData('special_opening_hours', $specialOpeningHours['special_opening_hours']);
+                }
+
+                $this->retailerRepository->save($model);
             }
 
-            $specialOpeningHours = $this->specialOpeningHoursHandler->getData($model, $data);
-            if (isset($specialOpeningHours['special_opening_hours'])) {
-                $model->setData('special_opening_hours', $specialOpeningHours['special_opening_hours']);
-            }
-
-            $this->retailerRepository->save($model);
+            $this->messageManager->addSuccessMessage(
+                __('A total of %1 record(s) have been saved.', count($retailerIds))
+            );
+        }
+        if (!is_iterable($retailerIds)) {
+            $this->messageManager->addErrorMessage(
+                __('An Error occured, please retry.')
+            );
         }
 
-        $this->messageManager->addSuccessMessage(
-            __('A total of %1 record(s) have been saved.', count($retailerIds))
-        );
-
-        /** @var \Magento\Backend\Model\View\Result\Redirect $resultRedirect */
+        /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
 
         return $resultRedirect->setPath('smile_retailer/retailer/');

@@ -30,12 +30,12 @@ class UpgradeData implements UpgradeDataInterface
     /**
      * @var EavSetupFactory
      */
-    private $eavSetupFactory;
+    private EavSetupFactory $eavSetupFactory;
 
     /**
-     * @var \Smile\StoreLocator\Setup\StoreLocatorSetup
+     * @var StoreLocatorSetup
      */
-    private $storeLocatorSetup;
+    private StoreLocatorSetup $storeLocatorSetup;
 
     /**
      * Constructor.
@@ -43,8 +43,10 @@ class UpgradeData implements UpgradeDataInterface
      * @param EavSetupFactory          $eavSetupFactory          EAV Setup Factory.
      * @param StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
      */
-    public function __construct(EavSetupFactory $eavSetupFactory, StoreLocatorSetupFactory $storeLocatorSetupFactory)
-    {
+    public function __construct(
+        EavSetupFactory $eavSetupFactory,
+        StoreLocatorSetupFactory $storeLocatorSetupFactory
+    ) {
         $this->eavSetupFactory = $eavSetupFactory;
         $this->storeLocatorSetup = $storeLocatorSetupFactory->create();
     }
@@ -52,9 +54,9 @@ class UpgradeData implements UpgradeDataInterface
     /**
      * {@inheritdoc}
      * @throws LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws \Magento\Framework\Validator\ValidateException
      */
-    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context): void
     {
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);

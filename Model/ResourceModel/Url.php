@@ -13,6 +13,7 @@
 namespace Smile\StoreLocator\Model\ResourceModel;
 
 use Magento\Framework\DB\Select;
+use Smile\Seller\Model\ResourceModel\Seller;
 
 /**
  * Retailer URL resource model.
@@ -21,17 +22,17 @@ use Magento\Framework\DB\Select;
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class Url extends \Smile\Seller\Model\ResourceModel\Seller
+class Url extends Seller
 {
     /**
      * Check an URL key exists and returns the retailer id. False if no retailer found.
      *
-     * @param urlKey $urlKey  URL key.
-     * @param int    $storeId Store Id.
+     * @param ?string   $urlKey  URL key.
+     * @param ?int      $storeId Store Id.
      *
      * @return int|false
      */
-    public function checkIdentifier($urlKey, $storeId)
+    public function checkIdentifier(?string $urlKey, ?int $storeId): int|false
     {
         $urlKeyAttribute = $this->getAttribute('url_key');
         $select = $this->getConnection()->select();

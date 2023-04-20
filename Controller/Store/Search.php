@@ -15,6 +15,8 @@ namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\View\Result\PageFactory;
 use Smile\StoreLocator\Api\LocatorInterface;
 
@@ -31,25 +33,27 @@ class Search extends Action
     /**
      * Page factory.
      *
-     * @var \Magento\Framework\View\Result\PageFactory
+     * @var PageFactory
      */
-    protected $resultPageFactory;
+    protected PageFactory $resultPageFactory;
 
     /**
      * Store locator.
      *
-     * @var \Smile\StoreLocator\Api\LocatorInterface
+     * @var LocatorInterface
      */
-    protected $retailerLocator;
+    protected LocatorInterface $retailerLocator;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\App\Action\Context      $context     Application Context.
-     * @param \Magento\Framework\View\Result\PageFactory $pageFactory Result Page Factory.
+     * @param Context     $context     Application Context.
+     * @param PageFactory $pageFactory Result Page Factory.
      */
-    public function __construct(Context $context, PageFactory $pageFactory)
-    {
+    public function __construct(
+        Context $context,
+        PageFactory $pageFactory
+    ) {
         parent::__construct($context);
 
         $this->resultPageFactory = $pageFactory;
@@ -58,7 +62,7 @@ class Search extends Action
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): ResponseInterface|ResultInterface
     {
         return $this->resultPageFactory->create();
     }

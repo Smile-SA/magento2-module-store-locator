@@ -14,7 +14,7 @@ namespace Smile\StoreLocator\Model\Data;
 
 use Magento\Framework\DataObject;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
-use Zend\Stdlib\JsonSerializable;
+use \JsonSerializable;
 
 /**
  * Data Object for Time Slot entries.
@@ -28,7 +28,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     /**
      * {@inheritDoc}
      */
-    public function getStartTime()
+    public function getStartTime(): string
     {
         return $this->getData('start_time');
     }
@@ -36,7 +36,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     /**
      * {@inheritDoc}
      */
-    public function getEndTime()
+    public function getEndTime(): string
     {
         return $this->getData('end_time');
     }
@@ -44,7 +44,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     /**
      * {@inheritDoc}
      */
-    public function setStartTime($time)
+    public function setStartTime(string $time): mixed
     {
         $this->setData('start_time', $time);
 
@@ -54,7 +54,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     /**
      * {@inheritDoc}
      */
-    public function setEndTime($time)
+    public function setEndTime(string $time): mixed
     {
         $this->setData('end_time', $time);
 

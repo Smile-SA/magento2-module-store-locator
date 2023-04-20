@@ -12,7 +12,10 @@
  */
 namespace Smile\StoreLocator\Model\ResourceModel;
 
+use Magento\Framework\EntityManager\EntityManager;
+use Magento\Framework\EntityManager\MetadataPool;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
+use Magento\Framework\Model\ResourceModel\Db\Context;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 
 /**
@@ -25,27 +28,27 @@ use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 class RetailerAddress extends AbstractDb
 {
     /**
-     * @var \Magento\Framework\EntityManager\EntityManager
+     * @var EntityManager
      */
-    private $entityManager;
+    private EntityManager $entityManager;
 
     /**
-     * @var \Magento\Framework\EntityManager\MetadataPool
+     * @var MetadataPool
      */
-    private $metadataPool;
+    private MetadataPool $metadataPool;
 
     /**
      *
-     * @param \Magento\Framework\Model\ResourceModel\Db\Context $context        DB context.
-     * @param \Magento\Framework\EntityManager\EntityManager    $entityManager  Entity manager.
-     * @param \Magento\Framework\EntityManager\MetadataPool     $metadataPool   Entity metadata pool.
-     * @param string                                            $connectionName Connection name.
+     * @param Context           $context        DB context.
+     * @param EntityManager     $entityManager  Entity manager.
+     * @param MetadataPool      $metadataPool   Entity metadata pool.
+     * @param ?string           $connectionName Connection name.
      */
     public function __construct(
-        \Magento\Framework\Model\ResourceModel\Db\Context $context,
-        \Magento\Framework\EntityManager\EntityManager $entityManager,
-        \Magento\Framework\EntityManager\MetadataPool $metadataPool,
-        $connectionName = null
+        Context $context,
+        EntityManager $entityManager,
+        MetadataPool $metadataPool,
+        ?string $connectionName = null
     ) {
         $this->entityManager = $entityManager;
         $this->metadataPool  = $metadataPool;

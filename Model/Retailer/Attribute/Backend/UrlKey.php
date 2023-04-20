@@ -14,6 +14,7 @@ namespace Smile\StoreLocator\Model\Retailer\Attribute\Backend;
 
 use Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Smile\StoreLocator\Model\Url;
 
 /**
  * Retailer URL key backend model.
@@ -25,16 +26,16 @@ use Magento\Framework\Exception\CouldNotSaveException;
 class UrlKey extends AbstractBackend
 {
     /**
-     * @var \Smile\StoreLocator\Model\Url
+     * @var Url
      */
-    private $urlModel;
+    private Url $urlModel;
 
     /**
      * Constructor.
      *
-     * @param \Smile\StoreLocator\Model\Url $urlModel Retailer URL Model.
+     * @param Url $urlModel Retailer URL Model.
      */
-    public function __construct(\Smile\StoreLocator\Model\Url $urlModel)
+    public function __construct(Url $urlModel)
     {
         $this->urlModel = $urlModel;
     }
@@ -42,7 +43,7 @@ class UrlKey extends AbstractBackend
     /**
      * {@inheritDoc}
      */
-    public function beforeSave($object)
+    public function beforeSave($object): self
     {
         $urlKey = $this->urlModel->getUrlKey($object);
 
@@ -50,9 +51,10 @@ class UrlKey extends AbstractBackend
             $object->setUrlKey($urlKey);
         }
 
-        $retailerIdCheck = $this->urlModel->checkIdentifier($urlKey);
+        $objectId        = (int) $object->getId();
+        $retailerIdCheck = (int) $this->urlModel->checkIdentifier($urlKey);
 
-        if ($retailerIdCheck !== false && ($object->getId() !== $retailerIdCheck)) {
+        if ($retailerIdCheck !== false && ($objectId !== $retailerIdCheck)) {
             throw new CouldNotSaveException(__('Retailer url_key "%1" already exists.', $urlKey));
         }
 

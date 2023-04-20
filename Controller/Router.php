@@ -12,6 +12,14 @@
  */
 namespace Smile\StoreLocator\Controller;
 
+use Magento\Framework\App\ActionFactory;
+use Magento\Framework\App\ActionInterface;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\RouterInterface;
+use Magento\Framework\DataObject;
+use Magento\Framework\Event\ManagerInterface;
+use Smile\StoreLocator\Model\Url;
+
 /**
  * Store locator routing (handling rewritten URL).
  *
@@ -19,34 +27,34 @@ namespace Smile\StoreLocator\Controller;
  * @package  Smile\StoreLocator
  * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class Router implements \Magento\Framework\App\RouterInterface
+class Router implements RouterInterface
 {
     /**
-     * @var \Magento\Framework\App\ActionFactory
+     * @var ActionFactory
      */
-    private $actionFactory;
+    private ActionFactory $actionFactory;
 
     /**
-     * @var \Magento\Framework\Event\ManagerInterface
+     * @var ManagerInterface
      */
-    private $eventManager;
+    private ManagerInterface $eventManager;
 
     /**
-     * @var \Smile\StoreLocator\Model\Url
+     * @var Url
      */
-    private $urlModel;
+    private Url $urlModel;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\App\ActionFactory      $actionFactory Action factory.
-     * @param \Magento\Framework\Event\ManagerInterface $eventManager  Event manager.
-     * @param \Smile\StoreLocator\Model\Url             $urlModel      Retailer URL model.
+     * @param ActionFactory     $actionFactory Action factory.
+     * @param ManagerInterface  $eventManager  Event manager.
+     * @param Url               $urlModel      Retailer URL model.
      */
     public function __construct(
-        \Magento\Framework\App\ActionFactory $actionFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Smile\StoreLocator\Model\Url $urlModel
+        ActionFactory $actionFactory,
+        ManagerInterface $eventManager,
+        Url $urlModel
     ) {
         $this->actionFactory = $actionFactory;
         $this->eventManager  = $eventManager;
@@ -56,16 +64,16 @@ class Router implements \Magento\Framework\App\RouterInterface
     /**
      * Validate and Match Cms Page and modify request
      *
-     * @param \Magento\Framework\App\RequestInterface $request Request.
+     * @param RequestInterface $request Request.
      *
-     * @return NULL|\Magento\Framework\App\ActionInterface
+     * @return ActionInterface|null
      */
-    public function match(\Magento\Framework\App\RequestInterface $request)
+    public function match(RequestInterface $request): ActionInterface|null
     {
         $action = null;
 
         $requestPath = trim($request->getPathInfo(), '/');
-        $condition  = new \Magento\Framework\DataObject(['identifier' => $requestPath]);
+        $condition   = new DataObject(['identifier' => $requestPath]);
 
         if ($this->matchStoreLocatorHome($requestPath)) {
             $this->eventManager->dispatch(
@@ -102,9 +110,9 @@ class Router implements \Magento\Framework\App\RouterInterface
      *
      * @param string $requestPath Request path.
      *
-     * @return boolean
+     * @return bool
      */
-    private function matchStoreLocatorHome($requestPath)
+    private function matchStoreLocatorHome(string $requestPath): bool
     {
         return $this->urlModel->getRequestPathPrefix() == $requestPath;
     }
@@ -116,7 +124,7 @@ class Router implements \Magento\Framework\App\RouterInterface
      *
      * @return int|false
      */
-    private function matchRetailer($requestPath)
+    private function matchRetailer(string $requestPath): int|false
     {
         $retailerId       = false;
         $requestPathArray = explode('/', $requestPath);

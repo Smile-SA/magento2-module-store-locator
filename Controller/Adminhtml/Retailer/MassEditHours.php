@@ -14,8 +14,11 @@
 
 namespace Smile\StoreLocator\Controller\Adminhtml\Retailer;
 
+use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Backend\App\Action\Context;
+use Magento\Framework\Controller\ResultInterface;
 use Smile\Retailer\Controller\Adminhtml\AbstractRetailer;
 
 /**
@@ -30,12 +33,12 @@ class MassEditHours extends AbstractRetailer
     /**
      * {@inheritdoc}
      */
-    public function execute()
+    public function execute(): ResponseInterface|ResultInterface
     {
-        /** @var \Magento\Backend\Model\View\Result\Page $resultPage */
+        /** @var Page $resultPage */
         $resultPage = $this->resultPageFactory->create();
 
-        $retailerIds = $this->getRequest()->getParam('selected', false);
+        $retailerIds = $this->getAllSelectedIds();
         $this->coreRegistry->register('retailer_ids', $retailerIds);
 
         $resultPage->getConfig()->getTitle()->prepend(__('Edit retailers informations'));

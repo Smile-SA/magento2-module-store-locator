@@ -30,17 +30,17 @@ class AddressSaveHandler implements ExtensionInterface
     /**
      * @var ModelFactory
      */
-    private $modelFactory;
+    private ModelFactory $modelFactory;
 
     /**
      * @var ResourceModel
      */
-    private $resource;
+    private ResourceModel $resource;
 
     /**
      * @var Converter
      */
-    private $converter;
+    private Converter $converter;
 
     /**
      * Constructor.
@@ -49,8 +49,11 @@ class AddressSaveHandler implements ExtensionInterface
      * @param ResourceModel $resource     Resource model.
      * @param Converter     $converter    Entity / Model converter.
      */
-    public function __construct(ModelFactory $modelFactory, ResourceModel $resource, Converter $converter)
-    {
+    public function __construct(
+        ModelFactory $modelFactory,
+        ResourceModel $resource,
+        Converter $converter
+    ) {
         $this->modelFactory = $modelFactory;
         $this->resource     = $resource;
         $this->converter    = $converter;
@@ -59,7 +62,7 @@ class AddressSaveHandler implements ExtensionInterface
     /**
      * {@inheritDoc}
      */
-    public function execute($entity, $arguments = [])
+    public function execute($entity, $arguments = []): bool|object
     {
         $addressEntity = $entity->getAddress();
         $addressEntity->setRetailerId($entity->getId());

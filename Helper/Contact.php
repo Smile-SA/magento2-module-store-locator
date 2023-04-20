@@ -31,7 +31,7 @@ class Contact extends AbstractHelper
      *
      * @return bool
      */
-    public function hasContactInformation($retailer)
+    public function hasContactInformation($retailer): bool
     {
         return (($retailer->getCustomAttribute('contact_mail')
                 && $retailer->getCustomAttribute('contact_mail')->getValue())
@@ -49,7 +49,7 @@ class Contact extends AbstractHelper
      *
      * @return bool
      */
-    public function canDisplayContactForm($retailer)
+    public function canDisplayContactForm(RetailerInterface $retailer): bool
     {
         return true === (bool) $retailer->getCustomAttribute('show_contact_form')->getValue();
     }
@@ -61,7 +61,7 @@ class Contact extends AbstractHelper
      *
      * @return string
      */
-    public function getContactFormUrl($retailer)
+    public function getContactFormUrl(RetailerInterface $retailer): string
     {
         return $this->_getUrl('storelocator/store/contact', ['id' => $retailer->getId(), '_secure' => true]);
     }

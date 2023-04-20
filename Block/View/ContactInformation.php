@@ -14,6 +14,7 @@ namespace Smile\StoreLocator\Block\View;
 
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\Template\Context;
+use Smile\StoreLocator\Block\AbstractView;
 use Smile\StoreLocator\Helper\Contact;
 
 /**
@@ -23,23 +24,27 @@ use Smile\StoreLocator\Helper\Contact;
  * @package  Smile\StoreLocator
  * @author   Romain Ruaud <romain.ruaud@smile.fr>
  */
-class ContactInformation extends \Smile\StoreLocator\Block\AbstractView
+class ContactInformation extends AbstractView
 {
     /**
-     * @var \Smile\StoreLocator\Helper\Contact
+     * @var Contact
      */
-    private $contactHelper;
+    private Contact $contactHelper;
 
     /**
      * ContactInformation constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context $context       Application Context
-     * @param \Magento\Framework\Registry                      $coreRegistry  Core Registry
-     * @param \Smile\StoreLocator\Helper\Contact               $contactHelper Contact Helper
-     * @param array                                            $data          Block data
+     * @param Context  $context       Application Context
+     * @param Registry $coreRegistry  Core Registry
+     * @param Contact  $contactHelper Contact Helper
+     * @param array    $data          Block data
      */
-    public function __construct(Context $context, Registry $coreRegistry, Contact $contactHelper, array $data)
-    {
+    public function __construct(
+        Context $context,
+        Registry $coreRegistry,
+        Contact $contactHelper,
+        array $data
+    ) {
         $this->contactHelper = $contactHelper;
         parent::__construct($context, $coreRegistry, $data);
     }
@@ -49,7 +54,7 @@ class ContactInformation extends \Smile\StoreLocator\Block\AbstractView
      *
      * @return bool
      */
-    public function hasContactInformation()
+    public function hasContactInformation(): bool
     {
         return $this->contactHelper->hasContactInformation($this->getRetailer());
     }
@@ -59,7 +64,7 @@ class ContactInformation extends \Smile\StoreLocator\Block\AbstractView
      *
      * @return bool
      */
-    public function showContactForm()
+    public function showContactForm(): bool
     {
         return $this->contactHelper->canDisplayContactForm($this->getRetailer());
     }
@@ -69,7 +74,7 @@ class ContactInformation extends \Smile\StoreLocator\Block\AbstractView
      *
      * @return string
      */
-    public function getContactFormUrl()
+    public function getContactFormUrl(): string
     {
         return $this->contactHelper->getContactFormUrl($this->getRetailer());
     }

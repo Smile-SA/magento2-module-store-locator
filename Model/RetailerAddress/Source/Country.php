@@ -33,7 +33,7 @@ class Country extends Table
      *
      * @var CountryCollectionFactory
      */
-    protected $countriesFactory;
+    protected CountryCollectionFactory $countriesFactory;
 
     /**
      * Constructor.
@@ -54,7 +54,7 @@ class Country extends Table
     /**
      * {@inheritdoc}
      */
-    public function getAllOptions($withEmpty = true, $defaultValues = false)
+    public function getAllOptions($withEmpty = true, $defaultValues = false): array
     {
         if ($this->_options === null) {
             $this->_options = $this->countriesFactory->create()

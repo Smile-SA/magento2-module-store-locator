@@ -14,7 +14,9 @@ namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Controller\ResultInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
@@ -35,31 +37,31 @@ class Contact extends Action
      *
      * @var PageFactory
      */
-    private $resultPageFactory;
+    private  $resultPageFactory;
 
     /**
      * Forward factory.
      *
      * @var ForwardFactory
      */
-    private $resultForwardFactory;
+    private ForwardFactory $resultForwardFactory;
 
     /**
      * Core registry.
      *
      * @var Registry
      */
-    private $coreRegistry;
+    private Registry $coreRegistry;
 
     /**
      * @var RetailerRepositoryInterface
      */
-    private $retailerRepository;
+    private RetailerRepositoryInterface $retailerRepository;
 
     /**
-     * @var \Smile\StoreLocator\Helper\Contact
+     * @var ContactHelper
      */
-    private $contactHelper;
+    private ContactHelper $contactHelper;
 
     /**
      * Constructor.
@@ -93,9 +95,9 @@ class Contact extends Action
      *
      * @throws \Magento\Framework\Exception\NotFoundException
      *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
+     * @return ResultInterface|ResponseInterface
      */
-    public function execute()
+    public function execute(): ResultInterface|ResponseInterface
     {
         $retailerId = $this->getRequest()->getParam('id');
         $retailer   = $this->retailerRepository->get($retailerId);

@@ -12,6 +12,10 @@
  */
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer;
 
+use Magento\Backend\Block\Context;
+use Magento\Framework\Data\Form;
+use Magento\Framework\Data\FormFactory;
+use Magento\Framework\Registry;
 use Magento\Framework\Stdlib\DateTime;
 use Smile\Retailer\Api\Data\RetailerInterface;
 
@@ -25,27 +29,27 @@ use Smile\Retailer\Api\Data\RetailerInterface;
 class OpeningHours extends \Magento\Backend\Block\AbstractBlock
 {
     /**
-     * @var \Magento\Framework\Data\FormFactory
+     * @var FormFactory
      */
-    private $formFactory;
+    private FormFactory $formFactory;
 
     /**
-     * @var \Magento\Framework\Registry
+     * @var Registry
      */
-    private $registry;
+    private Registry $registry;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Backend\Block\Context      $context     Block context.
-     * @param \Magento\Framework\Data\FormFactory $formFactory Form factory.
-     * @param \Magento\Framework\Registry         $registry    Registry.
-     * @param array                               $data        Additional data.
+     * @param Context       $context     Block context.
+     * @param FormFactory   $formFactory Form factory.
+     * @param Registry      $registry    Registry.
+     * @param array         $data        Additional data.
      */
     public function __construct(
-        \Magento\Backend\Block\Context $context,
-        \Magento\Framework\Data\FormFactory $formFactory,
-        \Magento\Framework\Registry $registry,
+        Context $context,
+        FormFactory $formFactory,
+        Registry $registry,
         array $data = []
     ) {
         $this->formFactory = $formFactory;
@@ -57,7 +61,7 @@ class OpeningHours extends \Magento\Backend\Block\AbstractBlock
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      * {@inheritDoc}
      */
-    protected function _toHtml()
+    protected function _toHtml(): string
     {
         return $this->escapeJsQuote($this->getForm()->toHtml());
     }
@@ -65,9 +69,9 @@ class OpeningHours extends \Magento\Backend\Block\AbstractBlock
     /**
      * Get retailer
      *
-     * @return RetailerInterface
+     * @return ?RetailerInterface
      */
-    private function getRetailer()
+    private function getRetailer(): ?RetailerInterface
     {
         return $this->registry->registry('current_seller');
     }
@@ -75,9 +79,9 @@ class OpeningHours extends \Magento\Backend\Block\AbstractBlock
     /**
      * Create the form containing the virtual rule field.
      *
-     * @return \Magento\Framework\Data\Form
+     * @return Form
      */
-    private function getForm()
+    private function getForm(): Form
     {
         $form = $this->formFactory->create();
         $form->setHtmlId('opening_hours');

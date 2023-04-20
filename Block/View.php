@@ -13,6 +13,11 @@
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\AbstractBlock;
+use Magento\Framework\View\Element\BlockInterface;
+use Magento\Framework\View\Element\Template\Context;
+use Smile\StoreLocator\Helper\Data;
 
 /**
  * Retailer View Block
@@ -24,22 +29,22 @@ use Magento\Framework\DataObject\IdentityInterface;
 class View extends AbstractView implements IdentityInterface
 {
     /**
-     * @var \Smile\StoreLocator\Helper\Data
+     * @var Data
      */
-    private $storeLocatorHelper;
+    private Data $storeLocatorHelper;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\View\Element\Template\Context $context            Application context.
-     * @param \Magento\Framework\Registry                      $coreRegistry       Application registry.
-     * @param \Smile\StoreLocator\Helper\Data                  $storeLocatorHelper Store locator helper.
-     * @param array                                            $data               Block Data.
+     * @param Context   $context            Application context.
+     * @param Registry  $coreRegistry       Application registry.
+     * @param Data      $storeLocatorHelper Store locator helper.
+     * @param array     $data               Block Data.
      */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $coreRegistry,
-        \Smile\StoreLocator\Helper\Data $storeLocatorHelper,
+        Context $context,
+        Registry $coreRegistry,
+        Data $storeLocatorHelper,
         array $data = []
     ) {
         parent::__construct($context, $coreRegistry, $data);
@@ -51,7 +56,7 @@ class View extends AbstractView implements IdentityInterface
      *
      * @return string[]
      */
-    public function getIdentities()
+    public function getIdentities(): array
     {
         $identities = [];
         if ($this->getRetailer()) {
@@ -65,7 +70,7 @@ class View extends AbstractView implements IdentityInterface
      * @SuppressWarnings(PHPMD.CamelCaseMethodName)
      * {@inheritdoc}
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): AbstractBlock
     {
         parent::_prepareLayout();
 
@@ -81,12 +86,13 @@ class View extends AbstractView implements IdentityInterface
     /**
      * Set the current page title.
      *
-     * @return \Smile\StoreLocator\Block\View
+     * @return $this
      */
-    private function setPageTitle()
+    private function setPageTitle(): self
     {
         $retailer = $this->getRetailer();
 
+        /** @var BlockInterface $titleBlock */
         $titleBlock = $this->getLayout()->getBlock('page.main.title');
 
         if ($titleBlock) {
@@ -106,9 +112,9 @@ class View extends AbstractView implements IdentityInterface
     /**
      * Set the current page meta attributes (keywords, description).
      *
-     * @return \Smile\StoreLocator\Block\View
+     * @return $this
      */
-    private function setPageMeta()
+    private function setPageMeta(): self
     {
         $retailer = $this->getRetailer();
 
@@ -129,9 +135,9 @@ class View extends AbstractView implements IdentityInterface
     /**
      * Build breadcrumbs for the current page.
      *
-     * @return \Smile\StoreLocator\Block\View
+     * @return $this
      */
-    private function setBreadcrumbs()
+    private function setBreadcrumbs(): self
     {
         if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
             $retailer            = $this->getRetailer();

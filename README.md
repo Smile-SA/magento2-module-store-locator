@@ -6,8 +6,8 @@ This module adds a store locator to the website. You can search a retailer on ma
 
 The module requires :
 
-- [Retailer](https://github.com/Smile-SA/magento2-module-retailer) > 1.2.*
-- [Map](https://github.com/Smile-SA/magento2-module-map) > 2.0.*
+- [Retailer](https://github.com/Smile-SA/magento2-module-retailer) > 2.0.*
+- [Map](https://github.com/Smile-SA/magento2-module-map) > 2.1.*
 
 ### How to use
 

@@ -12,7 +12,12 @@
  */
 namespace Smile\StoreLocator\Model;
 
+use Magento\Framework\Data\Collection\AbstractDb;
 use Magento\Framework\Model\AbstractModel;
+use Magento\Framework\Model\Context;
+use Magento\Framework\Model\ResourceModel\AbstractResource;
+use Magento\Framework\Registry;
+use Smile\Map\Api\Data\GeoPointInterfaceFactory;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\Map\Api\Data\GeoPointInterface;
 
@@ -26,26 +31,26 @@ use Smile\Map\Api\Data\GeoPointInterface;
 class RetailerAddress extends AbstractModel
 {
     /**
-     * @var \Smile\Map\Api\Data\GeoPointInterfaceFactory
+     * @var GeoPointInterfaceFactory
      */
-    private $geoPointFactory;
+    private GeoPointInterfaceFactory $geoPointFactory;
 
     /**
      * Constructor.
      *
-     * @param \Magento\Framework\Model\Context                        $context            Context.
-     * @param \Magento\Framework\Registry                             $registry           Registry.
-     * @param \Smile\Map\Api\Data\GeoPointInterfaceFactory            $geoPointFactory    Geo point factory.
-     * @param \Magento\Framework\Model\ResourceModel\AbstractResource $resource           Resource.
-     * @param \Magento\Framework\Data\Collection\AbstractDb           $resourceCollection Collection resource.
-     * @param array                                                   $data               Additional data.
+     * @param Context                   $context            Context.
+     * @param Registry                  $registry           Registry.
+     * @param GeoPointInterfaceFactory  $geoPointFactory    Geo point factory.
+     * @param ?AbstractResource         $resource           Resource.
+     * @param ?AbstractDb               $resourceCollection Collection resource.
+     * @param array                     $data               Additional data.
      */
     public function __construct(
-        \Magento\Framework\Model\Context $context,
-        \Magento\Framework\Registry $registry,
-        \Smile\Map\Api\Data\GeoPointInterfaceFactory $geoPointFactory,
-        \Magento\Framework\Model\ResourceModel\AbstractResource $resource = null,
-        \Magento\Framework\Data\Collection\AbstractDb $resourceCollection = null,
+        Context $context,
+        Registry $registry,
+        GeoPointInterfaceFactory $geoPointFactory,
+        AbstractResource $resource = null,
+        AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
@@ -60,7 +65,7 @@ class RetailerAddress extends AbstractModel
     /**
      * {@inheritDoc}
      */
-    public function getId()
+    public function getId(): mixed
     {
         return $this->getData(RetailerAddressInterface::ADDRESS_ID);
     }
@@ -70,7 +75,7 @@ class RetailerAddress extends AbstractModel
      *
      * @return string[]
      */
-    public function getStreet()
+    public function getStreet(): array
     {
         return explode(self::STREET_SEPARATOR, $this->getData(RetailerAddressInterface::STREET));
     }
@@ -80,7 +85,7 @@ class RetailerAddress extends AbstractModel
      *
      * @return GeoPointInterface
      */
-    public function getCoordinates()
+    public function getCoordinates(): GeoPointInterface
     {
         $coords = null;
         if ($this->hasLatitude() && $this->hasLongitude()) {
@@ -99,7 +104,7 @@ class RetailerAddress extends AbstractModel
      *
      * {@inheritDoc}
      */
-    public function setId($id)
+    public function setId($id): AbstractModel
     {
         return $this->setData(RetailerAddressInterface::ADDRESS_ID, $id);
     }
@@ -109,9 +114,9 @@ class RetailerAddress extends AbstractModel
      *
      * @param string[]|string $street Street.
      *
-     * @return \Smile\StoreLocator\Model\RetailerAddress
+     * @return RetailerAddress
      */
-    public function setStreet($street)
+    public function setStreet(array|string $street): RetailerAddress
     {
         if (is_array($street)) {
             $street = implode(self::STREET_SEPARATOR, $street);
@@ -127,7 +132,7 @@ class RetailerAddress extends AbstractModel
      *
      * @return $this
      */
-    public function setCoordinates(GeoPointInterface $coordinates)
+    public function setCoordinates(GeoPointInterface $coordinates): self
     {
         $latitude  = $coordinates->getLatitude();
         $longitude = $coordinates->getLongitude();
@@ -140,7 +145,7 @@ class RetailerAddress extends AbstractModel
      *
      * {@inheritDoc}
      */
-    protected function _construct()
+    protected function _construct(): void
     {
         $this->_init('Smile\StoreLocator\Model\ResourceModel\RetailerAddress');
     }

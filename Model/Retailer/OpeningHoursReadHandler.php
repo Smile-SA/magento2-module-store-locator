@@ -28,14 +28,14 @@ use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 class OpeningHoursReadHandler implements ExtensionInterface
 {
     /**
-     * @var \Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot
+     * @var TimeSlotResource
      */
-    private $resource;
+    private TimeSlotResource $resource;
 
     /**
-     * @var \Smile\StoreLocator\Model\Data\RetailerTimeSlotConverter
+     * @var RetailerTimeSlotConverter
      */
-    private $converter;
+    private RetailerTimeSlotConverter $converter;
 
     /**
      * OpeningHoursSaveHandler constructor.
@@ -43,16 +43,21 @@ class OpeningHoursReadHandler implements ExtensionInterface
      * @param RetailerTimeSlotConverter $converter Time Slot Factory
      * @param TimeSlotResource          $resource  Resource Model
      */
-    public function __construct(RetailerTimeSlotConverter $converter, TimeSlotResource $resource)
-    {
+    public function __construct(
+        RetailerTimeSlotConverter $converter,
+        TimeSlotResource $resource
+    ) {
         $this->converter = $converter;
         $this->resource  = $resource;
     }
 
     /**
-     * {@inheritDoc}
+     * @param object $entity
+     * @param array $arguments
+     * @return bool|object
+     * @throws \Magento\Framework\Exception\LocalizedException
      */
-    public function execute($entity, $arguments = [])
+    public function execute($entity, $arguments = []): bool|object
     {
         $timeSlots = $this->resource->getTimeSlots($entity->getId(), 'opening_hours');
 

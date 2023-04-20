@@ -29,12 +29,12 @@ class RetailerAddressConverter
     /**
      *@var EntityFactory
      */
-    private $entityFactory;
+    private EntityFactory $entityFactory;
 
     /**
      * @var ModelFactory
      */
-    private $modelFactory;
+    private ModelFactory $modelFactory;
 
     /**
      * @var string[]
@@ -66,11 +66,11 @@ class RetailerAddressConverter
     /**
      * Convert the entity to a new model object.
      *
-     * @param \Smile\StoreLocator\Api\Data\RetailerAddressInterface $entity Entity.
+     * @param RetailerAddressInterface $entity Entity.
      *
      * @return \Smile\StoreLocator\Model\RetailerAddress
      */
-    public function toModel(\Smile\StoreLocator\Api\Data\RetailerAddressInterface $entity)
+    public function toModel(RetailerAddressInterface $entity): \Smile\StoreLocator\Model\RetailerAddress
     {
         return $this->convert($this->modelFactory, $entity);
     }
@@ -80,9 +80,9 @@ class RetailerAddressConverter
      *
      * @param \Smile\StoreLocator\Model\RetailerAddress $model Model.
      *
-     * @return \Smile\StoreLocator\Api\Data\RetailerAddressInterface
+     * @return RetailerAddressInterface
      */
-    public function toEntity(\Smile\StoreLocator\Model\RetailerAddress $model)
+    public function toEntity(\Smile\StoreLocator\Model\RetailerAddress $model): RetailerAddressInterface
     {
         return $this->convert($this->entityFactory, $model);
     }
@@ -95,7 +95,7 @@ class RetailerAddressConverter
      *
      * @return mixed
      */
-    private function convert($factory, $source)
+    private function convert(mixed $factory, mixed $source): mixed
     {
         $target = $factory->create();
         $target = $this->copyFields($source, $target);
@@ -113,7 +113,7 @@ class RetailerAddressConverter
      *
      * @return mixed
      */
-    private function copyFields($source, $target)
+    private function copyFields(mixed $source, mixed $target): mixed
     {
         $sourceValues        = $this->extractValues($source);
         $targetObjectMethods = get_class_methods(get_class($target));
@@ -139,7 +139,7 @@ class RetailerAddressConverter
      *
      * @return mixed[]
      */
-    private function extractValues($source)
+    private function extractValues(mixed $source): array
     {
         $values = [];
 

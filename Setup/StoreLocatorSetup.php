@@ -41,7 +41,7 @@ class StoreLocatorSetup
      *
      * @return StoreLocatorSetup
      */
-    public function createRetailerAddressTable(SchemaSetupInterface $setup)
+    public function createRetailerAddressTable(SchemaSetupInterface $setup): StoreLocatorSetup
     {
         $table = $setup->getConnection()
             ->newTable($setup->getTable('smile_retailer_address'))
@@ -193,7 +193,7 @@ class StoreLocatorSetup
      *
      * @return $this
      */
-    public function updateDecimalDegreesColumns(SchemaSetupInterface $setup)
+    public function updateDecimalDegreesColumns(SchemaSetupInterface $setup): self
     {
         $setup->getConnection()->modifyColumn(
             $setup->getTable('smile_retailer_address'),
@@ -223,7 +223,7 @@ class StoreLocatorSetup
      * @throws \Zend_Db_Exception
      * @param  SchemaSetupInterface $setup Setup instance
      */
-    public function createOpeningHoursTable(SchemaSetupInterface $setup)
+    public function createOpeningHoursTable(SchemaSetupInterface $setup): void
     {
         $table = $setup->getConnection()
             ->newTable($setup->getTable("smile_retailer_time_slots"))
@@ -299,9 +299,9 @@ class StoreLocatorSetup
      * @param EavSetup $eavSetup EAV module Setup
      *
      * @throws LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws \Magento\Framework\Validator\ValidateException
      */
-    public function addUrlKeyAttribute(EavSetup $eavSetup)
+    public function addUrlKeyAttribute(EavSetup $eavSetup): void
     {
         $entityId  = SellerInterface::ENTITY;
         $attrSetId = RetailerInterface::ATTRIBUTE_SET_RETAILER;
@@ -331,9 +331,9 @@ class StoreLocatorSetup
      * @param EavSetup $eavSetup EAV module Setup
      *
      * @throws LocalizedException
-     * @throws \Zend_Validate_Exception
+     * @throws \Magento\Framework\Validator\ValidateException
      */
-    public function addContactInformation(EavSetup $eavSetup)
+    public function addContactInformation(EavSetup $eavSetup): void
     {
         $entityId  = SellerInterface::ENTITY;
         $attrSetId = RetailerInterface::ATTRIBUTE_SET_RETAILER;
@@ -410,7 +410,7 @@ class StoreLocatorSetup
      *
      * @param EavSetup $eavSetup EAV module Setup
      */
-    public function setContactFormRequired(EavSetup $eavSetup)
+    public function setContactFormRequired(EavSetup $eavSetup): void
     {
         $eavSetup->updateAttribute(
             SellerInterface::ENTITY,
@@ -424,9 +424,9 @@ class StoreLocatorSetup
     /**
      * Add image attribute to Retailers
      *
-     * @param \Magento\Eav\Setup\EavSetup $eavSetup EAV module Setup
+     * @param EavSetup $eavSetup EAV module Setup
      */
-    public function addImage($eavSetup)
+    public function addImage(EavSetup $eavSetup): void
     {
         $entityId  = SellerInterface::ENTITY;
         $attrSetId = RetailerInterface::ATTRIBUTE_SET_RETAILER;
