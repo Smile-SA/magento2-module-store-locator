@@ -14,8 +14,8 @@
         "magento/framework": ">=103.0.4",
         "magento/module-store": "*",
         "magento/module-contact": "*",
-        "smile/module-map": "~2.1",
-        "smile/module-retailer": "~2.0.0",
+        "smile/module-map": "dev-fix-compatibility-2-4-6",
+        "smile/module-retailer": "dev-fix-compatibility-2-4-6",
         "willdurand/geocoder": "^3.3 || ^4.4"
     },
     "require-dev": {
