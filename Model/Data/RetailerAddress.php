@@ -1,15 +1,5 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Model\Data;
 
 use Smile\Map\Model\GeolocalizedAddress;
@@ -17,15 +7,11 @@ use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 
 /**
  * Retailer address default implementation.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInterface
 {
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function getId(): int
     {
@@ -33,7 +19,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function getRetailerId(): int
     {
@@ -41,9 +27,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
     }
 
     /**
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     *
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function setId(mixed $id): self
     {
@@ -51,7 +35,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function setRetailerId(string|int $retailerId): self
     {

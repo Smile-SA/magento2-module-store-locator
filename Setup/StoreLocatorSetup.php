@@ -1,45 +1,27 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Setup;
 
-use Magento\Framework\DB\Ddl\Table;
-use Magento\Framework\DB\Adapter\AdapterInterface;
-use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Catalog\Model\Category\Attribute\Backend\Image;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Boolean;
 use Magento\Eav\Setup\EavSetup;
-
+use Magento\Framework\DB\Adapter\AdapterInterface;
+use Magento\Framework\DB\Ddl\Table;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Setup\SchemaSetupInterface;
+use Magento\Framework\Validator\ValidateException;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Seller\Api\Data\SellerInterface;
 use Smile\StoreLocator\Model\Retailer\Attribute\Backend\UrlKey;
+use Zend_Db_Exception;
 
-/**
- * StoreLocator setup class
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
- */
 class StoreLocatorSetup
 {
     /**
      * Create the retailer address table.
      *
-     * @param SchemaSetupInterface $setup Schema setup.
-     * @throws \Zend_Db_Exception
-     *
-     * @return StoreLocatorSetup
+     * @throws Zend_Db_Exception
      */
     public function createRetailerAddressTable(SchemaSetupInterface $setup): StoreLocatorSetup
     {
@@ -53,7 +35,7 @@ class StoreLocatorSetup
                     'identity' => true,
                     'unsigned' => true,
                     'nullable' => false,
-                    'primary' => true
+                    'primary' => true,
                 ],
                 'Address ID'
             )
@@ -63,7 +45,7 @@ class StoreLocatorSetup
                 null,
                 [
                     'unsigned' => true,
-                    'nullable' => false
+                    'nullable' => false,
                 ],
                 'Retailer Id'
             )
@@ -73,7 +55,7 @@ class StoreLocatorSetup
                 null,
                 [
                     'nullable' => false,
-                    'default' => Table::TIMESTAMP_INIT
+                    'default' => Table::TIMESTAMP_INIT,
                 ],
                 'Created At'
             )
@@ -83,7 +65,7 @@ class StoreLocatorSetup
                 null,
                 [
                     'nullable' => false,
-                    'default' => Table::TIMESTAMP_INIT_UPDATE
+                    'default' => Table::TIMESTAMP_INIT_UPDATE,
                 ],
                 'Updated At'
             )
@@ -92,7 +74,7 @@ class StoreLocatorSetup
                 Table::TYPE_TEXT,
                 null,
                 [
-                    'nullable' => false
+                    'nullable' => false,
                 ],
                 'Street Address'
             )
@@ -102,7 +84,7 @@ class StoreLocatorSetup
                 255,
                 [
                     'nullable' => true,
-                    'default' => null
+                    'default' => null,
                 ],
                 'Zip/Postal Code'
             )
@@ -111,7 +93,7 @@ class StoreLocatorSetup
                 Table::TYPE_TEXT,
                 255,
                 [
-                    'nullable' => false
+                    'nullable' => false,
                 ],
                 'City'
             )
@@ -121,7 +103,7 @@ class StoreLocatorSetup
                 255,
                 [
                     'nullable' => true,
-                    'default' => null
+                    'default' => null,
                 ],
                 'State/Province'
             )
@@ -132,7 +114,7 @@ class StoreLocatorSetup
                 [
                     'unsigned' => true,
                     'nullable' => true,
-                    'default' => null
+                    'default' => null,
                 ],
                 'State/Province'
             )
@@ -141,7 +123,7 @@ class StoreLocatorSetup
                 Table::TYPE_TEXT,
                 255,
                 [
-                    'nullable' => false
+                    'nullable' => false,
                 ],
                 'Country'
             )
@@ -150,7 +132,7 @@ class StoreLocatorSetup
                 Table::TYPE_FLOAT,
                 null,
                 [
-                    'nullable' => false
+                    'nullable' => false,
                 ],
                 'Latitude'
             )
@@ -159,7 +141,7 @@ class StoreLocatorSetup
                 Table::TYPE_FLOAT,
                 null,
                 [
-                    'nullable' => false
+                    'nullable' => false,
                 ],
                 'Longitude'
             )
@@ -188,10 +170,6 @@ class StoreLocatorSetup
 
     /**
      * Update latitude and longitude column type.
-     *
-     * @param SchemaSetupInterface $setup Schema setup.
-     *
-     * @return $this
      */
     public function updateDecimalDegreesColumns(SchemaSetupInterface $setup): self
     {
@@ -218,10 +196,9 @@ class StoreLocatorSetup
     }
 
     /**
-     * Create Opening Hours main table
+     * Create Opening Hours main table.
      *
-     * @throws \Zend_Db_Exception
-     * @param  SchemaSetupInterface $setup Setup instance
+     * @throws Zend_Db_Exception
      */
     public function createOpeningHoursTable(SchemaSetupInterface $setup): void
     {
@@ -261,7 +238,7 @@ class StoreLocatorSetup
                 null,
                 [
                     'nullable' => true,
-                    'default' => null
+                    'default' => null,
                 ],
                 'Start Time'
             )->addColumn(
@@ -274,7 +251,7 @@ class StoreLocatorSetup
                 null,
                 [
                     'nullable' => true,
-                    'default' => null
+                    'default' => null,
                 ],
                 'End Time'
             )->addForeignKey(
@@ -294,31 +271,29 @@ class StoreLocatorSetup
     }
 
     /**
-     * Add 'url_key' attribute to Retailers
-     *
-     * @param EavSetup $eavSetup EAV module Setup
+     * Add 'url_key' attribute to Retailers.
      *
      * @throws LocalizedException
-     * @throws \Magento\Framework\Validator\ValidateException
+     * @throws ValidateException
      */
     public function addUrlKeyAttribute(EavSetup $eavSetup): void
     {
-        $entityId  = SellerInterface::ENTITY;
+        $entityId = SellerInterface::ENTITY;
         $attrSetId = RetailerInterface::ATTRIBUTE_SET_RETAILER;
-        $groupId   = 'general';
+        $groupId = 'general';
 
         $eavSetup->addAttribute(
             SellerInterface::ENTITY,
             'url_key',
             [
-                'type'         => 'varchar',
-                'label'        => 'URL Key',
-                'input'        => 'text',
-                'required'     => false,
+                'type' => 'varchar',
+                'label' => 'URL Key',
+                'input' => 'text',
+                'required' => false,
                 'user_defined' => true,
-                'sort_order'   => 3,
-                'global'       => ScopedAttributeInterface::SCOPE_STORE,
-                'backend'      => UrlKey::class,
+                'sort_order' => 3,
+                'global' => ScopedAttributeInterface::SCOPE_STORE,
+                'backend' => UrlKey::class,
             ]
         );
 
@@ -326,18 +301,16 @@ class StoreLocatorSetup
     }
 
     /**
-     * Add contact information (phone, mail, etc..) attribute to Retailers
-     *
-     * @param EavSetup $eavSetup EAV module Setup
+     * Add contact information (phone, mail, etc..) attribute to Retailers.
      *
      * @throws LocalizedException
-     * @throws \Magento\Framework\Validator\ValidateException
+     * @throws ValidateException
      */
     public function addContactInformation(EavSetup $eavSetup): void
     {
-        $entityId  = SellerInterface::ENTITY;
+        $entityId = SellerInterface::ENTITY;
         $attrSetId = RetailerInterface::ATTRIBUTE_SET_RETAILER;
-        $groupId   = 'Contact';
+        $groupId = 'Contact';
 
         $eavSetup->addAttributeGroup($entityId, $attrSetId, $groupId, 150);
 
@@ -345,13 +318,13 @@ class StoreLocatorSetup
             SellerInterface::ENTITY,
             'contact_phone',
             [
-                'type'         => 'varchar',
-                'label'        => 'Contact Phone number',
-                'input'        => 'text',
-                'required'     => false,
+                'type' => 'varchar',
+                'label' => 'Contact Phone number',
+                'input' => 'text',
+                'required' => false,
                 'user_defined' => true,
-                'sort_order'   => 10,
-                'global'       => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'sort_order' => 10,
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
             ]
         );
 
@@ -359,13 +332,13 @@ class StoreLocatorSetup
             SellerInterface::ENTITY,
             'contact_fax',
             [
-                'type'         => 'varchar',
-                'label'        => 'Contact Fax number',
-                'input'        => 'text',
-                'required'     => false,
+                'type' => 'varchar',
+                'label' => 'Contact Fax number',
+                'input' => 'text',
+                'required' => false,
                 'user_defined' => true,
-                'sort_order'   => 20,
-                'global'       => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'sort_order' => 20,
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
             ]
         );
 
@@ -373,13 +346,13 @@ class StoreLocatorSetup
             SellerInterface::ENTITY,
             'contact_mail',
             [
-                'type'           => 'varchar',
-                'label'          => 'Contact Mail',
-                'input'          => 'email',
-                'required'       => false,
-                'user_defined'   => true,
-                'sort_order'     => 30,
-                'global'         => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'type' => 'varchar',
+                'label' => 'Contact Mail',
+                'input' => 'email',
+                'required' => false,
+                'user_defined' => true,
+                'sort_order' => 30,
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
                 'frontend_class' => 'validate-email',
             ]
         );
@@ -388,14 +361,14 @@ class StoreLocatorSetup
             SellerInterface::ENTITY,
             'show_contact_form',
             [
-                'type'         => 'int',
-                'label'        => 'Show contact form',
-                'input'        => 'boolean',
-                'required'     => true,
+                'type' => 'int',
+                'label' => 'Show contact form',
+                'input' => 'boolean',
+                'required' => true,
                 'user_defined' => true,
-                'sort_order'   => 40,
-                'global'       => ScopedAttributeInterface::SCOPE_GLOBAL,
-                'source'       => Boolean::class,
+                'sort_order' => 40,
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
+                'source' => Boolean::class,
             ]
         );
 
@@ -407,8 +380,6 @@ class StoreLocatorSetup
 
     /**
      * Update show_contact_form to Required.
-     *
-     * @param EavSetup $eavSetup EAV module Setup
      */
     public function setContactFormRequired(EavSetup $eavSetup): void
     {
@@ -420,11 +391,8 @@ class StoreLocatorSetup
         );
     }
 
-
     /**
-     * Add image attribute to Retailers
-     *
-     * @param EavSetup $eavSetup EAV module Setup
+     * Add image attribute to Retailers.
      */
     public function addImage(EavSetup $eavSetup): void
     {
@@ -436,14 +404,14 @@ class StoreLocatorSetup
             SellerInterface::ENTITY,
             'image',
             [
-                'type'         => 'varchar',
-                'label'        => 'Media',
-                'input'        => 'image',
-                'required'     => false,
+                'type' => 'varchar',
+                'label' => 'Media',
+                'input' => 'image',
+                'required' => false,
                 'user_defined' => true,
-                'sort_order'   => 17,
-                'backend_model' => 'Magento\Catalog\Model\Category\Attribute\Backend\Image',
-                'global'       => \Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface::SCOPE_GLOBAL,
+                'sort_order' => 17,
+                'backend_model' => Image::class,
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
             ]
         );
 

@@ -1,7 +1,7 @@
 define([
     'ko',
-    'smile-map',
-], function(ko, SmileMap){
+    'smile-map'
+], function(ko, SmileMap) {
 
     return SmileMap.extend({
 

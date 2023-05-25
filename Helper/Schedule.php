@@ -1,15 +1,5 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -19,76 +9,46 @@ use Magento\Framework\Stdlib\DateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 
 /**
- * Schedule Helper
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Schedule Helper.
  */
 class Schedule extends AbstractHelper
 {
     /**
      * Default delay (in minutes) before displaying the "Closing soon" message.
      */
-    const DEFAULT_WARNING_THRESOLD = 60;
+    private const DEFAULT_WARNING_THRESHOLD = 60;
 
-    /**
-     * @var Resolver
-     */
-    private Resolver $localeResolver;
-
-    /**
-     * @var TimezoneInterface
-     */
-    private TimezoneInterface $localeDate;
-
-    /**
-     * Schedule constructor.
-     *
-     * @param Context           $context        Application Context
-     * @param Resolver          $localeResolver Locale Resolver
-     * @param TimezoneInterface $localeDate     Locale Format
-     */
     public function __construct(
         Context $context,
-        Resolver $localeResolver,
-        TimezoneInterface $localeDate,
+        private Resolver $localeResolver,
+        private TimezoneInterface $localeDate,
     ) {
         parent::__construct($context);
-
-        $this->localeResolver = $localeResolver;
-        $this->localeDate     = $localeDate;
     }
 
     /**
-     * Retrieve configuration used by schedule components
-     *
-     * @return array
+     * Retrieve configuration used by schedule components.
      */
     public function getConfig(): array
     {
         return [
-            'locale'                 => $this->getLocale(),
-            'dateFormat'             => $this->getDateFormat(),
-            'timeFormat'             => $this->getTimeFormat(),
-            'closingWarningThresold' => $this->getClosingWarningThresold(),
+            'locale' => $this->getLocale(),
+            'dateFormat' => $this->getDateFormat(),
+            'timeFormat' => $this->getTimeFormat(),
+            'closingWarningThreshold' => $this->getClosingWarningThreshold(),
         ];
     }
 
     /**
-     * Retrieve current locale
-     *
-     * @return null|string
+     * Retrieve current locale.
      */
-    private function getLocale(): null|string
+    private function getLocale(): ?string
     {
         return $this->localeResolver->getLocale();
     }
 
     /**
-     * Retrieve Time Format
-     *
-     * @return string
+     * Retrieve Time Format.
      */
     private function getTimeFormat(): string
     {
@@ -96,9 +56,7 @@ class Schedule extends AbstractHelper
     }
 
     /**
-     * Return the date format used for schedule component
-     *
-     * @return string
+     * Return the date format used for schedule component.
      */
     private function getDateFormat(): string
     {
@@ -106,12 +64,10 @@ class Schedule extends AbstractHelper
     }
 
     /**
-     * Retrieve default closing warning thresold, in minutes.
-     *
-     * @return int
+     * Retrieve default closing warning threshold, in minutes.
      */
-    private function getClosingWarningThresold(): int
+    private function getClosingWarningThreshold(): int
     {
-        return self::DEFAULT_WARNING_THRESOLD;
+        return self::DEFAULT_WARNING_THRESHOLD;
     }
 }

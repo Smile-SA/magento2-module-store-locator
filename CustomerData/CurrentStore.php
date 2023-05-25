@@ -1,15 +1,5 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
@@ -23,79 +13,36 @@ use Smile\StoreLocator\Model\Url;
 
 /**
  * Current Store data.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class CurrentStore implements SectionSourceInterface
 {
     /**
      * Will be added as a Vary to HTTP Context
      */
-    const CONTEXT_RETAILER = 'smile_retailer_id';
+    public const CONTEXT_RETAILER = 'smile_retailer_id';
 
-    /**
-     * @var Session
-     */
-    private Session $customerSession;
-
-    /**
-     * @var RetailerRepositoryInterface
-     */
-    private RetailerRepositoryInterface $retailerRepository;
-
-    /**
-     * @var Url
-     */
-    private Url $urlModel;
-
-    /**
-     * @var AddressFormatter
-     */
-    private AddressFormatter $addressFormatter;
-
-    /**
-     * @var Context
-     */
-    private Context $httpContext;
-
-    /**
-     * CurrentStore constructor
-     *
-     * @param Session                       $customerSession    Customer session.
-     * @param RetailerRepositoryInterface   $retailerRepository Retailer repository.
-     * @param AddressFormatter              $addressFormatter   Address formatter.
-     * @param Url                           $urlModel           URL model.
-     * @param Context                       $context            The HTTP Context
-     */
     public function __construct(
-        Session $customerSession,
-        RetailerRepositoryInterface $retailerRepository,
-        AddressFormatter $addressFormatter,
-        Url $urlModel,
-        Context $context
+        private Session $customerSession,
+        private RetailerRepositoryInterface $retailerRepository,
+        private AddressFormatter $addressFormatter,
+        private Url $urlModel,
+        private Context $httpContext
     ) {
-        $this->customerSession    = $customerSession;
-        $this->retailerRepository = $retailerRepository;
-        $this->urlModel           = $urlModel;
-        $this->addressFormatter   = $addressFormatter;
-        $this->httpContext        = $context;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function getSectionData(): array
+    public function getSectionData()
     {
-        $data     = [];
+        $data = [];
         $retailer = $this->getRetailer();
 
         if ($retailer) {
             $data = $retailer->toArray(['entity_id', 'name']);
 
-            $data['url']          = $this->urlModel->getUrl($retailer);
-            $data['address']      = $this->addressFormatter->formatAddress(
+            $data['url'] = $this->urlModel->getUrl($retailer);
+            $data['address'] = $this->addressFormatter->formatAddress(
                 $retailer->getAddress(),
                 AddressFormatter::FORMAT_HTML
             );
@@ -107,13 +54,10 @@ class CurrentStore implements SectionSourceInterface
 
     /**
      * Get the current session retailer.
-     *
-     * @return ?RetailerInterface
      */
     public function getRetailer(): ?RetailerInterface
     {
         $retailer = null;
-
         $retailerId = $this->customerSession->getRetailerId();
 
         if (!$retailerId) {
@@ -123,7 +67,7 @@ class CurrentStore implements SectionSourceInterface
         if ($retailerId) {
             try {
                 $retailer = $this->retailerRepository->get($retailerId);
-            } catch (NoSuchEntityException $e) {
+            } catch (NoSuchEntityException) {
                 $this->customerSession->unsRetailerId();
             }
         }
@@ -133,10 +77,6 @@ class CurrentStore implements SectionSourceInterface
 
     /**
      * Set a new retailer.
-     *
-     * @param RetailerInterface $retailer Current retailer.
-     *
-     * @return $this
      */
     public function setRetailer(RetailerInterface $retailer): self
     {

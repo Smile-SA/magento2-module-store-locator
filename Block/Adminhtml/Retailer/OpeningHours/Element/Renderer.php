@@ -1,18 +1,9 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\Retailer
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element;
 
 use DateTime;
+use Exception;
 use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -22,83 +13,38 @@ use Magento\Framework\Data\Form\Element\Text as FormElementText;
 use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
 use Magento\Framework\Stdlib\DateTime as MagentoDateTime;
 use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
-use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
-use Smile\StoreLocator\Api\Data\TimeSlotsInterface;
 
 /**
- * Opening Hours field renderer
- *
- * @SuppressWarnings(PHPMD.CamelCasePropertyName)
- *
- * @category Smile
- * @package  Smile\Retailer
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Opening Hours field renderer.
  */
 class Renderer extends Template implements RendererInterface
 {
-    /**
-     * @var FormElementFactory
-     */
-    protected FormElementFactory $elementFactory;
-
-    /**
-     * @var AbstractElement
-     */
     protected AbstractElement $element;
-
-    /**
-     * @var AbstractElement|FormElementText
-     */
     protected AbstractElement|FormElementText $input;
 
-    /**
-     * @var string
-     */
+    // phpcs:ignore SlevomatCodingStandard.TypeHints.PropertyTypeHint.MissingAnyTypeHint
     protected $_template = 'retailer/openinghours/element.phtml';
 
-    /**
-     * @var JsonSerializer
-     */
-    private JsonSerializer $jsonSerializer;
-
-    /**
-     * @var TimezoneInterface
-     */
-    private TimezoneInterface $date;
-
-    /**
-     * Block constructor.
-     *
-     * @param Context               $context        Templating context.
-     * @param FormElementFactory    $elementFactory Form element factory.
-     * @param JsonSerializer        $jsonSerializer JSON Serializer
-     * @param TimezoneInterface     $date
-     * @param array                 $data           Additional data.
-     */
     public function __construct(
         Context $context,
-        FormElementFactory $elementFactory,
-        JsonSerializer $jsonSerializer,
-        TimezoneInterface $date,
+        protected FormElementFactory $elementFactory,
+        private JsonSerializer $jsonSerializer,
+        private TimezoneInterface $date,
         array $data = []
     ) {
-        $this->elementFactory = $elementFactory;
-        $this->jsonSerializer = $jsonSerializer;
-        $this->date           = $date;
-
         parent::__construct($context, $data);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
-    public function render(AbstractElement $element): string
+    public function render(AbstractElement $element)
     {
         $this->element = $element;
         $this->input   = $this->elementFactory->create('hidden');
         $this->input->setForm($this->getElement()->getForm());
 
-        $inputId = $this->getData("input_id") !== null ? $this->getData("input_id") : "opening_hours" . uniqid();
+        $inputId = $this->getData("input_id") ?? "opening_hours" . uniqid();
 
         $this->input->setId($inputId);
         $this->input->setName($element->getName());
@@ -110,8 +56,6 @@ class Renderer extends Template implements RendererInterface
 
     /**
      * Get currently edited element.
-     *
-     * @return AbstractElement
      */
     public function getElement(): AbstractElement
     {
@@ -120,8 +64,6 @@ class Renderer extends Template implements RendererInterface
 
     /**
      * Retrieve element unique container id.
-     *
-     * @return string
      */
     public function getHtmlId(): string
     {
@@ -130,8 +72,6 @@ class Renderer extends Template implements RendererInterface
 
     /**
      * Render HTML of the element using the opening hours engine.
-     *
-     * @return string
      */
     public function getInputHtml(): string
     {
@@ -144,8 +84,6 @@ class Renderer extends Template implements RendererInterface
 
     /**
      * Retrieve element values in Json.
-     *
-     * @return string
      */
     public function getJsonValues(): string
     {
@@ -157,17 +95,18 @@ class Renderer extends Template implements RendererInterface
     /**
      * Retrieve element values
      *
-     * @throws \Exception
-     * @return array
+     * @throws Exception.
      */
     private function getValues(): array
     {
         $values = [];
         if ($this->element->getValue()) {
             foreach ($this->element->getValue() as $timeSlot) {
-                $date      = new DateTime($this->date->date()->format(MagentoDateTime::DATE_PHP_FORMAT));
-                $startTime = $date->setTimestamp(strtotime($timeSlot->getStartTime()))->format(MagentoDateTime::DATETIME_PHP_FORMAT);
-                $endTime   = $date->setTimestamp(strtotime($timeSlot->getEndTime()))->format(MagentoDateTime::DATETIME_PHP_FORMAT);
+                $date = new DateTime($this->date->date()->format(MagentoDateTime::DATE_PHP_FORMAT));
+                $startTime = $date->setTimestamp(strtotime($timeSlot->getStartTime()))
+                    ->format(MagentoDateTime::DATETIME_PHP_FORMAT);
+                $endTime = $date->setTimestamp(strtotime($timeSlot->getEndTime()))
+                    ->format(MagentoDateTime::DATETIME_PHP_FORMAT);
                 $values[]  = [$startTime, $endTime];
             }
         }

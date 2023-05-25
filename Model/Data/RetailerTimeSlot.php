@@ -1,32 +1,18 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Model\Data;
 
+use JsonSerializable;
 use Magento\Framework\DataObject;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
-use \JsonSerializable;
 
 /**
  * Data Object for Time Slot entries.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
  */
 class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, JsonSerializable
 {
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function getStartTime(): string
     {
@@ -34,7 +20,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function getEndTime(): string
     {
@@ -42,9 +28,9 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    public function setStartTime(string $time): mixed
+    public function setStartTime(string $time): self
     {
         $this->setData('start_time', $time);
 
@@ -52,9 +38,9 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    public function setEndTime(string $time): mixed
+    public function setEndTime(string $time): self
     {
         $this->setData('end_time', $time);
 
@@ -62,12 +48,7 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     }
 
     /**
-     * Specify data which should be serialized to JSON
-     *
-     * @link  http://php.net/manual/en/jsonserializable.jsonserialize.php
-     * @return mixed data which can be serialized by <b>json_encode</b>,
-     *        which is a value of any type other than a resource.
-     * @since 5.4.0
+     * @inheritdoc
      */
     public function jsonSerialize(): mixed
     {

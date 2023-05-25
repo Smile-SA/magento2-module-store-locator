@@ -1,62 +1,35 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Setup;
 
+use Magento\Eav\Setup\EavSetup;
+use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Setup\ModuleContextInterface;
 use Magento\Framework\Setup\ModuleDataSetupInterface;
 use Magento\Framework\Setup\UpgradeDataInterface;
-use Magento\Eav\Setup\EavSetupFactory;
+use Magento\Framework\Validator\ValidateException;
 
 /**
- * Data Upgrade for Store Locator
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Data Upgrade for Store Locator.
  */
 class UpgradeData implements UpgradeDataInterface
 {
-    /**
-     * @var EavSetupFactory
-     */
-    private EavSetupFactory $eavSetupFactory;
-
-    /**
-     * @var StoreLocatorSetup
-     */
     private StoreLocatorSetup $storeLocatorSetup;
 
-    /**
-     * Constructor.
-     *
-     * @param EavSetupFactory          $eavSetupFactory          EAV Setup Factory.
-     * @param StoreLocatorSetupFactory $storeLocatorSetupFactory The Store Locator Setup Factory
-     */
     public function __construct(
-        EavSetupFactory $eavSetupFactory,
+        private EavSetupFactory $eavSetupFactory,
         StoreLocatorSetupFactory $storeLocatorSetupFactory
     ) {
-        $this->eavSetupFactory = $eavSetupFactory;
         $this->storeLocatorSetup = $storeLocatorSetupFactory->create();
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      * @throws LocalizedException
-     * @throws \Magento\Framework\Validator\ValidateException
+     * @throws ValidateException
      */
-    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context): void
+    public function upgrade(ModuleDataSetupInterface $setup, ModuleContextInterface $context)
     {
         /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create(['setup' => $setup]);

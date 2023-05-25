@@ -1,15 +1,5 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Plugin;
 
 use Smile\Retailer\Api\Data\RetailerInterface;
@@ -17,18 +7,11 @@ use Smile\Seller\Ui\Component\Seller\Form\DataProvider;
 
 /**
  * Retailer form data provider plugin.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class RetailerEditFormPlugin
 {
     /**
-     * @param DataProvider  $subject
-     * @param array         $result
-     *
-     * @return array
+     * Add latitude and longitude to address data.
      */
     public function afterGetData(DataProvider $subject, array $result): array
     {
@@ -51,10 +34,6 @@ class RetailerEditFormPlugin
 
     /**
      * Return the currently edited retailer.
-     *
-     * @param DataProvider $dataProvider DataProvider.
-     *
-     * @return ?RetailerInterface
      */
     private function getRetailer(DataProvider $dataProvider): ?RetailerInterface
     {

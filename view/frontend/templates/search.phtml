@@ -1,25 +1,7 @@
-<?php
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- *
- * Retailer frontend search block
- */
-?>
-
 <div id="store-locator-search-wrapper" class="store-search clearfix" data-bind="scope: 'store-locator-search'">
     <!-- ko template: template --> <!-- /ko -->
 </div>
 
 <script type="text/x-magento-init">
-    {"*" : {"Magento_Ui/js/core/app": <?php echo $block->getJsLayout(); ?> }}
+    {"*" : {"Magento_Ui/js/core/app": <?= $block->getJsLayout() ?> }}
 </script>

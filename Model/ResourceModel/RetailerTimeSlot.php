@@ -1,18 +1,11 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Model\ResourceModel;
 
 use DateTime;
+use Exception;
+use IntlDateFormatter;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Model\ResourceModel\Db\AbstractDb;
 use Magento\Framework\Model\ResourceModel\Db\Context;
@@ -20,51 +13,33 @@ use Magento\Framework\Stdlib\DateTime as MagentoDateTime;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 
 /**
- * Resource Model for Time Slots items (Eg. : Opening Hours)
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Resource Model for Time Slots items (Eg. : Opening Hours).
  */
 class RetailerTimeSlot extends AbstractDb
 {
-    /**
-     * @var Resolver
-     */
-    private Resolver $localeResolver;
-
-    /**
-     * @var string
-     */
     private string $locale;
 
-    /**
-     * RetailerTimeSlot constructor.
-     *
-     * @param Context           $context        Context
-     * @param Resolver          $localeResolver Locale Resolver
-     * @param null|string       $connectionName Connection Name
-     */
     public function __construct(
         Context $context,
-        Resolver $localeResolver,
-        null|string $connectionName = null
+        private Resolver $localeResolver,
+        ?string $connectionName = null
     ) {
-        $this->localeResolver = $localeResolver;
-        $this->locale         = $this->localeResolver->getLocale();
+        $this->locale = $this->localeResolver->getLocale();
         parent::__construct($context, $connectionName);
     }
 
     /**
-     * Save time slots for a given retailer
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->_init('smile_retailer_time_slots', 'retailer_id');
+    }
+
+    /**
+     * Save time slots for a given retailer.
      *
-     * @param integer $retailerId    The retailer id
-     * @param ?string $attributeCode The time slot type to store
-     * @param array   $timeSlots     The time slots to save, array based
-     *
-     * @return bool
-     *
-     * @throws \Exception
+     * @throws Exception
      */
     public function saveTimeSlots(int $retailerId, ?string $attributeCode, array $timeSlots): bool
     {
@@ -72,14 +47,16 @@ class RetailerTimeSlot extends AbstractDb
         $this->deleteByRetailerId($retailerId, $attributeCode);
 
         foreach ($timeSlots as $date => $timeSlotList) {
-            $dateField = is_numeric($date) ? RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD : RetailerTimeSlotInterface::DATE_FIELD;
+            $dateField = is_numeric($date)
+                ? RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD
+                : RetailerTimeSlotInterface::DATE_FIELD;
 
             $row = [
-                "retailer_id"    => $retailerId,
-                "attribute_code" => $attributeCode,
-                $dateField       => $date,
-                "start_time"     => null,
-                "end_time"       => null,
+                'retailer_id' => $retailerId,
+                'attribute_code' => $attributeCode,
+                $dateField => $date,
+                'start_time' => null,
+                'end_time' => null,
             ];
 
             if (!count($timeSlotList)) {
@@ -88,11 +65,12 @@ class RetailerTimeSlot extends AbstractDb
             }
 
             foreach ($timeSlotList as $timeSlot) {
+                // phpcs:ignore Magento2.Performance.ForeachArrayMerge.ForeachArrayMerge
                 $data[] = array_merge(
                     $row,
                     [
                         'start_time' => $this->dateFromHour($timeSlot->getStartTime()),
-                        'end_time'   => $this->dateFromHour($timeSlot->getEndTime()),
+                        'end_time' => $this->dateFromHour($timeSlot->getEndTime()),
                     ]
                 );
             }
@@ -107,13 +85,9 @@ class RetailerTimeSlot extends AbstractDb
     }
 
     /**
-     * Retrieve all time slots of a given retailer
+     * Retrieve all time slots of a given retailer.
      *
-     * @param integer $retailerId    The retailer id
-     * @param ?string    $attributeCode The time slot type to retrieve
-     *
-     * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getTimeSlots(int $retailerId, ?string $attributeCode): array
     {
@@ -138,13 +112,9 @@ class RetailerTimeSlot extends AbstractDb
     }
 
     /**
-     * Retrieve all time slots of a given retailer list
+     * Retrieve all time slots of a given retailer list.
      *
-     * @param integer[] $retailerIds   The retailer ids
-     * @param ?string   $attributeCode The time slot type to retrieve
-     *
-     * @return array
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     public function getMultipleTimeSlots(array $retailerIds, ?string $attributeCode): array
     {
@@ -171,16 +141,11 @@ class RetailerTimeSlot extends AbstractDb
     }
 
     /**
-     * Delete Time Slots for a given retailer Id
+     * Delete Time Slots for a given retailer Id.
      *
-     * @param integer $retailerId    The retailer id
-     * @param null    $attributeCode The time slot type to delete, if any
-     *
-     * @return bool
-     *
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
-    public function deleteByRetailerId(int $retailerId, $attributeCode = null): bool
+    public function deleteByRetailerId(int $retailerId, ?string $attributeCode = null): bool
     {
         $deleteCondition = ["retailer_id = ?" => $retailerId];
         if (null !== $attributeCode) {
@@ -191,46 +156,27 @@ class RetailerTimeSlot extends AbstractDb
     }
 
     /**
-     * Define main table name and attributes table
+     * Build default date (01.01.1970) from an hour.
      *
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName) The method is inherited
-     *
-     * @return void
-     */
-    protected function _construct(): void
-    {
-        $this->_init('smile_retailer_time_slots', 'retailer_id');
-    }
-
-    /**
-     * Build default date (01.01.1970) from an hour
-     *
-     * @param string $hour The hour
-     *
-     * @throws \Exception
-     * @return string
+     * @throws Exception
      */
     private function dateFromHour(string $hour): string
     {
         $date = new DateTime('1970-01-01 00:00:00'); // Init as 1970-01-01 since field is store on a DATETIME column.
-        list($hour, $min) = explode(':', $hour);
+        [$hour, $min] = explode(':', $hour);
 
         return $date->setTime((int) $hour, (int) $min)->format(MagentoDateTime::DATETIME_PHP_FORMAT);
     }
 
     /**
-     * Extract hour from a date
-     *
-     * @param string $date The date
-     *
-     * @return string
+     * Extract hour from a date.
      */
     private function dateToHour(string $date): string
     {
-        $formatter = new \IntlDateFormatter(
+        $formatter = new IntlDateFormatter(
             $this->locale,
-            \IntlDateFormatter::NONE,
-            \IntlDateFormatter::SHORT
+            IntlDateFormatter::NONE,
+            IntlDateFormatter::SHORT
         );
 
         return $formatter->format(DateTime::createFromFormat(MagentoDateTime::DATETIME_PHP_FORMAT, $date));

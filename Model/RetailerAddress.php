@@ -1,15 +1,5 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Model;
 
 use Magento\Framework\Data\Collection\AbstractDb;
@@ -17,55 +7,41 @@ use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
+use Smile\Map\Api\Data\GeoPointInterface;
 use Smile\Map\Api\Data\GeoPointInterfaceFactory;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
-use Smile\Map\Api\Data\GeoPointInterface;
+use Smile\StoreLocator\Model\ResourceModel\RetailerAddress as RetailerAddressResource;
 
 /**
  * Retailer address model.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class RetailerAddress extends AbstractModel
 {
-    /**
-     * @var GeoPointInterfaceFactory
-     */
-    private GeoPointInterfaceFactory $geoPointFactory;
+    private const STREET_SEPARATOR = "\n";
 
-    /**
-     * Constructor.
-     *
-     * @param Context                   $context            Context.
-     * @param Registry                  $registry           Registry.
-     * @param GeoPointInterfaceFactory  $geoPointFactory    Geo point factory.
-     * @param ?AbstractResource         $resource           Resource.
-     * @param ?AbstractDb               $resourceCollection Collection resource.
-     * @param array                     $data               Additional data.
-     */
     public function __construct(
         Context $context,
         Registry $registry,
-        GeoPointInterfaceFactory $geoPointFactory,
-        AbstractResource $resource = null,
-        AbstractDb $resourceCollection = null,
+        private GeoPointInterfaceFactory $geoPointFactory,
+        ?AbstractResource $resource = null,
+        ?AbstractDb $resourceCollection = null,
         array $data = []
     ) {
         parent::__construct($context, $registry, $resource, $resourceCollection, $data);
-        $this->geoPointFactory = $geoPointFactory;
     }
 
     /**
-     * @var string
+     * @inheritdoc
      */
-    const STREET_SEPARATOR = "\n";
+    protected function _construct()
+    {
+        $this->_init(RetailerAddressResource::class);
+    }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    public function getId(): mixed
+    public function getId()
     {
         return $this->getData(RetailerAddressInterface::ADDRESS_ID);
     }
@@ -82,8 +58,6 @@ class RetailerAddress extends AbstractModel
 
     /**
      * Returns coordinates as a GeoPoint.
-     *
-     * @return GeoPointInterface
      */
     public function getCoordinates(): GeoPointInterface
     {
@@ -100,21 +74,17 @@ class RetailerAddress extends AbstractModel
     }
 
     /**
-     * @SuppressWarnings(PHPMD.ShortVariable)
-     *
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    public function setId($id): AbstractModel
+    public function setId($value)
     {
-        return $this->setData(RetailerAddressInterface::ADDRESS_ID, $id);
+        return $this->setData(RetailerAddressInterface::ADDRESS_ID, $value);
     }
 
     /**
      * Populate the string field.
      *
-     * @param string[]|string $street Street.
-     *
-     * @return RetailerAddress
+     * @param string[]|string $street
      */
     public function setStreet(array|string $street): RetailerAddress
     {
@@ -127,10 +97,6 @@ class RetailerAddress extends AbstractModel
 
     /**
      * Set latitude and longitude from coordinates.
-     *
-     * @param GeoPointInterface $coordinates Coordinates.
-     *
-     * @return $this
      */
     public function setCoordinates(GeoPointInterface $coordinates): self
     {
@@ -138,15 +104,5 @@ class RetailerAddress extends AbstractModel
         $longitude = $coordinates->getLongitude();
 
         return $this->setLatitude($latitude)->setLongitude($longitude);
-    }
-
-    /**
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     *
-     * {@inheritDoc}
-     */
-    protected function _construct(): void
-    {
-        $this->_init('Smile\StoreLocator\Model\ResourceModel\RetailerAddress');
     }
 }

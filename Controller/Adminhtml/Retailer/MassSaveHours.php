@@ -1,24 +1,11 @@
 <?php
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Fanny DECLERCK <fadec@smile.fr>
- * @copyright 2019 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
 
 namespace Smile\StoreLocator\Controller\Adminhtml\Retailer;
 
+use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\ResultFactory;
-use Magento\Backend\App\Action\Context;
-use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Ui\Component\MassAction\Filter;
@@ -31,37 +18,9 @@ use Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursPostDataHandler;
 
 /**
  * Retailer Adminhtml MassSaveHours controller.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Fanny DECLERCK <fadec@smile.fr>
  */
 class MassSaveHours extends AbstractRetailer
 {
-    /**
-     * @var OpeningHoursPostDataHandler
-     */
-    protected OpeningHoursPostDataHandler $openingHoursHandler;
-
-    /**
-     * @var SpecialOpeningHoursPostDataHandler
-     */
-    protected SpecialOpeningHoursPostDataHandler $specialOpeningHoursHandler;
-
-    /**
-     * Abstract constructor.
-     *
-     * @param Context                               $context                    Application context.
-     * @param PageFactory                           $resultPageFactory          Result Page factory.
-     * @param ForwardFactory                        $resultForwardFactory       Result forward factory.
-     * @param Registry                              $coreRegistry               Application registry.
-     * @param RetailerRepositoryInterface           $retailerRepository         Retailer Repository
-     * @param RetailerInterfaceFactory              $retailerFactory            Retailer Factory.
-     * @param OpeningHoursPostDataHandler           $openingHoursHandler        Opening Hours Handler.
-     * @param SpecialOpeningHoursPostDataHandler    $specialOpeningHoursHandler Special Opening Hours Handler.
-     * @param Filter                                $filter                     Mass Action Filter.
-     * @param CollectionFactory                     $collectionFactory          Retailer collection for Mass Action.
-     */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
@@ -71,12 +30,9 @@ class MassSaveHours extends AbstractRetailer
         RetailerInterfaceFactory $retailerFactory,
         Filter $filter,
         CollectionFactory $collectionFactory,
-        OpeningHoursPostDataHandler $openingHoursHandler,
-        SpecialOpeningHoursPostDataHandler $specialOpeningHoursHandler
+        protected OpeningHoursPostDataHandler $openingHoursHandler,
+        protected SpecialOpeningHoursPostDataHandler $specialOpeningHoursHandler
     ) {
-        $this->openingHoursHandler        = $openingHoursHandler;
-        $this->specialOpeningHoursHandler = $specialOpeningHoursHandler;
-
         parent::__construct(
             $context,
             $resultPageFactory,
@@ -90,21 +46,20 @@ class MassSaveHours extends AbstractRetailer
     }
 
     /**
-     * Execute action
-     *
-     * @return Redirect
-     * @throws LocalizedException|\Exception
+     * @inheritdoc
      */
-    public function execute(): Redirect
+    public function execute()
     {
         $retailerIds = json_decode($this->getRequest()->getParam('retailer_ids'));
         $data = [];
 
-        if ($openingHoursPost = $this->getRequest()->getParam('opening_hours', false)) {
+        $openingHoursPost = $this->getRequest()->getParam('opening_hours', false);
+        if ($openingHoursPost) {
             $data['opening_hours'] = $openingHoursPost;
         }
 
-        if ($specialOpeningHoursPost = $this->getRequest()->getParam('special_opening_hours', false)) {
+        $specialOpeningHoursPost = $this->getRequest()->getParam('special_opening_hours', false);
+        if ($specialOpeningHoursPost) {
             $data['special_opening_hours'] = $specialOpeningHoursPost;
         }
 

@@ -1,20 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Smile_StoreLocator extension attributes configuration.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
- -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Api/etc/extension_attributes.xsd">
     <extension_attributes for="Smile\Retailer\Api\Data\RetailerInterface">
         <attribute code="address" type="Smile\StoreLocator\Api\Data\RetailerAddressInterface">
@@ -33,6 +17,6 @@
             </join>
         </attribute>
         <attribute code="opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]"/>
-        <attribute code="special_opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]" />
+        <attribute code="special_opening_hours" type="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface[]"/>
     </extension_attributes>
 </config>

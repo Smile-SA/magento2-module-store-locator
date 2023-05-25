@@ -1,24 +1,12 @@
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Ihor KVASNYTSKYI <ihor.kvasnytskyi@smile-ukraine.com>
- * @copyright 2019 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
-
-/*jshint browser:true jquery:true*/
-/*global alert*/
-
-define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'], function ($, Component, moment, ko) {
-
-    "use strict";
+define([
+    'jquery',
+    'uiClass',
+    'moment',
+    'ko',
+    'mage/translate',
+    'mage/dropdown'
+], function ($, Component, moment, ko) {
+    'use strict';
 
     return Component.extend({
 
@@ -239,7 +227,7 @@ define(['jquery', 'uiClass', 'moment', 'ko', 'mage/translate', 'mage/dropdown'],
                 var now = new Date();
                 var closing = moment(closingTime, [this.timeFormat]).toDate();
 
-                if (Math.floor(((closing - now) / 1000) / 60) <= parseInt(this.closingWarningThresold, 10)) {
+                if (Math.floor(((closing - now) / 1000) / 60) <= parseInt(this.closingWarningThreshold, 10)) {
                     return true;
                 }
             }

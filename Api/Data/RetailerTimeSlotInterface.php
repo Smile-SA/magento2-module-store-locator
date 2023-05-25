@@ -1,42 +1,25 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Api\Data;
 
 /**
- * Generic Interface for retailer time slots items
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Generic Interface for retailer time slots items.
  */
 interface RetailerTimeSlotInterface
 {
-    /**
-     * The date field
-     */
-    const DATE_FIELD = 'date';
+    public const DATE_FIELD = 'date';
+    public const DAY_OF_WEEK_FIELD = 'day_of_week';
 
     /**
-     * The day of week field
-     */
-    const DAY_OF_WEEK_FIELD = 'day_of_week';
-
-    /**
+     * Get start time.
+     *
      * @return string
      */
     public function getStartTime(): string;
 
     /**
+     * Get end time.
+     *
      * @return string
      */
     public function getEndTime(): string;
@@ -45,17 +28,15 @@ interface RetailerTimeSlotInterface
      * Set the start time
      *
      * @param string $time The time
-     *
-     * @return mixed
+     * @return $this
      */
-    public function setStartTime(string $time): mixed;
+    public function setStartTime(string $time): self;
 
     /**
      * Set the end time
      *
      * @param string $time The time
-     *
-     * @return mixed
+     * @return $this
      */
-    public function setEndTime(string $time): mixed;
+    public function setEndTime(string $time): self;
 }

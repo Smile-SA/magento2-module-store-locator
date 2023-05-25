@@ -1,75 +1,39 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer;
 
+use Magento\Backend\Block\AbstractBlock;
 use Magento\Backend\Block\Context;
 use Magento\Framework\Data\Form;
 use Magento\Framework\Data\FormFactory;
 use Magento\Framework\Registry;
-use Magento\Framework\Stdlib\DateTime;
 use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Container\Renderer;
 
 /**
- * Opening Hours rendering block
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Opening Hours rendering block.
  */
-class OpeningHours extends \Magento\Backend\Block\AbstractBlock
+class OpeningHours extends AbstractBlock
 {
-    /**
-     * @var FormFactory
-     */
-    private FormFactory $formFactory;
-
-    /**
-     * @var Registry
-     */
-    private Registry $registry;
-
-    /**
-     * Constructor.
-     *
-     * @param Context       $context     Block context.
-     * @param FormFactory   $formFactory Form factory.
-     * @param Registry      $registry    Registry.
-     * @param array         $data        Additional data.
-     */
     public function __construct(
         Context $context,
-        FormFactory $formFactory,
-        Registry $registry,
+        private FormFactory $formFactory,
+        private Registry $registry,
         array $data = []
     ) {
-        $this->formFactory = $formFactory;
-        $this->registry = $registry;
         parent::__construct($context, $data);
     }
 
     /**
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    protected function _toHtml(): string
+    protected function _toHtml()
     {
         return $this->escapeJsQuote($this->getForm()->toHtml());
     }
 
     /**
-     * Get retailer
-     *
-     * @return ?RetailerInterface
+     * Get retailer.
      */
     private function getRetailer(): ?RetailerInterface
     {
@@ -78,8 +42,6 @@ class OpeningHours extends \Magento\Backend\Block\AbstractBlock
 
     /**
      * Create the form containing the virtual rule field.
-     *
-     * @return Form
      */
     private function getForm(): Form
     {
@@ -95,7 +57,7 @@ class OpeningHours extends \Magento\Backend\Block\AbstractBlock
             $openingHoursFieldset->setOpeningHours($this->getRetailer()->getOpeningHours());
         }
 
-        $openingHoursRenderer = $this->getLayout()->createBlock('Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Container\Renderer');
+        $openingHoursRenderer = $this->getLayout()->createBlock(Renderer::class);
         $openingHoursFieldset->setRenderer($openingHoursRenderer);
 
         return $form;

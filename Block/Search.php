@@ -1,23 +1,16 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Block;
 
+use DateTime;
 use Magento\Framework\App\CacheInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Profiler;
 use Magento\Framework\Serialize\SerializerInterface;
-use Magento\Framework\View\Element\AbstractBlock;
+use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
 use Smile\Map\Api\MapInterface;
@@ -32,98 +25,34 @@ use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
 
 /**
  * Shop search block.
- * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Search extends Template implements IdentityInterface
 {
-    const DEFAULT_ATTRIBUTES_TO_SELECT = ['name', 'url_key', 'contact_mail', 'contact_phone', 'contact_fax'];
-    const CACHE_TAG = 'smile_store_locator_markers';
+    private const DEFAULT_ATTRIBUTES_TO_SELECT = ['name', 'url_key', 'contact_mail', 'contact_phone', 'contact_fax'];
+    public const CACHE_TAG = 'smile_store_locator_markers';
 
-    /**
-     * @var MapInterface
-     */
     private MapInterface $map;
-
-    /**
-     * @var RetailerCollectionFactory
-     */
-    private RetailerCollectionFactory $retailerCollectionFactory;
-
-    /**
-     * @var Data
-     */
-    private Data $storeLocatorHelper;
-
-    /**
-     * @var AddressFormatter
-     */
-    private AddressFormatter $addressFormatter;
-
-    /**
-     * @var Schedule
-     */
-    private Schedule $scheduleHelper;
-
-    /**
-     * @var ScheduleManagement
-     */
-    private ScheduleManagement $scheduleManager;
-
-    /**
-     * @var CacheInterface
-     */
     private CacheInterface $cacheInterface;
-
-    /**
-     * @var SerializerInterface
-     */
-    private SerializerInterface $serializer;
-
-    /**
-     * @var array
-     */
     private array $attributesToSelect;
 
-    /**
-     * Constructor.
-     *
-     * @param Context                   $context                      Block context.
-     * @param MapProviderInterface      $mapProvider                  Map provider.
-     * @param RetailerCollectionFactory $retailerCollectionFactory    Retailer collection factory.
-     * @param Data                      $storeLocatorHelper           Store locator helper.
-     * @param AddressFormatter          $addressFormatter             Address formatter tool.
-     * @param Schedule                  $scheduleHelper               Schedule Helper
-     * @param ScheduleManagement        $scheduleManagement           Schedule Management
-     * @param SerializerInterface       $serializer                   JSON Serializer
-     * @param array                     $additionalAttributesToSelect Additional attributes to select
-     * @param array                     $data                         Additional data.
-     */
     public function __construct(
         Context $context,
         MapProviderInterface $mapProvider,
-        RetailerCollectionFactory $retailerCollectionFactory,
-        Data $storeLocatorHelper,
-        AddressFormatter $addressFormatter,
-        Schedule $scheduleHelper,
-        ScheduleManagement $scheduleManagement,
-        SerializerInterface $serializer,
+        private RetailerCollectionFactory $retailerCollectionFactory,
+        private Data $storeLocatorHelper,
+        private AddressFormatter $addressFormatter,
+        private Schedule $scheduleHelper,
+        private ScheduleManagement $scheduleManagement,
+        private SerializerInterface $serializer,
         array $additionalAttributesToSelect = [],
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->map                       = $mapProvider->getMap();
-        $this->retailerCollectionFactory = $retailerCollectionFactory;
-        $this->storeLocatorHelper        = $storeLocatorHelper;
-        $this->addressFormatter          = $addressFormatter;
-        $this->scheduleHelper            = $scheduleHelper;
-        $this->scheduleManager           = $scheduleManagement;
-        $this->cacheInterface            = $context->getCache();
-        $this->serializer                = $serializer;
-        $this->attributesToSelect        = array_values(
+        $this->map = $mapProvider->getMap();
+        $this->cacheInterface = $context->getCache();
+        $this->attributesToSelect = array_values(
             array_merge(self::DEFAULT_ATTRIBUTES_TO_SELECT, $additionalAttributesToSelect)
         );
 
@@ -136,9 +65,9 @@ class Search extends Template implements IdentityInterface
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    public function getJsLayout(): string
+    public function getJsLayout()
     {
         $jsLayout = $this->jsLayout;
 
@@ -149,7 +78,8 @@ class Search extends Template implements IdentityInterface
             $this->map->getConfig()
         );
 
-        $jsLayout['components']['store-locator-search']['children']['geocoder']['provider'] = $this->map->getIdentifier();
+        $jsLayout['components']['store-locator-search']['children']['geocoder']['provider'] = $this->map
+            ->getIdentifier();
         $jsLayout['components']['store-locator-search']['children']['geocoder'] = array_merge(
             $jsLayout['components']['store-locator-search']['children']['geocoder'],
             $this->map->getConfig()
@@ -157,7 +87,8 @@ class Search extends Template implements IdentityInterface
 
         if ($this->getRequest()->getParam('query', false)) {
             $query = $this->getRequest()->getParam('query', false);
-            $jsLayout['components']['store-locator-search']['children']['geocoder']['fulltextSearch'] = $this->escapeJsQuote($query);
+            $jsLayout['components']['store-locator-search']['children']['geocoder']['fulltextSearch'] =
+                $this->escapeJsQuote($query);
         }
 
         return $this->serializer->serialize($jsLayout);
@@ -167,13 +98,11 @@ class Search extends Template implements IdentityInterface
      * List of markers displayed on the map.
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
-     *
-     * @return array
      */
     public function getMarkers(): array
     {
         $collection = $this->getRetailerCollection();
-        $todayDate = (new \DateTime())->format('Y-m-d');
+        $todayDate = (new DateTime())->format('Y-m-d');
         $cacheKey = sprintf('%s_%s_%s', 'smile_storelocator_search', $collection->getStoreId(), $todayDate);
         $markers = $this->cacheInterface->load($cacheKey);
         $attributes = $this->attributesToSelect;
@@ -182,36 +111,40 @@ class Search extends Template implements IdentityInterface
         if (!$markers) {
             Profiler::start('SmileStoreLocator:STORES');
             /** @var RetailerInterface $retailer */
-            $imageUrlRetailer = $this->getImageUrl().'seller/';
+            $imageUrlRetailer = $this->getImageUrl() . 'seller/';
             $markers = [];
             foreach ($collection as $retailer) {
                 $address = $retailer->getExtensionAttributes()->getAddress();
                 Profiler::start('SmileStoreLocator:STORES_DATA');
-                $image = $retailer->getMediaPath() ? $imageUrlRetailer.$retailer->getMediaPath() : false;
+                $image = $retailer->getMediaPath() ? $imageUrlRetailer . $retailer->getMediaPath() : false;
                 $markerData = [
-                    'id'           => $retailer->getId(),
-                    'latitude'     => $address->getCoordinates()->getLatitude(),
-                    'longitude'    => $address->getCoordinates()->getLongitude(),
-                    'name'         => $retailer->getName(),
-                    'address'      => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
-                    'url'          => $this->storeLocatorHelper->getRetailerUrl($retailer),
+                    'id' => $retailer->getId(),
+                    'latitude' => $address->getCoordinates()->getLatitude(),
+                    'longitude' => $address->getCoordinates()->getLongitude(),
+                    'name' => $retailer->getName(),
+                    'address' => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
+                    'url' => $this->storeLocatorHelper->getRetailerUrl($retailer),
                     'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
                     'setStoreData' => $this->getSetStorePostData($retailer),
-                    'image'        => $image,
-                    'postCode'     => $address->getPostcode(),
-                    'city'         => $address->getCity(),
-                    'street'       => $address->getStreet(),
+                    'image' => $image,
+                    'postCode' => $address->getPostcode(),
+                    'city' => $address->getCity(),
+                    'street' => $address->getStreet(),
                 ];
                 Profiler::stop('SmileStoreLocator:STORES_DATA');
                 foreach ($attributes as $contactAttribute) {
-                    $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ? $retailer->getData($contactAttribute) : '';
+                    $markerData[$contactAttribute] = $retailer->getData($contactAttribute)
+                        ? $retailer->getData($contactAttribute)
+                        : '';
                 }
                 Profiler::start('SmileStoreLocator:STORES_SCHEDULE');
+
+                // phpcs:ignore Magento2.Performance.ForeachArrayMerge.ForeachArrayMerge
                 $markerData['schedule'] = array_merge(
                     $this->scheduleHelper->getConfig(),
                     [
-                        'calendar'            => $this->scheduleManager->getCalendar($retailer),
-                        'openingHours'        => $this->scheduleManager->getWeekOpeningHours($retailer),
+                        'calendar' => $this->scheduleManagement->getCalendar($retailer),
+                        'openingHours' => $this->scheduleManagement->getWeekOpeningHours($retailer),
                         'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
                     ]
                 );
@@ -236,9 +169,7 @@ class Search extends Template implements IdentityInterface
     }
 
     /**
-     * Return unique ID(s) for each object in system
-     *
-     * @return array|string[]
+     * @inheritdoc
      */
     public function getIdentities(): array
     {
@@ -246,17 +177,23 @@ class Search extends Template implements IdentityInterface
     }
 
     /**
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    protected function _prepareLayout(): void
+    protected function _prepareLayout()
     {
         parent::_prepareLayout();
 
-        if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
+        $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
+        if ($breadcrumbsBlock) {
             $siteHomeUrl = $this->getBaseUrl();
-            $breadcrumbsBlock->addCrumb('home', ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $siteHomeUrl]);
-            $breadcrumbsBlock->addCrumb('search', ['label' => __('Our stores'), 'title' => __('Our stores')]);
+            $breadcrumbsBlock->addCrumb(
+                'home',
+                ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $siteHomeUrl]
+            );
+            $breadcrumbsBlock->addCrumb(
+                'search',
+                ['label' => __('Our stores'), 'title' => __('Our stores')]
+            );
         }
 
         $this->pageConfig->getTitle()->set(__('Shop Search'));
@@ -265,14 +202,13 @@ class Search extends Template implements IdentityInterface
     /**
      * Collection of displayed retailers.
      *
-     * @return Collection
-     * @throws \Magento\Framework\Exception\LocalizedException
+     * @throws LocalizedException
      */
     private function getRetailerCollection(): Collection
     {
         $retailerCollection = $this->retailerCollectionFactory->create();
         $retailerCollection->addAttributeToSelect($this->attributesToSelect);
-        $retailerCollection->addFieldToFilter('is_active', (int) true);
+        $retailerCollection->addFieldToFilter('is_active', 1);
         $retailerCollection->addOrder('name', 'asc');
 
         return $retailerCollection;
@@ -280,10 +216,6 @@ class Search extends Template implements IdentityInterface
 
     /**
      * Get the JSON post data used to build the set store link.
-     *
-     * @param RetailerInterface $retailer The store
-     *
-     * @return array
      */
     private function getSetStorePostData(RetailerInterface $retailer): array
     {
@@ -294,13 +226,14 @@ class Search extends Template implements IdentityInterface
     }
 
     /**
-     * @return string
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
+     * Get base media url.
+     *
+     * @throws NoSuchEntityException
      */
     public function getImageUrl(): string
     {
         $currentStore = $this->_storeManager->getStore();
-        $mediaUrl = $currentStore->getBaseUrl(\Magento\Framework\UrlInterface::URL_TYPE_MEDIA);
-        return $mediaUrl;
+
+        return $currentStore->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
     }
 }

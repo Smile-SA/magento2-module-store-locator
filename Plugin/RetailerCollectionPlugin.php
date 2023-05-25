@@ -1,17 +1,8 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Plugin;
 
+use Closure;
 use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface;
 use Magento\Framework\Profiler;
@@ -22,70 +13,25 @@ use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Smile\StoreLocator\Model\Data\RetailerTimeSlotConverter;
 use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot as TimeSlotResource;
 
-/**
- * Retailer collection plugin.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
- */
 class RetailerCollectionPlugin
 {
-    /**
-     * @var JoinProcessorInterface
-     */
-    private JoinProcessorInterface $joinProcessor;
-
-    /**
-     * @var GeoPointInterfaceFactory
-     */
-    private GeoPointInterfaceFactory $geoPointFactory;
-
-    /**
-     * @var RetailerTimeSlotConverter
-     */
-    private RetailerTimeSlotConverter $timeSlotConverter;
-
-    /**
-     * @var TimeSlotResource
-     */
-    private TimeSlotResource $timeSlotResource;
-
-    /**
-     * Constructor.
-     *
-     * @param JoinProcessorInterface    $joinProcessor     Extension Attribute Join Processor
-     * @param GeoPointInterfaceFactory  $geoPointFactory   GeoPoint Factory
-     * @param RetailerTimeSlotConverter $timeSlotConverter Time Slots Converter
-     * @param TimeSlotResource          $timeSlotsResource Time Slots Resource
-     */
     public function __construct(
-        JoinProcessorInterface $joinProcessor,
-        GeoPointInterfaceFactory $geoPointFactory,
-        RetailerTimeSlotConverter $timeSlotConverter,
-        TimeSlotResource $timeSlotsResource
+        private JoinProcessorInterface $joinProcessor,
+        private GeoPointInterfaceFactory $geoPointFactory,
+        private RetailerTimeSlotConverter $timeSlotConverter,
+        private TimeSlotResource $timeSlotResource
     ) {
-        $this->joinProcessor     = $joinProcessor;
-        $this->geoPointFactory   = $geoPointFactory;
-        $this->timeSlotConverter = $timeSlotConverter;
-        $this->timeSlotResource  = $timeSlotsResource;
     }
 
     /**
      * Append address loading to the retailer collection.
+     *
      * @SuppressWarnings(PHPMD.BooleanArgumentFlag)
      * @SuppressWarnings(PHPMD.StaticAccess)
-     *
-     * @param RetailerCollection $collection Collection loaded.
-     * @param \Closure           $proceed    Original method.
-     * @param bool               $printQuery Print queries used to load the collection.
-     * @param bool               $logQuery   Log queries used to load the collection.
-     *
-     * @return RetailerCollection
      */
     public function aroundLoad(
         RetailerCollection $collection,
-        \Closure $proceed,
+        Closure $proceed,
         bool $printQuery = false,
         bool $logQuery = false
     ): RetailerCollection {
@@ -97,10 +43,10 @@ class RetailerCollectionPlugin
 
             $proceed($printQuery, $logQuery);
 
-            $ids                     = $collection->getAllIds();
-            $openingHoursData        = $this->timeSlotResource->getMultipleTimeSlots($ids, 'opening_hours');
+            $ids = $collection->getAllIds();
+            $openingHoursData = $this->timeSlotResource->getMultipleTimeSlots($ids, 'opening_hours');
             $specialOpeningHoursData = $this->timeSlotResource->getMultipleTimeSlots($ids, 'special_opening_hours');
-            $entityType              = get_class($collection->getNewEmptyItem());
+            $entityType = get_class($collection->getNewEmptyItem());
 
             /** @var RetailerInterface $currentItem */
             foreach ($collection->getItems() as $currentItem) {
@@ -112,12 +58,12 @@ class RetailerCollectionPlugin
 
                 if ($currentItem->getExtensionAttributes()->getAddress()) {
                     $currentItem->getExtensionAttributes()
-                                ->getAddress()
-                                ->setCoordinates(
-                                    $this->geoPointFactory->create(
-                                        $currentItem->getExtensionAttributes()->getAddress()->getData()
-                                    )
-                                );
+                        ->getAddress()
+                        ->setCoordinates(
+                            $this->geoPointFactory->create(
+                                $currentItem->getExtensionAttributes()->getAddress()->getData()
+                            )
+                        );
                 }
 
                 $currentItem->getExtensionAttributes()->setOpeningHours(

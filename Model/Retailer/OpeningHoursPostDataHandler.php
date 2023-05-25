@@ -1,77 +1,32 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Fanny DECLERCK <fadec@smile.fr>
- * @copyright 2019 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
 namespace Smile\StoreLocator\Model\Retailer;
 
-use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
+use Exception;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
 use Smile\Retailer\Model\Retailer\PostDataHandlerInterface;
+use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot;
 
 /**
- * Post Data Handler for Retailer Opening Hours
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
- * @author   Fanny DECLERCK <fadec@smile.fr>
+ * Post Data Handler for Retailer Opening Hours.
  */
 class OpeningHoursPostDataHandler implements PostDataHandlerInterface
 {
-    /**
-     * @var RetailerTimeSlotInterfaceFactory
-     */
-    private RetailerTimeSlotInterfaceFactory $timeSlotFactory;
-
-    /**
-     * @var JsonSerializer
-     */
-    private JsonSerializer $jsonSerializer;
-
-    /**
-     * @var RetailerRepositoryInterface
-     */
-    private RetailerRepositoryInterface $retailerRepository;
-
-    /**
-     * @var RetailerTimeSlot
-     */
-    private RetailerTimeSlot $retailerTimeSlot;
-
-    /**
-     * OpeningHoursPostDataHandler constructor.
-     *
-     * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory    Time Slot Factory
-     * @param JsonSerializer                   $jsonSerializer     JSON Serializer
-     * @param RetailerRepositoryInterface      $retailerRepository Retailer Repository Interface
-     * @param RetailerTimeSlot                 $retailerTimeSlot   Retailer Time Slot Resource Model
-     */
     public function __construct(
-        RetailerTimeSlotInterfaceFactory $timeSlotFactory,
-        JsonSerializer $jsonSerializer,
-        RetailerRepositoryInterface $retailerRepository,
-        RetailerTimeSlot $retailerTimeSlot
+        private RetailerTimeSlotInterfaceFactory $timeSlotFactory,
+        private JsonSerializer $jsonSerializer,
+        private RetailerRepositoryInterface $retailerRepository,
+        private RetailerTimeSlot $retailerTimeSlot
     ) {
-        $this->timeSlotFactory    = $timeSlotFactory;
-        $this->jsonSerializer     = $jsonSerializer;
-        $this->retailerRepository = $retailerRepository;
-        $this->retailerTimeSlot   = $retailerTimeSlot;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function getData(RetailerInterface $retailer, mixed $data): mixed
     {
@@ -82,7 +37,7 @@ class OpeningHoursPostDataHandler implements PostDataHandlerInterface
                 if (is_string($timeSlotList)) {
                     try {
                         $timeSlotList = $this->jsonSerializer->unserialize($timeSlotList);
-                    } catch (\Exception $exception) {
+                    } catch (Exception $exception) {
                         $timeSlotList = [];
                     }
                 }
@@ -115,11 +70,8 @@ class OpeningHoursPostDataHandler implements PostDataHandlerInterface
     /**
      * Update opening hours by seller ids.
      *
-     * @param array $data Data seller ids / Opening hours by days.
-     *
-     * @throws \Magento\Framework\Exception\CouldNotSaveException
-     * @throws \Magento\Framework\Exception\NoSuchEntityException
-     * @return void
+     * @throws CouldNotSaveException
+     * @throws NoSuchEntityException
      */
     private function updateOpeningHoursBySellerIds(array $data): void
     {
