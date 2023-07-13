@@ -7,7 +7,7 @@
     <a href="#"
        title="<?= $block->escapeHtml(__('Choose this store')) ?>"
        class="action-set-store"
-       data-post='<?php /* @escapeNotVerified */ echo $block->getSetStorePostJson() ?>'>
+       data-post='<?= /* @escapeNotVerified */ $block->escapeHtml($block->getSetStorePostJson()) ?>'>
        <span><?= $block->escapeHtml(__('Choose this store')) ?></span>
     </a>
 </div>

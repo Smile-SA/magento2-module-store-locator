@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Ui\Component\Retailer\Form;
 
 use Magento\Framework\Registry;
@@ -22,6 +24,9 @@ class DataProvider extends AbstractDataProvider
         array $meta = [],
         array $data = []
     ) {
+        // extends from \Magento\Eav\Model\Entity\Collection\AbstractCollection
+        // instead of \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+        // @phpstan-ignore-next-line - ignore for backward compatibility
         $this->collection = $collectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }

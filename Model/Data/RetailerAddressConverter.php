@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Data;
 
 use Magento\Framework\Api\SimpleDataObjectConverter;

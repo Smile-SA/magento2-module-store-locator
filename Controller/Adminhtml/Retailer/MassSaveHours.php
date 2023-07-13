@@ -1,14 +1,18 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Adminhtml\Retailer;
 
 use Magento\Backend\App\Action\Context;
 use Magento\Backend\Model\View\Result\Redirect;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\ResultFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Ui\Component\MassAction\Filter;
+use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\Data\RetailerInterfaceFactory;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
 use Smile\Retailer\Controller\Adminhtml\AbstractRetailer;
@@ -19,8 +23,11 @@ use Smile\StoreLocator\Model\Retailer\SpecialOpeningHoursPostDataHandler;
 /**
  * Retailer Adminhtml MassSaveHours controller.
  */
-class MassSaveHours extends AbstractRetailer
+class MassSaveHours extends AbstractRetailer implements HttpPostActionInterface
 {
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
     public function __construct(
         Context $context,
         PageFactory $resultPageFactory,
@@ -65,6 +72,7 @@ class MassSaveHours extends AbstractRetailer
 
         if (is_iterable($retailerIds)) {
             foreach ($retailerIds as $id) {
+                /** @var RetailerInterface $model */
                 $model = $this->retailerRepository->get($id);
 
                 $openingHours = $this->openingHoursHandler->getData($model, $data);

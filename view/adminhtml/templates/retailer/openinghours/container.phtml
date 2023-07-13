@@ -9,9 +9,11 @@ $fieldClass .= $element->getRequired() ? ' required' : '';
 $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId('form-field', $element->getId());
 ?>
 
-<div<?php /* @escapeNotVerified */ echo $fieldAttributes ?>>
+<div<?= /* @escapeNotVerified */ $fieldAttributes ?>>
     <div class="admin__field-tooltip">
-        <p class="note admin__field-tooltip-action"><?= __('Double-click on an opening hour range to delete it.') ?></p>
+        <p class="note admin__field-tooltip-action">
+            <?= /* @escapeNotVerified */ __('Double-click on an opening hour range to delete it.') ?>
+        </p>
     </div>
     <?= $block->getInputHtml() ?>
 </div>

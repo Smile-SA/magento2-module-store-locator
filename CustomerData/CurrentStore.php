@@ -1,18 +1,24 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\CustomerData;
 
 use Magento\Customer\CustomerData\SectionSourceInterface;
 use Magento\Customer\Model\Session;
 use Magento\Framework\App\Http\Context;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\NoSuchEntityException;
 use Smile\Map\Model\AddressFormatter;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
+use Smile\Seller\Api\Data\SellerInterface;
 use Smile\StoreLocator\Model\Url;
 
 /**
  * Current Store data.
+ *
+ * @SuppressWarnings(PHPMD.CookieAndSessionMisuse)
  */
 class CurrentStore implements SectionSourceInterface
 {
@@ -36,6 +42,7 @@ class CurrentStore implements SectionSourceInterface
     public function getSectionData()
     {
         $data = [];
+        /** @var DataObject|RetailerInterface $retailer */
         $retailer = $this->getRetailer();
 
         if ($retailer) {
@@ -55,7 +62,7 @@ class CurrentStore implements SectionSourceInterface
     /**
      * Get the current session retailer.
      */
-    public function getRetailer(): ?RetailerInterface
+    public function getRetailer(): ?SellerInterface
     {
         $retailer = null;
         $retailerId = $this->customerSession->getRetailerId();

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Exception;
@@ -56,7 +58,7 @@ class OpeningHoursPostDataHandler implements PostDataHandlerInterface
 
             // If not a single opening hour is saved, we delete existing entry for current retailer
             if (empty($openingHours) && isset($data['entity_id'])) {
-                $this->retailerTimeSlot->deleteByRetailerId($data['entity_id']);
+                $this->retailerTimeSlot->deleteByRetailerId((int) $data['entity_id']);
             }
 
             $data['opening_hours'] = $openingHours;

@@ -1,9 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
@@ -13,7 +16,7 @@ use Smile\Retailer\Api\RetailerRepositoryInterface;
 /**
  * Retailer view action (displays the retailer details page).
  */
-class View extends Action
+class View extends Action implements HttpGetActionInterface
 {
     public function __construct(
         Context $context,
@@ -32,7 +35,7 @@ class View extends Action
     public function execute()
     {
         $retailerId = $this->getRequest()->getParam('id');
-        $storeId = $this->storeManager->getStore()->getId();
+        $storeId = (int) $this->storeManager->getStore()->getId();
         $retailer = $this->retailerRepository->get($retailerId, $storeId);
 
         if (!$retailer->getId()) {

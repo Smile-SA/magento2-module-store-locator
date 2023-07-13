@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element;
 
 use DateTime;

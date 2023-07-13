@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block\View;
 
 use Magento\Framework\Locale\ListsInterface;
@@ -43,7 +45,7 @@ class OpeningHours extends AbstractView
             [
                 'calendar' => $this->scheduleManager->getCalendar($this->getRetailer()),
                 'openingHours' => $this->getWeekOpeningHours(),
-                'specialOpeningHours' => $this->getRetailer()->getSpecialOpeningHours(),
+                'specialOpeningHours' => $this->getRetailer()->getData('special_opening_hours'),
             ]
         );
 

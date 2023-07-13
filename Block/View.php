@@ -1,11 +1,16 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\DataObject\IdentityInterface;
 use Magento\Framework\Registry;
-use Magento\Framework\View\Element\BlockInterface;
+use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\Store;
+use Magento\Theme\Block\Html\Breadcrumbs;
+use Smile\Retailer\Model\Retailer;
 use Smile\StoreLocator\Helper\Data;
 
 /**
@@ -29,7 +34,9 @@ class View extends AbstractView implements IdentityInterface
     {
         $identities = [];
         if ($this->getRetailer()) {
-            $identities = $this->getRetailer()->getIdentities();
+            /** @var Retailer $retailer */
+            $retailer = $this->getRetailer();
+            $identities = $retailer->getIdentities();
         }
 
         return $identities;
@@ -58,14 +65,14 @@ class View extends AbstractView implements IdentityInterface
     {
         $retailer = $this->getRetailer();
 
-        /** @var BlockInterface $titleBlock */
+        /** @var AbstractBlock $titleBlock */
         $titleBlock = $this->getLayout()->getBlock('page.main.title');
 
         if ($titleBlock) {
             $titleBlock->setPageTitle($retailer->getName());
         }
 
-        $pageTitle = $retailer->getMetaTitle();
+        $pageTitle = $retailer->getData('meta_title');
         if (empty($pageTitle)) {
             $pageTitle = $retailer->getName();
         }
@@ -82,15 +89,15 @@ class View extends AbstractView implements IdentityInterface
     {
         $retailer = $this->getRetailer();
 
-        $keywords = $retailer->getMetaKeywords();
+        $keywords = $retailer->getData('meta_keywords');
         if ($keywords) {
-            $this->pageConfig->setKeywords($retailer->getMetaKeywords());
+            $this->pageConfig->setKeywords($retailer->getData('meta_keywords'));
         }
 
         // Set the page description.
-        $description = $retailer->getMetaDescription();
+        $description = $retailer->getData('meta_description');
         if ($description) {
-            $this->pageConfig->setDescription($retailer->getMetaDescription());
+            $this->pageConfig->setDescription($retailer->getData('meta_description'));
         }
 
         return $this;
@@ -101,10 +108,13 @@ class View extends AbstractView implements IdentityInterface
      */
     private function setBreadcrumbs(): self
     {
+        /** @var Breadcrumbs $breadcrumbsBlock */
         $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
         if ($breadcrumbsBlock) {
             $retailer = $this->getRetailer();
-            $homeUrl = $this->_storeManager->getStore()->getBaseUrl();
+            /** @var Store $currentStore */
+            $currentStore = $this->_storeManager->getStore();
+            $homeUrl = $currentStore->getBaseUrl();
             $storeLocatorHomeUrl = $this->storeLocatorHelper->getHomeUrl();
 
             $breadcrumbsBlock->addCrumb(

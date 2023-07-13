@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Observer;
 
 use Magento\Framework\App\CacheInterface;
@@ -8,7 +10,7 @@ use Magento\Framework\Event\Observer;
 use Magento\Framework\Event\ObserverInterface;
 use Magento\Framework\Indexer\CacheContext;
 use Magento\Framework\Indexer\CacheContextFactory;
-use Smile\Seller\Api\Data\SellerInterface;
+use Smile\Seller\Model\Seller;
 use Smile\StoreLocator\Block\Search;
 
 /**
@@ -28,7 +30,7 @@ class CleanStoreLocatorCache implements ObserverInterface
      */
     public function execute(Observer $observer)
     {
-        /** @var SellerInterface $seller */
+        /** @var Seller $seller */
         $seller = $observer->getEvent()->getSeller();
 
         if ($seller->hasDataChanges()) {

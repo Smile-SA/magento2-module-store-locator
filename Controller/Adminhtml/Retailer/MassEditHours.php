@@ -1,14 +1,17 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Adminhtml\Retailer;
 
 use Magento\Backend\Model\View\Result\Page;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Smile\Retailer\Controller\Adminhtml\AbstractRetailer;
 
 /**
  * Retailer Adminhtml MassEditHours controller.
  */
-class MassEditHours extends AbstractRetailer
+class MassEditHours extends AbstractRetailer implements HttpPostActionInterface
 {
     /**
      * @inheritdoc

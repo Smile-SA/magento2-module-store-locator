@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Exception;
@@ -19,6 +21,8 @@ use Smile\Retailer\Api\Data\RetailerInterface;
 
 /**
  * Store Contact Form model.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ContactForm
 {
@@ -61,7 +65,7 @@ class ContactForm
                 )
                 ->setTemplateVars(['data' => $postObject])
                 ->setFrom($this->scopeConfig->getValue(Index::XML_PATH_EMAIL_SENDER, $storeScope))
-                ->addTo($this->retailer->getContactMail())
+                ->addTo($this->retailer->getData('contact_mail'))
                 ->setReplyTo($this->dataObject->getData('email'))
                 ->getTransport();
 
@@ -100,7 +104,7 @@ class ContactForm
             $error = __('Unable to validate form');
         }
 
-        if (!$this->retailer->getId() || (!$this->retailer->getContactMail())) {
+        if (!$this->retailer->getId() || (!$this->retailer->getData('contact_mail'))) {
             $error = __('Unable to retrieve retailer informations');
         }
 

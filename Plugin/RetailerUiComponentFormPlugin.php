@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Plugin;
 
 use Magento\Ui\Component\Form;

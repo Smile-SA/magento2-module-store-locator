@@ -1,19 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
+use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
 use Smile\StoreLocator\Helper\Contact as ContactHelper;
 
 /**
  * Contact Form action for Shops.
  */
-class Contact extends Action
+class Contact extends Action implements HttpGetActionInterface
 {
     public function __construct(
         Context $context,
@@ -32,6 +36,7 @@ class Contact extends Action
     public function execute()
     {
         $retailerId = $this->getRequest()->getParam('id');
+        /** @var RetailerInterface $retailer */
         $retailer   = $this->retailerRepository->get($retailerId);
 
         if (!$retailer->getId() || !$this->contactHelper->canDisplayContactForm($retailer)) {

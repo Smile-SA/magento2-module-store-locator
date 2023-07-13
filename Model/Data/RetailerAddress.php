@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Data;
 
 use Smile\Map\Model\GeolocalizedAddress;
@@ -15,7 +17,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
      */
     public function getId(): int
     {
-        return $this->getData(self::ADDRESS_ID);
+        return (int) $this->getData(self::ADDRESS_ID);
     }
 
     /**
@@ -23,7 +25,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
      */
     public function getRetailerId(): int
     {
-        return $this->getData(self::RETAILER_ID);
+        return (int) $this->getData(self::RETAILER_ID);
     }
 
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use DateTime;
@@ -18,6 +20,8 @@ use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 
 /**
  * Post Data Handler for Retailer Opening Hours.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class SpecialOpeningHoursPostDataHandler implements PostDataHandlerInterface
 {

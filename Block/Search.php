@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block;
 
 use DateTime;
@@ -13,9 +15,12 @@ use Magento\Framework\Serialize\SerializerInterface;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\Store;
+use Magento\Theme\Block\Html\Breadcrumbs;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Api\MapProviderInterface;
 use Smile\Map\Model\AddressFormatter;
+use Smile\Retailer\Api\Data\RetailerExtensionInterface;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Model\ResourceModel\Retailer\Collection;
 use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory as RetailerCollectionFactory;
@@ -37,6 +42,9 @@ class Search extends Template implements IdentityInterface
     private CacheInterface $cacheInterface;
     private array $attributesToSelect;
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
     public function __construct(
         Context $context,
         MapProviderInterface $mapProvider,
@@ -110,11 +118,13 @@ class Search extends Template implements IdentityInterface
 
         if (!$markers) {
             Profiler::start('SmileStoreLocator:STORES');
-            /** @var RetailerInterface $retailer */
             $imageUrlRetailer = $this->getImageUrl() . 'seller/';
             $markers = [];
+            /** @var RetailerInterface $retailer */
             foreach ($collection as $retailer) {
-                $address = $retailer->getExtensionAttributes()->getAddress();
+                /** @var RetailerExtensionInterface $retailerExtensionAttr */
+                $retailerExtensionAttr = $retailer->getExtensionAttributes();
+                $address = $retailerExtensionAttr->getAddress();
                 Profiler::start('SmileStoreLocator:STORES_DATA');
                 $image = $retailer->getMediaPath() ? $imageUrlRetailer . $retailer->getMediaPath() : false;
                 $markerData = [
@@ -145,7 +155,7 @@ class Search extends Template implements IdentityInterface
                     [
                         'calendar' => $this->scheduleManagement->getCalendar($retailer),
                         'openingHours' => $this->scheduleManagement->getWeekOpeningHours($retailer),
-                        'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
+                        'specialOpeningHours' => $retailerExtensionAttr->getSpecialOpeningHours(),
                     ]
                 );
 
@@ -179,10 +189,11 @@ class Search extends Template implements IdentityInterface
     /**
      * @inheritdoc
      */
-    protected function _prepareLayout()
+    protected function _prepareLayout(): self
     {
         parent::_prepareLayout();
 
+        /** @var Breadcrumbs $breadcrumbsBlock */
         $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
         if ($breadcrumbsBlock) {
             $siteHomeUrl = $this->getBaseUrl();
@@ -197,6 +208,8 @@ class Search extends Template implements IdentityInterface
         }
 
         $this->pageConfig->getTitle()->set(__('Shop Search'));
+
+        return $this;
     }
 
     /**
@@ -232,6 +245,7 @@ class Search extends Template implements IdentityInterface
      */
     public function getImageUrl(): string
     {
+        /** @var Store $currentStore */
         $currentStore = $this->_storeManager->getStore();
 
         return $currentStore->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);

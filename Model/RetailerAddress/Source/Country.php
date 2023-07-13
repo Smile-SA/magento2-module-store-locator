@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\RetailerAddress\Source;
 
 use Magento\Directory\Model\ResourceModel\Country\CollectionFactory as CountryCollectionFactory;

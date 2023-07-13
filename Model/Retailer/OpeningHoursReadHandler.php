@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Magento\Framework\EntityManager\Operation\ExtensionInterface;
@@ -23,7 +25,7 @@ class OpeningHoursReadHandler implements ExtensionInterface
      */
     public function execute($entity, $arguments = [])
     {
-        $timeSlots = $this->resource->getTimeSlots($entity->getId(), 'opening_hours');
+        $timeSlots = $this->resource->getTimeSlots((int) $entity->getId(), 'opening_hours');
 
         $openingHours = $this->converter->toEntity($timeSlots, RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD);
 

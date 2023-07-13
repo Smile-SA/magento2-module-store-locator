@@ -16,11 +16,11 @@ $storeName = $block->getStoreName();
         <div class="header">
             <div class="image-wrapper-header">
                 <?php if ($image): ?>
-                    <img src="<?= $image ?>"/>
+                    <img src="<?= $block->escapeHtml($image) ?>"/>
                 <?php endif ?>
             </div>
             <div class="store-name">
-                <h2><?= $storeName ?></h2>
+                <h2><?= $block->escapeHtml($storeName) ?></h2>
             </div>
             <div data-bind="template: storeDetailsWrap"></div>
             <div class="address-info">
@@ -28,43 +28,51 @@ $storeName = $block->getStoreName();
                    <?= $block->getAddressHtml() ?>
                 </div>
                 <div itemscope itemprop="address" itemtype="http://schema.org/PostalAddress">
-                    <meta itemprop="streetAddress" content="<?= $block->escapeHtml(implode(' ', $block->getAddress()->getStreet())) ?>"/>
-                    <meta itemprop="postalCode" content="<?= $block->escapeHtml($block->getAddress()->getPostcode()) ?>"/>
-                    <meta itemprop="addressLocality" content="<?= $block->escapeHtml($block->getAddress()->getCity()) ?>"/>
-                    <meta itemprop="addressCountry" content="<?= $block->escapeHtml($block->getAddress()->getCountryId()) ?>"/>
+                    <meta itemprop="streetAddress"
+                          content="<?= $block->escapeHtml(implode(' ', $block->getAddress()->getStreet())) ?>"/>
+                    <meta itemprop="postalCode"
+                          content="<?= $block->escapeHtml($block->getAddress()->getPostcode()) ?>"/>
+                    <meta itemprop="addressLocality"
+                          content="<?= $block->escapeHtml($block->getAddress()->getCity()) ?>"/>
+                    <meta itemprop="addressCountry"
+                          content="<?= $block->escapeHtml($block->getAddress()->getCountryId()) ?>"/>
                 </div>
                 <div itemscope itemprop="geo" itemtype="http://schema.org/GeoCoordinates">
-                    <meta itemprop="latitude" content="<?= $block->escapeHtml($block->getAddress()->getCoordinates()->getLatitude()) ?>"/>
-                    <meta itemprop="longitude" content="<?= $block->escapeHtml($block->getAddress()->getCoordinates()->getLongitude()) ?>"/>
+                    <meta itemprop="latitude"
+                          content="<?= $block->escapeHtml($block->getAddress()->getCoordinates()->getLatitude()) ?>"/>
+                    <meta itemprop="longitude"
+                          content="<?= $block->escapeHtml($block->getAddress()->getCoordinates()->getLongitude()) ?>"/>
                 </div>
             </div>
             <?php if ($phone || $mail): ?>
                 <div class="contact-information">
                     <?php if ($phone): ?>
                         <div class="contact-information-phone">
-                            <span class="contact-information-label"><?= __('Tel') ?>. :</span>
-                            <span class="contact-information-value"><?= $phone ?></span>
+                            <span class="contact-information-label"><?= $block->escapeHtml(__('Tel')) ?>. :</span>
+                            <span class="contact-information-value"><?= $block->escapeHtml($phone) ?></span>
                         </div>
                     <?php endif ?>
                     <?php if ($mail): ?>
                         <div class="contact-information-mail">
                             <span class="contact-information-label">E-mail. :</span>
-                            <span class="contact-information-value"><?= $mail ?></span>
+                            <span class="contact-information-value"><?= $block->escapeHtml($mail) ?></span>
                         </div>
                     <?php endif ?>
                 </div>
             <?php endif ?>
             <div class="btn-wrapper">
                 <div class="directions">
-                    <a target="_blank" class="directions-btn" href="<?= $block->getDirectionUrl() ?>">
+                    <a target="_blank" class="directions-btn"
+                       href="<?= $block->escapeHtml($block->getDirectionUrl()) ?>">
                         <span class="directions-btn-icon"></span>
-                        <span><?= __('Go there') ?></span>
+                        <span><?= $block->escapeHtml(__('Go there')) ?></span>
                     </a>
                 </div>
 
                 <?= /** @noEscape */$block->getChildHtml('setstorelink') ?>
 
-                <a class= "back-to-result-btn" href="<?= $block->getStoreListUrl() ?>"><?= __('Back to results'); ?></a>
+                <a class= "back-to-result-btn" href="<?= $block->escapeHtml($block->getStoreListUrl()) ?>"
+                ><?= $block->escapeHtml(__('Back to results')); ?></a>
             </div>
         </div>
     </div>

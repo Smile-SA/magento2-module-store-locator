@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\ResourceModel;
 
 use Magento\Framework\DB\Select;

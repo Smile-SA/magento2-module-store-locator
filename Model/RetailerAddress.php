@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model;
 
 use Magento\Framework\Data\Collection\AbstractDb;

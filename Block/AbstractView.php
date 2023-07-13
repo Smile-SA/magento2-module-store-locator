@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\Registry;
@@ -14,11 +16,10 @@ class AbstractView extends Template
 {
     public function __construct(
         Context $context,
-        Registry $coreRegistry,
+        protected Registry $coreRegistry,
         array $data = []
     ) {
         parent::__construct($context, $data);
-        $this->coreRegistry = $coreRegistry;
     }
 
     /**

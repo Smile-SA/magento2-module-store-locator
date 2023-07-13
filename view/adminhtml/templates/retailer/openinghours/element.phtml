@@ -9,10 +9,10 @@ $fieldClass .= $element->getRequired() ? ' required' : '';
 $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId('form-field', $element->getId());
 ?>
 
-<div<?php /* @escapeNotVerified */ echo $fieldAttributes ?>>
+<div<?= /* @escapeNotVerified */ $fieldAttributes ?>>
     <?= $element->getLabelHtml() ?><span class="opening-hours-day" id="<?= $block->getHtmlId() ?>-label"></span>
     <?php $inputId = 'opening_hours_field_' . $block->getHtmlId() ?>
-    <div id ="<?= $inputId ?>" class="opening-hours-container">
+    <div id ="<?= $block->escapeHtml($inputId) ?>" class="opening-hours-container">
         <div class="opening-hours-indicator"></div>
         <div class="opening-hours-rangebar"></div>
         <?= $block->getInputHtml() ?>
@@ -26,7 +26,7 @@ $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId(
             /**
              * This component is the main timepicker for opening hours
              */
-            $("#<?= $inputId ?> .opening-hours-rangebar").openingHours({
+            $("#<?= $block->escapeHtml($inputId) ?> .opening-hours-rangebar").openingHours({
                 values: $("#<?= $block->getHtmlId() ?>").val(),
                 summary: $("#<?= $block->getHtmlId() ?>-label"),
                 updateSummary: true,
@@ -36,7 +36,7 @@ $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId(
             /**
              * This component is a read-only one, made to display the time indicator
              */
-            $("#<?= $inputId ?> .opening-hours-indicator").openingHours({
+            $("#<?= $block->escapeHtml($inputId) ?> .opening-hours-indicator").openingHours({
                 values: [
                     [moment().startOf("day").format("LLLL")],
                     [moment().startOf("day").add(3, "hours").format("LLLL")],

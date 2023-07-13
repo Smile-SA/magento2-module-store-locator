@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Helper;
 
 use Magento\Framework\App\Helper\AbstractHelper;
@@ -42,7 +44,7 @@ class Schedule extends AbstractHelper
     /**
      * Retrieve current locale.
      */
-    private function getLocale(): ?string
+    private function getLocale(): string
     {
         return $this->localeResolver->getLocale();
     }

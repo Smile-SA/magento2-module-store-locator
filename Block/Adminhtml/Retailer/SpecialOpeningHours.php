@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer;
 
 use Magento\Backend\Block\AbstractBlock;
 use Magento\Backend\Block\Context;
 use Magento\Framework\Data\Form;
+use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\FormFactory;
 use Magento\Framework\Registry;
 use Smile\Retailer\Api\Data\RetailerInterface;
@@ -57,10 +60,11 @@ class SpecialOpeningHours extends AbstractBlock
             ]
         );
 
-        if ($this->getRetailer() && $this->getRetailer()->getSpecialOpeningHours()) {
-            $openingHoursFieldset->setSpecialOpeningHours($this->getRetailer()->getSpecialOpeningHours());
+        if ($this->getRetailer() && $this->getRetailer()->getData('special_opening_hours')) {
+            $openingHoursFieldset->setSpecialOpeningHours($this->getRetailer()->getData('special_opening_hours'));
         }
 
+        /** @var Renderer|AbstractElement $openingHoursRenderer */
         $openingHoursRenderer = $this->getLayout()->createBlock(Renderer::class);
         $openingHoursFieldset->setRenderer($openingHoursRenderer->setForm($form));
 

@@ -1,15 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block\View;
 
 use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\Store;
 use Smile\Map\Api\Data\GeoPointInterface;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Api\MapProviderInterface;
 use Smile\Map\Model\AddressFormatter;
+use Smile\Retailer\Api\Data\RetailerExtensionInterface;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Model\ResourceModel\Retailer\Collection as RetailerCollection;
 use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory as RetailerCollectionFactory;
@@ -21,11 +25,16 @@ use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
 
 /**
  * Map rendering block.
+ *
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class Map extends AbstractView
 {
     private MapInterface $map;
 
+    /**
+     * @SuppressWarnings(PHPMD.ExcessiveParameterList)
+     */
     public function __construct(
         Context $context,
         Registry $coreRegistry,
@@ -35,6 +44,7 @@ class Map extends AbstractView
         private Schedule $scheduleHelper,
         private ScheduleManagement $scheduleManagement,
         private RetailerCollectionFactory $retailerCollectionFactory,
+        private UrlInterface $urlBuilder,
         array $data = []
     ) {
         parent::__construct($context, $coreRegistry, $data);
@@ -46,7 +56,7 @@ class Map extends AbstractView
      */
     public function getAddress(): ?RetailerAddressInterface
     {
-        return $this->getRetailer()->getAddress();
+        return $this->getRetailer()->getData('address');
     }
 
     /**
@@ -54,7 +64,7 @@ class Map extends AbstractView
      */
     public function getId(): ?int
     {
-        return $this->getRetailer()->getId();
+        return (int) $this->getRetailer()->getId();
     }
 
     /**
@@ -98,6 +108,8 @@ class Map extends AbstractView
         $imageUrlRetailer = $this->getImageUrl() . 'seller/';
         $image = $mediaPath ? $imageUrlRetailer . $mediaPath : false;
         $retailer = $this->getRetailer();
+        /** @var RetailerExtensionInterface $retailerExtensionAttr */
+        $retailerExtensionAttr = $retailer->getExtensionAttributes();
 
         $storeMarkerData = [
             'latitude'  => $this->getCoordinates()->getLatitude(),
@@ -113,7 +125,7 @@ class Map extends AbstractView
             [
                 'calendar' => $this->scheduleManagement->getCalendar($retailer),
                 'openingHours' => $this->scheduleManagement->getWeekOpeningHours($retailer),
-                'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
+                'specialOpeningHours' => $retailerExtensionAttr->getSpecialOpeningHours(),
             ]
         );
 
@@ -153,7 +165,7 @@ class Map extends AbstractView
      */
     public function getDescription(): ?string
     {
-        return $this->getRetailer()->getDescription();
+        return $this->getRetailer()->getData('description');
     }
 
     /**
@@ -163,6 +175,7 @@ class Map extends AbstractView
      */
     public function getImageUrl(): string
     {
+        /** @var Store $currentStore */
         $currentStore = $this->_storeManager->getStore();
 
         return $currentStore->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
@@ -200,7 +213,7 @@ class Map extends AbstractView
      */
     public function getPhone(): string|bool
     {
-        return $this->getRetailer()->getContactPhone() ?: false;
+        return $this->getRetailer()->getData('contact_phone') ?: false;
     }
 
     /**
@@ -208,7 +221,7 @@ class Map extends AbstractView
      */
     public function getContactMail(): string|bool
     {
-        return $this->getRetailer()->getContactMail() ?: false;
+        return $this->getRetailer()->getData('contact_mail') ?: false;
     }
 
     /**
@@ -230,44 +243,55 @@ class Map extends AbstractView
     public function collectionFull(): ?array
     {
         $collection = $this->getAllMarkers();
-        $markers  = null;
+        $imageUrlRetailer = $this->getImageUrl() . 'seller/';
+        $markers  = [];
 
-        if (!$markers) {
-            /** @var RetailerInterface $retailer */
-            $imageUrlRetailer = $this->getImageUrl() . 'seller/';
-            foreach ($collection as $retailer) {
-                $address = $retailer->getExtensionAttributes()->getAddress();
-                $image = $retailer->getMediaPath() ? $imageUrlRetailer . $retailer->getMediaPath() : false;
-                $markerData = [
-                    'id' => $retailer->getId(),
-                    'latitude' => $address->getCoordinates()->getLatitude(),
-                    'longitude' => $address->getCoordinates()->getLongitude(),
-                    'name' => $retailer->getName(),
-                    'address' => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
-                    'url' => $this->storeLocatorHelper->getRetailerUrl($retailer),
-                    'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
-                    'setStoreData' => $this->getSetStorePostData($retailer),
-                    'image' => $image,
-                ];
+        /** @var RetailerInterface $retailer */
+        foreach ($collection as $retailer) {
+            /** @var RetailerExtensionInterface $retailerExtensionAttr */
+            $retailerExtensionAttr = $retailer->getExtensionAttributes();
+            $address = $retailerExtensionAttr->getAddress();
+            $image = $retailer->getMediaPath() ? $imageUrlRetailer . $retailer->getMediaPath() : false;
+            $markerData = [
+                'id' => $retailer->getId(),
+                'latitude' => $address->getCoordinates()->getLatitude(),
+                'longitude' => $address->getCoordinates()->getLongitude(),
+                'name' => $retailer->getName(),
+                'address' => $this->addressFormatter->formatAddress($address, AddressFormatter::FORMAT_ONELINE),
+                'url' => $this->storeLocatorHelper->getRetailerUrl($retailer),
+                'directionUrl' => $this->map->getDirectionUrl($address->getCoordinates()),
+                'setStoreData' => $this->getSetStorePostData($retailer),
+                'image' => $image,
+            ];
 
-                foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
-                    $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ?: '';
-                }
-
-                //phpcs:ignore Magento2.Performance.ForeachArrayMerge.ForeachArrayMerge
-                $markerData['schedule'] = array_merge(
-                    $this->scheduleHelper->getConfig(),
-                    [
-                        'calendar' => $this->scheduleManagement->getCalendar($retailer),
-                        'openingHours' => $this->scheduleManagement->getWeekOpeningHours($retailer),
-                        'specialOpeningHours' => $retailer->getExtensionAttributes()->getSpecialOpeningHours(),
-                    ]
-                );
-
-                $markers[] = $markerData;
+            foreach (['contact_mail', 'contact_phone', 'contact_mail'] as $contactAttribute) {
+                $markerData[$contactAttribute] = $retailer->getData($contactAttribute) ?: '';
             }
+
+            //phpcs:ignore Magento2.Performance.ForeachArrayMerge.ForeachArrayMerge
+            $markerData['schedule'] = array_merge(
+                $this->scheduleHelper->getConfig(),
+                [
+                    'calendar' => $this->scheduleManagement->getCalendar($retailer),
+                    'openingHours' => $this->scheduleManagement->getWeekOpeningHours($retailer),
+                    'specialOpeningHours' => $retailerExtensionAttr->getSpecialOpeningHours(),
+                ]
+            );
+
+            $markers[] = $markerData;
         }
 
         return $markers;
+    }
+
+    /**
+     * Get the JSON post data used to build the set store link.
+     */
+    private function getSetStorePostData(RetailerInterface $retailer): array
+    {
+        $setUrl   = $this->urlBuilder->getUrl('storelocator/store/set', ['_secure' => true]);
+        $postData = ['id' => $retailer->getId()];
+
+        return ['action' => $setUrl, 'data' => $postData];
     }
 }

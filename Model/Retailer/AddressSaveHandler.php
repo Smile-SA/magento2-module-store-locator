@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Magento\Framework\EntityManager\Operation\ExtensionInterface;
@@ -26,7 +28,7 @@ class AddressSaveHandler implements ExtensionInterface
     public function execute($entity, $arguments = [])
     {
         $addressEntity = $entity->getAddress();
-        $addressEntity->setRetailerId($entity->getId());
+        $addressEntity->setRetailerId((int) $entity->getId());
 
         $addressModel  = $this->modelFactory->create();
         $this->resource->load($addressModel, $entity->getId(), RetailerAddressInterface::RETAILER_ID);

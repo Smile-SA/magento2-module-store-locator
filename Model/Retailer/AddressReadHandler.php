@@ -1,8 +1,12 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Magento\Framework\EntityManager\Operation\ExtensionInterface;
+use Smile\Retailer\Api\Data\RetailerExtensionInterface;
+use Smile\Retailer\Model\Retailer;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Model\Data\RetailerAddressConverter as Converter;
 use Smile\StoreLocator\Model\ResourceModel\RetailerAddress as ResourceModel;
@@ -25,15 +29,17 @@ class AddressReadHandler implements ExtensionInterface
      */
     public function execute($entity, $arguments = [])
     {
-        /** @var $entity \Smile\Retailer\Model\Retailer */
+        /** @var Retailer $entity */
         $addressModel = $this->modelFactory->create();
-        $addressModel->setRetailerId($entity->getId());
+        $addressModel->setRetailerId((int) $entity->getId());
 
         $this->resource->load($addressModel, $entity->getId(), RetailerAddressInterface::RETAILER_ID);
 
         $addressEntity = $this->converter->toEntity($addressModel);
 
-        $entity->getExtensionAttributes()->setAddress($addressEntity);
+        /** @var RetailerExtensionInterface $entityExtensionAttr */
+        $entityExtensionAttr = $entity->getExtensionAttributes();
+        $entityExtensionAttr->setAddress($addressEntity);
         $entity->setAddress($addressEntity);
 
         return $entity;

@@ -1,14 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Plugin;
 
 use Closure;
 use Magento\Framework\Api\ExtensibleDataInterface;
 use Magento\Framework\Api\ExtensionAttribute\JoinProcessorInterface;
+use Magento\Framework\DataObject;
 use Magento\Framework\Profiler;
 use Smile\Map\Api\Data\GeoPointInterfaceFactory;
+use Smile\Retailer\Api\Data\RetailerExtensionInterface;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Model\ResourceModel\Retailer\Collection as RetailerCollection;
+use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Smile\StoreLocator\Model\Data\RetailerTimeSlotConverter;
 use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot as TimeSlotResource;
@@ -56,17 +61,19 @@ class RetailerCollectionPlugin
                     $currentItem->setExtensionAttributes($data[ExtensibleDataInterface::EXTENSION_ATTRIBUTES_KEY]);
                 }
 
-                if ($currentItem->getExtensionAttributes()->getAddress()) {
-                    $currentItem->getExtensionAttributes()
-                        ->getAddress()
-                        ->setCoordinates(
+                /** @var RetailerExtensionInterface $currentItemExtensionAttr */
+                $currentItemExtensionAttr = $currentItem->getExtensionAttributes();
+                /** @var DataObject|RetailerAddressInterface $address */
+                $address = $currentItemExtensionAttr->getAddress();
+                if ($address) {
+                    $address->setCoordinates(
                             $this->geoPointFactory->create(
-                                $currentItem->getExtensionAttributes()->getAddress()->getData()
+                                $address->getData()
                             )
                         );
                 }
 
-                $currentItem->getExtensionAttributes()->setOpeningHours(
+                $currentItemExtensionAttr->setOpeningHours(
                     $this->timeSlotConverter->toEntity(
                         $openingHoursData[$currentItem->getId()],
                         RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD
@@ -78,7 +85,7 @@ class RetailerCollectionPlugin
                     RetailerTimeSlotInterface::DATE_FIELD
                 );
                 ksort($specialOpeningHours);
-                $currentItem->getExtensionAttributes()->setSpecialOpeningHours($specialOpeningHours);
+                $currentItemExtensionAttr->setSpecialOpeningHours($specialOpeningHours);
             }
             Profiler::stop('SmileStoreLocator:EXTENSIONS_ATTRIBUTES');
         }

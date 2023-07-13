@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Container;
 
 use Magento\Backend\Block\Template;
@@ -76,6 +78,7 @@ class Renderer extends Template implements RendererInterface
             $input = $this->elementFactory->create('text');
             $input->setForm($this->getElement()->getForm());
 
+            /** @var ElementRenderer $elementRenderer */
             $elementRenderer = $this->getLayout()->createBlock(ElementRenderer::class);
             $elementRenderer->setDateFormat(DateTime::DATETIME_INTERNAL_FORMAT);
 

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\SpecialOpeningHours\Container;
 
 use DateTime;
@@ -7,10 +9,8 @@ use Magento\Backend\Block\Template\Context;
 use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 use Magento\Framework\Data\Form\Element\AbstractElement;
 use Magento\Framework\Data\Form\Element\Factory as FormElementFactory;
-use Magento\Framework\Locale\Resolver;
 use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
 use Magento\Framework\Stdlib\DateTime as MagentoDateTime;
-use Magento\Framework\Stdlib\DateTime\TimezoneInterface;
 use Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element\Renderer as ElementRenderer;
 
 /**
@@ -24,8 +24,6 @@ class Renderer extends AbstractFieldArray
         Context $context,
         private FormElementFactory $elementFactory,
         private JsonSerializer $jsonSerializer,
-        private Resolver $localeResolver,
-        private TimezoneInterface $localeDate,
         array $data = []
     ) {
 
@@ -132,9 +130,9 @@ class Renderer extends AbstractFieldArray
         $input = $this->elementFactory->create('text');
         $input->setForm($this->getElement()->getForm());
 
-        $elementRenderer = $this->getLayout()
-            ->createBlock(ElementRenderer::class)
-            ->setData('input_id', $this->_getCellInputElementId('<%- _id %>', $columnName));
+        /** @var ElementRenderer $elementRenderer */
+        $elementRenderer = $this->getLayout()->createBlock(ElementRenderer::class);
+        $elementRenderer->setData('input_id', $this->_getCellInputElementId('<%- _id %>', $columnName));
 
         $input->setName($this->_getCellInputElementName($columnName));
         $input->setRenderer($elementRenderer);

@@ -32,27 +32,36 @@
                     <p data-bind="html: getStoreAddress()" class="store-address"></p>
                     <div class="actions">
                         <div class="primary">
-                            <a data-bind="attr: {href: getStoreUrl()}" class="action primary secondary"><span data-bind="i18n: '<?= __('View Shop Page') ?>'"></span></a>
+                            <a data-bind="attr: {href: getStoreUrl()}" class="action primary secondary">
+                                <span data-bind="i18n: '<?= $block->escapeHtml(__('View Shop Page')) ?>'"></span>
+                            </a>
                         </div>
                     </div>
                 </div>
             </div>
-            <form action="<?= $block->getStoreLocatorHomeUrl() ?>" data-bind="submit: onSubmit">
+            <form action="<?= $block->escapeHtml($block->getStoreLocatorHomeUrl()) ?>" data-bind="submit: onSubmit">
                 <div class="store-search">
                     <div class="geolocalize-container" data-bind="scope: requestChild('geocoder')">
                         <div class="primary" data-bind="afterRender: initGeocoder">
-                            <a data-bind="click:$parent.geolocalize.bind($parent)" class="action primary geolocalize" title="<?= $block->escapeHtml(__('Geolocalize me')) ?>">
-                                <span><?= __('Geolocalize me') ?></span>
+                            <a data-bind="click:$parent.geolocalize.bind($parent)"
+                               class="action primary geolocalize"
+                               title="<?= $block->escapeHtml(__('Geolocalize me')) ?>"
+                            >
+                                <span><?= $block->escapeHtml(__('Geolocalize me')) ?></span>
                             </a>
                         </div>
                     </div>
                     <div class="store-search-form">
                         <div class="field">
-                            <input data-bind="{ value: fulltextSearch }" type="text" name="query" placeholder="<?= $block->escapeHtml(__('City, Zipcode, Department, ...')) ?>"/>
+                            <input data-bind="{ value: fulltextSearch }" type="text" name="query"
+                                   placeholder="<?= $block->escapeHtml(__('City, Zipcode, Department, ...')) ?>"
+                            />
                         </div>
                         <div class="actions">
                             <div class="primary">
-                                <button type="submit" class="action primary"><span data-bind="text: '<?= __('Search') ?>'"></span></button>
+                                <button type="submit" class="action primary">
+                                    <span data-bind="text: '<?= $block->escapeHtml(__('Search')) ?>'"></span>
+                                </button>
                             </div>
                         </div>
                     </div>

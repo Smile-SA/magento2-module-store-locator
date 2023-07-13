@@ -1,10 +1,15 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Registry;
+use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\Store;
+use Magento\Theme\Block\Html\Breadcrumbs;
 use Smile\StoreLocator\Helper\Data as StoreLocatorHelper;
 
 /**
@@ -73,6 +78,7 @@ class ContactForm extends AbstractView
     {
         $retailer = $this->getRetailer();
 
+        /** @var AbstractBlock $titleBlock */
         $titleBlock = $this->getLayout()->getBlock('page.main.title');
 
         if ($titleBlock) {
@@ -89,11 +95,14 @@ class ContactForm extends AbstractView
      */
     private function setBreadcrumbs(): self
     {
+        /** @var Breadcrumbs $breadcrumbsBlock */
         $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
 
         if ($breadcrumbsBlock) {
             $retailer = $this->getRetailer();
-            $homeUrl = $this->_storeManager->getStore()->getBaseUrl();
+            /** @var Store $currentStore */
+            $currentStore = $this->_storeManager->getStore();
+            $homeUrl = $currentStore->getBaseUrl();
             $storeLocatorHomeUrl = $this->storeLocatorHelper->getHomeUrl();
             $storeUrl = $this->storeLocatorHelper->getRetailerUrl($retailer);
 

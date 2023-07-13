@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model;
 
 use Magento\Framework\App\Config\ScopeConfigInterface;
@@ -31,9 +33,9 @@ class Url
      */
     public function getUrlKey(RetailerInterface $retailer): ?string
     {
-        $urlKey = !empty($retailer->getUrlKey()) ? $retailer->getUrlKey() : $retailer->getName();
+        $urlKey = $retailer->getData('url_key') ?: $retailer->getName();
 
-        return $urlKey !== null ? $this->filter->translitUrl($urlKey) : null;
+        return $this->filter->translitUrl($urlKey) ?: null;
     }
 
     /**
@@ -41,7 +43,11 @@ class Url
      */
     public function getUrl(RetailerInterface $retailer): string
     {
-        $url = sprintf("%s/%s", $this->getRequestPathPrefix($retailer->getStoreId()), $this->getUrlKey($retailer));
+        $url = sprintf(
+            "%s/%s",
+            $this->getRequestPathPrefix($retailer->getData('store_id')),
+            $this->getUrlKey($retailer)
+        );
 
         return $this->urlBuilder->getUrl(null, ['_direct' => $url]);
     }

@@ -1,13 +1,20 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Store;
 
 use Exception;
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpPostActionInterface;
 use Magento\Framework\App\Request\DataPersistorInterface;
+use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\HTTP\PhpEnvironment\Request;
 use Magento\Store\Model\StoreManagerInterface;
+use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
 use Smile\StoreLocator\Helper\Contact as ContactHelper;
 use Smile\StoreLocator\Model\Retailer\ContactFormFactory;
@@ -15,7 +22,7 @@ use Smile\StoreLocator\Model\Retailer\ContactFormFactory;
 /**
  * Store Contact form submit.
  */
-class ContactPost extends Action
+class ContactPost extends Action implements HttpPostActionInterface
 {
     public function __construct(
         Context $context,
@@ -32,11 +39,15 @@ class ContactPost extends Action
     /**
      * @inheritdoc
      */
-    public function execute()
+    public function execute(): ResponseInterface|ResultInterface|null
     {
-        $postData   = $this->getRequest()->getPostValue();
-        $retailerId = $this->getRequest()->getParam('id');
-        $retailer   = $this->retailerRepository->get($retailerId, $this->storeManager->getStore()->getId());
+        /** @var Request $request */
+        $request    = $this->getRequest();
+        $postData   = $request->getPostValue();
+        $retailerId = $request->getParam('id');
+        $storeId    = (int) $this->storeManager->getStore()->getId();
+        /** @var RetailerInterface $retailer */
+        $retailer   = $this->retailerRepository->get($retailerId, $storeId);
 
         if (!$retailer->getId() || !$this->contactHelper->canDisplayContactForm($retailer)) {
             $resultForward = $this->forwardFactory->create();

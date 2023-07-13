@@ -1,16 +1,19 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Smile\StoreLocator\Api\LocatorInterface;
+use Smile\Seller\Model\Locator\LocatorInterface;
 
 /**
  * Search action (displays the search page).
  */
-class Search extends Action
+class Search extends Action implements HttpGetActionInterface
 {
     protected LocatorInterface $retailerLocator;
 

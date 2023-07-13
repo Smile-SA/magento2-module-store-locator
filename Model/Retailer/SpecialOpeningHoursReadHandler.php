@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Magento\Framework\EntityManager\Operation\ExtensionInterface;
@@ -23,7 +25,7 @@ class SpecialOpeningHoursReadHandler implements ExtensionInterface
      */
     public function execute($entity, $arguments = [])
     {
-        $timeSlots = $this->resource->getTimeSlots($entity->getId(), 'special_opening_hours');
+        $timeSlots = $this->resource->getTimeSlots((int) $entity->getId(), 'special_opening_hours');
 
         $openingHours = $this->converter->toEntity($timeSlots, RetailerTimeSlotInterface::DATE_FIELD);
 

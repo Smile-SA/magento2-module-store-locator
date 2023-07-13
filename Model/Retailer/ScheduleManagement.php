@@ -1,10 +1,13 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use DateInterval;
 use DateTime;
 use Magento\Framework\Locale\ListsInterface;
+use Smile\Retailer\Api\Data\RetailerExtensionInterface;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 
@@ -39,8 +42,10 @@ class ScheduleManagement
         $dayOfWeek = $dateTime->format('w');
         $date = $dateTime->format('Y-m-d');
 
-        $openingHours = $retailer->getExtensionAttributes()->getOpeningHours();
-        $specialOpeningHours = $retailer->getExtensionAttributes()->getSpecialOpeningHours();
+        /** @var RetailerExtensionInterface $retailerExtensionAttr */
+        $retailerExtensionAttr = $retailer->getExtensionAttributes();
+        $openingHours = $retailerExtensionAttr->getOpeningHours();
+        $specialOpeningHours = $retailerExtensionAttr->getSpecialOpeningHours();
 
         if (isset($openingHours[$dayOfWeek])) {
             $dayOpening = $openingHours[$dayOfWeek];
@@ -85,7 +90,9 @@ class ScheduleManagement
             $openingHours[$day] = [];
         }
 
-        foreach ($retailer->getExtensionAttributes()->getOpeningHours() as $day => $hours) {
+        /** @var RetailerExtensionInterface $retailerExtensionAttr */
+        $retailerExtensionAttr = $retailer->getExtensionAttributes();
+        foreach ($retailerExtensionAttr->getOpeningHours() as $day => $hours) {
             $openingHours[$day] = $hours;
         }
 

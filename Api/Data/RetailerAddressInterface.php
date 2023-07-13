@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Api\Data;
 
 use Smile\Map\Api\Data\GeolocalizedAddressInterface;

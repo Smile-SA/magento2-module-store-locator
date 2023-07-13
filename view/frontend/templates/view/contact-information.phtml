@@ -5,13 +5,13 @@
 <?php if ($block->hasContactInformation()): ?>
     <div class="contact-info">
         <div class="contact-info-wrapper">
-            <h3><?= __("Contact") ?></h3>
+            <h3><?= $block->escapeHtml(__('Contact')) ?></h3>
             <table>
                 <tbody>
                 <?php if ($block->getRetailer()->getContactPhone()): ?>
                     <tr>
                         <td>
-                            <span><?= __('Telephone') ?> : </span>
+                            <span><?= $block->escapeHtml(__('Telephone')) ?> : </span>
                             <span itemprop="telephone">
                                 <?= $block->escapeHtml($block->getRetailer()->getContactPhone()) ?>
                             </span>
@@ -20,7 +20,7 @@
                 <?php endif ?>
                 <?php if ($block->getRetailer()->getContactFax()): ?>
                     <tr>
-                        <td><span><?= __('Fax') ?> : </span>
+                        <td><span><?= $block->escapeHtml(__('Fax')) ?> : </span>
                             <span itemprop="faxNumber">
                                 <?= $block->escapeHtml($block->getRetailer()->getContactFax()) ?>
                             </span>
@@ -31,9 +31,9 @@
                     <tr>
                         <td>
                             <meta itemprop="email"
-                                  content="<? $block->escapeHtml($block->getRetailer()->getContactMail()) ?>"/>
+                                  content="<?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>"/>
                             <span>
-                                <?= __('Mail') ?> :
+                                <?= $block->escapeHtml(__('Mail')) ?> :
                                 <a href="mailto:<?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>">
                                     <?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>
                                 </a>
@@ -48,7 +48,7 @@
                             <td>
                                 <span class="contact-form-link">
                                     <a href="<?= $block->escapeHtml($block->getContactFormUrl()) ?>">
-                                        <?= __('Contact Us') ?>
+                                        <?= $block->escapeHtml(__('Contact Us')) ?>
                                     </a>
                                 </span>
                             </td>

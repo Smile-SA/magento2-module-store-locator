@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
 use Magento\Framework\EntityManager\Operation\ExtensionInterface;
@@ -20,7 +22,7 @@ class OpeningHoursSaveHandler implements ExtensionInterface
     public function execute($entity, $arguments = [])
     {
         if ($entity->getOpeningHours()) {
-            $this->resource->saveTimeSlots($entity->getId(), 'opening_hours', $entity->getOpeningHours());
+            $this->resource->saveTimeSlots((int) $entity->getId(), 'opening_hours', $entity->getOpeningHours());
         }
 
         return $entity;

@@ -346,7 +346,7 @@ define([
             this.markers().forEach(function (marker) {
                 var name = marker.name;
                 var postCode = marker.postCode;
-                var city = marker.city;
+                var city = marker.city ? marker.city : marker.addressData.city;
                 var positionLan = marker.latitude;
                 var positionLon = marker.longitude;
                 name = name.toLowerCase();

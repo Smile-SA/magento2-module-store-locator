@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller;
 
 use Magento\Framework\App\Action\Forward;
@@ -8,6 +10,7 @@ use Magento\Framework\App\RequestInterface;
 use Magento\Framework\App\RouterInterface;
 use Magento\Framework\DataObject;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\HTTP\PhpEnvironment\Request;
 use Magento\Framework\Url as CoreUrl;
 use Smile\StoreLocator\Model\Url;
 
@@ -28,6 +31,7 @@ class Router implements RouterInterface
      */
     public function match(RequestInterface $request)
     {
+        /** @var Request|RequestInterface $request */
         $action = null;
         $requestPath = trim($request->getPathInfo(), '/');
         $condition = new DataObject(['identifier' => $requestPath]);
@@ -43,7 +47,7 @@ class Router implements RouterInterface
                 ->setControllerName('store')
                 ->setActionName('search');
 
-            $action = $this->actionFactory->create(Forward::class, ['request' => $request]);
+            $action = $this->actionFactory->create(Forward::class);
         } else {
             $retailerId = $this->matchRetailer($requestPath);
             if ($retailerId) {
@@ -58,7 +62,7 @@ class Router implements RouterInterface
                     ->setActionName('view')
                     ->setParam('id', $retailerId);
 
-                $action = $this->actionFactory->create(Forward::class, ['request' => $request]);
+                $action = $this->actionFactory->create(Forward::class);
             }
         }
 
