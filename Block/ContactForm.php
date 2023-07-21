@@ -78,7 +78,7 @@ class ContactForm extends AbstractView
     {
         $retailer = $this->getRetailer();
 
-        /** @var AbstractBlock $titleBlock */
+        /** @var AbstractBlock|bool $titleBlock */
         $titleBlock = $this->getLayout()->getBlock('page.main.title');
 
         if ($titleBlock) {
@@ -95,7 +95,7 @@ class ContactForm extends AbstractView
      */
     private function setBreadcrumbs(): self
     {
-        /** @var Breadcrumbs $breadcrumbsBlock */
+        /** @var Breadcrumbs|bool $breadcrumbsBlock */
         $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
 
         if ($breadcrumbsBlock) {

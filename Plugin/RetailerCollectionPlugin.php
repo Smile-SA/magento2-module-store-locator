@@ -63,14 +63,14 @@ class RetailerCollectionPlugin
 
                 /** @var RetailerExtensionInterface $currentItemExtensionAttr */
                 $currentItemExtensionAttr = $currentItem->getExtensionAttributes();
-                /** @var DataObject|RetailerAddressInterface $address */
+                /** @var DataObject|RetailerAddressInterface|null $address */
                 $address = $currentItemExtensionAttr->getAddress();
                 if ($address) {
                     $address->setCoordinates(
-                            $this->geoPointFactory->create(
-                                $address->getData()
-                            )
-                        );
+                        $this->geoPointFactory->create(
+                            $address->getData()
+                        )
+                    );
                 }
 
                 $currentItemExtensionAttr->setOpeningHours(

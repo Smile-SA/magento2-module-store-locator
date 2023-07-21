@@ -47,7 +47,7 @@ class ContactPost extends Action implements HttpPostActionInterface
         $retailerId = $request->getParam('id');
         $storeId    = (int) $this->storeManager->getStore()->getId();
         /** @var RetailerInterface $retailer */
-        $retailer   = $this->retailerRepository->get($retailerId, $storeId);
+        $retailer   = $this->retailerRepository->get((int) $retailerId, $storeId);
 
         if (!$retailer->getId() || !$this->contactHelper->canDisplayContactForm($retailer)) {
             $resultForward = $this->forwardFactory->create();

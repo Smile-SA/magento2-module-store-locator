@@ -21,10 +21,10 @@ class RetailerEditFormPlugin
     public function afterGetData(DataProvider $subject, array $result): array
     {
         $retailer = $this->getRetailer($subject);
+        /** @var RetailerExtensionInterface|null $retailerExtensionAttr */
         $retailerExtensionAttr = null;
 
         if ($retailer !== null) {
-            /** @var RetailerExtensionInterface $retailerExtensionAttr */
             $retailerExtensionAttr = $retailer->getExtensionAttributes();
         }
 

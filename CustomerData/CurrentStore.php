@@ -42,7 +42,7 @@ class CurrentStore implements SectionSourceInterface
     public function getSectionData()
     {
         $data = [];
-        /** @var DataObject|RetailerInterface $retailer */
+        /** @var DataObject|RetailerInterface|null $retailer */
         $retailer = $this->getRetailer();
 
         if ($retailer) {
@@ -73,7 +73,7 @@ class CurrentStore implements SectionSourceInterface
 
         if ($retailerId) {
             try {
-                $retailer = $this->retailerRepository->get($retailerId);
+                $retailer = $this->retailerRepository->get((int) $retailerId);
             } catch (NoSuchEntityException) {
                 $this->customerSession->unsRetailerId();
             }

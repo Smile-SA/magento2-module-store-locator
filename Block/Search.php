@@ -193,7 +193,7 @@ class Search extends Template implements IdentityInterface
     {
         parent::_prepareLayout();
 
-        /** @var Breadcrumbs $breadcrumbsBlock */
+        /** @var Breadcrumbs|bool $breadcrumbsBlock */
         $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
         if ($breadcrumbsBlock) {
             $siteHomeUrl = $this->getBaseUrl();

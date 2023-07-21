@@ -102,7 +102,7 @@ class SpecialOpeningHoursPostDataHandler implements PostDataHandlerInterface
     {
         if (isset($data['special_opening_hours_seller_ids'])) {
             foreach ($data['special_opening_hours_seller_ids'] as $id) {
-                $model = $this->retailerRepository->get($id);
+                $model = $this->retailerRepository->get((int) $id);
                 $model->setData('special_opening_hours', $data['special_opening_hours']);
                 $this->retailerRepository->save($model);
             }

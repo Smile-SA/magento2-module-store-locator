@@ -65,7 +65,7 @@ class View extends AbstractView implements IdentityInterface
     {
         $retailer = $this->getRetailer();
 
-        /** @var AbstractBlock $titleBlock */
+        /** @var AbstractBlock|bool $titleBlock */
         $titleBlock = $this->getLayout()->getBlock('page.main.title');
 
         if ($titleBlock) {
@@ -108,7 +108,7 @@ class View extends AbstractView implements IdentityInterface
      */
     private function setBreadcrumbs(): self
     {
-        /** @var Breadcrumbs $breadcrumbsBlock */
+        /** @var Breadcrumbs|bool $breadcrumbsBlock */
         $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
         if ($breadcrumbsBlock) {
             $retailer = $this->getRetailer();

@@ -36,7 +36,7 @@ class View extends Action implements HttpGetActionInterface
     {
         $retailerId = $this->getRequest()->getParam('id');
         $storeId = (int) $this->storeManager->getStore()->getId();
-        $retailer = $this->retailerRepository->get($retailerId, $storeId);
+        $retailer = $this->retailerRepository->get((int) $retailerId, $storeId);
 
         if (!$retailer->getId()) {
             $resultForward = $this->resultForwardFactory->create();

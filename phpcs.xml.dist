@@ -21,7 +21,6 @@
         <exclude name="Magento2.Legacy.InstallUpgrade.ObsoleteInstallSchemaScript"/>
         <exclude name="Magento2.Legacy.InstallUpgrade.ObsoleteUpgradeDataScript"/>
         <exclude name="Magento2.Legacy.InstallUpgrade.ObsoleteUpgradeSchemaScript"/>
-        <exclude name="SlevomatCodingStandard.TypeHints.DeclareStrictTypes.DeclareStrictTypesMissing"/>
     </rule>
 
     <file>.</file>

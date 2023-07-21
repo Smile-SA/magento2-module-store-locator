@@ -8,8 +8,9 @@ $fieldClass = "field admin__field field-{$element->getId()} {$element->getClass(
 $fieldClass .= $element->getRequired() ? ' required' : '';
 $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId('form-field', $element->getId());
 ?>
-
+<?php // @codingStandardsIgnoreStart - if escaped, will not work ?>
 <div<?= /* @escapeNotVerified */ $fieldAttributes ?>>
+<?php // @codingStandardsIgnoreEnd ?>
     <?= $element->getLabelHtml() ?><span class="opening-hours-day" id="<?= $block->getHtmlId() ?>-label"></span>
     <?php $inputId = 'opening_hours_field_' . $block->getHtmlId() ?>
     <div id ="<?= $block->escapeHtml($inputId) ?>" class="opening-hours-container">

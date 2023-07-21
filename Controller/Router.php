@@ -85,6 +85,7 @@ class Router implements RouterInterface
         $retailerId = false;
         $requestPathArray = explode('/', $requestPath);
 
+        // @phpstan-ignore-next-line
         if (count($requestPathArray) && $this->matchStoreLocatorHome(current($requestPathArray))) {
             $retailerId = $this->urlModel->checkIdentifier(end($requestPathArray));
         }

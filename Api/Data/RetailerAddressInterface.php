@@ -40,8 +40,8 @@ interface RetailerAddressInterface extends GeolocalizedAddressInterface
     /**
      * Set retailer id.
      *
-     * @param string|int $retailerId Retailer id.
+     * @param int $retailerId Retailer id.
      * @return $this
      */
-    public function setRetailerId(string|int $retailerId): self;
+    public function setRetailerId(int $retailerId): self;
 }

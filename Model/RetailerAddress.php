@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Smile\StoreLocator\Model;
 
 use Magento\Framework\Data\Collection\AbstractDb;
-use Magento\Framework\Model\AbstractModel;
 use Magento\Framework\Model\Context;
 use Magento\Framework\Model\ResourceModel\AbstractResource;
 use Magento\Framework\Registry;
 use Smile\Map\Api\Data\GeoPointInterface;
 use Smile\Map\Api\Data\GeoPointInterfaceFactory;
+use Smile\Map\Model\Address;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Model\ResourceModel\RetailerAddress as RetailerAddressResource;
 
 /**
  * Retailer address model.
  */
-class RetailerAddress extends AbstractModel
+class RetailerAddress extends Address implements RetailerAddressInterface
 {
     private const STREET_SEPARATOR = "\n";
 
@@ -43,9 +43,33 @@ class RetailerAddress extends AbstractModel
     /**
      * @inheritdoc
      */
-    public function getId()
+    public function getId(): int
     {
-        return $this->getData(RetailerAddressInterface::ADDRESS_ID);
+        return (int) $this->getData(RetailerAddressInterface::ADDRESS_ID);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setId(mixed $id): self
+    {
+        return $this->setData(RetailerAddressInterface::ADDRESS_ID, $id);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function getRetailerId(): int
+    {
+        return (int) $this->getData(RetailerAddressInterface::RETAILER_ID);
+    }
+
+    /**
+     * @inheritdoc
+     */
+    public function setRetailerId(int $retailerId): self
+    {
+        return $this->setData(self::RETAILER_ID, $retailerId);
     }
 
     /**
@@ -56,6 +80,20 @@ class RetailerAddress extends AbstractModel
     public function getStreet(): array
     {
         return explode(self::STREET_SEPARATOR, $this->getData(RetailerAddressInterface::STREET));
+    }
+
+    /**
+     * Populate the string field.
+     *
+     * @param string[]|string $street
+     */
+    public function setStreet(array|string $street): RetailerAddress
+    {
+        if (is_array($street)) {
+            $street = implode(self::STREET_SEPARATOR, $street);
+        }
+
+        return $this->setData(RetailerAddressInterface::STREET, $street);
     }
 
     /**
@@ -73,28 +111,6 @@ class RetailerAddress extends AbstractModel
         }
 
         return $coords;
-    }
-
-    /**
-     * @inheritdoc
-     */
-    public function setId($value)
-    {
-        return $this->setData(RetailerAddressInterface::ADDRESS_ID, $value);
-    }
-
-    /**
-     * Populate the string field.
-     *
-     * @param string[]|string $street
-     */
-    public function setStreet(array|string $street): RetailerAddress
-    {
-        if (is_array($street)) {
-            $street = implode(self::STREET_SEPARATOR, $street);
-        }
-
-        return $this->setData(RetailerAddressInterface::STREET, $street);
     }
 
     /**

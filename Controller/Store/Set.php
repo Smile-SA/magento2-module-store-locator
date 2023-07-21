@@ -36,7 +36,7 @@ class Set extends Action implements HttpPostActionInterface
 
         try {
             /** @var RetailerInterface $retailer */
-            $retailer = $this->retailerRepository->get($retailerId);
+            $retailer = $this->retailerRepository->get((int) $retailerId);
             $this->customerData->setRetailer($retailer);
         } catch (Exception $exception) {
             $this->messageManager->addExceptionMessage(

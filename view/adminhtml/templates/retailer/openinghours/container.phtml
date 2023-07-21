@@ -9,10 +9,12 @@ $fieldClass .= $element->getRequired() ? ' required' : '';
 $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId('form-field', $element->getId());
 ?>
 
+<?php // @codingStandardsIgnoreStart - if escaped, will not work ?>
 <div<?= /* @escapeNotVerified */ $fieldAttributes ?>>
+<?php // @codingStandardsIgnoreEnd ?>
     <div class="admin__field-tooltip">
         <p class="note admin__field-tooltip-action">
-            <?= /* @escapeNotVerified */ __('Double-click on an opening hour range to delete it.') ?>
+            <?= $block->escapeHtml(__('Double-click on an opening hour range to delete it.')) ?>
         </p>
     </div>
     <?= $block->getInputHtml() ?>

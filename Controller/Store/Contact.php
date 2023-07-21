@@ -37,7 +37,7 @@ class Contact extends Action implements HttpGetActionInterface
     {
         $retailerId = $this->getRequest()->getParam('id');
         /** @var RetailerInterface $retailer */
-        $retailer   = $this->retailerRepository->get($retailerId);
+        $retailer   = $this->retailerRepository->get((int) $retailerId);
 
         if (!$retailer->getId() || !$this->contactHelper->canDisplayContactForm($retailer)) {
             $resultForward = $this->resultForwardFactory->create();

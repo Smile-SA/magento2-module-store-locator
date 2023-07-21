@@ -73,7 +73,7 @@ class MassSaveHours extends AbstractRetailer implements HttpPostActionInterface
         if (is_iterable($retailerIds)) {
             foreach ($retailerIds as $id) {
                 /** @var RetailerInterface $model */
-                $model = $this->retailerRepository->get($id);
+                $model = $this->retailerRepository->get((int) $id);
 
                 $openingHours = $this->openingHoursHandler->getData($model, $data);
                 if (isset($openingHours['opening_hours'])) {
