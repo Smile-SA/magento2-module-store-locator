@@ -33,11 +33,16 @@ class AddressSaveHandler implements ExtensionInterface
         $addressModel  = $this->modelFactory->create();
         $this->resource->load($addressModel, $entity->getId(), RetailerAddressInterface::RETAILER_ID);
 
-        if ($addressModel->getId()) {
-            $addressEntity->setId($addressModel->getId());
+        if ($addressModel->getAddressId()) {
+            $addressEntity->setAddressId($addressModel->getAddressId());
         }
 
         $addressModel = $this->converter->toModel($addressEntity);
+
+        if (!$addressModel->getAddressId()) {
+            $addressModel->setId(null);
+            $addressModel->isObjectNew(true);
+        }
 
         $this->resource->save($addressModel);
 

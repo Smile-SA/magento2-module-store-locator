@@ -70,7 +70,7 @@ class Map extends AbstractView
     /**
      * Returns current store coordinates.
      */
-    public function getCoordinates(): GeoPointInterface
+    public function getCoordinates(): ?GeoPointInterface
     {
         return $this->getAddress()->getCoordinates();
     }

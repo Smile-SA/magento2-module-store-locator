@@ -43,7 +43,7 @@ class RetailerAddress extends Address implements RetailerAddressInterface
     /**
      * @inheritdoc
      */
-    public function getId(): int
+    public function getAddressId(): int
     {
         return (int) $this->getData(RetailerAddressInterface::ADDRESS_ID);
     }
@@ -51,7 +51,7 @@ class RetailerAddress extends Address implements RetailerAddressInterface
     /**
      * @inheritdoc
      */
-    public function setId(mixed $id): self
+    public function setAddressId(mixed $id): self
     {
         return $this->setData(RetailerAddressInterface::ADDRESS_ID, $id);
     }
@@ -69,7 +69,7 @@ class RetailerAddress extends Address implements RetailerAddressInterface
      */
     public function setRetailerId(int $retailerId): self
     {
-        return $this->setData(self::RETAILER_ID, $retailerId);
+        return $this->setData(RetailerAddressInterface::RETAILER_ID, $retailerId);
     }
 
     /**
@@ -79,7 +79,7 @@ class RetailerAddress extends Address implements RetailerAddressInterface
      */
     public function getStreet(): array
     {
-        return explode(self::STREET_SEPARATOR, $this->getData(RetailerAddressInterface::STREET));
+        return explode(self::STREET_SEPARATOR, $this->getData(RetailerAddressInterface::STREET)?: '');
     }
 
     /**
@@ -99,7 +99,7 @@ class RetailerAddress extends Address implements RetailerAddressInterface
     /**
      * Returns coordinates as a GeoPoint.
      */
-    public function getCoordinates(): GeoPointInterface
+    public function getCoordinates(): ?GeoPointInterface
     {
         $coords = null;
         if ($this->hasLatitude() && $this->hasLongitude()) {
