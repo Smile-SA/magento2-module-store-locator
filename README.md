@@ -19,7 +19,15 @@ The module requires :
 
 ``` bin/magento module:enable Smile_StoreLocator ```
 
-3. Install the module and rebuild the DI cache
+3. Optionnal : Drop old SMILE_RETAILER_ADDRESS_RETAILER_ID unique key
+
+_if you already used older Smile_StoreLocator module on your projects, and you want to upgrade it,_
+_before upgrading, you will have to DROP your current UNIQUE KEY from table smile_retailer_address : SMILE_RETAILER_ADDRESS_RETAILER_ID_
+_This is necessary in order to get a db_schema.xml working correctly._
+
+``` ALTER TABLE smile_retailer_address DROP INDEX SMILE_RETAILER_ADDRESS_RETAILER_ID ```
+
+4. Install the module and rebuild the DI cache
 
 ``` bin/magento setup:upgrade ```
 

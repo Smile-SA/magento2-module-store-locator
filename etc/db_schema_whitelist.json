@@ -17,7 +17,7 @@
         "constraint": {
             "PRIMARY": true,
             "SMILE_RETAILER_ADDRESS_RETAILER_ID_SMILE_SELLER_ENTITY_ENTITY_ID": true,
-            "SMILE_RETAILER_ADDRESS_RETAILER_ID_ADDRESS_ID": true
+            "SMILE_RETAILER_ADDRESS_RETAILER_ID": true
         }
     },
     "smile_retailer_time_slots": {

@@ -36,14 +36,8 @@
                     referenceTable="smile_seller_entity" referenceColumn="entity_id"
                     onDelete="CASCADE"/>
 
-        <!--
-        add a second unique key based on retailer_id + address_id
-        to bypass SMILE_RETAILER_ADDRESS_RETAILER_ID unique constraint during setup:upgrade
-        from an existing database with older retailersuite
-        -->
-        <constraint xsi:type="unique" referenceId="SMILE_RETAILER_ADDRESS_RETAILER_ID_ADDRESS_ID">
+        <constraint xsi:type="unique" referenceId="SMILE_RETAILER_ADDRESS_RETAILER_ID">
             <column name="retailer_id"/>
-            <column name="address_id"/>
         </constraint>
     </table>
 
