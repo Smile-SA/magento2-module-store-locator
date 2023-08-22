@@ -3,7 +3,7 @@
         xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
     <!-- table smile_retailer_address -->
     <table name="smile_retailer_address" resource="default" engine="innodb"
-           comment="Smile StoreLocator Retailer Address Table">
+           comment="Retailer Address">
         <column xsi:type="int" name="address_id" unsigned="true" nullable="false" identity="true"
                 comment="Address ID"/>
         <column xsi:type="int" name="retailer_id" unsigned="true" nullable="false"
@@ -12,22 +12,20 @@
                 comment="Created At"/>
         <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true"
                 comment="Updated At"/>
-        <column xsi:type="mediumtext" name="street" nullable="false"
+        <column xsi:type="text" name="street" nullable="false"
                 comment="Street Address"/>
-        <column xsi:type="varchar" name="postcode" nullable="true" default="null" length="255"
+        <column xsi:type="varchar" name="postcode" nullable="true" length="255"
                 comment="Zip/Postal Code"/>
         <column xsi:type="varchar" name="city" nullable="false" length="255"
                 comment="City"/>
-        <column xsi:type="varchar" name="region" nullable="true" default="null" length="255"
+        <column xsi:type="varchar" name="region" nullable="true" length="255"
                 comment="State/Province"/>
         <column xsi:type="int" name="region_id" unsigned="true" nullable="true" default="null"
                 comment="State/Province"/>
         <column xsi:type="varchar" name="country_id" nullable="false" length="255"
                 comment="Country"/>
-        <column xsi:type="decimal" name="latitude" scale="6" precision="10" unsigned="false" nullable="false"
-                comment="Latitude"/>
-        <column xsi:type="decimal" name="longitude" scale="6" precision="10" unsigned="false" nullable="false"
-                comment="Longitude"/>
+        <column xsi:type="decimal" name="latitude" scale="6" precision="10" unsigned="false" nullable="false" />
+        <column xsi:type="decimal" name="longitude" scale="6" precision="10" unsigned="false" nullable="false" />
 
         <constraint xsi:type="primary" referenceId="PRIMARY">
             <column name="address_id"/>
@@ -38,8 +36,14 @@
                     referenceTable="smile_seller_entity" referenceColumn="entity_id"
                     onDelete="CASCADE"/>
 
-        <constraint xsi:type="unique" referenceId="SMILE_RETAILER_ADDRESS_RETAILER_ID">
+        <!--
+        add a second unique key based on retailer_id + address_id
+        to bypass SMILE_RETAILER_ADDRESS_RETAILER_ID unique constraint during setup:upgrade
+        from an existing database with older retailersuite
+        -->
+        <constraint xsi:type="unique" referenceId="SMILE_RETAILER_ADDRESS_RETAILER_ID_ADDRESS_ID">
             <column name="retailer_id"/>
+            <column name="address_id"/>
         </constraint>
     </table>
 

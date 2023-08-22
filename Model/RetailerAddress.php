@@ -79,7 +79,10 @@ class RetailerAddress extends Address implements RetailerAddressInterface
      */
     public function getStreet(): array
     {
-        return explode(self::STREET_SEPARATOR, $this->getData(RetailerAddressInterface::STREET)?: '');
+        return explode(
+            self::STREET_SEPARATOR,
+            $this->getData(RetailerAddressInterface::STREET) ?: ''
+        );
     }
 
     /**
