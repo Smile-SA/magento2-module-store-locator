@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element;
 
 use DateTime;
-use Exception;
 use Magento\Backend\Block\Template;
 use Magento\Backend\Block\Template\Context;
 use Magento\Framework\Data\Form\Element\AbstractElement;
@@ -97,7 +96,7 @@ class Renderer extends Template implements RendererInterface
     /**
      * Retrieve element values
      *
-     * @throws Exception.
+     * @throws \Exception.
      */
     private function getValues(): array
     {
