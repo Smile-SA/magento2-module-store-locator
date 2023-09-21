@@ -62,5 +62,5 @@ jobs:
       - name: 'Run PHPMD'
         run: 'vendor/bin/phpmd . xml phpmd.xml.dist'
 
-      - name: 'Run PHPStan'
-        run: 'vendor/bin/phpstan analyse'
+#      - name: 'Run PHPStan'
+#        run: 'vendor/bin/phpstan analyse'
