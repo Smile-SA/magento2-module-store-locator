@@ -1,50 +1,61 @@
 <?php
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- *
- * Retailer contact information frontend view block
- */
+
+/** @var \Smile\StoreLocator\Block\View\ContactInformation $block */
 ?>
-<?php /** @var \Smile\StoreLocator\Block\View\ContactInformation $block */ ?>
-<?php if ($block->hasContactInformation()) :?>
+<?php if ($block->hasContactInformation()): ?>
     <div class="contact-info">
         <div class="contact-info-wrapper">
-            <h3><?php echo __("Contact");?></h3>
+            <h3><?= $block->escapeHtml(__('Contact')) ?></h3>
             <table>
                 <tbody>
-                <?php if ($block->getRetailer()->getContactPhone()) :?>
+                <?php if ($block->getRetailer()->getContactPhone()): ?>
                     <tr>
-                        <td><span><?php echo __('Telephone');?> : </span><span itemprop="telephone"><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactPhone());?></span></td>
+                        <td>
+                            <span><?= $block->escapeHtml(__('Telephone')) ?> : </span>
+                            <span itemprop="telephone">
+                                <?= $block->escapeHtml($block->getRetailer()->getContactPhone()) ?>
+                            </span>
+                        </td>
                     </tr>
-                <?php endif;?>
-                <?php if ($block->getRetailer()->getContactFax()) :?>
+                <?php endif ?>
+                <?php if ($block->getRetailer()->getContactFax()): ?>
                     <tr>
-                        <td><span><?php echo __('Fax');?> : </span><span itemprop="faxNumber"><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactFax());?></span></td>
+                        <td><span><?= $block->escapeHtml(__('Fax')) ?> : </span>
+                            <span itemprop="faxNumber">
+                                <?= $block->escapeHtml($block->getRetailer()->getContactFax()) ?>
+                            </span>
+                        </td>
                     </tr>
-                <?php endif;?>
-                <?php if ($block->getRetailer()->getContactMail()) :?>
+                <?php endif ?>
+                <?php if ($block->getRetailer()->getContactMail()): ?>
                     <tr>
-                        <td><meta itemprop="email" content="<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?>"/><span><?php echo __('Mail');?> : <a href="mailto:<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?>"><?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getRetailer()->getContactMail());?></a></span></td>
+                        <td>
+                            <meta itemprop="email"
+                                  content="<?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>"/>
+                            <span>
+                                <?= $block->escapeHtml(__('Mail')) ?> :
+                                <a href="mailto:<?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>">
+                                    <?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>
+                                </a>
+                            </span>
+                        </td>
                     </tr>
-                <?php endif;?>
+                <?php endif ?>
                 </tbody>
-                <?php if ($block->showContactForm()) :?>
+                <?php if ($block->showContactForm()): ?>
                     <tfoot>
                         <tr>
-                            <td><span class="contact-form-link"><a href="<?php /* @escapeNotVerified */ echo $block->escapeHtml($block->getContactFormUrl());?>"><?php echo __('Contact Us');?></a></span></td>
+                            <td>
+                                <span class="contact-form-link">
+                                    <a href="<?= $block->escapeHtml($block->getContactFormUrl()) ?>">
+                                        <?= $block->escapeHtml(__('Contact Us')) ?>
+                                    </a>
+                                </span>
+                            </td>
                         </tr>
                     </tfoot>
-                <?php endif;?>
+                <?php endif ?>
             </table>
         </div>
     </div>
-<?php endif;?>
+<?php endif ?>

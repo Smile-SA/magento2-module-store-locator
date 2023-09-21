@@ -1,71 +1,40 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller;
+
+use Magento\Framework\App\Action\Forward;
+use Magento\Framework\App\ActionFactory;
+use Magento\Framework\App\RequestInterface;
+use Magento\Framework\App\RouterInterface;
+use Magento\Framework\DataObject;
+use Magento\Framework\Event\ManagerInterface;
+use Magento\Framework\HTTP\PhpEnvironment\Request;
+use Magento\Framework\Url as CoreUrl;
+use Smile\StoreLocator\Model\Url;
 
 /**
  * Store locator routing (handling rewritten URL).
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class Router implements \Magento\Framework\App\RouterInterface
+class Router implements RouterInterface
 {
-    /**
-     * @var \Magento\Framework\App\ActionFactory
-     */
-    private $actionFactory;
-
-    /**
-     * @var \Magento\Framework\Event\ManagerInterface
-     */
-    private $eventManager;
-
-    /**
-     * @var \Smile\StoreLocator\Model\Url
-     */
-    private $urlModel;
-
-    /**
-     * Constructor.
-     *
-     * @param \Magento\Framework\App\ActionFactory      $actionFactory Action factory.
-     * @param \Magento\Framework\Event\ManagerInterface $eventManager  Event manager.
-     * @param \Smile\StoreLocator\Model\Url             $urlModel      Retailer URL model.
-     */
     public function __construct(
-        \Magento\Framework\App\ActionFactory $actionFactory,
-        \Magento\Framework\Event\ManagerInterface $eventManager,
-        \Smile\StoreLocator\Model\Url $urlModel
+        private ActionFactory $actionFactory,
+        private ManagerInterface $eventManager,
+        private Url $urlModel
     ) {
-        $this->actionFactory = $actionFactory;
-        $this->eventManager  = $eventManager;
-        $this->urlModel      = $urlModel;
     }
 
     /**
-     * Validate and Match Cms Page and modify request
-     *
-     * @param \Magento\Framework\App\RequestInterface $request Request.
-     *
-     * @return NULL|\Magento\Framework\App\ActionInterface
+     * @inheritdoc
      */
-    public function match(\Magento\Framework\App\RequestInterface $request)
+    public function match(RequestInterface $request)
     {
+        /** @var Request|RequestInterface $request */
         $action = null;
-
         $requestPath = trim($request->getPathInfo(), '/');
-        $condition  = new \Magento\Framework\DataObject(['identifier' => $requestPath]);
+        $condition = new DataObject(['identifier' => $requestPath]);
 
         if ($this->matchStoreLocatorHome($requestPath)) {
             $this->eventManager->dispatch(
@@ -73,25 +42,28 @@ class Router implements \Magento\Framework\App\RouterInterface
                 ['router' => $this, 'condition' => $condition]
             );
 
-            $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $requestPath)
+            $request->setAlias(CoreUrl::REWRITE_REQUEST_PATH_ALIAS, $requestPath)
                 ->setModuleName('storelocator')
                 ->setControllerName('store')
                 ->setActionName('search');
 
-            $action = $this->actionFactory->create('Magento\Framework\App\Action\Forward', ['request' => $request]);
-        } elseif ($retailerId = $this->matchRetailer($requestPath)) {
-            $this->eventManager->dispatch(
-                'store_locator_view_controller_router_match_before',
-                ['router' => $this, 'condition' => $condition]
-            );
+            $action = $this->actionFactory->create(Forward::class);
+        } else {
+            $retailerId = $this->matchRetailer($requestPath);
+            if ($retailerId) {
+                $this->eventManager->dispatch(
+                    'store_locator_view_controller_router_match_before',
+                    ['router' => $this, 'condition' => $condition]
+                );
 
-            $request->setAlias(\Magento\Framework\Url::REWRITE_REQUEST_PATH_ALIAS, $requestPath)
-                ->setModuleName('storelocator')
-                ->setControllerName('store')
-                ->setActionName('view')
-                ->setParam('id', $retailerId);
+                $request->setAlias(CoreUrl::REWRITE_REQUEST_PATH_ALIAS, $requestPath)
+                    ->setModuleName('storelocator')
+                    ->setControllerName('store')
+                    ->setActionName('view')
+                    ->setParam('id', $retailerId);
 
-            $action = $this->actionFactory->create('Magento\Framework\App\Action\Forward', ['request' => $request]);
+                $action = $this->actionFactory->create(Forward::class);
+            }
         }
 
         return $action;
@@ -99,28 +71,21 @@ class Router implements \Magento\Framework\App\RouterInterface
 
     /**
      * Check if the current request path match the configured store locator home.
-     *
-     * @param string $requestPath Request path.
-     *
-     * @return boolean
      */
-    private function matchStoreLocatorHome($requestPath)
+    private function matchStoreLocatorHome(string $requestPath): bool
     {
         return $this->urlModel->getRequestPathPrefix() == $requestPath;
     }
 
     /**
      * Check if the current request path match a retailer URL and returns its id.
-     *
-     * @param unknown $requestPath Request path.
-     *
-     * @return int|false
      */
-    private function matchRetailer($requestPath)
+    private function matchRetailer(string $requestPath): int|false
     {
-        $retailerId       = false;
+        $retailerId = false;
         $requestPathArray = explode('/', $requestPath);
 
+        // @phpstan-ignore-next-line
         if (count($requestPathArray) && $this->matchStoreLocatorHome(current($requestPathArray))) {
             $retailerId = $this->urlModel->checkIdentifier(end($requestPathArray));
         }

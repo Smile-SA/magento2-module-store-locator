@@ -1,29 +1,13 @@
 <?php
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- *
- * Retailer frontend set store link.
- */
-?>
 
-<?php
 /** @var \Smile\StoreLocator\Block\View $block */
 ?>
 
 <div class="set-store-button">
     <a href="#"
-       title="<?php echo $block->escapeHtml(__('Choose this store')); ?>"
+       title="<?= $block->escapeHtml(__('Choose this store')) ?>"
        class="action-set-store"
-       data-post='<?php /* @escapeNotVerified */ echo $block->getSetStorePostJson(); ?>'>
-       <span><?php echo $block->escapeHtml(__('Choose this store')); ?></span>
+       data-post='<?= /* @escapeNotVerified */ $block->escapeHtml($block->getSetStorePostJson()) ?>'>
+       <span><?= $block->escapeHtml(__('Choose this store')) ?></span>
     </a>
 </div>

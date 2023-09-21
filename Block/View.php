@@ -1,69 +1,49 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block;
 
 use Magento\Framework\DataObject\IdentityInterface;
+use Magento\Framework\Registry;
+use Magento\Framework\View\Element\AbstractBlock;
+use Magento\Framework\View\Element\Template\Context;
+use Magento\Store\Model\Store;
+use Magento\Theme\Block\Html\Breadcrumbs;
+use Smile\Retailer\Model\Retailer;
+use Smile\StoreLocator\Helper\Data;
 
 /**
- * Retailer View Block
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * Retailer View Block.
  */
 class View extends AbstractView implements IdentityInterface
 {
-    /**
-     * @var \Smile\StoreLocator\Helper\Data
-     */
-    private $storeLocatorHelper;
-
-    /**
-     * Constructor.
-     *
-     * @param \Magento\Framework\View\Element\Template\Context $context            Application context.
-     * @param \Magento\Framework\Registry                      $coreRegistry       Application registry.
-     * @param \Smile\StoreLocator\Helper\Data                  $storeLocatorHelper Store locator helper.
-     * @param array                                            $data               Block Data.
-     */
     public function __construct(
-        \Magento\Framework\View\Element\Template\Context $context,
-        \Magento\Framework\Registry $coreRegistry,
-        \Smile\StoreLocator\Helper\Data $storeLocatorHelper,
+        Context $context,
+        Registry $coreRegistry,
+        private Data $storeLocatorHelper,
         array $data = []
     ) {
         parent::__construct($context, $coreRegistry, $data);
-        $this->storeLocatorHelper = $storeLocatorHelper;
     }
 
     /**
-     * Return unique ID(s) for each object in system
-     *
-     * @return string[]
+     * @inheritdoc
      */
-    public function getIdentities()
+    public function getIdentities(): array
     {
         $identities = [];
         if ($this->getRetailer()) {
-            $identities = $this->getRetailer()->getIdentities();
+            /** @var Retailer $retailer */
+            $retailer = $this->getRetailer();
+            $identities = $retailer->getIdentities();
         }
 
         return $identities;
     }
 
     /**
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName)
-     * {@inheritdoc}
+     * @inheritdoc
      */
     protected function _prepareLayout()
     {
@@ -80,20 +60,19 @@ class View extends AbstractView implements IdentityInterface
 
     /**
      * Set the current page title.
-     *
-     * @return \Smile\StoreLocator\Block\View
      */
-    private function setPageTitle()
+    private function setPageTitle(): self
     {
         $retailer = $this->getRetailer();
 
+        /** @var AbstractBlock|bool $titleBlock */
         $titleBlock = $this->getLayout()->getBlock('page.main.title');
 
         if ($titleBlock) {
             $titleBlock->setPageTitle($retailer->getName());
         }
 
-        $pageTitle = $retailer->getMetaTitle();
+        $pageTitle = $retailer->getData('meta_title');
         if (empty($pageTitle)) {
             $pageTitle = $retailer->getName();
         }
@@ -105,22 +84,20 @@ class View extends AbstractView implements IdentityInterface
 
     /**
      * Set the current page meta attributes (keywords, description).
-     *
-     * @return \Smile\StoreLocator\Block\View
      */
-    private function setPageMeta()
+    private function setPageMeta(): self
     {
         $retailer = $this->getRetailer();
 
-        $keywords = $retailer->getMetaKeywords();
+        $keywords = $retailer->getData('meta_keywords');
         if ($keywords) {
-            $this->pageConfig->setKeywords($retailer->getMetaKeywords());
+            $this->pageConfig->setKeywords($retailer->getData('meta_keywords'));
         }
 
         // Set the page description.
-        $description = $retailer->getMetaDescription();
+        $description = $retailer->getData('meta_description');
         if ($description) {
-            $this->pageConfig->setDescription($retailer->getMetaDescription());
+            $this->pageConfig->setDescription($retailer->getData('meta_description'));
         }
 
         return $this;
@@ -128,19 +105,30 @@ class View extends AbstractView implements IdentityInterface
 
     /**
      * Build breadcrumbs for the current page.
-     *
-     * @return \Smile\StoreLocator\Block\View
      */
-    private function setBreadcrumbs()
+    private function setBreadcrumbs(): self
     {
-        if ($breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs')) {
-            $retailer            = $this->getRetailer();
-            $homeUrl             = $this->_storeManager->getStore()->getBaseUrl();
+        /** @var Breadcrumbs|bool $breadcrumbsBlock */
+        $breadcrumbsBlock = $this->getLayout()->getBlock('breadcrumbs');
+        if ($breadcrumbsBlock) {
+            $retailer = $this->getRetailer();
+            /** @var Store $currentStore */
+            $currentStore = $this->_storeManager->getStore();
+            $homeUrl = $currentStore->getBaseUrl();
             $storeLocatorHomeUrl = $this->storeLocatorHelper->getHomeUrl();
 
-            $breadcrumbsBlock->addCrumb('home', ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $homeUrl]);
-            $breadcrumbsBlock->addCrumb('search', ['label' => __('Our stores'), 'title' => __('Our stores'), 'link' => $storeLocatorHomeUrl]);
-            $breadcrumbsBlock->addCrumb('store', ['label' => $retailer->getName(), 'title' => $retailer->getName()]);
+            $breadcrumbsBlock->addCrumb(
+                'home',
+                ['label' => __('Home'), 'title' => __('Go to Home Page'), 'link' => $homeUrl]
+            );
+            $breadcrumbsBlock->addCrumb(
+                'search',
+                ['label' => __('Our stores'), 'title' => __('Our stores'), 'link' => $storeLocatorHomeUrl]
+            );
+            $breadcrumbsBlock->addCrumb(
+                'store',
+                ['label' => $retailer->getName(), 'title' => $retailer->getName()]
+            );
         }
 
         return $this;

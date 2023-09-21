@@ -1,77 +1,36 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Fanny DECLERCK <fadec@smile.fr>
- * @copyright 2019 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
-use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
-use Magento\Framework\Json\Helper\Data as JsonHelper;
+use Exception;
+use Magento\Framework\Exception\CouldNotSaveException;
+use Magento\Framework\Exception\NoSuchEntityException;
+use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
+use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
+use Smile\Retailer\Model\Retailer\PostDataHandlerInterface;
+use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 use Smile\StoreLocator\Model\ResourceModel\RetailerTimeSlot;
 
 /**
- * Post Data Handler for Retailer Opening Hours
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
- * @author   Fanny DECLERCK <fadec@smile.fr>
+ * Post Data Handler for Retailer Opening Hours.
  */
-class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\PostDataHandlerInterface
+class OpeningHoursPostDataHandler implements PostDataHandlerInterface
 {
-    /**
-     * @var RetailerTimeSlotInterfaceFactory
-     */
-    private $timeSlotFactory;
-
-    /**
-     * @var JsonHelper
-     */
-    private $jsonHelper;
-
-    /**
-     * @var RetailerRepositoryInterface
-     */
-    private $retailerRepository;
-
-    /**
-     * @var RetailerTimeSlot
-     */
-    private $retailerTimeSlot;
-
-    /**
-     * OpeningHoursPostDataHandler constructor.
-     *
-     * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory    Time Slot Factory
-     * @param JsonHelper                       $jsonHelper         JSON Helper
-     * @param RetailerRepositoryInterface      $retailerRepository Retailer Repository Interface
-     * @param RetailerTimeSlot                 $retailerTimeSlot   Retailer Time Slot Resource Model
-     */
     public function __construct(
-        RetailerTimeSlotInterfaceFactory $timeSlotFactory,
-        JsonHelper $jsonHelper,
-        RetailerRepositoryInterface $retailerRepository,
-        RetailerTimeSlot $retailerTimeSlot
+        private RetailerTimeSlotInterfaceFactory $timeSlotFactory,
+        private JsonSerializer $jsonSerializer,
+        private RetailerRepositoryInterface $retailerRepository,
+        private RetailerTimeSlot $retailerTimeSlot
     ) {
-        $this->timeSlotFactory    = $timeSlotFactory;
-        $this->jsonHelper         = $jsonHelper;
-        $this->retailerRepository = $retailerRepository;
-        $this->retailerTimeSlot   = $retailerTimeSlot;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
-    public function getData(\Smile\Retailer\Api\Data\RetailerInterface $retailer, $data)
+    public function getData(RetailerInterface $retailer, mixed $data): mixed
     {
         if (isset($data['opening_hours'])) {
             $openingHours = [];
@@ -79,8 +38,8 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
             foreach ($data['opening_hours'] as $date => &$timeSlotList) {
                 if (is_string($timeSlotList)) {
                     try {
-                        $timeSlotList = $this->jsonHelper->jsonDecode($timeSlotList);
-                    } catch (\Zend_Json_Exception $exception) {
+                        $timeSlotList = $this->jsonSerializer->unserialize($timeSlotList);
+                    } catch (Exception $exception) {
                         $timeSlotList = [];
                     }
                 }
@@ -99,7 +58,7 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
 
             // If not a single opening hour is saved, we delete existing entry for current retailer
             if (empty($openingHours) && isset($data['entity_id'])) {
-                $this->retailerTimeSlot->deleteByRetailerId($data['entity_id']);
+                $this->retailerTimeSlot->deleteByRetailerId((int) $data['entity_id']);
             }
 
             $data['opening_hours'] = $openingHours;
@@ -113,15 +72,14 @@ class OpeningHoursPostDataHandler implements \Smile\Retailer\Model\Retailer\Post
     /**
      * Update opening hours by seller ids.
      *
-     * @param array $data Data seller ids / Opening hours by days.
-     *
-     * @return void
+     * @throws CouldNotSaveException
+     * @throws NoSuchEntityException
      */
-    private function updateOpeningHoursBySellerIds($data)
+    private function updateOpeningHoursBySellerIds(array $data): void
     {
         if (isset($data['opening_hours_seller_ids'])) {
             foreach ($data['opening_hours_seller_ids'] as $id) {
-                $model = $this->retailerRepository->get($id);
+                $model = $this->retailerRepository->get((int) $id);
                 $model->setData('opening_hours', $data['opening_hours']);
                 $this->retailerRepository->save($model);
             }

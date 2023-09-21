@@ -1,78 +1,50 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Block\Adminhtml\Retailer\SpecialOpeningHours\Container;
 
-use Magento\Backend\Block\Template;
+use DateTime;
+use Magento\Backend\Block\Template\Context;
+use Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray;
 use Magento\Framework\Data\Form\Element\AbstractElement;
-use Magento\Framework\Json\Helper\Data as JsonHelper;
-use Magento\Framework\Stdlib\DateTime;
-use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
-use Zend_Date;
+use Magento\Framework\Data\Form\Element\Factory as FormElementFactory;
+use Magento\Framework\Serialize\Serializer\Json as JsonSerializer;
+use Magento\Framework\Stdlib\DateTime as MagentoDateTime;
+use Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element\Renderer as ElementRenderer;
 
 /**
- * Special Opening Hours fieldset renderer
- *
- * @SuppressWarnings(PHPMD.CamelCasePropertyName)
- *
- * @category Smile
- * @package  Smile\Retailer
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Special Opening Hours fieldset renderer.
  */
-class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray\AbstractFieldArray
+class Renderer extends AbstractFieldArray
 {
-    /**
-     * @var \Magento\Framework\Data\Form\Element\Factory
-     */
-    private $elementFactory;
+    private AbstractElement $element;
 
-    /**
-     * @var \Magento\Framework\Data\Form\Element\AbstractElement
-     */
-    private $element;
-
-    /**
-     * @var \Magento\Framework\Json\Helper\Data
-     */
-    private $jsonHelper;
-
-    /**
-     * @var \Magento\Framework\Locale\Resolver
-     */
-    private $localeResolver;
-
-    /**
-     * @param \Magento\Backend\Block\Template\Context      $context        Application context
-     * @param \Magento\Framework\Data\Form\Element\Factory $elementFactory Element Factory
-     * @param \Magento\Framework\Json\Helper\Data          $jsonHelper     JSON helper
-     * @param \Magento\Framework\Locale\Resolver           $localeResolver Locale Resolver
-     * @param array                                        $data           Element Data
-     */
     public function __construct(
-        \Magento\Backend\Block\Template\Context $context,
-        \Magento\Framework\Data\Form\Element\Factory $elementFactory,
-        JsonHelper $jsonHelper,
-        \Magento\Framework\Locale\Resolver $localeResolver,
+        Context $context,
+        private FormElementFactory $elementFactory,
+        private JsonSerializer $jsonSerializer,
         array $data = []
     ) {
-        $this->elementFactory = $elementFactory;
-        $this->jsonHelper     = $jsonHelper;
-        $this->localeResolver = $localeResolver;
 
         parent::__construct($context, $data);
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
+     */
+    protected function _construct()
+    {
+        $this->addColumn('date', ['label' => 'Date']);
+        $this->addColumn('opening_hours', ['label' => __('Special Opening Hours')]);
+        $this->_addAfter = false;
+        $this->_addButtonLabel = __('Add Special Opening Hours');
+
+        parent::_construct();
+    }
+
+    /**
+     * @inheritdoc
      */
     public function render(AbstractElement $element)
     {
@@ -89,30 +61,22 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
 
     /**
      * Get currently edited element.
-     *
-     * @return AbstractElement
      */
-    public function getElement()
+    public function getElement(): AbstractElement
     {
         return $this->element;
     }
 
     /**
      * Retrieve element unique container id.
-     *
-     * @return string
      */
-    public function getHtmlId()
+    public function getHtmlId(): string
     {
         return $this->getElement()->getContainer()->getHtmlId();
     }
 
     /**
-     * Render array cell for JS template
-     *
-     * @param string $columnName The column name
-     *
-     * @return string
+     * @inheritdoc
      */
     public function renderCellTemplate($columnName)
     {
@@ -128,45 +92,21 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
     }
 
     /**
-     * Initialise form fields
-     *
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName) Method is inherited
-     */
-    protected function _construct()
-    {
-        $this->addColumn('date', ['label' => 'Date']);
-        $this->addColumn('opening_hours', ['label' => __('Special Opening Hours')]);
-        $this->_addAfter = false;
-        $this->_addButtonLabel = __('Add Special Opening Hours');
-
-        parent::_construct();
-    }
-
-    /**
-     * Wrap this container into a parent div when rendering.
-     * Mainly used to have propoer binding via the Ui Component.
-     *
-     * @SuppressWarnings(PHPMD.CamelCaseMethodName) Method is inherited
-     *
-     * @param string $html The rendered HTML
-     *
-     * @return string
+     * @inheritdoc
      */
     protected function _afterToHtml($html)
     {
+        // Wrap this container into a parent div when rendering
+        // Mainly used to have propoer binding via the Ui Component
         $htmlId = $this->getHtmlId();
 
         return "<div id=\"{$htmlId}\">{$html}</div>";
     }
 
     /**
-     * Render The "Date" Column
-     *
-     * @param string $columnName The column name
-     *
-     * @return string
+     * Render The "Date" Column.
      */
-    private function renderDateColumn($columnName)
+    private function renderDateColumn(string $columnName): string
     {
         $element = $this->elementFactory->create('date');
         $element->setFormat($this->_localeDate->getDateFormatWithLongYear())
@@ -183,21 +123,16 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
     }
 
     /**
-     * Render "Special Opening Hours" Column
-     *
-     * @param string $columnName The column name
-     *
-     * @return string
+     * Render "Special Opening Hours" Column.
      */
-    private function renderOpeningHoursColumn($columnName)
+    private function renderOpeningHoursColumn(string $columnName): string
     {
         $input = $this->elementFactory->create('text');
         $input->setForm($this->getElement()->getForm());
 
-        $elementRenderer = $this->getLayout()
-            ->createBlock(
-                'Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element\Renderer'
-            )->setData("input_id", $this->_getCellInputElementId('<%- _id %>', $columnName));
+        /** @var ElementRenderer $elementRenderer */
+        $elementRenderer = $this->getLayout()->createBlock(ElementRenderer::class);
+        $elementRenderer->setData('input_id', $this->_getCellInputElementId('<%- _id %>', $columnName));
 
         $input->setName($this->_getCellInputElementName($columnName));
         $input->setRenderer($elementRenderer);
@@ -207,14 +142,13 @@ class Renderer extends \Magento\Config\Block\System\Config\Form\Field\FieldArray
 
     /**
      * Apply date picker on an element.
-     * Mandatory since Magento does this with x-magento-init tag which is NOT triggered when adding a field into array dynamically
-     *
-     * @param AbstractElement $element The element to apply calendar on
+     * Mandatory since Magento does this with x-magento-init tag
+     * which is NOT triggered when adding a field into array dynamically.
      */
-    private function appendDatePickerConfiguration($element)
+    private function appendDatePickerConfiguration(AbstractElement $element): void
     {
         $inputId = $element->getHtmlId();
-        $calendarConfig = $this->jsonHelper->jsonEncode([
+        $calendarConfig = $this->jsonSerializer->serialize([
             'dateFormat'  => $element->getFormat(),
             'showsTime'   => !empty($element->getTimeFormat()),
             'timeFormat'  => $element->getTimeFormat(),
@@ -240,13 +174,9 @@ JAVASCRIPT;
     }
 
     /**
-     * Parse Values to proper array-renderer compatible format
-     *
-     * @param array $values The values coming from model object
-     *
-     * @return array
+     * Parse Values to proper array-renderer compatible format.
      */
-    private function parseValuesToArray($values)
+    private function parseValuesToArray(array $values): array
     {
         $arrayValues = [];
 
@@ -257,17 +187,18 @@ JAVASCRIPT;
                 $timeRanges = [];
 
                 foreach ($timeSlots as $timeSlot) {
-                    $timeDate   = new Zend_Date();
-                    $timeDate->setLocale($this->localeResolver->getLocale());
-                    $startTime  = $timeDate->setTime($timeSlot->getStartTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
-                    $endTime    = $timeDate->setTime($timeSlot->getEndTime())->toString(DateTime::DATETIME_INTERNAL_FORMAT);
+                    $timeDate   = new DateTime();
+                    $startTime = $timeDate->setTimestamp(strtotime($timeSlot->getStartTime()))
+                        ->format(MagentoDateTime::DATETIME_PHP_FORMAT);
+                    $endTime   = $timeDate->setTimestamp(strtotime($timeSlot->getEndTime()))
+                        ->format(MagentoDateTime::DATETIME_PHP_FORMAT);
                     $timeRanges[] = [$startTime, $endTime];
                 }
 
-                $date = new Zend_Date($date, DateTime::DATETIME_INTERNAL_FORMAT);
+                $date = new DateTime($date);
                 $arrayValues[] = [
-                    "date" => $date->toString($this->_localeDate->getDateFormatWithLongYear()),
-                    "opening_hours" => $this->jsonHelper->jsonEncode(array_filter($timeRanges)),
+                    'date' => $date->format(MagentoDateTime::DATETIME_PHP_FORMAT),
+                    'opening_hours' => $this->jsonSerializer->serialize(array_filter($timeRanges)),
                 ];
             }
         }

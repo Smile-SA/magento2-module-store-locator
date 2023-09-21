@@ -4,7 +4,8 @@ define([
     'ko',
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
-    'jquery/ui'
+    'jquery/ui',
+    'mage/translate'
 ], function ($, L, ko, MarkersList, Schedule) {
     'use strict';
 
@@ -199,7 +200,7 @@ define([
                 isOpen = 'Closed';
                 statusClass = 'close-shop';
             } else {
-                isOpen = 'Open';
+                isOpen = 'Opened';
                 statusClass = 'open-shop';
             }
             var time = schedule.getTodayCloseTime(isOpen);
@@ -209,11 +210,14 @@ define([
                 time = schedule.getTodayCloseTime(isOpen);
                 isOpen = 'Closed';
             }
-            var openDay = schedule.getDayWhenStoreOpen();
-            if (!openDay) {
-                openDay = '';
+            var html = '<span class="'+ statusClass +'">'+ $.mage.__(isOpen) +'</span>';
+            if (time) {
+                html = html + ' - ' + $.mage.__('today') + ' ' + $.mage.__('until') + ' <span>'+ time +'</span>';
             }
-            var html = '<span class="'+ statusClass +'">'+ isOpen +'</span> - today until <span>'+ time +'</span><span>'+ openDay +'</span>';
+            var openDay = schedule.getDayWhenStoreOpen();
+            if (openDay) {
+                html = html + '<span>'+ $.mage.__(openDay) +'</span>';
+            }
             return html;
         },
 
@@ -342,7 +346,7 @@ define([
             this.markers().forEach(function (marker) {
                 var name = marker.name;
                 var postCode = marker.postCode;
-                var city = marker.city;
+                var city = marker.city ? marker.city : marker.addressData.city;
                 var positionLan = marker.latitude;
                 var positionLon = marker.longitude;
                 name = name.toLowerCase();

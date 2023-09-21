@@ -1,58 +1,40 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer\Attribute\Backend;
 
 use Magento\Eav\Model\Entity\Attribute\Backend\AbstractBackend;
+use Magento\Framework\DataObject;
 use Magento\Framework\Exception\CouldNotSaveException;
+use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\StoreLocator\Model\Url;
 
 /**
  * Retailer URL key backend model.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class UrlKey extends AbstractBackend
 {
-    /**
-     * @var \Smile\StoreLocator\Model\Url
-     */
-    private $urlModel;
-
-    /**
-     * Constructor.
-     *
-     * @param \Smile\StoreLocator\Model\Url $urlModel Retailer URL Model.
-     */
-    public function __construct(\Smile\StoreLocator\Model\Url $urlModel)
+    public function __construct(private Url $urlModel)
     {
-        $this->urlModel = $urlModel;
     }
 
     /**
-     * {@inheritDoc}
+     * @inheritdoc
      */
     public function beforeSave($object)
     {
+        /** @var RetailerInterface|DataObject $object */
         $urlKey = $this->urlModel->getUrlKey($object);
 
         if ($urlKey !== $object->getUrlKey()) {
             $object->setUrlKey($urlKey);
         }
 
+        $objectId = (int) $object->getId();
         $retailerIdCheck = $this->urlModel->checkIdentifier($urlKey);
 
-        if ($retailerIdCheck !== false && ($object->getId() !== $retailerIdCheck)) {
+        if ($retailerIdCheck !== false && $objectId !== $retailerIdCheck) {
             throw new CouldNotSaveException(__('Retailer url_key "%1" already exists.', $urlKey));
         }
 

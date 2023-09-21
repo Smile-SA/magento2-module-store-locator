@@ -1,45 +1,24 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Data;
 
+use Magento\Framework\Api\SimpleDataObjectConverter;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterfaceFactory as EntityFactory;
+use Smile\StoreLocator\Model\RetailerAddress;
 use Smile\StoreLocator\Model\RetailerAddressFactory as ModelFactory;
-use Magento\Framework\Api\SimpleDataObjectConverter;
 
 /**
  * Retailer address converter utils.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
 class RetailerAddressConverter
 {
     /**
-     *@var EntityFactory
-     */
-    private $entityFactory;
-
-    /**
-     * @var ModelFactory
-     */
-    private $modelFactory;
-
-    /**
      * @var string[]
      */
-    private $copyFields = [
+    private array $copyFields = [
         RetailerAddressInterface::ADDRESS_ID,
         RetailerAddressInterface::RETAILER_ID,
         RetailerAddressInterface::STREET,
@@ -51,71 +30,44 @@ class RetailerAddressConverter
         RetailerAddressInterface::COORDINATES,
     ];
 
-    /**
-     * Constructor.
-     *
-     * @param EntityFactory $entityFactory Retailer address entity factory.
-     * @param ModelFactory  $modelFactory  Retailer address model factory.
-     */
-    public function __construct(EntityFactory $entityFactory, ModelFactory $modelFactory)
+    public function __construct(private EntityFactory $entityFactory, private ModelFactory $modelFactory)
     {
-        $this->entityFactory = $entityFactory;
-        $this->modelFactory  = $modelFactory;
     }
 
     /**
      * Convert the entity to a new model object.
-     *
-     * @param \Smile\StoreLocator\Api\Data\RetailerAddressInterface $entity Entity.
-     *
-     * @return \Smile\StoreLocator\Model\RetailerAddress
      */
-    public function toModel(\Smile\StoreLocator\Api\Data\RetailerAddressInterface $entity)
+    public function toModel(RetailerAddressInterface $entity): RetailerAddress
     {
         return $this->convert($this->modelFactory, $entity);
     }
 
     /**
      * Convert the model to a new entity object.
-     *
-     * @param \Smile\StoreLocator\Model\RetailerAddress $model Model.
-     *
-     * @return \Smile\StoreLocator\Api\Data\RetailerAddressInterface
      */
-    public function toEntity(\Smile\StoreLocator\Model\RetailerAddress $model)
+    public function toEntity(RetailerAddress $model): RetailerAddressInterface
     {
         return $this->convert($this->entityFactory, $model);
     }
 
     /**
      * Process conversion.
-     *
-     * @param mixed $factory New item factory.
-     * @param mixed $source  Source object.
-     *
-     * @return mixed
      */
-    private function convert($factory, $source)
+    private function convert(mixed $factory, mixed $source): mixed
     {
         $target = $factory->create();
-        $target = $this->copyFields($source, $target);
 
-        return $target;
+        return $this->copyFields($source, $target);
     }
 
     /**
      * Copy field from a source object to a target one securely.
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
-     *
-     * @param mixed $source Source object.
-     * @param mixed $target Target object.
-     *
-     * @return mixed
      */
-    private function copyFields($source, $target)
+    private function copyFields(mixed $source, mixed $target): mixed
     {
-        $sourceValues        = $this->extractValues($source);
+        $sourceValues = $this->extractValues($source);
         $targetObjectMethods = get_class_methods(get_class($target));
         foreach ($sourceValues as $currentField => $value) {
             $setMethodName = 'set' . SimpleDataObjectConverter::snakeCaseToUpperCamelCase($currentField);
@@ -134,12 +86,8 @@ class RetailerAddressConverter
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
-     *
-     * @param mixed $source Source object.
-     *
-     * @return mixed[]
      */
-    private function extractValues($source)
+    private function extractValues(mixed $source): array
     {
         $values = [];
 
@@ -149,7 +97,8 @@ class RetailerAddressConverter
             $getMethodName = 'get' . SimpleDataObjectConverter::snakeCaseToUpperCamelCase($currentField);
             $hasMethodName = 'has' . SimpleDataObjectConverter::snakeCaseToUpperCamelCase($currentField);
 
-            if ((in_array($hasMethodName, $sourceObjectMethods) && $source->$hasMethodName()) ||
+            if (
+                (in_array($hasMethodName, $sourceObjectMethods) && $source->$hasMethodName()) ||
                 (in_array('hasData', $sourceObjectMethods) && $source->hasData($currentField)) ||
                 (in_array($getMethodName, $sourceObjectMethods) && $source->$getMethodName() !== null) ||
                 (in_array('getData', $sourceObjectMethods) && $source->getData($currentField) !== null)

@@ -1,21 +1,4 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Smile_StoreLocator admin configuration UI fields.
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Maxime Leclercq <maxime.leclercq@smile.fr>
- * @copyright 2018 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
- -->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
 

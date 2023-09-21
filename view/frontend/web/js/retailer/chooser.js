@@ -1,23 +1,11 @@
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- *
- * @category  Smile
- * @package   Smile\Retailer
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
-
-/*jshint browser:true jquery:true*/
-/*global alert*/
-
-define(['jquery', 'uiComponent', 'Magento_Customer/js/customer-data', 'uiRegistry', 'mage/translate'], function ($, Component, storage, registry) {
-
-    "use strict";
+define([
+    'jquery',
+    'uiComponent',
+    'Magento_Customer/js/customer-data',
+    'uiRegistry',
+    'mage/translate'
+], function ($, Component, storage, registry) {
+    'use strict';
 
     var retailer = storage.get('current-store');
 

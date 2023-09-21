@@ -1,48 +1,25 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Data;
 
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterfaceFactory;
 
 /**
- * Converter for Time Slot operations
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Converter for Time Slot operations.
  */
 class RetailerTimeSlotConverter
 {
-    /**
-     * RetailerTimeSlotConverter constructor.
-     *
-     * @param RetailerTimeSlotInterfaceFactory $timeSlotFactory Time Slot Factory
-     */
-    public function __construct(RetailerTimeSlotInterfaceFactory $timeSlotFactory)
+    public function __construct(private RetailerTimeSlotInterfaceFactory $timeSlotFactory)
     {
-        $this->timeSlotFactory = $timeSlotFactory;
     }
 
     /**
-     * Convert a set of timeslot entries to a multidimensional array of RetailerTimeSlotInterface
-     *
-     * @param array  $timeSlots The time slot data
-     * @param string $dateField The date field to use
-     *
-     * @return array
+     * Convert a set of timeslot entries to a multidimensional array of RetailerTimeSlotInterface.
      */
-    public function toEntity($timeSlots, $dateField = RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD)
+    public function toEntity(array $timeSlots, string $dateField = RetailerTimeSlotInterface::DAY_OF_WEEK_FIELD): array
     {
         $openingHours = [];
 

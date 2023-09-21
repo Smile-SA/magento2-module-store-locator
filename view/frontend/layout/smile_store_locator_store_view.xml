@@ -1,24 +1,9 @@
 <?xml version="1.0"?>
-<!--
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
- -->
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <update handle="smile_map_styles"/>
 
     <body>
-        <attribute name="itemtype" value="http://schema.org/Store" />
+        <attribute name="itemtype" value="http://schema.org/Store"/>
         <attribute name="itemscope" value="itemscope"/>
         <referenceBlock name="page.main.title">
             <arguments>

@@ -1,145 +1,115 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\Retailer;
 
+use Exception;
+use Laminas\Validator\EmailAddress;
+use Laminas\Validator\NotEmpty;
+use Magento\Contact\Controller\Index;
+use Magento\Framework\App\Area;
 use Magento\Framework\App\Config\ScopeConfigInterface;
 use Magento\Framework\DataObject;
+use Magento\Framework\Exception\LocalizedException;
+use Magento\Framework\Exception\MailException;
 use Magento\Framework\Mail\Template\TransportBuilder;
 use Magento\Framework\Translate\Inline\StateInterface;
-use Magento\Store\Model\StoreManagerInterface;
+use Magento\Store\Model\ScopeInterface;
+use Magento\Store\Model\Store;
 use Smile\Retailer\Api\Data\RetailerInterface;
 
 /**
  * Store Contact Form model.
  *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * @SuppressWarnings(PHPMD.CouplingBetweenObjects)
  */
 class ContactForm
 {
-    /**
-     * @var \Magento\Framework\App\Config\ScopeConfigInterface
-     */
-    private $scopeConfig;
+    private DataObject $dataObject;
 
-    /**
-     * @var \Magento\Framework\Mail\Template\TransportBuilder
-     */
-    private $transportBuilder;
-
-    /**
-     * @var \Magento\Framework\Translate\Inline\StateInterface
-     */
-    private $inlineTranslation;
-
-    /**
-     * @var \Magento\Framework\DataObject
-     */
-    private $dataObject;
-
-    /**
-     * ContactForm constructor.
-     *
-     * @param \Magento\Framework\App\Config\ScopeConfigInterface $scopeConfig       Scope Config
-     * @param \Magento\Framework\Mail\Template\TransportBuilder  $transportBuilder  Transport Builder
-     * @param \Magento\Framework\Translate\Inline\StateInterface $inlineTranslation Inline Translation
-     * @param RetailerInterface                                  $retailer          Current Retailer
-     * @param array                                              $data              Form Data
-     */
     public function __construct(
-        ScopeConfigInterface $scopeConfig,
-        TransportBuilder $transportBuilder,
-        StateInterface $inlineTranslation,
-        RetailerInterface $retailer,
-        $data
+        private ScopeConfigInterface $scopeConfig,
+        private TransportBuilder $transportBuilder,
+        private StateInterface $inlineTranslation,
+        private RetailerInterface $retailer,
+        private NotEmpty $notEmptyValidator,
+        private EmailAddress $emailAddressValidator,
+        array $data
     ) {
-        $this->scopeConfig       = $scopeConfig;
-        $this->transportBuilder  = $transportBuilder;
-        $this->inlineTranslation = $inlineTranslation;
-        $this->retailer          = $retailer;
-        $this->dataObject        = new \Magento\Framework\DataObject($data);
+        $this->dataObject = new DataObject($data);
     }
 
     /**
-     * Send contact form
-     * @SuppressWarnings(PHPMD.StaticAccess)
+     * Send contact form.
      *
-     * @throws \Exception
-     * @throws \Zend_Validate_Exception
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @throws LocalizedException
+     * @throws MailException
      */
-    public function send()
+    public function send(): void
     {
         $postObject = $this->dataObject;
         $this->inlineTranslation->suspend();
 
         try {
             $this->validate();
-            $storeScope = \Magento\Store\Model\ScopeInterface::SCOPE_STORE;
+            $storeScope = ScopeInterface::SCOPE_STORE;
             $transport  = $this->transportBuilder
-                ->setTemplateIdentifier($this->scopeConfig->getValue(\Magento\Contact\Controller\Index::XML_PATH_EMAIL_TEMPLATE, $storeScope))
+                ->setTemplateIdentifier($this->scopeConfig->getValue(Index::XML_PATH_EMAIL_TEMPLATE, $storeScope))
                 ->setTemplateOptions(
                     [
-                        'area'  => \Magento\Framework\App\Area::AREA_FRONTEND,
-                        'store' => \Magento\Store\Model\Store::DEFAULT_STORE_ID,
+                        'area' => Area::AREA_FRONTEND,
+                        'store' => Store::DEFAULT_STORE_ID,
                     ]
                 )
                 ->setTemplateVars(['data' => $postObject])
-                ->setFrom($this->scopeConfig->getValue(\Magento\Contact\Controller\Index::XML_PATH_EMAIL_SENDER, $storeScope))
-                ->addTo($this->retailer->getContactMail())
+                ->setFrom($this->scopeConfig->getValue(Index::XML_PATH_EMAIL_SENDER, $storeScope))
+                ->addTo($this->retailer->getData('contact_mail'))
                 ->setReplyTo($this->dataObject->getData('email'))
                 ->getTransport();
 
             $transport->sendMessage();
             $this->inlineTranslation->resume();
-        } catch (\Exception $exception) {
+        } catch (Exception $exception) {
             $this->inlineTranslation->resume();
             throw $exception;
         }
     }
 
     /**
-     * Send contact form
-     * @SuppressWarnings(PHPMD.StaticAccess)
+     * Send contact form.
      *
-     * @throws \Exception
-     * @throws \Zend_Validate_Exception
+     * @SuppressWarnings(PHPMD.StaticAccess)
+     * @throws Exception
      */
-    private function validate()
+    private function validate(): void
     {
         $post = $this->dataObject->getData();
-
         $error = false;
 
-        if (!\Zend_Validate::is(trim($post['name']), 'NotEmpty')) {
+        if (!$this->notEmptyValidator->isValid(trim($post['name']))) {
             $error = __('Name cannot be empty');
         }
-        if (!\Zend_Validate::is(trim($post['comment']), 'NotEmpty')) {
+
+        if (!$this->notEmptyValidator->isValid(trim($post['comment']))) {
             $error = __('Contact form cannot be empty');
         }
-        if (!\Zend_Validate::is(trim($post['email']), 'EmailAddress')) {
+
+        if (!$this->emailAddressValidator->isValid(trim($post['email']))) {
             $error = __('Contact mail cannot be empty');
         }
-        if (\Zend_Validate::is(trim($post['hideit']), 'NotEmpty')) {
+
+        if ($this->notEmptyValidator->isValid(trim($post['hideit']))) {
             $error = __('Unable to validate form');
         }
 
-        if ((!$this->retailer->getId()) || (!$this->retailer->getContactMail())) {
+        if (!$this->retailer->getId() || (!$this->retailer->getData('contact_mail'))) {
             $error = __('Unable to retrieve retailer informations');
         }
 
         if (false !== $error) {
-            throw new \Exception($error);
+            throw new Exception($error->render());
         }
     }
 }

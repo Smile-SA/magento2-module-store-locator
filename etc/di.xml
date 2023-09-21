@@ -1,24 +1,7 @@
 <?xml version="1.0"?>
-<!--
-/**
- * Store Locator Dependency Injection
- *
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain RUAUD <romain.ruaud@smile.fr>
- * @copyright 2016 Smile
- * @license   Apache License Version 2.0
- */
--->
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
-    
-    <preference for="Smile\StoreLocator\Api\Data\RetailerAddressInterface" type="Smile\StoreLocator\Model\Data\RetailerAddress" />
-    <preference for="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface" type="Smile\StoreLocator\Model\Data\RetailerTimeSlot" />
+    <preference for="Smile\StoreLocator\Api\Data\RetailerAddressInterface" type="Smile\StoreLocator\Model\Data\RetailerAddress"/>
+    <preference for="Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface" type="Smile\StoreLocator\Model\Data\RetailerTimeSlot"/>
 
     <type name="Magento\Framework\EntityManager\MetadataPool">
         <arguments>
@@ -64,16 +47,16 @@
             </argument>
         </arguments>
     </type>
-    
+
     <type name="Smile\Retailer\Model\ResourceModel\Retailer\Collection">
-        <plugin name="smile_store_locator_add_extension_attributes" type="Smile\StoreLocator\Plugin\RetailerCollectionPlugin" />
+        <plugin name="smile_store_locator_add_extension_attributes" type="Smile\StoreLocator\Plugin\RetailerCollectionPlugin"/>
     </type>
-    
+
     <type name="Smile\Seller\Ui\Component\Seller\Form\DataProvider">
-        <plugin name="smile_store_locator_add_address" type="Smile\StoreLocator\Plugin\RetailerEditFormPlugin" />
+        <plugin name="smile_store_locator_add_address" type="Smile\StoreLocator\Plugin\RetailerEditFormPlugin"/>
     </type>
 
     <type name="Magento\Ui\Component\Form">
-        <plugin name="smile_store_locator_ui_component_form" type="Smile\StoreLocator\Plugin\RetailerUiComponentFormPlugin" />
+        <plugin name="smile_store_locator_ui_component_form" type="Smile\StoreLocator\Plugin\RetailerUiComponentFormPlugin"/>
     </type>
 </config>

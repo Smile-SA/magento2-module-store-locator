@@ -1,85 +1,55 @@
 <?php
-/**
- * DISCLAIMER
- *
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Fanny DECLERCK <fadec@smile.fr>
- * @copyright 2019 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
 
 namespace Smile\StoreLocator\Ui\Component\Retailer\Form;
 
+use Magento\Framework\Registry;
+use Magento\Ui\DataProvider\AbstractDataProvider;
 use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory;
 
 /**
  * Ui DataProvider controller.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Fanny DECLERCK <fadec@smile.fr>
  */
-class DataProvider extends \Magento\Ui\DataProvider\AbstractDataProvider
+class DataProvider extends AbstractDataProvider
 {
-    /**
-     * @var \Magento\Framework\Registry
-     */
-    private $registry;
+    protected array $loadData = [];
 
-    /**
-     * @param string                      $name              Name
-     * @param string                      $primaryFieldName  PrimaryFieldName
-     * @param string                      $requestFieldName  RequestFieldName
-     * @param CollectionFactory           $collectionFactory Collection
-     * @param \Magento\Framework\Registry $registry          Registry.
-     * @param array                       $meta              Meta
-     * @param array                       $data              Data
-     */
     public function __construct(
-        $name,
-        $primaryFieldName,
-        $requestFieldName,
+        string $name,
+        string $primaryFieldName,
+        string $requestFieldName,
         CollectionFactory $collectionFactory,
-        \Magento\Framework\Registry $registry,
+        private Registry $registry,
         array $meta = [],
         array $data = []
     ) {
+        // extends from \Magento\Eav\Model\Entity\Collection\AbstractCollection
+        // instead of \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
+        // @phpstan-ignore-next-line - ignore for backward compatibility
         $this->collection = $collectionFactory->create();
-        $this->registry = $registry;
-
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
 
     /**
-     * Get data
-     *
-     * @return array
+     * Get data.
      */
-    public function getData()
+    public function getData(): array
     {
-        if (!isset($this->loadData)) {
-            $this->loadData = [];
-            if ($retailerIds = $this->getRetailerIds()) {
-                $this->registry->unregister('retailer_ids');
-                $this->loadData = [
-                    'retailer_ids' => json_encode($retailerIds),
-                ];
-            }
+        $retailerIds = $this->getRetailerIds();
+        if ($retailerIds) {
+            $this->loadData = [
+                'retailer_ids' => json_encode($retailerIds),
+            ];
         }
 
         return $this->loadData;
     }
 
     /**
-     * Get retailer ids
-     *
-     * @return int
+     * Get retailer ids.
      */
-    private function getRetailerIds()
+    private function getRetailerIds(): array
     {
         return $this->registry->registry('retailer_ids');
     }

@@ -1,104 +1,43 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @copyright 2017 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
-use Magento\Store\Model\StoreManagerInterface;
+use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Retailer\Api\RetailerRepositoryInterface;
-use \Smile\StoreLocator\Helper\Contact as ContactHelper;
+use Smile\StoreLocator\Helper\Contact as ContactHelper;
 
 /**
- * Contact Form action for Shops
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
+ * Contact Form action for Shops.
  */
-class Contact extends Action
+class Contact extends Action implements HttpGetActionInterface
 {
-    /**
-     * Page factory.
-     *
-     * @var PageFactory
-     */
-    private $resultPageFactory;
-
-    /**
-     * Forward factory.
-     *
-     * @var ForwardFactory
-     */
-    private $resultForwardFactory;
-
-    /**
-     * Core registry.
-     *
-     * @var Registry
-     */
-    private $coreRegistry;
-
-    /**
-     * @var RetailerRepositoryInterface
-     */
-    private $retailerRepository;
-
-    /**
-     * @var \Smile\StoreLocator\Helper\Contact
-     */
-    private $contactHelper;
-
-    /**
-     * Constructor.
-     *
-     * @param Context                     $context            Application Context
-     * @param PageFactory                 $pageFactory        Result Page Factory
-     * @param ForwardFactory              $forwardFactory     Forward Factory
-     * @param Registry                    $coreRegistry       Application Registry
-     * @param RetailerRepositoryInterface $retailerRepository Retailer Repository
-     * @param ContactHelper               $contactHelper      Contact Helper
-     */
     public function __construct(
         Context $context,
-        PageFactory $pageFactory,
-        ForwardFactory $forwardFactory,
-        Registry $coreRegistry,
-        RetailerRepositoryInterface $retailerRepository,
-        ContactHelper $contactHelper
+        private PageFactory $resultPageFactory,
+        private ForwardFactory $resultForwardFactory,
+        private Registry $coreRegistry,
+        private RetailerRepositoryInterface $retailerRepository,
+        private ContactHelper $contactHelper
     ) {
         parent::__construct($context);
-
-        $this->resultPageFactory    = $pageFactory;
-        $this->resultForwardFactory = $forwardFactory;
-        $this->coreRegistry         = $coreRegistry;
-        $this->retailerRepository   = $retailerRepository;
-        $this->contactHelper        = $contactHelper;
     }
 
     /**
-     * Dispatch request. Will bind submitted retailer id (if any) to current customer session
-     *
-     * @throws \Magento\Framework\Exception\NotFoundException
-     *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
+     * @inheritdoc
      */
     public function execute()
     {
         $retailerId = $this->getRequest()->getParam('id');
-        $retailer   = $this->retailerRepository->get($retailerId);
+        /** @var RetailerInterface $retailer */
+        $retailer   = $this->retailerRepository->get((int) $retailerId);
 
         if (!$retailer->getId() || !$this->contactHelper->canDisplayContactForm($retailer)) {
             $resultForward = $this->resultForwardFactory->create();

@@ -1,37 +1,21 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Model\ResourceModel;
 
 use Magento\Framework\DB\Select;
+use Smile\Seller\Model\ResourceModel\Seller;
 
 /**
  * Retailer URL resource model.
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
  */
-class Url extends \Smile\Seller\Model\ResourceModel\Seller
+class Url extends Seller
 {
     /**
      * Check an URL key exists and returns the retailer id. False if no retailer found.
-     *
-     * @param urlKey $urlKey  URL key.
-     * @param int    $storeId Store Id.
-     *
-     * @return int|false
      */
-    public function checkIdentifier($urlKey, $storeId)
+    public function checkIdentifier(string $urlKey, int $storeId): int
     {
         $urlKeyAttribute = $this->getAttribute('url_key');
         $select = $this->getConnection()->select();
@@ -43,6 +27,6 @@ class Url extends \Smile\Seller\Model\ResourceModel\Seller
             ->order('store_id ' . Select::SQL_DESC)
             ->limit(1);
 
-        return $this->getConnection()->fetchOne($select);
+        return (int) $this->getConnection()->fetchOne($select);
     }
 }

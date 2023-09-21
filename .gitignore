@@ -1,0 +1,6 @@
+/.fleet
+/.idea
+/vendor
+/composer.lock
+/phpcs.xml
+/phpstan.neon

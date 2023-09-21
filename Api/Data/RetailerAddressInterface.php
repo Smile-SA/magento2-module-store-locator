@@ -1,60 +1,47 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Api\Data;
 
+use Smile\Map\Api\Data\GeolocalizedAddressInterface;
+
 /**
- * Retailer Store Locator interface
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * Retailer Store Locator interface.
  */
-interface RetailerAddressInterface extends \Smile\Map\Api\Data\GeolocalizedAddressInterface
+interface RetailerAddressInterface extends GeolocalizedAddressInterface
 {
-    /**#@+
-     * Constants for keys of data array. Identical to the name of the getter in snake case
-     */
-    const ADDRESS_ID  = 'address_id';
-    const RETAILER_ID = 'retailer_id';
-    /**#@-*/
+    public const ADDRESS_ID  = 'address_id';
+    public const RETAILER_ID = 'retailer_id';
 
     /**
+     * Get id
+     *
      * @return int
      */
-    public function getId();
+    public function getAddressId(): int;
 
     /**
+     * Get retailer id.
+     *
      * @return int
      */
-    public function getRetailerId();
+    public function getRetailerId(): int;
 
     /**
      * Set id.
      *
      * @SuppressWarnings(PHPMD.ShortVariable)
-     *
-     * @param int $id Address id.
-     *
+     * @param mixed $id Address id.
      * @return $this
      */
-    public function setId($id);
+    public function setAddressId(mixed $id): self;
 
     /**
      * Set retailer id.
      *
      * @param int $retailerId Retailer id.
-     *
      * @return $this
      */
-    public function setRetailerId($retailerId);
+    public function setRetailerId(int $retailerId): self;
 }

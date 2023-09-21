@@ -1,62 +1,29 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Romain Ruaud <romain.ruaud@smile.fr>
- * @author    Guillaume Vrac <guillaume.vrac@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Store;
 
 use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\View\Result\PageFactory;
-use Smile\StoreLocator\Api\LocatorInterface;
+use Smile\Seller\Model\Locator\LocatorInterface;
 
 /**
  * Search action (displays the search page).
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Romain Ruaud <romain.ruaud@smile.fr>
- * @author   Guillaume Vrac <guillaume.vrac@smile.fr>
  */
-class Search extends Action
+class Search extends Action implements HttpGetActionInterface
 {
-    /**
-     * Page factory.
-     *
-     * @var \Magento\Framework\View\Result\PageFactory
-     */
-    protected $resultPageFactory;
+    protected LocatorInterface $retailerLocator;
 
-    /**
-     * Store locator.
-     *
-     * @var \Smile\StoreLocator\Api\LocatorInterface
-     */
-    protected $retailerLocator;
-
-    /**
-     * Constructor.
-     *
-     * @param \Magento\Framework\App\Action\Context      $context     Application Context.
-     * @param \Magento\Framework\View\Result\PageFactory $pageFactory Result Page Factory.
-     */
-    public function __construct(Context $context, PageFactory $pageFactory)
+    public function __construct(Context $context, protected PageFactory $resultPageFactory)
     {
         parent::__construct($context);
-
-        $this->resultPageFactory = $pageFactory;
     }
 
     /**
-     * {@inheritdoc}
+     * @inheritdoc
      */
     public function execute()
     {

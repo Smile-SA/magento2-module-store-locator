@@ -1,75 +1,51 @@
 <?php
-/**
- * DISCLAIMER
- * Do not edit or add to this file if you wish to upgrade this module to newer
- * versions in the future.
- *
- * @category  Smile
- * @package   Smile\StoreLocator
- * @author    Aurelien FOUCRET <aurelien.foucret@smile.fr>
- * @copyright 2016 Smile
- * @license   Open Software License ("OSL") v. 3.0
- */
+
+declare(strict_types=1);
+
 namespace Smile\StoreLocator\Controller\Store;
 
+use Exception;
 use Magento\Framework\App\Action\Action;
+use Magento\Framework\App\Action\Context;
+use Magento\Framework\App\Action\HttpPostActionInterface;
+use Magento\Framework\Controller\Result\Redirect;
 use Magento\Framework\Controller\ResultFactory;
+use Smile\Retailer\Api\Data\RetailerInterface;
+use Smile\Retailer\Api\RetailerRepositoryInterface;
+use Smile\StoreLocator\CustomerData\CurrentStore;
 
 /**
- * Frontend Controller meant to set current Retailer to customer session
- *
- * @category Smile
- * @package  Smile\StoreLocator
- * @author   Aurelien FOUCRET <aurelien.foucret@smile.fr>
+ * Frontend Controller meant to set current Retailer to customer session.
  */
-class Set extends Action
+class Set extends Action implements HttpPostActionInterface
 {
-    /**
-     * @var \Smile\StoreLocator\CustomerData\CurrentStore
-     */
-    private $customerData;
-
-    /**
-     * @var \Smile\Retailer\Api\RetailerRepositoryInterface
-     */
-    private $retailerRepository;
-
-    /**
-     * Set constructor.
-     *
-     * @param \Magento\Framework\App\Action\Context           $context            Action context.
-     * @param \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository Retailer repository.
-     * @param \Smile\StoreLocator\CustomerData\CurrentStore   $customerData       Store customer data.
-     */
     public function __construct(
-        \Magento\Framework\App\Action\Context $context,
-        \Smile\Retailer\Api\RetailerRepositoryInterface $retailerRepository,
-        \Smile\StoreLocator\CustomerData\CurrentStore $customerData
+        Context $context,
+        private RetailerRepositoryInterface $retailerRepository,
+        private CurrentStore $customerData
     ) {
         parent::__construct($context);
-
-        $this->retailerRepository = $retailerRepository;
-        $this->customerData       = $customerData;
     }
 
     /**
-     * Dispatch request. Will bind submitted retailer id (if any) to current customer session
-     *
-     * @throws \Magento\Framework\Exception\NotFoundException
-     *
-     * @return \Magento\Framework\Controller\ResultInterface|ResponseInterface
+     * @inheritdoc
      */
     public function execute()
     {
         $retailerId = $this->getRequest()->getParam('id', false);
 
         try {
-            $retailer   = $this->retailerRepository->get($retailerId);
+            /** @var RetailerInterface $retailer */
+            $retailer = $this->retailerRepository->get((int) $retailerId);
             $this->customerData->setRetailer($retailer);
-        } catch (\Exception $exception) {
-            $this->messageManager->addExceptionMessage($exception, __("We are sorry, an error occured when switching retailer."));
+        } catch (Exception $exception) {
+            $this->messageManager->addExceptionMessage(
+                $exception,
+                __('We are sorry, an error occured when switching retailer.')
+            );
         }
 
+        /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setUrl($this->_redirect->getRefererUrl());
 

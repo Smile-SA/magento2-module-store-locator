@@ -1,0 +1,71 @@
+<?xml version="1.0"?>
+<schema xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:framework:Setup/Declaration/Schema/etc/schema.xsd">
+    <!-- table smile_retailer_address -->
+    <table name="smile_retailer_address" resource="default" engine="innodb"
+           comment="Retailer Address">
+        <column xsi:type="int" name="address_id" unsigned="true" nullable="false" identity="true"
+                comment="Address ID"/>
+        <column xsi:type="int" name="retailer_id" unsigned="true" nullable="false"
+                comment="Retailer Id"/>
+        <column xsi:type="timestamp" name="created_at" nullable="false" default="CURRENT_TIMESTAMP"
+                comment="Created At"/>
+        <column xsi:type="timestamp" name="updated_at" nullable="false" default="CURRENT_TIMESTAMP" on_update="true"
+                comment="Updated At"/>
+        <column xsi:type="text" name="street" nullable="false"
+                comment="Street Address"/>
+        <column xsi:type="varchar" name="postcode" nullable="true" length="255"
+                comment="Zip/Postal Code"/>
+        <column xsi:type="varchar" name="city" nullable="false" length="255"
+                comment="City"/>
+        <column xsi:type="varchar" name="region" nullable="true" length="255"
+                comment="State/Province"/>
+        <column xsi:type="int" name="region_id" unsigned="true" nullable="true" default="null"
+                comment="State/Province"/>
+        <column xsi:type="varchar" name="country_id" nullable="false" length="255"
+                comment="Country"/>
+        <column xsi:type="decimal" name="latitude" scale="6" precision="10" unsigned="false" nullable="false" />
+        <column xsi:type="decimal" name="longitude" scale="6" precision="10" unsigned="false" nullable="false" />
+
+        <constraint xsi:type="primary" referenceId="PRIMARY">
+            <column name="address_id"/>
+        </constraint>
+
+        <constraint xsi:type="foreign" referenceId="SMILE_RETAILER_ADDRESS_RETAILER_ID_SMILE_SELLER_ENTITY_ENTITY_ID"
+                    table="smile_retailer_address" column="retailer_id"
+                    referenceTable="smile_seller_entity" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+
+        <constraint xsi:type="unique" referenceId="SMILE_RETAILER_ADDRESS_RETAILER_ID">
+            <column name="retailer_id"/>
+        </constraint>
+    </table>
+
+    <!-- table smile_retailer_time_slots -->
+    <table name="smile_retailer_time_slots" resource="default" engine="innodb"
+           comment="Smile Retailer Opening Hours Table">
+        <column xsi:type="int" name="retailer_id" unsigned="true" nullable="false"
+                comment="Retailer Id"/>
+        <column xsi:type="varchar" name="attribute_code" nullable="false" length="25"
+                comment="Attribute Code"/>
+        <column xsi:type="smallint" name="day_of_week" unsigned="true" nullable="true" default="null"
+                comment="Day Of Week"/>
+        <column xsi:type="date" name="date" nullable="true"
+                comment="Opening Date, if any"/>
+        <!--
+        /**
+         * Hack : Magento does not support TIME column on its DDL.
+         * Those columns will contain full datetime but work only with hours.
+         */
+        -->
+        <column xsi:type="datetime" name="start_time" nullable="true" default="NULL"
+                comment="Start Time"/>
+        <column xsi:type="datetime" name="end_time" nullable="true" default="NULL"
+                comment="End Time"/>
+
+        <constraint xsi:type="foreign" referenceId="SMILE_RETAILER_TIME_SLOTS_RETAILER_ID_SMILE_SELLER_ENTT_ENTT_ID"
+                    table="smile_retailer_time_slots" column="retailer_id"
+                    referenceTable="smile_seller_entity" referenceColumn="entity_id"
+                    onDelete="CASCADE"/>
+    </table>
+</schema>
