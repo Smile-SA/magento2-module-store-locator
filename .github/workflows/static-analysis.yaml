@@ -63,4 +63,4 @@ jobs:
         run: 'vendor/bin/phpmd . xml phpmd.xml.dist'
 
       - name: 'Run PHPStan'
-        run: 'vendor/bin/phpstan analyse --configuration=./phpstan.neon.dist'
+        run: 'vendor/bin/phpstan analyse'
