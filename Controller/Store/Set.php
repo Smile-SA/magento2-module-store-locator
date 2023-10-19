@@ -48,6 +48,7 @@ class Set extends Action implements HttpPostActionInterface
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setUrl($this->_redirect->getRefererUrl());
+        $this->messageManager->addSuccess(__('Retailer shop %1 has been chosen.', $retailer->getName()));
 
         return $resultRedirect;
     }
