@@ -4,9 +4,9 @@ define([
     'ko',
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
-    'jquery/ui',
-    'mage/translate'
-], function ($, L, ko, MarkersList, Schedule) {
+    'mage/translate',
+    'jquery/ui'
+], function ($, L, ko, MarkersList, Schedule, $t) {
     'use strict';
 
     var mixin = {
@@ -341,34 +341,65 @@ define([
             var resultArray = [];
             var searchTarget = $('#searchMarker').val();
             var nameRequest = parseInt(searchTarget.replace( /\D/g, '')) || 0;
+            var words = [];
             searchTarget = searchTarget.toLowerCase();
             searchTarget = searchTarget.trim();
-            this.markers().forEach(function (marker) {
-                var name = marker.name;
-                var postCode = marker.postCode;
-                var city = marker.city ? marker.city : marker.addressData.city;
-                var positionLan = marker.latitude;
-                var positionLon = marker.longitude;
-                name = name.toLowerCase();
-                name = name.trim();
-                city = city.toLowerCase();
-                city = city.trim();
-                if(searchTarget === name || searchTarget === postCode || searchTarget === city || searchTarget === name + ', ' + city) {
-                    coords = new L.latLng(positionLan, positionLon);
-                    if( searchTarget === city) {
-                        cityTarget = city;
+            words = searchTarget.split(' ');
+
+            if (searchTarget !== '') {
+                this.markers().forEach(function (marker) {
+                    var name = marker.name;
+                    var postCode = marker.postCode;
+                    var city = marker.city ? marker.city : marker.addressData.city;
+                    var positionLan = marker.latitude;
+                    var positionLon = marker.longitude;
+                    name = name.toLowerCase();
+                    name = name.trim();
+                    city = city.toLowerCase();
+                    city = city.trim();
+
+                    // 1st : full strict search
+                    if (searchTarget === name || searchTarget === postCode || searchTarget === city || searchTarget === name + ', ' + city) {
+                        coords = new L.latLng(positionLan, positionLon);
+                        if (searchTarget === city) {
+                            cityTarget = city;
+                        }
+                        if (searchTarget === name + ', ' + city) {
+                            resultMarker = marker;
+                        }
+                        // keep performance
+                        return;
                     }
-                    if(searchTarget === name + ', ' + city) {
-                        resultMarker = marker;
+                    // if full strict search match, then break
+                    if (coords != undefined && nameRequest === 0 && cityTarget === undefined) {
+                        // keep performance
+                        return;
                     }
-                }
-            });
+
+                    // 2nd: search per words
+                    // keep search as words, not fuzzy. If not, search will have a huge zoom
+                    words.forEach(function (word) {
+                        if (word === name || word === postCode || word === city) {
+                            coords = new L.latLng(positionLan, positionLon);
+                            if (word === city) {
+                                cityTarget = city;
+                            }
+                            if (word === name && word === city) {
+                                resultMarker = marker;
+                            }
+                            // keep performance
+                            return;
+                        }
+                    })
+                });
+            }
+
             if(coords != undefined && nameRequest === 0 && cityTarget === undefined) {
                 this.map.setView(coords, 17);
                 resultArray.push(resultMarker);
                 this.displayedMarkers(resultArray);
             } else if (coords === undefined) {
-                alert('wrong required');
+                // do nothing : let error message in #store-search-form-message
             } else {
                 this.map.setView(coords, 12);
             }
@@ -404,6 +435,9 @@ define([
         markerAutocompleteSearch: function () {
             var parrent = $('.shop-search .fulltext-search-wrapper .ui-widget');
             var markerInfoBase =  this.markerAutocompleteBase();
+            var searchResultMessage = $('#store-search-form-message');
+            var self = this;
+
             $('#searchMarker').autocomplete({
                 appendTo: parrent,
                 minLength: 3,
@@ -412,7 +446,46 @@ define([
                     at: "left bottom",
                     collision: "none"
                 },
-                source: markerInfoBase
+                multiple: true,
+                mustMatch: false,
+                source: function (request, response) {
+                    response(self.filterPerWords(markerInfoBase, request.term));
+                },
+                response: function(event, ui) {
+                    var message = $t('No results found.');
+                    if (ui.content.length) {
+                        message = ui.content.length + $t(' results found.');
+                    }
+                    searchResultMessage.text(message);
+                },
+                select: function (event, ui) {
+                    // trigger search if autocompletion suggest is selected
+                    setTimeout(function() {
+                        $('#searchMarker').parents('.store-search-form').find('button#submitSearch').click();
+                    }, 100);
+                }
+            });
+        },
+
+        /**
+         * Custom filter to allow approching result per words
+         *
+         * @param array
+         * @param terms
+         * @returns {[]|jQuery|*}
+         */
+        filterPerWords(array, terms) {
+            var arrayOfTerms = terms.split(' ');
+            var term = $.map(arrayOfTerms, function (tm) {
+                if (tm.length <= 2) {
+                    // ignore smallest term for performance reason
+                    return null;
+                }
+                return $.ui.autocomplete.escapeRegex(tm);
+            }).join('|');
+            var matcher= new RegExp("\\b" + term, "i");
+            return $.grep(array, function (value) {
+                return matcher.test(value.label || value.value || value);
             });
         },
 
