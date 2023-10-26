@@ -42,7 +42,8 @@ $storeName = $block->getStoreName();
                     <meta itemprop="latitude"
                           content="<?= $escaper->escapeHtml($block->getAddress()->getCoordinates()->getLatitude()) ?>"/>
                     <meta itemprop="longitude"
-                          content="<?= $escaper->escapeHtml($block->getAddress()->getCoordinates()->getLongitude()) ?>"/>
+                          content="<?= $escaper->escapeHtml($block->getAddress()->getCoordinates()->getLongitude()) ?>"
+                    />
                 </div>
             </div>
             <?php if ($phone || $mail): ?>

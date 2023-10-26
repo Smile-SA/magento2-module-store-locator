@@ -39,6 +39,7 @@ class Set extends Action implements HttpPostActionInterface
             $retailer = $this->retailerRepository->get((int) $retailerId);
             $this->customerData->setRetailer($retailer);
         } catch (Exception $exception) {
+            $retailer = null;
             $this->messageManager->addExceptionMessage(
                 $exception,
                 __('We are sorry, an error occured when switching retailer.')
@@ -48,7 +49,9 @@ class Set extends Action implements HttpPostActionInterface
         /** @var Redirect $resultRedirect */
         $resultRedirect = $this->resultFactory->create(ResultFactory::TYPE_REDIRECT);
         $resultRedirect->setUrl($this->_redirect->getRefererUrl());
-        $this->messageManager->addSuccess(__('Retailer shop %1 has been chosen.', $retailer->getName()));
+        if ($retailer) {
+            $this->messageManager->addSuccess(__('Retailer shop %1 has been chosen.', $retailer->getName()));
+        }
 
         return $resultRedirect;
     }
