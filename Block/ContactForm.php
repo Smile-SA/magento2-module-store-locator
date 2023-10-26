@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Smile\StoreLocator\Block;
 
+use Magento\Customer\Helper\View as CustomerHelperView;
+use Magento\Customer\Model\Session;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\AbstractBlock;
@@ -25,6 +27,8 @@ class ContactForm extends AbstractView
         Context $context,
         Registry $coreRegistry,
         private StoreLocatorHelper $storeLocatorHelper,
+        protected Session $customerSession,
+        protected CustomerHelperView $customerViewHelper,
         DataPersistorInterface $dataPersistorInterface,
         array $data
     ) {
@@ -128,5 +132,31 @@ class ContactForm extends AbstractView
         }
 
         return $this;
+    }
+
+    /**
+     * Get customer user name if logged in
+     */
+    public function getUserName(): string
+    {
+        if (!$this->customerSession->isLoggedIn()) {
+            return '';
+        }
+        $customer = $this->customerSession->getCustomerDataObject();
+
+        return trim($this->customerViewHelper->getCustomerName($customer));
+    }
+
+    /**
+     * Get customer user email if logged in
+     */
+    public function getUserEmail(): string
+    {
+        if (!$this->customerSession->isLoggedIn()) {
+            return '';
+        }
+        $customer = $this->customerSession->getCustomerDataObject();
+
+        return $customer->getEmail();
     }
 }

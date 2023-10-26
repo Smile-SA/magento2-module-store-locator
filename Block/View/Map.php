@@ -19,6 +19,7 @@ use Smile\Retailer\Model\ResourceModel\Retailer\Collection as RetailerCollection
 use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory as RetailerCollectionFactory;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Block\AbstractView;
+use Smile\StoreLocator\Helper\Contact;
 use Smile\StoreLocator\Helper\Data;
 use Smile\StoreLocator\Helper\Schedule;
 use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
@@ -39,6 +40,7 @@ class Map extends AbstractView
         Context $context,
         Registry $coreRegistry,
         MapProviderInterface $mapProvider,
+        private Contact $contactHelper,
         private Data $storeLocatorHelper,
         private AddressFormatter $addressFormatter,
         private Schedule $scheduleHelper,
@@ -293,5 +295,21 @@ class Map extends AbstractView
         $postData = ['id' => $retailer->getId()];
 
         return ['action' => $setUrl, 'data' => $postData];
+    }
+
+    /**
+     * Check if we can display contact form for current retailer.
+     */
+    public function showContactForm(): bool
+    {
+        return $this->contactHelper->canDisplayContactForm($this->getRetailer());
+    }
+
+    /**
+     * Retrieve Contact form Url for current retailer.
+     */
+    public function getContactFormUrl(): string
+    {
+        return $this->contactHelper->getContactFormUrl($this->getRetailer());
     }
 }

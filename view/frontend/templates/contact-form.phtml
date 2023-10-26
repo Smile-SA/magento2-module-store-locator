@@ -1,65 +1,64 @@
 <?php
 
-use Magento\Contact\Helper\Data as HelperContact;
-
 /** @var \Smile\StoreLocator\Block\ContactForm $block */
+/** @var \Magento\Framework\Escaper $escaper */
 ?>
 <form class="form contact"
-      action="<?= /* @escapeNotVerified */ $block->escapeHtml($block->getFormAction()) ?>"
+      action="<?= /* @escapeNotVerified */ $escaper->escapeHtml($block->getFormAction()) ?>"
       id="contact-form"
       method="post"
-      data-hasrequired="<?= /* @escapeNotVerified */ $block->escapeHtml(__('* Required Fields')) ?>"
+      data-hasrequired="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('* Required Fields')) ?>"
       data-mage-init='{"validation":{}}'>
     <fieldset class="fieldset">
         <legend class="legend">
-            <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Write Us')) ?></span>
+            <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Write Us')) ?></span>
         </legend>
         <br />
         <div class="field name required">
             <label class="label" for="name">
-                <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Name')) ?></span>
+                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Name')) ?></span>
             </label>
             <div class="control">
                 <input name="name" id="name"
-                       title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Name')) ?>"
-                       value="<?= $block->escapeHtml($block->getPostValue('name')
-                           ?: $block->helper(HelperContact::class)->getUserName()) ?>"
+                       title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Name')) ?>"
+                       value="<?= $escaper->escapeHtml($block->getPostValue('name')
+                           ?: $block->getUserName()) ?>"
                        class="input-text" type="text" data-validate="{required:true}"/>
             </div>
         </div>
         <div class="field email required">
             <label class="label" for="email">
-                <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Email')) ?></span>
+                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Email')) ?></span>
             </label>
             <div class="control">
                 <input name="email" id="email"
-                       title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Email')) ?>"
-                       value="<?= $block->escapeHtml($block->getPostValue('email')
-                           ?: $block->helper(HelperContact::class)->getUserEmail()) ?>"
+                       title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Email')) ?>"
+                       value="<?= $escaper->escapeHtml($block->getPostValue('email')
+                           ?: $block->getUserEmail()) ?>"
                        class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
             </div>
         </div>
         <div class="field telephone">
             <label class="label" for="telephone">
-                <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Phone Number')) ?></span>
+                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Phone Number')) ?></span>
             </label>
             <div class="control">
                 <input name="telephone" id="telephone"
-                       title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Phone Number')) ?>"
-                       value="<?= $block->escapeHtml($block->getPostValue('telephone')) ?>"
+                       title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Phone Number')) ?>"
+                       value="<?= $escaper->escapeHtml($block->getPostValue('telephone')) ?>"
                        class="input-text" type="text" />
             </div>
         </div>
         <div class="field comment required">
             <label class="label" for="comment">
-                <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('What’s on your mind?')) ?></span>
+                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('What’s on your mind?')) ?></span>
             </label>
             <div class="control">
                 <textarea name="comment" id="comment"
-                          title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('What’s on your mind?')) ?>"
+                          title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('What’s on your mind?')) ?>"
                           class="input-text" cols="5" rows="3"
                           data-validate="{required:true}"
-                ><?= $block->escapeHtml($block->getPostValue('comment')) ?></textarea>
+                ><?= $escaper->escapeHtml($block->getPostValue('comment')) ?></textarea>
             </div>
         </div>
         <?= $block->getChildHtml('form.additional.info') ?>
@@ -68,11 +67,11 @@ use Magento\Contact\Helper\Data as HelperContact;
         <div class="primary">
             <input type="hidden" name="hideit" id="hideit" value="" />
             <input type="hidden" name="id" id="retailerId"
-                   value="<?= $block->escapeHtml($block->getRetailer()->getId()) ?>" />
-            <button type="submit" title="<?= /* @escapeNotVerified */ $block->escapeHtml(__('Submit')) ?>"
+                   value="<?= $escaper->escapeHtml($block->getRetailer()->getId()) ?>" />
+            <button type="submit" title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Submit')) ?>"
                     class="action submit primary"
             >
-                <span><?= /* @escapeNotVerified */ $block->escapeHtml(__('Submit')) ?></span>
+                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Submit')) ?></span>
             </button>
         </div>
     </div>
