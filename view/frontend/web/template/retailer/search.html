@@ -11,7 +11,7 @@
                     <div class="store-search-form">
                         <div class="field">
                             <div class="ui-widget map-search-autocomplete">
-                                <input type="text" id="searchMarker"  data-bind="afterRender: markerAutocompleteSearch" name="text"/>
+                                <input type="text" id="searchMarker"  data-bind="{ afterRender: markerAutocompleteSearch, value: fulltextSearch }" name="text"/>
                             </div>
                         </div>
                         <div class="actions-toolbar">

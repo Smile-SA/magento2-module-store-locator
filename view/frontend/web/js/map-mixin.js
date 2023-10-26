@@ -12,6 +12,7 @@ define([
     var mixin = {
 
         markerHasDistance: false,
+        urlQuery: null,
 
         /**
          * Init markers on the map
@@ -40,6 +41,14 @@ define([
          * Observe events on elements
          */
         observeElements: function() {
+
+            this.fulltextSearch = '';
+            let urlString = window.location.href;
+            this.urlQuery = new URL(urlString).searchParams.get('query');
+            if (this.urlQuery) {
+                this.fulltextSearch = this.urlQuery;
+            }
+
             this.observe([
                 'markers',
                 'displayedMarkers',
@@ -436,6 +445,7 @@ define([
             var parrent = $('.shop-search .fulltext-search-wrapper .ui-widget');
             var markerInfoBase =  this.markerAutocompleteBase();
             var searchResultMessage = $('#store-search-form-message');
+            var submitSelector = $('#searchMarker').parents('.store-search-form').find('button#submitSearch');
             var self = this;
 
             $('#searchMarker').autocomplete({
@@ -461,10 +471,18 @@ define([
                 select: function (event, ui) {
                     // trigger search if autocompletion suggest is selected
                     setTimeout(function() {
-                        $('#searchMarker').parents('.store-search-form').find('button#submitSearch').click();
+                        submitSelector.click();
                     }, 100);
                 }
             });
+
+            // trigger search from URL query IF query is not empty
+            if (self.urlQuery) {
+                self.urlQuery = null;
+                setTimeout(function() {
+                    submitSelector.click();
+                }, 100);
+            }
         },
 
         /**
