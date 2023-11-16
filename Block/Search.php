@@ -93,6 +93,10 @@ class Search extends Template implements IdentityInterface
             $this->map->getConfig()
         );
 
+        $placeholder = $this->storeLocatorHelper->getSearchPlaceholder();
+        $jsLayout['components']['store-locator-search']['searchPlaceholderText'] = $placeholder;
+        $jsLayout['components']['store-locator-search']['children']['geocoder']['searchPlaceholderText'] = $placeholder;
+
         if ($this->getRequest()->getParam('query', false)) {
             $query = $this->getRequest()->getParam('query', false);
             $jsLayout['components']['store-locator-search']['children']['geocoder']['fulltextSearch'] =

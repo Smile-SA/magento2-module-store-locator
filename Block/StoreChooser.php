@@ -28,6 +28,14 @@ class StoreChooser extends Template
     }
 
     /**
+     * Get placeholder for search input of store_locator, default: City, Zipcode, Address, ...
+     */
+    public function getSearchPlaceholder(): string
+    {
+        return $this->storeLocatorHelper->getSearchPlaceholder();
+    }
+
+    /**
      * @inheritdoc
      */
     public function getJsLayout()

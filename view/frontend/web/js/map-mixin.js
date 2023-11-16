@@ -55,6 +55,7 @@ define([
                 'nearbyMarkers',
                 'selectedMarker',
                 'fulltextSearch',
+                'searchPlaceholderText',
                 'distanceBetween',
                 'shopStatus',
                 'closestShopsDisplay'
@@ -502,9 +503,19 @@ define([
                 return $.ui.autocomplete.escapeRegex(tm);
             }).join('|');
             var matcher= new RegExp("\\b" + term, "i");
-            return $.grep(array, function (value) {
+            return $.grep(this.cleanArray(array), function (value) {
                 return matcher.test(value.label || value.value || value);
             });
+        },
+
+        /**
+         * Clean an array from undefined or null or false values
+         *
+         * @param array
+         * @returns {*}
+         */
+        cleanArray(array) {
+            return array.filter(item => item);
         },
 
         /**
