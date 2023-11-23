@@ -345,28 +345,31 @@ define([
         /**
          * Locate the map to current target.
          * Target = place name || postcode || city.
+         * Remove accent for better match
+         * Add search per words
          */
         searchCurrentPlaces: function () {
-            var coords, cityTarget, resultMarker;
-            var resultArray = [];
-            var searchTarget = $('#searchMarker').val();
-            var nameRequest = parseInt(searchTarget.replace( /\D/g, '')) || 0;
-            var words = [];
+            let self = this;
+            let coords, cityTarget, resultMarker;
+            let resultArray = [];
+            let searchTarget = $('#searchMarker').val();
+            let nameRequest = parseInt(searchTarget.replace( /\D/g, '')) || 0;
+            let words = [];
             searchTarget = searchTarget.toLowerCase();
             searchTarget = searchTarget.trim();
             words = searchTarget.split(' ');
 
             if (searchTarget !== '') {
                 this.markers().forEach(function (marker) {
-                    var name = marker.name;
-                    var postCode = marker.postCode;
-                    var city = marker.city ? marker.city : marker.addressData.city;
-                    var positionLan = marker.latitude;
-                    var positionLon = marker.longitude;
+                    let name = marker.name;
+                    let postCode = marker.postCode;
+                    let city = marker.city ? marker.city : marker.addressData.city;
+                    let positionLan = marker.latitude;
+                    let positionLon = marker.longitude;
                     name = name.toLowerCase();
-                    name = name.trim();
+                    name = self.normalizeAccent(name.trim());
                     city = city.toLowerCase();
-                    city = city.trim();
+                    city = self.normalizeAccent(city.trim());
 
                     // 1st : full strict search
                     if (searchTarget === name || searchTarget === postCode || searchTarget === city || searchTarget === name + ', ' + city) {
@@ -420,12 +423,12 @@ define([
          * @returns {[]}
          */
         markerAutocompleteBase: function () {
-            var titlesListArr = [];
+            let self = this;
+            let titlesListArr = [];
             this.markers().forEach(function (marker) {
-                var name = marker.name;
-                name = name.trim();
-                var postCode = marker.postCode;
-                var city = marker.city;
+                let name = self.normalizeAccent(marker.name.trim());
+                let postCode = marker.postCode;
+                let city = self.normalizeAccent(marker.city);
                 if(!titlesListArr.includes(name)) {
                     titlesListArr.push(name + ', ' + city);
                 }
@@ -443,11 +446,11 @@ define([
          * Map search.
          */
         markerAutocompleteSearch: function () {
-            var parrent = $('.shop-search .fulltext-search-wrapper .ui-widget');
-            var markerInfoBase =  this.markerAutocompleteBase();
-            var searchResultMessage = $('#store-search-form-message');
-            var submitSelector = $('#searchMarker').parents('.store-search-form').find('button#submitSearch');
-            var self = this;
+            let parrent = $('.shop-search .fulltext-search-wrapper .ui-widget');
+            let markerInfoBase =  this.markerAutocompleteBase();
+            let searchResultMessage = $('#store-search-form-message');
+            let submitSelector = $('#searchMarker').parents('.store-search-form').find('button#submitSearch');
+            let self = this;
 
             $('#searchMarker').autocomplete({
                 appendTo: parrent,
@@ -463,9 +466,9 @@ define([
                     response(self.filterPerWords(markerInfoBase, request.term));
                 },
                 response: function(event, ui) {
-                    var message = $t('No results found.');
+                    let message = $t('No results found.');
                     if (ui.content.length) {
-                        message = ui.content.length + $t(' results found.');
+                        message = ui.content.length + $t(' suggestions for you.');
                     }
                     searchResultMessage.text(message);
                 },
@@ -494,18 +497,29 @@ define([
          * @returns {[]|jQuery|*}
          */
         filterPerWords(array, terms) {
-            var arrayOfTerms = terms.split(' ');
-            var term = $.map(arrayOfTerms, function (tm) {
+            let self = this;
+            let arrayOfTerms = terms.split(' ');
+            let term = $.map(arrayOfTerms, function (tm) {
                 if (tm.length <= 2) {
                     // ignore smallest term for performance reason
                     return null;
                 }
-                return $.ui.autocomplete.escapeRegex(tm);
+                return $.ui.autocomplete.escapeRegex(self.normalizeAccent(tm));
             }).join('|');
-            var matcher= new RegExp("\\b" + term, "i");
+            let matcher= new RegExp("\\b" + term, "i");
             return $.grep(this.cleanArray(array), function (value) {
                 return matcher.test(value.label || value.value || value);
             });
+        },
+
+        /**
+         * Replace accent from string
+         *
+         * @param str
+         * @returns {*}
+         */
+        normalizeAccent: function(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         },
 
         /**
