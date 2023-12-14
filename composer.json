@@ -19,8 +19,8 @@
         "magento/framework": ">=103.0.4",
         "magento/module-store": ">=101.1.4",
         "magento/module-contact": ">=100.4.4",
-        "smile/module-map": "^2.1",
-        "smile/module-retailer": "^2.0",
+        "smile/module-map": "dev-2.1.x",
+        "smile/module-retailer": "dev-2.0.x",
         "willdurand/geocoder": "^4.4"
     },
     "require-dev": {
