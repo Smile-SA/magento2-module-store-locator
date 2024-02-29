@@ -2,77 +2,139 @@
 
 /** @var \Smile\StoreLocator\Block\ContactForm $block */
 /** @var \Magento\Framework\Escaper $escaper */
+$retailer = $block->getRetailer();
+$image = $block->getImage();
+$phone = $retailer->getData('contact_phone');
+$mail = $retailer->getData('contact_mail');
 ?>
-<form class="form contact"
-      action="<?= /* @escapeNotVerified */ $escaper->escapeHtml($block->getFormAction()) ?>"
-      id="contact-form"
-      method="post"
-      data-hasrequired="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('* Required Fields')) ?>"
-      data-mage-init='{"validation":{}}'>
-    <fieldset class="fieldset">
-        <legend class="legend">
-            <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Write Us')) ?></span>
-        </legend>
-        <br />
-        <div class="field name required">
-            <label class="label" for="name">
-                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Name')) ?></span>
-            </label>
-            <div class="control">
-                <input name="name" id="name"
+
+<div class="form-contact-wrapper">
+    <form class="form contact"
+          action="<?= /* @escapeNotVerified */ $escaper->escapeHtml($block->getFormAction()) ?>"
+          id="contact-form"
+          method="post"
+          data-hasrequired="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('* Required Fields')) ?>"
+          data-mage-init='{"validation":{}}'>
+        <fieldset class="fieldset">
+            <legend class="legend">
+                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Write Us')) ?></span>
+            </legend>
+            <br />
+            <div class="field name required">
+                <label class="label" for="name">
+                    <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Name')) ?></span>
+                </label>
+                <div class="control">
+                    <input name="name" id="name"
                        title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Name')) ?>"
                        value="<?= $escaper->escapeHtml($block->getPostValue('name')
                            ?: $block->getUserName()) ?>"
                        class="input-text" type="text" data-validate="{required:true}"/>
+                </div>
             </div>
-        </div>
-        <div class="field email required">
-            <label class="label" for="email">
-                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Email')) ?></span>
-            </label>
-            <div class="control">
-                <input name="email" id="email"
+            <div class="field email required">
+                <label class="label" for="email">
+                    <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Email')) ?></span>
+                </label>
+                <div class="control">
+                    <input name="email" id="email"
                        title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Email')) ?>"
                        value="<?= $escaper->escapeHtml($block->getPostValue('email')
                            ?: $block->getUserEmail()) ?>"
                        class="input-text" type="email" data-validate="{required:true, 'validate-email':true}"/>
+                </div>
             </div>
-        </div>
-        <div class="field telephone">
-            <label class="label" for="telephone">
-                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Phone Number')) ?></span>
-            </label>
-            <div class="control">
-                <input name="telephone" id="telephone"
+            <div class="field telephone">
+                <label class="label" for="telephone">
+                    <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Phone Number')) ?></span>
+                </label>
+                <div class="control">
+                    <input name="telephone" id="telephone"
                        title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Phone Number')) ?>"
                        value="<?= $escaper->escapeHtml($block->getPostValue('telephone')) ?>"
                        class="input-text" type="text" />
+                </div>
+            </div>
+            <div class="field comment required">
+                <label class="label" for="comment">
+                    <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('What’s on your mind?')) ?></span>
+                </label>
+                <div class="control">
+                    <textarea name="comment" id="comment"
+                      title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('What’s on your mind?')) ?>"
+                      class="input-text" cols="5" rows="3"
+                      data-validate="{required:true}"
+                    ><?= $escaper->escapeHtml($block->getPostValue('comment')) ?></textarea>
+                </div>
+            </div>
+            <?= $block->getChildHtml('form.additional.info') ?>
+        </fieldset>
+        <div class="actions-toolbar">
+            <div class="primary">
+                <input type="hidden" name="hideit" id="hideit" value="" />
+                <input type="hidden" name="id" id="retailerId"
+                       value="<?= $escaper->escapeHtml($block->getRetailer()->getId()) ?>" />
+                <button type="submit" title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Submit')) ?>"
+                        class="action submit primary"
+                >
+                    <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Submit')) ?></span>
+                </button>
             </div>
         </div>
-        <div class="field comment required">
-            <label class="label" for="comment">
-                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('What’s on your mind?')) ?></span>
-            </label>
-            <div class="control">
-                <textarea name="comment" id="comment"
-                          title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('What’s on your mind?')) ?>"
-                          class="input-text" cols="5" rows="3"
-                          data-validate="{required:true}"
-                ><?= $escaper->escapeHtml($block->getPostValue('comment')) ?></textarea>
+    </form>
+    <br />
+
+    <div class="shop-details-wrapper">
+        <div class="header">
+            <div class="image-wrapper-header">
+                <?php if ($image): ?>
+                    <img src="<?= $escaper->escapeHtml($image) ?>"/>
+                <?php endif ?>
             </div>
-        </div>
-        <?= $block->getChildHtml('form.additional.info') ?>
-    </fieldset>
-    <div class="actions-toolbar">
-        <div class="primary">
-            <input type="hidden" name="hideit" id="hideit" value="" />
-            <input type="hidden" name="id" id="retailerId"
-                   value="<?= $escaper->escapeHtml($block->getRetailer()->getId()) ?>" />
-            <button type="submit" title="<?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Submit')) ?>"
-                    class="action submit primary"
-            >
-                <span><?= /* @escapeNotVerified */ $escaper->escapeHtml(__('Submit')) ?></span>
-            </button>
+            <div class="store-name">
+                <h2><?= $escaper->escapeHtml($retailer->getName()) ?></h2>
+            </div>
+            <div data-bind="template: storeDetailsWrap"></div>
+            <?php if ($block->getAddress()): ?>
+            <div class="address-info">
+                <div class="address">
+                    <?= $block->getAddressHtml() ?>
+                </div>
+                <div itemscope itemprop="address" itemtype="http://schema.org/PostalAddress">
+                    <meta itemprop="streetAddress"
+                      content="<?= $escaper->escapeHtml(implode(' ', $block->getAddress()->getStreet())) ?>"/>
+                    <meta itemprop="postalCode"
+                      content="<?= $escaper->escapeHtml($block->getAddress()->getPostcode()) ?>"/>
+                    <meta itemprop="addressLocality"
+                      content="<?= $escaper->escapeHtml($block->getAddress()->getCity()) ?>"/>
+                    <meta itemprop="addressCountry"
+                      content="<?= $escaper->escapeHtml($block->getAddress()->getCountryId()) ?>"/>
+                </div>
+                <div itemscope itemprop="geo" itemtype="http://schema.org/GeoCoordinates">
+                    <meta itemprop="latitude"
+                      content="<?= $escaper->escapeHtml($block->getAddress()->getCoordinates()->getLatitude()) ?>"/>
+                    <meta itemprop="longitude"
+                      content="<?= $escaper->escapeHtml($block->getAddress()->getCoordinates()->getLongitude()) ?>"
+                    />
+                </div>
+            </div>
+            <?php endif ?>
+            <?php if ($phone || $mail): ?>
+                <div class="contact-information">
+                    <?php if ($phone): ?>
+                    <div class="contact-information-phone">
+                        <span class="contact-information-label"><?= $escaper->escapeHtml(__('Tel')) ?>. :</span>
+                        <span class="contact-information-value"><?= $escaper->escapeHtml($phone) ?></span>
+                    </div>
+                    <?php endif ?>
+                    <?php if ($mail): ?>
+                    <div class="contact-information-mail">
+                        <span class="contact-information-label">E-mail. :</span>
+                        <span class="contact-information-value"><?= $escaper->escapeHtml($mail) ?></span>
+                    </div>
+                    <?php endif ?>
+                </div>
+            <?php endif ?>
         </div>
     </div>
-</form>
+</div>

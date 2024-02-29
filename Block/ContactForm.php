@@ -12,6 +12,8 @@ use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\Store;
 use Magento\Theme\Block\Html\Breadcrumbs;
+use Smile\Map\Model\AddressFormatter;
+use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Helper\Data as StoreLocatorHelper;
 
 /**
@@ -30,6 +32,7 @@ class ContactForm extends AbstractView
         protected Session $customerSession,
         protected CustomerHelperView $customerViewHelper,
         DataPersistorInterface $dataPersistorInterface,
+        private AddressFormatter $addressFormatter,
         array $data
     ) {
         $this->dataPersistor = $dataPersistorInterface;
@@ -158,5 +161,23 @@ class ContactForm extends AbstractView
         $customer = $this->customerSession->getCustomerDataObject();
 
         return $customer->getEmail();
+    }
+
+    /**
+     * Returns current store address.
+     */
+    public function getAddress(): ?RetailerAddressInterface
+    {
+        return $this->getRetailer()->getData('address');
+    }
+
+    /**
+     * Get address formatted in HTML.
+     */
+    public function getAddressHtml(): string
+    {
+        return $this->getAddress()
+            ? $this->addressFormatter->formatAddress($this->getAddress(), AddressFormatter::FORMAT_HTML)
+            : '';
     }
 }

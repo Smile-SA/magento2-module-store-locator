@@ -10,8 +10,14 @@ use Magento\Framework\View\LayoutInterface;
 use Magento\PageCache\Model\DepersonalizeChecker;
 use Smile\StoreLocator\CustomerData\CurrentStore;
 
+/**
+ * Depersonalize customer data.
+ *
+ * @SuppressWarnings(PHPMD.CookieAndSessionMisuse)
+ */
 class RetailerDepersonalizePlugin
 {
+    //@SmileAnalyserSkip magento2/badpractices
     public function __construct(
         protected DepersonalizeChecker $depersonalizeChecker,
         protected CustomerSession $customerSession,
@@ -22,8 +28,11 @@ class RetailerDepersonalizePlugin
     /**
      * Prevent losing retailer_id chosen - show product offer price if shop has been selected, even in Retail mode
      */
-    public function afterAfterGenerateElements(DepersonalizePlugin $subject, mixed $result, LayoutInterface $layout)
-    {
+    public function afterAfterGenerateElements(
+        DepersonalizePlugin $subject,
+        mixed $result,
+        LayoutInterface $layout
+    ): void {
         if ($this->depersonalizeChecker->checkIfDepersonalize($layout)) {
             $retailer = $this->currentStore->getRetailer();
             if ($retailer && $retailer->getId()) {

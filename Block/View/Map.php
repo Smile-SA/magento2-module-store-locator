@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Smile\StoreLocator\Block\View;
 
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Store\Model\Store;
 use Smile\Map\Api\Data\GeoPointInterface;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Api\MapProviderInterface;
@@ -168,38 +166,6 @@ class Map extends AbstractView
     public function getDescription(): ?string
     {
         return $this->getRetailer()->getData('description');
-    }
-
-    /**
-     * * Get base media url.
-     *
-     * @throws NoSuchEntityException
-     */
-    public function getImageUrl(): string
-    {
-        /** @var Store $currentStore */
-        $currentStore = $this->_storeManager->getStore();
-
-        return $currentStore->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
-    }
-
-    /**
-     * Get image name.
-     */
-    protected function getMediaPath(): string|bool
-    {
-        return $this->getRetailer()->getMediaPath() ?: false;
-    }
-
-    /**
-     * Get full image url.
-     */
-    public function getImage(): string|bool
-    {
-        $mediaPath = $this->getMediaPath();
-        $imageUrlRetailer = $this->getImageUrl() . 'seller/';
-
-        return $mediaPath ? $imageUrlRetailer . $mediaPath : false;
     }
 
     /**
