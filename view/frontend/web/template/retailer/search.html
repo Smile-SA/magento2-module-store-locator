@@ -7,9 +7,8 @@
                     <span role="heading" aria-level="1" data-bind="i18n: 'Shop Search'">Shop Search</span>
                 </div>
 
-                <form data-bind="{submit: updateMap, attr: {action: storeLocatorHomeUrl}}"
-                      id="shop-search-form"
-                >
+                <form data-bind="{submit: updateMap}"
+                      id="shop-search-form">
                     <div class="store-search">
                         <div class="geolocalize-container" data-bind="scope: requestChild('geocoder')">
                             <div class="primary" data-bind="afterRender: initGeocoder">
@@ -29,9 +28,7 @@
                             </div>
                             <div class="actions">
                                 <div class="primary">
-                                    <button type="submit" class="action primary">
-                                        <span data-bind="i18n: 'Search'">Search</span>
-                                    </button>
+                                    <button type="submit" class="action primary"></button>
                                 </div>
                             </div>
                         </div>

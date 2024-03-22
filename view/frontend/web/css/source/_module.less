@@ -434,36 +434,52 @@
             .fulltext-search-wrapper {
                 padding: 10px;
                 position: relative;
-                    display: flex;
-                    align-items: center;
-                    flex-direction: row;
-                    flex-wrap: wrap;
-                    justify-content: center;
+                display: flex;
+                align-items: center;
+                flex-direction: row;
+                flex-wrap: wrap;
+                justify-content: center;
 
-                    div.geolocalize-container {
-                        flex: 0 0 100%;
-                        a {
-                            width: 100%;
-                            text-align: center;
-                        }
+                div.geolocalize-container {
+                    flex: 0 0 100%;
+                    a {
+                        width: 100%;
+                        text-align: center;
                     }
+                }
 
-                    .store-search-form {
-                        display: flex;
-                        margin-left: auto;
-                        align-items: center;
-                        flex: 0 0 100%;
-                        margin-top: 5px;
-                        .field {
-                            flex: 2;
-                        }
-                        .actions {
-                            flex:1;
-                            button {
-                                width: 100%;
+                .store-search-form {
+                    display: flex;
+                    margin-left: auto;
+                    align-items: center;
+                    flex: 0 0 100%;
+                    margin-top: 5px;
+                    .field {
+                        flex: 5;
+                    }
+                    .actions {
+                        flex:1;
+                        button {
+                            width: 100%;
+
+                            &:before {
+                                content: '\e615';
+                                font-family: 'luma-icons';
+                                font-size: 16px;
+                                color: #FFFFFF;
+                                margin: 0;
+                                vertical-align: top;
+                                display: inline-block;
+                                font-weight: normal;
+                                overflow: hidden;
+                                speak: none;
+                                text-align: center;
+                                -webkit-font-smoothing: antialiased;
+                                -moz-osx-font-smoothing: antialiased;
                             }
                         }
                     }
+                }
             }
         }
 
