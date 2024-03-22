@@ -430,65 +430,22 @@
                     margin: 32px 0 20px 30px;
                 }
             }
+
             .fulltext-search-wrapper {
                 padding: 10px;
                 position: relative;
+                    display: flex;
+                    align-items: center;
+                    flex-direction: row;
+                    flex-wrap: wrap;
+                    justify-content: center;
 
-                .form {
-                    padding: 10px 0 5px;
-                    position: relative;
-                    padding-left: 25px;
-
-                    .field {
-                        display: block;
-                        width: 93%;
-                        input {
-                            height: 54px;
-                            width: 100%;
-                            border: 1px solid #E1E1E1;
-                            border-radius: 3px;
-                            background-color: #FAFAFA;
-                            padding-right: 15%;
-                        }
-                    }
-
-                    .actions-toolbar {
-
-                        .primary .action {
-                            background: transparent;
-                            border: none;
-                            width: 30px;
-                            height: 54px;
-                            position: absolute;
-                            top: 15px;
-                            right: 5%;
-                            content: '';
-                            font-size: 0;
-                            span {
-                                line-height: 1.3em;
-                            }
-                        }
-                    }
-
-                    .geolocalize-container {
-                        position: absolute;
-                        right: 0;
-                        top: -10px;
+                    div.geolocalize-container {
+                        flex: 0 0 100%;
                         a {
                             width: 100%;
                             text-align: center;
-                            background: transparent;
-                            border: none;
-                            padding: 5px;
-                            &:before {
-                                color: #EE5C1D;
-                            }
                         }
-                    }
-
-                    #store-search-form-message {
-                        position: absolute;
-                        top: -0.5em;
                     }
 
                     .store-search-form {
@@ -497,35 +454,16 @@
                         align-items: center;
                         flex: 0 0 100%;
                         margin-top: 5px;
-
-                        #submitSearch {
-                            &:before {
-                                content: '\e615';
-                                font-family: 'luma-icons';
-                                font-size: 16px;
-                                line-height: 40px;
-                                color: #C7C7C7;
-                                margin: 0;
-                                vertical-align: top;
-                                display: inline-block;
-                                font-weight: normal;
-                                overflow: hidden;
-                                speak: none;
-                                text-align: center;
-                                -webkit-font-smoothing: antialiased;
-                                -moz-osx-font-smoothing: antialiased;
+                        .field {
+                            flex: 2;
+                        }
+                        .actions {
+                            flex:1;
+                            button {
+                                width: 100%;
                             }
                         }
                     }
-                }
-
-                .geocoder-wrapper__btn {
-                    display: inline-block;
-                    position: absolute;
-                    bottom: 0;
-                    height: 50px;
-                    right: 0;
-                }
             }
         }
 
@@ -541,6 +479,8 @@
                 background-color: white;
                 padding: 10px 10px 20px 38px;
                 display: flex;
+                flex-wrap: wrap;
+                justify-content: space-between;
                 border-bottom: 1px solid #E8E8E8;
                 p {
                     margin: 0;
@@ -559,7 +499,6 @@
                     font-size: 14px;
                     font-weight: 600;
                     line-height: 19px;
-                    padding-left: 102px;
                 }
                 a {
                     color: #FFF;
@@ -1108,6 +1047,7 @@ a.geolocalize:before {
             width: 100%;
             border: none;
             max-width: 100%;
+            min-height: 628px;
             .search-result-list {
                 .search-result-header {
                     padding-top: 0;
@@ -1225,71 +1165,6 @@ a.geolocalize:before {
                         line-height: 30px;
                         display: block;
                         margin: 0;
-                    }
-                }
-                .fulltext-search-wrapper {
-                    padding: 10px;
-
-                    .form {
-                        padding: 10px 0 5px;
-                        position: relative;
-                        padding-left: 0;
-
-                        .field {
-                            display: block;
-                            width: 100%;
-                            input {
-                                height: 50px;
-                                padding-right: 15%;
-                                font-family: "Open Sans";
-                                font-size: 12px;
-                                line-height: 17px;
-                            }
-                        }
-
-                        .actions-toolbar {
-
-                            .primary .action {
-                                background: transparent;
-                                border: none;
-                                width: 30px;
-                                height: 54px;
-                                position: absolute;
-                                top: 0;
-                                right: 12px;
-                                content: '';
-                                font-size: 0;
-                                background: url("Smile_StoreLocator::images/location-search.svg") center center;
-                                background-repeat: no-repeat;
-                                span {
-                                    line-height: 1.3em;
-                                }
-                            }
-                        }
-
-                        .geolocalize-container {
-                            position: absolute;
-                            right: 0;
-                            top: -10px;
-                            a {
-                                width: 100%;
-                                text-align: center;
-                                background: transparent;
-                                border: none;
-                                padding: 5px;
-                                &:before {
-                                    color: #EE5C1D;
-                                }
-                            }
-                        }
-
-                        .store-search-form {
-                            display: block;
-                            width: 90%;
-                            margin-top: 5px;
-                            margin-left: 0;
-                            position: relative;
-                        }
                     }
                 }
             }

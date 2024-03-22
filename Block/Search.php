@@ -79,6 +79,8 @@ class Search extends Template implements IdentityInterface
     {
         $jsLayout = $this->jsLayout;
 
+        $jsLayout['components']['store-locator-search']['storeLocatorHomeUrl'] = $this->storeLocatorHelper
+            ->getHomeUrl();
         $jsLayout['components']['store-locator-search']['provider'] = $this->map->getIdentifier();
         $jsLayout['components']['store-locator-search']['markers']  = $this->getMarkers();
         $jsLayout['components']['store-locator-search'] = array_merge(
