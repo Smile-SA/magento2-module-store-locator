@@ -1,6 +1,28 @@
 <?xml version="1.0"?>
 <config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Config:etc/system_file.xsd">
     <system>
+        <section id="store_locator" translate="label" type="text" sortOrder="2020" showInDefault="1" showInWebsite="1" showInStore="1">
+            <class>separator-top</class>
+            <label>Store Locator Settings</label>
+            <tab>smile_elasticsuite</tab>
+            <resource>Magento_Backend::smile_map</resource>
+
+            <group id="search" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>General Settings</label>
+                <field id="placeholder" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Shown placeholder to help user</label>
+                    <comment>default: City, Zipcode, Address ...</comment>
+                </field>
+            </group>
+            <group id="seo" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
+                <label>Seo</label>
+                <field id="base_url" translate="label" type="text" sortOrder="10" showInDefault="1" showInWebsite="1" showInStore="1">
+                    <label>Store Locator URL</label>
+                    <comment>default: stores</comment>
+                </field>
+            </group>
+
+        </section>
 
         <section id="smile_map" translate="label" type="text" sortOrder="40" showInDefault="1" showInWebsite="1" showInStore="1">
 

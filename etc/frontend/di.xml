@@ -19,4 +19,9 @@
             </argument>
         </arguments>
     </type>
+    <!-- prevent losing retailerId from session -->
+    <type name="Magento\Customer\Model\Layout\DepersonalizePlugin">
+        <plugin name="persist-retailer-id-session-depersonalize"
+                type="Smile\StoreLocator\Plugin\Model\Layout\RetailerDepersonalizePlugin" sortOrder="30"/>
+    </type>
 </config>

@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace Smile\StoreLocator\Block\View;
 
-use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\UrlInterface;
 use Magento\Framework\View\Element\Template\Context;
-use Magento\Store\Model\Store;
 use Smile\Map\Api\Data\GeoPointInterface;
 use Smile\Map\Api\MapInterface;
 use Smile\Map\Api\MapProviderInterface;
@@ -19,6 +17,7 @@ use Smile\Retailer\Model\ResourceModel\Retailer\Collection as RetailerCollection
 use Smile\Retailer\Model\ResourceModel\Retailer\CollectionFactory as RetailerCollectionFactory;
 use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Block\AbstractView;
+use Smile\StoreLocator\Helper\Contact;
 use Smile\StoreLocator\Helper\Data;
 use Smile\StoreLocator\Helper\Schedule;
 use Smile\StoreLocator\Model\Retailer\ScheduleManagement;
@@ -39,6 +38,7 @@ class Map extends AbstractView
         Context $context,
         Registry $coreRegistry,
         MapProviderInterface $mapProvider,
+        private Contact $contactHelper,
         private Data $storeLocatorHelper,
         private AddressFormatter $addressFormatter,
         private Schedule $scheduleHelper,
@@ -169,38 +169,6 @@ class Map extends AbstractView
     }
 
     /**
-     * * Get base media url.
-     *
-     * @throws NoSuchEntityException
-     */
-    public function getImageUrl(): string
-    {
-        /** @var Store $currentStore */
-        $currentStore = $this->_storeManager->getStore();
-
-        return $currentStore->getBaseUrl(UrlInterface::URL_TYPE_MEDIA);
-    }
-
-    /**
-     * Get image name.
-     */
-    protected function getMediaPath(): string|bool
-    {
-        return $this->getRetailer()->getMediaPath() ?: false;
-    }
-
-    /**
-     * Get full image url.
-     */
-    public function getImage(): string|bool
-    {
-        $mediaPath = $this->getMediaPath();
-        $imageUrlRetailer = $this->getImageUrl() . 'seller/';
-
-        return $mediaPath ? $imageUrlRetailer . $mediaPath : false;
-    }
-
-    /**
      * Get store name.
      */
     public function getStoreName(): string
@@ -293,5 +261,21 @@ class Map extends AbstractView
         $postData = ['id' => $retailer->getId()];
 
         return ['action' => $setUrl, 'data' => $postData];
+    }
+
+    /**
+     * Check if we can display contact form for current retailer.
+     */
+    public function showContactForm(): bool
+    {
+        return $this->contactHelper->canDisplayContactForm($this->getRetailer());
+    }
+
+    /**
+     * Retrieve Contact form Url for current retailer.
+     */
+    public function getContactFormUrl(): string
+    {
+        return $this->contactHelper->getContactFormUrl($this->getRetailer());
     }
 }

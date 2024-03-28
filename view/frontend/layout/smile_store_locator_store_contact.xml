@@ -2,7 +2,9 @@
 <page xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" layout="1column" xsi:noNamespaceSchemaLocation="urn:magento:framework:View/Layout/etc/page_configuration.xsd">
     <body>
         <referenceContainer name="content">
-            <block class="Smile\StoreLocator\Block\ContactForm" name="smile_store_locator_contact_form" template="contact-form.phtml" cacheable="false">
+            <block class="Smile\StoreLocator\Block\ContactForm" name="smile_store_locator_contact_form"
+                   template="Smile_StoreLocator::contact-form.phtml"
+                   cacheable="false">
                 <container name="form.additional.info" label="Form Additional Info"/>
             </block>
         </referenceContainer>

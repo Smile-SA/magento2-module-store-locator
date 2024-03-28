@@ -54,7 +54,7 @@
                     <div class="store-search-form">
                         <div class="field">
                             <input data-bind="{ value: fulltextSearch }" type="text" name="query"
-                                   placeholder="<?= $block->escapeHtml(__('City, Zipcode, Department, ...')) ?>"
+                                   placeholder="<?= $block->escapeHtml(__($block->getSearchPlaceholder())) ?>"
                             />
                         </div>
                         <div class="actions">

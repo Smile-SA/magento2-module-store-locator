@@ -9,6 +9,9 @@
             </map>
         </smile_map>
         <store_locator>
+            <search>
+                <placeholder>City, Zipcode, Address ...</placeholder>
+            </search>
             <seo>
                 <base_url>stores</base_url>
             </seo>

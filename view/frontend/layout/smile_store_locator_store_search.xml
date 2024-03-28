@@ -14,7 +14,6 @@
                                     <item name="geocoder" xsi:type="array">
                                         <item name="component" xsi:type="string">smile-geocoder</item>
                                         <item name="searchTitleText" xsi:type="string" translate="true">Search shop </item>
-                                        <item name="searchPlaceholderText" xsi:type="string" translate="true">City, Zipcode, Department, ...</item>
                                         <item name="searchButtonText" xsi:type="string" translate="true">Search</item>
                                     </item>
                                     <item name="store-list" xsi:type="array">
