@@ -6,31 +6,35 @@
                 <div class="block-title">
                     <span role="heading" aria-level="1" data-bind="i18n: 'Shop Search'">Shop Search</span>
                 </div>
-                <form class="form" data-bind="submit: searchCurrentPlaces">
-                    <div class="store-search-form">
-                        <div class="field">
-                            <div class="ui-widget map-search-autocomplete">
-                                <input type="text" id="searchMarker"  data-bind="afterRender: markerAutocompleteSearch" name="text"/>
+
+                <form data-bind="{submit: updateMap}"
+                      id="shop-search-form">
+                    <div class="store-search">
+                        <div class="geolocalize-container" data-bind="scope: requestChild('geocoder')">
+                            <div class="primary" data-bind="afterRender: initGeocoder">
+                                <a data-bind="{click: $parent.geolocalize.bind($parent), attr : {title: $t('Geolocalize me') } }"
+                                   class="action primary geolocalize"
+                                >
+                                    <span data-bind="i18n: 'Geolocalize me'"></span>
+                                </a>
                             </div>
                         </div>
-                        <div class="actions-toolbar">
-                            <div class="primary">
-                                <button type="submit" id="submitSearch" class="action primary"><span data-bind="i18n: 'Search'">Search</span></button>
+                        <div class="store-search-form">
+                            <div class="field">
+                                <input data-bind="{ value: fulltextSearch, attr: {placeholder: searchPlaceholderText} }"
+                                       type="text"
+                                       name="query"
+                                />
+                            </div>
+                            <div class="actions">
+                                <div class="primary">
+                                    <button type="submit" class="action primary"></button>
+                                </div>
                             </div>
                         </div>
                     </div>
                 </form>
-            </div>
-            <div class="geocoder-wrapper__btn" data-bind="{ scope: requestChild('geocoder')}">
-                <div class="geocoder-wrapper" data-bind=" afterRender: initGeocoder">
-                    <form class="form">
-                        <div class="geolocalize-container">
-                            <div class="primary">
-                                <a data-bind="{click: $parent.geolocalize.bind($parent), attr : {title: $t('Geolocalize me') } }" class="action primary geolocalize" href="#"></a>
-                            </div>
-                        </div>
-                    </form>
-                </div>
+
             </div>
         </div>
 

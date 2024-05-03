@@ -4,14 +4,15 @@ define([
     'ko',
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
-    'jquery/ui',
-    'mage/translate'
-], function ($, L, ko, MarkersList, Schedule) {
+    'mage/translate',
+    'jquery/ui'
+], function ($, L, ko, MarkersList, Schedule, $t) {
     'use strict';
 
     var mixin = {
 
         markerHasDistance: false,
+        urlQuery: null,
 
         /**
          * Init markers on the map
@@ -40,12 +41,21 @@ define([
          * Observe events on elements
          */
         observeElements: function() {
+
+            this.fulltextSearch = '';
+            let urlString = window.location.href;
+            this.urlQuery = new URL(urlString).searchParams.get('query');
+            if (this.urlQuery) {
+                this.fulltextSearch = this.urlQuery;
+            }
+
             this.observe([
                 'markers',
                 'displayedMarkers',
                 'nearbyMarkers',
                 'selectedMarker',
                 'fulltextSearch',
+                'searchPlaceholderText',
                 'distanceBetween',
                 'shopStatus',
                 'closestShopsDisplay'
@@ -268,7 +278,6 @@ define([
             }
         },
 
-
         /**
          * Add marker with user position to the map
          *
@@ -295,6 +304,7 @@ define([
 
         /**
          * Close view store details
+         * @see /templates/search.phtml
          */
         closeDetails: function () {
             this.resetSelectedMarker();
@@ -305,6 +315,7 @@ define([
         /**
          * Function for store-view-page.
          * For display closest shops to the current shop
+         * @see /web/template/retailer/store-view
          */
         closestShopDisplayRender: function () {
             var self = this;
@@ -333,87 +344,46 @@ define([
         },
 
         /**
-         * Locate the map to current target.
-         * Target = place name || postcode || city.
+         * Custom filter to allow approching result per words
+         *
+         * @param array
+         * @param terms
+         * @returns {[]|jQuery|*}
          */
-        searchCurrentPlaces: function () {
-            var coords, cityTarget, resultMarker;
-            var resultArray = [];
-            var searchTarget = $('#searchMarker').val();
-            var nameRequest = parseInt(searchTarget.replace( /\D/g, '')) || 0;
-            searchTarget = searchTarget.toLowerCase();
-            searchTarget = searchTarget.trim();
-            this.markers().forEach(function (marker) {
-                var name = marker.name;
-                var postCode = marker.postCode;
-                var city = marker.city ? marker.city : marker.addressData.city;
-                var positionLan = marker.latitude;
-                var positionLon = marker.longitude;
-                name = name.toLowerCase();
-                name = name.trim();
-                city = city.toLowerCase();
-                city = city.trim();
-                if(searchTarget === name || searchTarget === postCode || searchTarget === city || searchTarget === name + ', ' + city) {
-                    coords = new L.latLng(positionLan, positionLon);
-                    if( searchTarget === city) {
-                        cityTarget = city;
-                    }
-                    if(searchTarget === name + ', ' + city) {
-                        resultMarker = marker;
-                    }
+        filterPerWords(array, terms) {
+            let self = this;
+            let arrayOfTerms = terms.split(' ');
+            let term = $.map(arrayOfTerms, function (tm) {
+                if (tm.length <= 2) {
+                    // ignore smallest term for performance reason
+                    return null;
                 }
+                return $.ui.autocomplete.escapeRegex(self.normalizeAccent(tm));
+            }).join('|');
+            let matcher= new RegExp("\\b" + term, "i");
+            return $.grep(this.cleanArray(array), function (value) {
+                return matcher.test(value.label || value.value || value);
             });
-            if(coords != undefined && nameRequest === 0 && cityTarget === undefined) {
-                this.map.setView(coords, 17);
-                resultArray.push(resultMarker);
-                this.displayedMarkers(resultArray);
-            } else if (coords === undefined) {
-                alert('wrong required');
-            } else {
-                this.map.setView(coords, 12);
-            }
         },
 
         /**
-         * Create list for autocomplete in search field for markers.
-         * @returns {[]}
+         * Replace accent from string
+         *
+         * @param str
+         * @returns {*}
          */
-        markerAutocompleteBase: function () {
-            var titlesListArr = [];
-            this.markers().forEach(function (marker) {
-                var name = marker.name;
-                name = name.trim();
-                var postCode = marker.postCode;
-                var city = marker.city;
-                if(!titlesListArr.includes(name)) {
-                    titlesListArr.push(name + ', ' + city);
-                }
-                if(!titlesListArr.includes(postCode)) {
-                    titlesListArr.push(postCode);
-                }
-                if(!titlesListArr.includes(city)) {
-                    titlesListArr.push(city);
-                }
-            });
-            return titlesListArr;
+        normalizeAccent: function(str) {
+            return str.normalize("NFD").replace(/[\u0300-\u036f]/g, "")
         },
 
         /**
-         * Map search.
+         * Clean an array from undefined or null or false values
+         *
+         * @param array
+         * @returns {*}
          */
-        markerAutocompleteSearch: function () {
-            var parrent = $('.shop-search .fulltext-search-wrapper .ui-widget');
-            var markerInfoBase =  this.markerAutocompleteBase();
-            $('#searchMarker').autocomplete({
-                appendTo: parrent,
-                minLength: 3,
-                position: {
-                    my: "left top",
-                    at: "left bottom",
-                    collision: "none"
-                },
-                source: markerInfoBase
-            });
+        cleanArray(array) {
+            return array.filter(item => item);
         },
 
         /**

@@ -4,12 +4,16 @@ declare(strict_types=1);
 
 namespace Smile\StoreLocator\Block;
 
+use Magento\Customer\Helper\View as CustomerHelperView;
+use Magento\Customer\Model\Session;
 use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Element\AbstractBlock;
 use Magento\Framework\View\Element\Template\Context;
 use Magento\Store\Model\Store;
 use Magento\Theme\Block\Html\Breadcrumbs;
+use Smile\Map\Model\AddressFormatter;
+use Smile\StoreLocator\Api\Data\RetailerAddressInterface;
 use Smile\StoreLocator\Helper\Data as StoreLocatorHelper;
 
 /**
@@ -25,7 +29,10 @@ class ContactForm extends AbstractView
         Context $context,
         Registry $coreRegistry,
         private StoreLocatorHelper $storeLocatorHelper,
+        protected Session $customerSession,
+        protected CustomerHelperView $customerViewHelper,
         DataPersistorInterface $dataPersistorInterface,
+        private AddressFormatter $addressFormatter,
         array $data
     ) {
         $this->dataPersistor = $dataPersistorInterface;
@@ -128,5 +135,49 @@ class ContactForm extends AbstractView
         }
 
         return $this;
+    }
+
+    /**
+     * Get customer user name if logged in
+     */
+    public function getUserName(): string
+    {
+        if (!$this->customerSession->isLoggedIn()) {
+            return '';
+        }
+        $customer = $this->customerSession->getCustomerDataObject();
+
+        return trim($this->customerViewHelper->getCustomerName($customer));
+    }
+
+    /**
+     * Get customer user email if logged in
+     */
+    public function getUserEmail(): string
+    {
+        if (!$this->customerSession->isLoggedIn()) {
+            return '';
+        }
+        $customer = $this->customerSession->getCustomerDataObject();
+
+        return $customer->getEmail();
+    }
+
+    /**
+     * Returns current store address.
+     */
+    public function getAddress(): ?RetailerAddressInterface
+    {
+        return $this->getRetailer()->getData('address');
+    }
+
+    /**
+     * Get address formatted in HTML.
+     */
+    public function getAddressHtml(): string
+    {
+        return $this->getAddress()
+            ? $this->addressFormatter->formatAddress($this->getAddress(), AddressFormatter::FORMAT_HTML)
+            : '';
     }
 }
