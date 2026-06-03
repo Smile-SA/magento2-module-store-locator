@@ -5,7 +5,7 @@ define([
     'smile-storelocator-store-collection',
     'Smile_StoreLocator/js/model/store/schedule',
     'mage/translate',
-    'jquery/ui'
+    'jquery-ui-modules/autocomplete'
 ], function ($, L, ko, MarkersList, Schedule, $t) {
     'use strict';
 
