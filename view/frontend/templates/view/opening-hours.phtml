@@ -1,6 +1,10 @@
 <?php
 
-/** @var $block \Smile\StoreLocator\Block\View\OpeningHours */
+use Magento\Framework\Escaper;
+use Smile\StoreLocator\Block\View\OpeningHours;
+
+/** @var OpeningHours $block */
+/** @var Escaper $escaper */
 ?>
 <div class="opening-hours-container">
     <div class="opening-hours-info" data-bind="scope: 'smile-storelocator-store'">
@@ -12,7 +16,7 @@
     </div>
 
     <?php if ($block->getWeekOpeningHours()): ?>
-        <meta itemprop="openingHours" content="<?= $block->escapeHtml($block->getOpeningHoursMicroFormat()) ?>"/>
+        <meta itemprop="openingHours" content="<?= $escaper->escapeHtml($block->getOpeningHoursMicroFormat()) ?>"/>
     <?php endif ?>
 </div>
 <script type="text/x-magento-init">
