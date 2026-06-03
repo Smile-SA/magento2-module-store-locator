@@ -2,7 +2,8 @@
 
 All notable changes to this project will be documented in this file.
 
-## WIP
+## [2.2.2] - 2026-06-03
+[2.2.2]: https://github.com/Smile-SA/magento2-module-store-locator/compare/2.2.1...2.2.2
 
 - Remove dependency to unused jQuery UI components
 
