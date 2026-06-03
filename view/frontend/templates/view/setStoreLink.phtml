@@ -1,13 +1,17 @@
 <?php
 
-/** @var \Smile\StoreLocator\Block\View $block */
+use Magento\Framework\Escaper;
+use Smile\StoreLocator\Block\View;
+
+/** @var View $block */
+/** @var Escaper $escaper */
 ?>
 
 <div class="set-store-button">
     <a href="#"
-       title="<?= $block->escapeHtml(__('Choose this store')) ?>"
+       title="<?= $escaper->escapeHtml(__('Choose this store')) ?>"
        class="action-set-store"
-       data-post='<?= /* @escapeNotVerified */ $block->escapeHtml($block->getSetStorePostJson()) ?>'>
-       <span><?= $block->escapeHtml(__('Choose this store')) ?></span>
+       data-post='<?= /* @escapeNotVerified */ $escaper->escapeHtml($block->getSetStorePostJson()) ?>'>
+       <span><?= $escaper->escapeHtml(__('Choose this store')) ?></span>
     </a>
 </div>
