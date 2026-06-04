@@ -47,6 +47,9 @@
             "magento/composer-dependency-version-audit-plugin": true,
             "dealerdirect/phpcodesniffer-composer-installer": true
         },
+        "audit": {
+            "abandoned": "report"
+        },
         "sort-packages": true
     }
 }
