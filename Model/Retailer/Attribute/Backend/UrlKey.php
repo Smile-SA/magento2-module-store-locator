@@ -15,6 +15,7 @@ use Smile\StoreLocator\Model\Url;
  */
 class UrlKey extends AbstractBackend
 {
+    private const RETAILER_ID_CHECK_NOT_FOUND = 0;
     public function __construct(private Url $urlModel)
     {
     }
@@ -34,7 +35,7 @@ class UrlKey extends AbstractBackend
         $objectId = (int) $object->getId();
         $retailerIdCheck = $this->urlModel->checkIdentifier($urlKey);
 
-        if ($retailerIdCheck !== false && $objectId !== $retailerIdCheck) {
+        if ($retailerIdCheck !== self::RETAILER_ID_CHECK_NOT_FOUND && $objectId !== $retailerIdCheck) {
             throw new CouldNotSaveException(__('Retailer url_key "%1" already exists.', $urlKey));
         }
 

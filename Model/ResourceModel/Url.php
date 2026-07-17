@@ -13,7 +13,7 @@ use Smile\Seller\Model\ResourceModel\Seller;
 class Url extends Seller
 {
     /**
-     * Check an URL key exists and returns the retailer id. False if no retailer found.
+     * Check an URL key exists and returns the retailer id.
      */
     public function checkIdentifier(string $urlKey, int $storeId): int
     {

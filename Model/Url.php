@@ -73,7 +73,7 @@ class Url
     }
 
     /**
-     * Check an URL key exists and returns the retailer id. False if no retailer found.
+     * Check an URL key exists and returns the retailer id.
      */
     public function checkIdentifier(string $urlKey, ?int $storeId = null): int
     {
