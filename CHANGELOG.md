@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.3] - 2026-07-22
+[2.2.3]: https://github.com/Smile-SA/magento2-module-store-locator/compare/2.2.2...2.2.3
+
+- Add missing translations (day of week, store status)
+- Return type of `checkIdentifier` method changed from `int` to `int|bool` (returns false when no retailer is found)
+
 ## [2.2.2] - 2026-06-03
 [2.2.2]: https://github.com/Smile-SA/magento2-module-store-locator/compare/2.2.1...2.2.2
 
