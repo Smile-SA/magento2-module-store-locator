@@ -204,23 +204,26 @@ define([
             } else {
                 var schedule = markerData.schedule;
             }
-            var isOpen = schedule.isOpenToday();
+            var statusCode;
+            var statusLabel;
             var statusClass;
-            if(!isOpen) {
-                isOpen = 'Closed';
+            if (!schedule.isOpenToday()) {
+                statusCode = 'closed';
+                statusLabel = $.mage.__('Closed');
                 statusClass = 'close-shop';
             } else {
-                isOpen = 'Opened';
+                statusCode = 'opened';
+                statusLabel = $.mage.__('Opened');
                 statusClass = 'open-shop';
             }
-            var time = schedule.getTodayCloseTime(isOpen);
+            var time = schedule.getTodayCloseTime(statusCode);
             if(time === 'closeNow') {
-                isOpen = 'closeNow';
+                statusCode = 'closeNow';
+                statusLabel = $.mage.__('Closed');
                 statusClass = 'close-shop';
-                time = schedule.getTodayCloseTime(isOpen);
-                isOpen = 'Closed';
+                time = schedule.getTodayCloseTime(statusCode);
             }
-            var html = '<span class="'+ statusClass +'">'+ $.mage.__(isOpen) +'</span>';
+            var html = '<span class="'+ statusClass +'">'+ statusLabel +'</span>';
             if (time) {
                 html = html + ' - ' + $.mage.__('today') + ' ' + $.mage.__('until') + ' <span>'+ time +'</span>';
             }
