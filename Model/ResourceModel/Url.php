@@ -13,9 +13,9 @@ use Smile\Seller\Model\ResourceModel\Seller;
 class Url extends Seller
 {
     /**
-     * Check an URL key exists and returns the retailer id. False if no retailer found.
+     * Check an URL key exists and returns the retailer id, or false if no retailer was found.
      */
-    public function checkIdentifier(string $urlKey, int $storeId): int
+    public function checkIdentifier(string $urlKey, int $storeId): int|bool
     {
         $urlKeyAttribute = $this->getAttribute('url_key');
         $select = $this->getConnection()->select();
@@ -27,6 +27,8 @@ class Url extends Seller
             ->order('store_id ' . Select::SQL_DESC)
             ->limit(1);
 
-        return (int) $this->getConnection()->fetchOne($select);
+        $result = $this->getConnection()->fetchOne($select);
+
+        return $result !== false ? (int) $result : false;
     }
 }

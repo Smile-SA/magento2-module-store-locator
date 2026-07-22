@@ -73,9 +73,9 @@ class Url
     }
 
     /**
-     * Check an URL key exists and returns the retailer id. False if no retailer found.
+     * Check an URL key exists and returns the retailer id, or false if no retailer was found.
      */
-    public function checkIdentifier(string $urlKey, ?int $storeId = null): int
+    public function checkIdentifier(string $urlKey, ?int $storeId = null): int|bool
     {
         if ($storeId == null) {
             $storeId = (int) $this->storeManager->getStore()->getId();
