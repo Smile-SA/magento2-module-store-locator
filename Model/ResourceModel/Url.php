@@ -29,6 +29,7 @@ class Url extends Seller
 
         $result = $this->getConnection()->fetchOne($select);
 
+        // @phpstan-ignore notIdentical.alwaysTrue (fetchOne() returns false when no row matches)
         return $result !== false ? (int) $result : false;
     }
 }

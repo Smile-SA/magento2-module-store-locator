@@ -26,7 +26,6 @@ class DataProvider extends AbstractDataProvider
     ) {
         // extends from \Magento\Eav\Model\Entity\Collection\AbstractCollection
         // instead of \Magento\Framework\Model\ResourceModel\Db\Collection\AbstractCollection
-        // @phpstan-ignore-next-line - ignore for backward compatibility
         $this->collection = $collectionFactory->create();
         parent::__construct($name, $primaryFieldName, $requestFieldName, $meta, $data);
     }
