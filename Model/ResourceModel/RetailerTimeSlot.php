@@ -104,7 +104,7 @@ class RetailerTimeSlot extends AbstractDb
 
         foreach ($timeSlotData as &$row) {
             foreach (['start_time', 'end_time'] as $timeField) {
-                if (isset($row[$timeField]) && ($row[$timeField] !== null)) {
+                if (isset($row[$timeField])) {
                     $row[$timeField] = $this->dateToHour($row[$timeField]);
                 }
             }
@@ -132,7 +132,7 @@ class RetailerTimeSlot extends AbstractDb
         $timeSlotData = array_fill_keys($retailerIds, []);
         foreach ($rows as &$row) {
             foreach (['start_time', 'end_time'] as $timeField) {
-                if (isset($row[$timeField]) && ($row[$timeField] !== null)) {
+                if (isset($row[$timeField])) {
                     $row[$timeField] = $this->dateToHour($row[$timeField]);
                 }
             }

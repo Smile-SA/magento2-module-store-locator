@@ -96,7 +96,7 @@ class Renderer extends Template implements RendererInterface
     /**
      * Retrieve element values
      *
-     * @throws \Exception.
+     * @throws \Exception
      */
     private function getValues(): array
     {
