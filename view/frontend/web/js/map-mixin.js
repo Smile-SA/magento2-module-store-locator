@@ -294,7 +294,8 @@ define([
                 var newLon = position.coords.longitude;
                 var coords = new L.latLng(newLat, newLon);
                 var markerOpt = L.divIcon({
-                    iconSize: null,
+                    iconSize: [24, 29],
+                    iconAnchor: [12, 29],
                     html: '<div class="custum-lf-popup position my-position" data-lat="'+ newLat +'" data-lon="'+ newLon +'"><div class="button-decor"></div></div>'
                 });
 
@@ -398,7 +399,8 @@ define([
         generateMarker: function (markerData) {
             let currentMarker = [markerData.latitude, markerData.longitude],
                 markerOptionLocator = L.divIcon({
-                    iconSize: null,
+                    iconSize: [24, 29],
+                    iconAnchor: [12, 29],
                     html: this.getMarkerIconHtmlString(markerData)
                 });
 
