@@ -12,6 +12,7 @@ use Magento\Framework\App\Request\DataPersistorInterface;
 use Magento\Framework\App\ResponseInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
 use Magento\Framework\Controller\ResultInterface;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\HTTP\PhpEnvironment\Request;
 use Magento\Store\Model\StoreManagerInterface;
 use Smile\Retailer\Api\Data\RetailerInterface;
@@ -46,10 +47,15 @@ class ContactPost extends Action implements HttpPostActionInterface
         $postData   = $request->getPostValue();
         $retailerId = $request->getParam('id');
         $storeId    = (int) $this->storeManager->getStore()->getId();
-        /** @var RetailerInterface $retailer */
-        $retailer   = $this->retailerRepository->get((int) $retailerId, $storeId);
 
-        if (!$retailer->getId() || !$this->contactHelper->canDisplayContactForm($retailer)) {
+        try {
+            /** @var RetailerInterface $retailer */
+            $retailer = $this->retailerRepository->get((int) $retailerId, $storeId);
+        } catch (NoSuchEntityException) {
+            $retailer = null;
+        }
+
+        if (!$retailer || !$this->contactHelper->canDisplayContactForm($retailer)) {
             $resultForward = $this->forwardFactory->create();
 
             return $resultForward->forward('noroute');

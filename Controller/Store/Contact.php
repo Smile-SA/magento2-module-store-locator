@@ -8,6 +8,7 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Smile\Retailer\Api\Data\RetailerInterface;
@@ -36,10 +37,15 @@ class Contact extends Action implements HttpGetActionInterface
     public function execute()
     {
         $retailerId = $this->getRequest()->getParam('id');
-        /** @var RetailerInterface $retailer */
-        $retailer   = $this->retailerRepository->get((int) $retailerId);
 
-        if (!$retailer->getId() || !$this->contactHelper->canDisplayContactForm($retailer)) {
+        try {
+            /** @var RetailerInterface $retailer */
+            $retailer = $this->retailerRepository->get((int) $retailerId);
+        } catch (NoSuchEntityException) {
+            $retailer = null;
+        }
+
+        if (!$retailer || !$this->contactHelper->canDisplayContactForm($retailer)) {
             $resultForward = $this->resultForwardFactory->create();
 
             return $resultForward->forward('noroute');
