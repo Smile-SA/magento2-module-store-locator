@@ -8,6 +8,7 @@ use Magento\Framework\App\Action\Action;
 use Magento\Framework\App\Action\Context;
 use Magento\Framework\App\Action\HttpGetActionInterface;
 use Magento\Framework\Controller\Result\ForwardFactory;
+use Magento\Framework\Exception\NoSuchEntityException;
 use Magento\Framework\Registry;
 use Magento\Framework\View\Result\PageFactory;
 use Magento\Store\Model\StoreManagerInterface;
@@ -36,12 +37,11 @@ class View extends Action implements HttpGetActionInterface
     {
         $retailerId = $this->getRequest()->getParam('id');
         $storeId = (int) $this->storeManager->getStore()->getId();
-        $retailer = $this->retailerRepository->get((int) $retailerId, $storeId);
 
-        if (!$retailer->getId()) {
-            $resultForward = $this->resultForwardFactory->create();
-
-            return $resultForward->forward('noroute');
+        try {
+            $retailer = $this->retailerRepository->get((int) $retailerId, $storeId);
+        } catch (NoSuchEntityException) {
+            return $this->resultForwardFactory->create()->forward('noroute');
         }
 
         $this->coreRegistry->register('current_retailer', $retailer);

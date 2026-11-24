@@ -2,6 +2,12 @@
 
 All notable changes to this project will be documented in this file.
 
+## [2.2.4] - 2026-11-24
+[2.2.4]: https://github.com/Smile-SA/magento2-module-store-locator/compare/2.2.3...2.2.4
+
+- Answer with a 404 page when the store, or the store of a contact form, cannot be found
+- Require `smile/module-retailer` 2.0.4 or later
+
 ## [2.2.3] - 2026-07-22
 [2.2.3]: https://github.com/Smile-SA/magento2-module-store-locator/compare/2.2.2...2.2.3
 
