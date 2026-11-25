@@ -36,7 +36,7 @@ class AbstractView extends Template
     /**
      * Get image name.
      */
-    protected function getMediaPath(): string|bool
+    protected function getMediaPath()
     {
         return $this->getRetailer()->getMediaPath() ?: false;
     }
@@ -44,7 +44,7 @@ class AbstractView extends Template
     /**
      * Get full image url.
      */
-    public function getImage(): string|bool
+    public function getImage()
     {
         $mediaPath = $this->getMediaPath();
         $imageUrlRetailer = $this->getImageUrl() . 'seller/';

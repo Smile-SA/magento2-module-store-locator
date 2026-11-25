@@ -23,7 +23,7 @@ class AddressPostDataHandler implements PostDataHandlerInterface
     /**
      * @inheritdoc
      */
-    public function getData(RetailerInterface $retailer, mixed $data): mixed
+    public function getData(RetailerInterface $retailer, $data)
     {
         if (isset($data['address'])) {
             $addressData = $data['address'];

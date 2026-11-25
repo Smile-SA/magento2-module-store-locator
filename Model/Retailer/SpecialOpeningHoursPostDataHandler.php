@@ -36,7 +36,7 @@ class SpecialOpeningHoursPostDataHandler implements PostDataHandlerInterface
     /**
      * @inheritdoc
      */
-    public function getData(RetailerInterface $retailer, mixed $data): mixed
+    public function getData(RetailerInterface $retailer, $data)
     {
         if (isset($data['special_opening_hours'])) {
             $specialOpeningHours = [];

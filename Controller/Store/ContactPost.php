@@ -38,9 +38,11 @@ class ContactPost extends Action implements HttpPostActionInterface
     }
 
     /**
-     * @inheritdoc
+     * Send the contact form.
+     *
+     * @return ResponseInterface|ResultInterface|null
      */
-    public function execute(): ResponseInterface|ResultInterface|null
+    public function execute()
     {
         /** @var Request $request */
         $request    = $this->getRequest();

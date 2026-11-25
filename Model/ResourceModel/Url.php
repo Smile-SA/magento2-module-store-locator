@@ -15,7 +15,7 @@ class Url extends Seller
     /**
      * Check an URL key exists and returns the retailer id, or false if no retailer was found.
      */
-    public function checkIdentifier(string $urlKey, int $storeId): int|bool
+    public function checkIdentifier(string $urlKey, int $storeId)
     {
         $urlKeyAttribute = $this->getAttribute('url_key');
         $select = $this->getConnection()->select();
@@ -29,7 +29,7 @@ class Url extends Seller
 
         $result = $this->getConnection()->fetchOne($select);
 
-        // @phpstan-ignore notIdentical.alwaysTrue (fetchOne() returns false when no row matches)
+        // @phpstan-ignore notIdentical.alwaysTrue, ternary.elseUnreachable (fetchOne() can return false)
         return $result !== false ? (int) $result : false;
     }
 }

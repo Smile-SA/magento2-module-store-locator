@@ -179,7 +179,7 @@ class Map extends AbstractView
     /**
      * Get phone number.
      */
-    public function getPhone(): string|bool
+    public function getPhone()
     {
         return $this->getRetailer()->getData('contact_phone') ?: false;
     }
@@ -187,7 +187,7 @@ class Map extends AbstractView
     /**
      * Get email address.
      */
-    public function getContactMail(): string|bool
+    public function getContactMail()
     {
         return $this->getRetailer()->getData('contact_mail') ?: false;
     }

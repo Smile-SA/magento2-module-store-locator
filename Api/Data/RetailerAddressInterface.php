@@ -35,7 +35,7 @@ interface RetailerAddressInterface extends GeolocalizedAddressInterface
      * @param mixed $id Address id.
      * @return $this
      */
-    public function setAddressId(mixed $id): self;
+    public function setAddressId($id): self;
 
     /**
      * Set retailer id.

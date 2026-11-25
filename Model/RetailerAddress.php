@@ -51,7 +51,7 @@ class RetailerAddress extends Address implements RetailerAddressInterface
     /**
      * @inheritdoc
      */
-    public function setAddressId(mixed $id): self
+    public function setAddressId($id): self
     {
         return $this->setData(RetailerAddressInterface::ADDRESS_ID, $id);
     }
@@ -90,7 +90,7 @@ class RetailerAddress extends Address implements RetailerAddressInterface
      *
      * @param string[]|string $street
      */
-    public function setStreet(array|string $street): RetailerAddress
+    public function setStreet($street): RetailerAddress
     {
         if (is_array($street)) {
             $street = implode(self::STREET_SEPARATOR, $street);
