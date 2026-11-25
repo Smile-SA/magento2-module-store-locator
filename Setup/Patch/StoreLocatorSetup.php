@@ -9,7 +9,6 @@ use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Boolean;
 use Magento\Eav\Setup\EavSetup;
 use Magento\Framework\Exception\LocalizedException;
-use Magento\Framework\Validator\ValidateException;
 use Smile\Retailer\Api\Data\RetailerInterface;
 use Smile\Seller\Api\Data\SellerInterface;
 use Smile\StoreLocator\Model\Retailer\Attribute\Backend\UrlKey;
@@ -20,7 +19,6 @@ class StoreLocatorSetup
      * Add 'url_key' attribute to Retailers.
      *
      * @throws LocalizedException
-     * @throws ValidateException
      */
     public function addUrlKeyAttribute(EavSetup $eavSetup): void
     {
@@ -50,7 +48,6 @@ class StoreLocatorSetup
      * Add contact information (phone, mail, etc..) attribute to Retailers.
      *
      * @throws LocalizedException
-     * @throws ValidateException
      */
     public function addContactInformation(EavSetup $eavSetup): void
     {
