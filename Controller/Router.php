@@ -31,7 +31,7 @@ class Router implements RouterInterface
      */
     public function match(RequestInterface $request)
     {
-        /** @var Request|RequestInterface $request */
+        /** @var Request&RequestInterface $request */
         $action = null;
         $requestPath = trim($request->getPathInfo(), '/');
         $condition = new DataObject(['identifier' => $requestPath]);
@@ -80,7 +80,7 @@ class Router implements RouterInterface
     /**
      * Check if the current request path match a retailer URL and returns its id.
      */
-    private function matchRetailer(string $requestPath): int|false
+    private function matchRetailer(string $requestPath)
     {
         $retailerId = false;
         $requestPathArray = explode('/', $requestPath);

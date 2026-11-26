@@ -20,6 +20,15 @@ define([
             this._super();
             this.initOpeningHoursList();
             this.initSpecialOpeningHoursList();
+
+            // Dynamic translations
+            $.mage.__('Monday');
+            $.mage.__('Tuesday');
+            $.mage.__('Wednesday');
+            $.mage.__('Thursday');
+            $.mage.__('Friday');
+            $.mage.__('Saturday');
+            $.mage.__('Sunday');
         },
 
         /**
@@ -147,7 +156,7 @@ define([
                     exist = this.getNextDayData();
                 }
                 if(exist) {
-                    if(isOpen === 'Opened') {
+                    if(isOpen === 'opened') {
                         var currentStatus = exist[exist.length - 1].end_time;
                         var currDate = moment(currentStatus, [this.timeFormat]).toDate();
                         var currDateTime = currDate.getTime();
@@ -158,9 +167,9 @@ define([
                             result = exist[exist.length - 1].end_time;
                         }
                     } else  {
-                        var openDay  = exist[exist.length - 1];
+                        var openDay = exist[exist.length - 1];
                         var openTime = exist[0][0].start_time;
-                        result = openDay + ' ' + openTime;
+                        result = $.mage.__(openDay) + ' ' + openTime;
                     }
                 }
             }

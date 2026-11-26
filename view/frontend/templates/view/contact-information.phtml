@@ -1,28 +1,32 @@
 <?php
 
-/** @var \Smile\StoreLocator\Block\View\ContactInformation $block */
+use Magento\Framework\Escaper;
+use Smile\StoreLocator\Block\View\ContactInformation;
+
+/** @var ContactInformation $block */
+/** @var Escaper $escaper */
 ?>
 <?php if ($block->hasContactInformation()): ?>
     <div class="contact-info">
         <div class="contact-info-wrapper">
-            <h3><?= $block->escapeHtml(__('Contact')) ?></h3>
+            <h3><?= $escaper->escapeHtml(__('Contact')) ?></h3>
             <table>
                 <tbody>
                 <?php if ($block->getRetailer()->getContactPhone()): ?>
                     <tr>
                         <td>
-                            <span><?= $block->escapeHtml(__('Telephone')) ?> : </span>
+                            <span><?= $escaper->escapeHtml(__('Telephone')) ?> : </span>
                             <span itemprop="telephone">
-                                <?= $block->escapeHtml($block->getRetailer()->getContactPhone()) ?>
+                                <?= $escaper->escapeHtml($block->getRetailer()->getContactPhone()) ?>
                             </span>
                         </td>
                     </tr>
                 <?php endif ?>
                 <?php if ($block->getRetailer()->getContactFax()): ?>
                     <tr>
-                        <td><span><?= $block->escapeHtml(__('Fax')) ?> : </span>
+                        <td><span><?= $escaper->escapeHtml(__('Fax')) ?> : </span>
                             <span itemprop="faxNumber">
-                                <?= $block->escapeHtml($block->getRetailer()->getContactFax()) ?>
+                                <?= $escaper->escapeHtml($block->getRetailer()->getContactFax()) ?>
                             </span>
                         </td>
                     </tr>
@@ -31,11 +35,11 @@
                     <tr>
                         <td>
                             <meta itemprop="email"
-                                  content="<?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>"/>
+                                  content="<?= $escaper->escapeHtml($block->getRetailer()->getContactMail()) ?>"/>
                             <span>
-                                <?= $block->escapeHtml(__('Mail')) ?> :
-                                <a href="mailto:<?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>">
-                                    <?= $block->escapeHtml($block->getRetailer()->getContactMail()) ?>
+                                <?= $escaper->escapeHtml(__('Mail')) ?> :
+                                <a href="mailto:<?= $escaper->escapeHtml($block->getRetailer()->getContactMail()) ?>">
+                                    <?= $escaper->escapeHtml($block->getRetailer()->getContactMail()) ?>
                                 </a>
                             </span>
                         </td>
@@ -47,8 +51,8 @@
                         <tr>
                             <td>
                                 <span class="contact-form-link">
-                                    <a href="<?= $block->escapeHtml($block->getContactFormUrl()) ?>">
-                                        <?= $block->escapeHtml(__('Contact Us')) ?>
+                                    <a href="<?= $escaper->escapeHtml($block->getContactFormUrl()) ?>">
+                                        <?= $escaper->escapeHtml(__('Contact Us')) ?>
                                     </a>
                                 </span>
                             </td>

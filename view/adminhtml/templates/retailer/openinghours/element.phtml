@@ -1,6 +1,10 @@
 <?php
 
-/** @var \Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element\Renderer $block */
+use Magento\Framework\Escaper;
+use Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Element\Renderer;
+
+/** @var Renderer $block */
+/** @var Escaper $escaper */
 
 $element = $block->getElement();
 $fieldId = $element->getHtmlContainerId() ? ' id="' . $element->getHtmlContainerId() . '"' : '';
@@ -13,7 +17,7 @@ $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId(
 <?php // @codingStandardsIgnoreEnd ?>
     <?= $element->getLabelHtml() ?><span class="opening-hours-day" id="<?= $block->getHtmlId() ?>-label"></span>
     <?php $inputId = 'opening_hours_field_' . $block->getHtmlId() ?>
-    <div id ="<?= $block->escapeHtml($inputId) ?>" class="opening-hours-container">
+    <div id ="<?= $escaper->escapeHtml($inputId) ?>" class="opening-hours-container">
         <div class="opening-hours-indicator"></div>
         <div class="opening-hours-rangebar"></div>
         <?= $block->getInputHtml() ?>
@@ -27,7 +31,7 @@ $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId(
             /**
              * This component is the main timepicker for opening hours
              */
-            $("#<?= $block->escapeHtml($inputId) ?> .opening-hours-rangebar").openingHours({
+            $("#<?= $escaper->escapeHtml($inputId) ?> .opening-hours-rangebar").openingHours({
                 values: $("#<?= $block->getHtmlId() ?>").val(),
                 summary: $("#<?= $block->getHtmlId() ?>-label"),
                 updateSummary: true,
@@ -37,7 +41,7 @@ $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId(
             /**
              * This component is a read-only one, made to display the time indicator
              */
-            $("#<?= $block->escapeHtml($inputId) ?> .opening-hours-indicator").openingHours({
+            $("#<?= $escaper->escapeHtml($inputId) ?> .opening-hours-indicator").openingHours({
                 values: [
                     [moment().startOf("day").format("LLLL")],
                     [moment().startOf("day").add(3, "hours").format("LLLL")],

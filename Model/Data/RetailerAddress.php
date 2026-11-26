@@ -31,7 +31,7 @@ class RetailerAddress extends GeolocalizedAddress implements RetailerAddressInte
     /**
      * @inheritdoc
      */
-    public function setAddressId(mixed $id): self
+    public function setAddressId($id): self
     {
         return $this->setData(self::ADDRESS_ID, $id);
     }

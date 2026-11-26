@@ -1,6 +1,10 @@
 <?php
 
-/** @var \Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Container\Renderer $block */
+use Magento\Framework\Escaper;
+use Smile\StoreLocator\Block\Adminhtml\Retailer\OpeningHours\Container\Renderer;
+
+/** @var Renderer $block */
+/** @var Escaper $escaper */
 
 $element = $block->getElement();
 $fieldId = $element->getHtmlContainerId() ? ' id="' . $element->getHtmlContainerId() . '"' : '';
@@ -14,7 +18,7 @@ $fieldAttributes = $fieldId . ' class="' . $fieldClass . '" ' . $block->getUiId(
 <?php // @codingStandardsIgnoreEnd ?>
     <div class="admin__field-tooltip">
         <p class="note admin__field-tooltip-action">
-            <?= $block->escapeHtml(__('Double-click on an opening hour range to delete it.')) ?>
+            <?= $escaper->escapeHtml(__('Double-click on an opening hour range to delete it.')) ?>
         </p>
     </div>
     <?= $block->getInputHtml() ?>

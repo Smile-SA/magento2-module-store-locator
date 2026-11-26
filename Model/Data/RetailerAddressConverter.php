@@ -53,7 +53,7 @@ class RetailerAddressConverter
     /**
      * Process conversion.
      */
-    private function convert(mixed $factory, mixed $source): mixed
+    private function convert($factory, $source)
     {
         $target = $factory->create();
 
@@ -65,7 +65,7 @@ class RetailerAddressConverter
      *
      * @SuppressWarnings(PHPMD.StaticAccess)
      */
-    private function copyFields(mixed $source, mixed $target): mixed
+    private function copyFields($source, $target)
     {
         $sourceValues = $this->extractValues($source);
         $targetObjectMethods = get_class_methods(get_class($target));
@@ -87,7 +87,7 @@ class RetailerAddressConverter
      * @SuppressWarnings(PHPMD.StaticAccess)
      * @SuppressWarnings(PHPMD.CyclomaticComplexity)
      */
-    private function extractValues(mixed $source): array
+    private function extractValues($source): array
     {
         $values = [];
 

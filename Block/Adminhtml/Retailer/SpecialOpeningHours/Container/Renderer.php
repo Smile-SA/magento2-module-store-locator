@@ -198,7 +198,7 @@ JAVASCRIPT;
                 $date = new DateTime($date);
                 $arrayValues[] = [
                     'date' => $date->format(MagentoDateTime::DATETIME_PHP_FORMAT),
-                    'opening_hours' => $this->jsonSerializer->serialize(array_filter($timeRanges)),
+                    'opening_hours' => $this->jsonSerializer->serialize($timeRanges),
                 ];
             }
         }

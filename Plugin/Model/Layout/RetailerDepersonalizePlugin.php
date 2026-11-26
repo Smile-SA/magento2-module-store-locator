@@ -30,7 +30,7 @@ class RetailerDepersonalizePlugin
      */
     public function afterAfterGenerateElements(
         DepersonalizePlugin $subject,
-        mixed $result,
+        $result,
         LayoutInterface $layout
     ): void {
         if ($this->depersonalizeChecker->checkIfDepersonalize($layout)) {

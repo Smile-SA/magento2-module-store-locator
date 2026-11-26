@@ -32,9 +32,9 @@ class UrlKey extends AbstractBackend
         }
 
         $objectId = (int) $object->getId();
-        $retailerIdCheck = $this->urlModel->checkIdentifier($urlKey);
+        $retailerIdByUrlKey = $this->urlModel->checkIdentifier($urlKey);
 
-        if ($retailerIdCheck !== false && $objectId !== $retailerIdCheck) {
+        if ($retailerIdByUrlKey !== false && $objectId !== $retailerIdByUrlKey) {
             throw new CouldNotSaveException(__('Retailer url_key "%1" already exists.', $urlKey));
         }
 

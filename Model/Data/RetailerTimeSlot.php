@@ -6,6 +6,7 @@ namespace Smile\StoreLocator\Model\Data;
 
 use JsonSerializable;
 use Magento\Framework\DataObject;
+use ReturnTypeWillChange;
 use Smile\StoreLocator\Api\Data\RetailerTimeSlotInterface;
 
 /**
@@ -52,7 +53,8 @@ class RetailerTimeSlot extends DataObject implements RetailerTimeSlotInterface, 
     /**
      * @inheritdoc
      */
-    public function jsonSerialize(): mixed
+    #[ReturnTypeWillChange]
+    public function jsonSerialize()
     {
         return [
             'start_time' => $this->getStartTime(),
