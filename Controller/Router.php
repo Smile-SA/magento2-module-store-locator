@@ -31,7 +31,7 @@ class Router implements RouterInterface
      */
     public function match(RequestInterface $request)
     {
-        /** @var Request|RequestInterface $request */
+        /** @var Request&RequestInterface $request */
         $action = null;
         $requestPath = trim($request->getPathInfo(), '/');
         $condition = new DataObject(['identifier' => $requestPath]);

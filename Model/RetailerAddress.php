@@ -124,6 +124,8 @@ class RetailerAddress extends Address implements RetailerAddressInterface
         $latitude  = $coordinates->getLatitude();
         $longitude = $coordinates->getLongitude();
 
-        return $this->setLatitude($latitude)->setLongitude($longitude);
+        $this->setLatitude($latitude)->setLongitude($longitude);
+
+        return $this;
     }
 }
