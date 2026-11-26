@@ -2,6 +2,15 @@
 
 This module adds a store locator to the website. You can search a retailer on map.
 
+### Compatibility
+
+| Module version | Magento | Mage-OS | PHP |
+| --- | --- | --- | --- |
+| 2.3.x | 2.4.6 and later (tested up to 2.4.9) | 1.0.0 and later (tested up to 4.0) | 8.1 to 8.5, as supported by the platform |
+| 2.2.x, from 2.2.5 | 2.4.4 and 2.4.5 | not available | 8.1 |
+
+Releases up to 2.2.4 are not covered by this table: they declared `php ^8.1` and `magento/framework >=103.0.4`, and their method signatures use native `mixed` or union types, which the code generator of Magento 2.4.4 and 2.4.5 rejects (`setup:di:compile` fails).
+
 ### Requirements
 
 The module requires:
