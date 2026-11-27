@@ -27,6 +27,10 @@ class UrlKey extends AbstractBackend
         /** @var RetailerInterface|DataObject $object */
         $urlKey = $this->urlModel->getUrlKey($object);
 
+        if ($urlKey === null) {
+            return $this;
+        }
+
         if ($urlKey !== $object->getUrlKey()) {
             $object->setUrlKey($urlKey);
         }
